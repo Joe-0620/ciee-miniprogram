@@ -9,6 +9,9 @@ if not os.path.exists(LOG_PATH): os.mkdir(LOG_PATH)  # 如果不存在这个logs
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
@@ -23,6 +26,11 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    "rest_framework",
+    "rest_framework.authtoken",
+    'Professor_Student_Manage.apps.ProfessorStudentManageConfig',
+    'Professor_Quota_Review.apps.ProfessorQuotaReviewConfig',
+    "Select_Information.apps.SelectInformationConfig",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -55,6 +63,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
             ],
         },
     },
@@ -169,15 +178,16 @@ LOGGING = {
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'zh-hans'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Shanghai'
+
+USE_TZ=True
 
 USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
@@ -190,3 +200,19 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 LOGS_DIR = '/data/logs/'
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    # DjangoModelPermissionsOrAnonReadOnly：这个权限类允许通过Django模型的权限系统控制对数据的访问。
+    # 对于已认证的用户，它根据用户在Django模型上的权限来授权。对于未认证的用户，它允许只读访问，即匿名用户可以查看数据，但不能进行修改。
+    'DEFAULT_PERMISSION_CLASSES': [
+        # 'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ],
+    # TokenAuthentication：这是一种基于令牌的身份验证方式。在使用此身份验证类时，用户需要在每个API请求中提供有效的令牌（Token）以证明其身份。
+    # 令牌通常在用户登录成功后生成并返回，然后在后续请求中通过HTTP标头传递。这允许用户在每次请求时进行身份验证，而无需在每次请求中都提供用户名和密码。
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+}
+

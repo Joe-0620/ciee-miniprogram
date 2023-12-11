@@ -1,0 +1,17 @@
+[2023-12-11 06:23:16,583] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2023-12-11 06:23:19,820] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET / HTTP/1.1" 200 10137
+[2023-12-11 06:23:20,972] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /apple-touch-icon-precomposed.png HTTP/1.1" 200 10137
+[2023-12-11 06:23:20,978] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /apple-touch-icon.png HTTP/1.1" 200 10137
+[2023-12-11 06:23:21,704] [views.py:37] [views:counter] [INFO]- response result: {"code": 0, "data": 0}
+[2023-12-11 06:23:21,708] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /api/count HTTP/1.1" 200 22
+[2023-12-11 06:25:02,617] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2023-12-11 06:26:48,188] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2023-12-11 06:27:16,382] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2023-12-11 06:27:17,464] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2023-12-11 06:27:18,801] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2023-12-11 06:27:19,328] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2023-12-11 06:30:52,091] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2023-12-11 06:30:55,741] [log.py:224] [log:log_response] [WARNING]- Not Found: /
+[2023-12-11 06:30:55,742] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET / HTTP/1.1" 404 2988
+[2023-12-11 06:30:55,785] [log.py:224] [log:log_response] [WARNING]- Not Found: /favicon.ico
+[2023-12-11 06:30:55,786] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /favicon.ico HTTP/1.1" 404 3039

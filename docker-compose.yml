@@ -1,0 +1,24 @@
+version: '3'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.development
+    volumes:
+      - .:/app
+    ports:
+      - '27081:80'
+    container_name: wxcloud_ciee-miniprogram
+    labels:
+      - wxPort=27082
+      - hostPort=27081
+      - wxcloud=ciee-miniprogram
+      - role=container
+    environment:
+      - MYSQL_USERNAME=root
+      - MYSQL_PASSWORD=WSGnnA83
+      - MYSQL_ADDRESS=sh-cynosdbmysql-grp-buouyy58.sql.tencentcdb.com:26437
+networks:
+  default:
+    external:
+      name: wxcb0

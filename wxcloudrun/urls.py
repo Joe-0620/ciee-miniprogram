@@ -14,13 +14,23 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
-from wxcloudrun import views
-from django.conf.urls import url
+from django.contrib import admin
+from django.urls import path, include
+from django.contrib.auth.models import User
+from rest_framework import routers, serializers, viewsets
+from Professor_Student_Manage.views import UserLoginView, ProfessorListView
+from Select_Information.views import SelectInformationView
+from django.conf.urls.static import static # 添加本行
+from django.conf import settings # 添加本行
 
-urlpatterns = (
-    # 计数器接口
-    url(r'^^api/count(/)?$', views.counter),
-
-    # 获取主页
-    url(r'(/)?$', views.index),
-)
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    # 包含 Professor_Student_Manage 应用的URL配置
+    path('Professor_Quota_Review/', include('Professor_Quota_Review.urls')),
+    path('Select_Information/', include('Select_Information.urls')),
+    path('Professor_Student_Manage/', include('Professor_Student_Manage.urls')),
+    # path('api/', include('api.urls')),
+    path('userlogin/', UserLoginView.as_view(), name='user-login'),
+    path('get-professors/', ProfessorListView.as_view(), name='show-professors'),
+    path('get-select-info/<int:student_id>/', SelectInformationView.as_view(), name='get-select-info')
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) # 将文件路径添加进来

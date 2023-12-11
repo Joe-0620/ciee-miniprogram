@@ -22,8 +22,10 @@ from Professor_Student_Manage.views import UserLoginView, ProfessorListView
 from Select_Information.views import SelectInformationView
 from django.conf.urls.static import static # 添加本行
 from django.conf import settings # 添加本行
+from .views import index
 
 urlpatterns = [
+    path('', index, name='index'),
     path('admin/', admin.site.urls),
     # 包含 Professor_Student_Manage 应用的URL配置
     path('Professor_Quota_Review/', include('Professor_Quota_Review.urls')),

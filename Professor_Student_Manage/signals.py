@@ -10,7 +10,8 @@ from django.db import models
 def create_student_user(sender, instance, created, **kwargs):
     if created and not instance.user_name:
         user = User(username=instance.candidate_number)
-        password = instance.identify_number
+        password = instance.candidate_number
+        # password = instance.identify_number
         user.set_password(password)
         # user.set_unusable_password()  # 不设置密码
         user.save()

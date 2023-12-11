@@ -244,3 +244,22 @@
 [2023-12-11 08:00:45,086] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET / HTTP/1.1" 200 10315
 [2023-12-11 08:00:45,235] [log.py:224] [log:log_response] [WARNING]- Not Found: /api/count
 [2023-12-11 08:00:45,236] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /api/count HTTP/1.1" 404 3147
+[2023-12-11 08:03:02,293] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2023-12-11 08:03:04,436] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET / HTTP/1.1" 200 10315
+[2023-12-11 08:03:04,490] [log.py:224] [log:log_response] [WARNING]- Not Found: /api/count
+[2023-12-11 08:03:04,491] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /api/count HTTP/1.1" 404 3147
+[2023-12-11 08:03:57,807] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET / HTTP/1.1" 200 10315
+[2023-12-11 08:03:57,879] [log.py:224] [log:log_response] [WARNING]- Not Found: /api/count
+[2023-12-11 08:03:57,880] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /api/count HTTP/1.1" 404 3147
+[2023-12-11 08:16:17,779] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET / HTTP/1.1" 200 10315
+[2023-12-11 08:16:18,024] [log.py:224] [log:log_response] [WARNING]- Not Found: /api/count
+[2023-12-11 08:16:18,025] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /api/count HTTP/1.1" 404 3147
+[2023-12-11 08:16:37,798] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET / HTTP/1.1" 200 10315
+[2023-12-11 08:16:37,925] [log.py:224] [log:log_response] [WARNING]- Not Found: /api/count
+[2023-12-11 08:16:37,927] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /api/count HTTP/1.1" 404 3147
+[2023-12-11 08:16:43,480] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET / HTTP/1.1" 200 10315
+[2023-12-11 08:16:43,547] [log.py:224] [log:log_response] [WARNING]- Not Found: /api/count
+[2023-12-11 08:16:43,548] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /api/count HTTP/1.1" 404 3147
+[2023-12-11 08:16:48,615] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET / HTTP/1.1" 200 10315
+[2023-12-11 08:16:48,724] [log.py:224] [log:log_response] [WARNING]- Not Found: /api/count
+[2023-12-11 08:16:48,725] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /api/count HTTP/1.1" 404 3147

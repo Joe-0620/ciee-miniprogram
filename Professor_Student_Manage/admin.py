@@ -51,7 +51,7 @@ class StudentAdmin(admin.ModelAdmin):
                                "major_direction", "specialty_code", "postgraduate_type", "study_mode", 
                                "resume", "avatar", "phone_number"]}),
     ]
-    list_display = ["candidate_number", "name", "major", "major_direction", "study_mode", "student_type", "is_selected"]
+    list_display = ["candidate_number", "name", "major", "major_direction", "study_mode", "student_type", "postgraduate_type", "is_selected"]
     list_filter = ["major"]
     search_fields = ["name"]
 

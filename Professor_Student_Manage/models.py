@@ -53,7 +53,8 @@ class Professor(models.Model):
 
     Department_Position = [
         [0, "非审核人"],
-        [1, "方向审核人"]
+        [1, "方向审核人(北京)"],
+        [2, "方向审核人(烟台)"]
     ]
 
     department_position = models.IntegerField(choices=Department_Position, default=0, verbose_name="是否是审核人")
@@ -159,9 +160,10 @@ class Student(models.Model):
     student_type = models.CharField(max_length=1, verbose_name="学生类型", choices=STUDENT_CHOICES)
 
     BACHELOR_TYPE = [
-        ['1', "专业型"],
+        ['1', "专业型(北京)"],
         ['2', "学术型"],
-        ['3', "其它"],
+        ['3', "博士"],
+        ['4', "专业型(烟台)"],
     ]
 
     postgraduate_type = models.CharField(max_length=1, verbose_name="研究生类型", choices=BACHELOR_TYPE)

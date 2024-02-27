@@ -44,6 +44,8 @@ class Professor(models.Model):
     # proposed_quota = models.IntegerField(blank=True, default=0)
     academic_quota = models.IntegerField(blank=True, default=0, verbose_name="学硕剩余名额")
     professional_quota = models.IntegerField(blank=True, default=0, verbose_name="专硕剩余名额")
+    professional_yt_quota = models.IntegerField(blank=True, default=0, verbose_name="专硕(烟台)剩余名额")
+    # professional_quota = models.IntegerField(blank=True, default=0, verbose_name="专硕剩余名额")
     doctor_quota = models.IntegerField(blank=True, default=0, verbose_name="博士剩余名额")
     proposed_quota_approved = models.BooleanField(default=False, verbose_name="指标审核")
     have_qualification = models.BooleanField(default=True, verbose_name="招生资格")

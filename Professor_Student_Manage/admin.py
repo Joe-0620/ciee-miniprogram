@@ -26,7 +26,7 @@ check_department_head_or_deputy.short_description = "检查有没有方向负责
 class ProfessorAdmin(admin.ModelAdmin):
     fieldsets = [
         ("导师信息更改", {"fields": ["name", "teacher_identity_id", "email", "department", "department_position",
-                                     "academic_quota", "professional_quota", "doctor_quota", "proposed_quota_approved",
+                                     "academic_quota", "professional_quota", "professional_yt_quota", "doctor_quota", "proposed_quota_approved",
                                      "have_qualification", "remaining_quota", "personal_page", "research_areas",
                                      "avatar", "phone_number"]}),
     ]
@@ -36,7 +36,7 @@ class ProfessorAdmin(admin.ModelAdmin):
     def get_readonly_fields(self, request, obj=None):
         readonly_fields = self.readonly_fields
         if obj and obj.proposed_quota_approved == True:  # 根据字段值来判断是否设置为只读
-            readonly_fields = ["academic_quota", "professional_quota", "doctor_quota",
+            readonly_fields = ["academic_quota", "professional_quota", "professional_yt_quota", "doctor_quota",
                                "have_qualification", "remaining_quota"]
         return readonly_fields
 

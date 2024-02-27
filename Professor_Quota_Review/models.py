@@ -8,7 +8,8 @@ class AdmissionQuotaApproval(models.Model):
                                   related_name='admission_quota_approvals', verbose_name="导师姓名")
     # 提议的指标
     academic_quota = models.IntegerField(default=0, verbose_name="学硕名额")
-    professional_quota = models.IntegerField(default=0, verbose_name="专硕名额")
+    professional_quota = models.IntegerField(default=0, verbose_name="北京专硕名额")
+    professional_yt_quota = models.IntegerField(default=0, verbose_name="烟台专硕名额")
     doctor_quota = models.IntegerField(default=0, verbose_name="博士名额")
     # degree_doctor_quota = models.IntegerField(default=0)
     STATUS_CHOICES = [

@@ -20,6 +20,7 @@ def reset_professor_quota(sender, instance, **kwargs):
             professor.proposed_quota_approved = False
             professor.academic_quota = 0
             professor.professional_quota = 0
+            professor.professional_yt_quota = 0
             professor.doctor_quota = 0
             professor.save()
 

@@ -25,6 +25,7 @@ def approve_action(request, pk):
     professor.proposed_quota_approved = True
     professor.academic_quota = approval.academic_quota
     professor.professional_quota = approval.professional_quota
+    professor.professional_yt_quota = approval.professional_yt_quota
     professor.doctor_quota = approval.doctor_quota
     
     professor.save()
@@ -90,6 +91,7 @@ class SubmitQuotaView(APIView):
             # 如果没有等待审核的信息，则可以创建新的 AdmissionQuotaApproval 对象
             academic_quota = request.data.get('academic_quota')
             professional_quota = request.data.get('professional_quota')
+            professional_yt_quota = request.data.get('professional_yt_quota')
             doctor_quota = request.data.get('doctor_quota')
 
             # 检查数据是否包含NaN值，如果包含，将其替换为0
@@ -97,14 +99,17 @@ class SubmitQuotaView(APIView):
                 academic_quota = 0
             if isnan(professional_quota):
                 professional_quota = 0
+            if isnan(professional_yt_quota):
+                professional_yt_quota = 0
             if isnan(doctor_quota):
                 doctor_quota = 0
 
-            if (academic_quota != 0 or professional_quota != 0 or doctor_quota != 0):
+            if (academic_quota != 0 or professional_quota != 0 or professional_yt_quota != 0 or doctor_quota != 0):
                 approval = AdmissionQuotaApproval.objects.create(
                     professor=professor,
                     academic_quota=academic_quota,
                     professional_quota=professional_quota,
+                    professional_yt_quota=professional_yt_quota,
                     doctor_quota=doctor_quota,
                     status='0'  # 设置为等待审核状态
                 )
@@ -175,6 +180,7 @@ class ReviewQuotaApprovalView(APIView):
                 wait_professor = approval.professor
                 wait_professor.academic_quota = approval.academic_quota
                 wait_professor.professional_quota = approval.professional_quota
+                wait_professor.professional_yt_quota = approval.professional_yt_quota
                 wait_professor.doctor_quota = approval.doctor_quota
                 wait_professor.save()
 

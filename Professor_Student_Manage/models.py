@@ -69,18 +69,19 @@ class Professor(models.Model):
         # print("获取之前的导师信息")
         original_instance = self.__class__.objects.filter(pk=self.pk).first()
         self.name_fk_search = self.name
-        self.remaining_quota = self.academic_quota + self.professional_quota + self.doctor_quota
+        self.remaining_quota = self.academic_quota + self.professional_quota + self.professional_yt_quota + self.doctor_quota
         super().save(*args, **kwargs)
         # print("触发super.save()")
 
         # 若是刚创建
         if not self.pk:
             # 以下代码不会运行，因为被信号阻断了
-            if self.academic_quota > 0 or self.professional_quota > 0 or self.doctor_quota > 0:
+            if self.academic_quota > 0 or self.professional_quota > 0 or self.professional_yt_quota > 0 or self.doctor_quota > 0:
                 approval = AdmissionQuotaApproval.objects.create(
                     professor=self,
                     academic_quota=self.academic_quota,
                     professional_quota=self.professional_quota,
+                    professional_yt_quota=self.professional_yt_quota,
                     doctor_quota=self.doctor_quota,
                     status='0',  # 默认状态为等待审核
                     reviewed_by=None,  # 初始时未审核
@@ -94,6 +95,7 @@ class Professor(models.Model):
             if self.proposed_quota_approved == False:
                 if original_instance and not (self.academic_quota == original_instance.academic_quota and
                         self.professional_quota == original_instance.professional_quota and
+                        self.professional_yt_quota == original_instance.professional_yt_quota and
                         self.doctor_quota == original_instance.doctor_quota):
                     if AdmissionQuotaApproval.objects.filter(professor=self):
                         latest_approval = AdmissionQuotaApproval.objects.filter(professor=self).order_by('-id').first()
@@ -103,13 +105,14 @@ class Professor(models.Model):
                         # print("将上一个审核记录取消")
 
 
-                    if (self.academic_quota != 0 and self.professional_quota != 0 and 
+                    if (self.academic_quota != 0 and self.professional_quota != 0 and self.professional_yt_quota != 0 and 
                         self.doctor_quota != 0):
                         # print("导师指标不全为0")
                         approval = AdmissionQuotaApproval.objects.create(
                             professor=self,
                             academic_quota=self.academic_quota,
                             professional_quota=self.professional_quota,
+                            professional_yt_quota=self.professional_yt_quota,
                             doctor_quota=self.doctor_quota,
                             status='0',  # 默认状态为等待审核
                             reviewed_by=None,  # 初始时未审核

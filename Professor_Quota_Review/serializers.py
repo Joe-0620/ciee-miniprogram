@@ -9,6 +9,6 @@ class AdmissionQuotaApprovalSerializer(serializers.ModelSerializer):
     class Meta:
         model = AdmissionQuotaApproval
         # fields = '__all__'  # 或者指定您想要序列化的字段
-        fields = ['id', 'department', 'professor', 'academic_quota', 'professional_quota', 'doctor_quota',
+        fields = ['id', 'department', 'professor', 'academic_quota', 'professional_quota', 'professional_yt_quota', 'doctor_quota',
                   'status', 'reviewed_by', 'submit_date', 'reviewed_time']
 

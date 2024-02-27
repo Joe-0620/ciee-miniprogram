@@ -8,9 +8,9 @@ from django.utils.html import format_html
 
 class AdmissionQuotaApprovalAdmin(admin.ModelAdmin):
     # 列出需要设置为只读的字段
-    readonly_fields = ["professor", "academic_quota", "professional_quota", "doctor_quota", "submit_date",
+    readonly_fields = ["professor", "academic_quota", "professional_quota", "professional_yt_quota", "doctor_quota", "submit_date",
                        "reviewed_time"]
-    list_display = ["professor", "academic_quota", "professional_quota", "doctor_quota",
+    list_display = ["professor", "academic_quota", "professional_quota", "professional_yt_quota", "doctor_quota",
                     "submit_date", "reviewed_by", "reviewed_time", "status", "action_button"]
 
     def action_button(self, obj):

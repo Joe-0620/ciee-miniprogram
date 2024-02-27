@@ -30,12 +30,13 @@ def create_professors_user(sender, instance, created, **kwargs):
         instance.user_name = user
         instance.save()
 
-    if created and (instance.academic_quota > 0 or instance.professional_quota > 0 or instance.doctor_quota > 0):
+    if created and (instance.academic_quota > 0 or instance.professional_quota > 0 or instance.professional_yt_quota > 0 or instance.doctor_quota > 0):
         # print("导师信号触发，且导师名额有不为0的")
         approval = AdmissionQuotaApproval.objects.create(
             professor=instance,
             academic_quota=instance.academic_quota,
             professional_quota=instance.professional_quota,
+            professional_yt_quota=instance.professional_yt_quota,
             doctor_quota=instance.doctor_quota,
             status='0',  # 默认状态为等待审核
             reviewed_by=None,  # 初始时未审核

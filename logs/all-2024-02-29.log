@@ -1,0 +1,18 @@
+[2024-02-29 08:54:56,357] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-02-29 08:55:17,231] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-02-29 08:56:41,412] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-02-29 08:56:43,295] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET / HTTP/1.1" 200 10330
+[2024-02-29 08:56:43,718] [log.py:224] [log:log_response] [WARNING]- Not Found: /api/count
+[2024-02-29 08:56:43,719] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /api/count HTTP/1.1" 404 3147
+[2024-02-29 14:53:24,857] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-02-29 14:53:55,281] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Quota_Review/views.py changed, reloading.
+[2024-02-29 14:53:55,617] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-02-29 14:55:49,791] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-02-29 14:57:08,189] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-02-29 15:19:26,333] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-02-29 15:23:51,930] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Quota_Review/serializers.py changed, reloading.
+[2024-02-29 15:23:52,255] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-02-29 15:25:25,356] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Quota_Review/views.py changed, reloading.
+[2024-02-29 15:25:25,664] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-02-29 15:25:28,933] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Quota_Review/views.py changed, reloading.
+[2024-02-29 15:25:29,487] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader

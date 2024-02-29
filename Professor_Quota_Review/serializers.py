@@ -12,3 +12,9 @@ class AdmissionQuotaApprovalSerializer(serializers.ModelSerializer):
         fields = ['id', 'department', 'professor', 'academic_quota', 'professional_quota', 'professional_yt_quota', 'doctor_quota',
                   'status', 'reviewed_by', 'submit_date', 'reviewed_time']
 
+class DepartmentProfessorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Professor
+        # fields = '__all__'  # 或者指定您想要序列化的字段
+        fields = ['name', 'academic_quota', 'professional_quota', 'professional_yt_quota',
+                  'doctor_quota', 'proposed_quota_approved']

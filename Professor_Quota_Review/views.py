@@ -6,7 +6,7 @@ from django.urls import reverse
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import AdmissionQuotaApprovalSerializer
+from .serializers import AdmissionQuotaApprovalSerializer, DepartmentProfessorSerializer
 from rest_framework.permissions import IsAuthenticated
 from Professor_Student_Manage.models import Professor
 from math import isnan
@@ -129,26 +129,36 @@ class DepartmentQuotaApprovalListView(APIView):
             professor = request.user.professor
 
             if professor.department_position in [1, 2]:
-                # 获取同属系的其他系负责人
+                # 获取同属方向的其他导师
                 department_professors = Professor.objects.filter(department=professor.department)
 
-                # 获取这些系所提交的指标审核名单信息
+                # 获取该方向所提交的等待指标审核名单信息
                 wait_approvals = AdmissionQuotaApproval.objects.filter(
                     professor__in=department_professors, status='0')
                 
-                # 获取这些系所提交的指标审核名单信息
-                my_approvals = AdmissionQuotaApproval.objects.filter(
-                    professor__in=department_professors, reviewed_by=professor)
+                # 获取该方向所提交的通过指标审核名单信息
+                agree_approvals = AdmissionQuotaApproval.objects.filter(
+                    professor__in=department_professors, status='1')
+                
+                # 获取该方向所提交的拒绝指标审核名单信息
+                reject_approvals = AdmissionQuotaApproval.objects.filter(
+                    professor__in=department_professors, status='2')
+                
 
                 # 序列化查询结果
+                department_professors_serializer = DepartmentProfessorSerializer(department_professors, many=True)
                 wait_serializer = AdmissionQuotaApprovalSerializer(wait_approvals, many=True)
-                my_serializer = AdmissionQuotaApprovalSerializer(my_approvals, many=True)
+                agree_serializer = AdmissionQuotaApprovalSerializer(agree_approvals, many=True)
+                reject_serializer = AdmissionQuotaApprovalSerializer(reject_approvals, many=True)
+
 
                 return Response({'wait_approvals': wait_serializer.data,
-                                'my_approvals': my_serializer.data},
+                                'agree_approvals': agree_serializer.data,
+                                'reject_approvals': reject_serializer.data,
+                                'professor_info': department_professors_serializer.data},
                                 status=status.HTTP_200_OK)
             else:
-                return Response({'error': '非系负责人，拒绝访问'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'error': '非方向负责人，拒绝访问'}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         

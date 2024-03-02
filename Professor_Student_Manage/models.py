@@ -137,7 +137,7 @@ class Professor(models.Model):
 class Student(models.Model):
     # 用户名
     user_name = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
-    name = models.CharField(max_length=100, verbose_name="姓名")
+    name = models.CharField(max_length=100, verbose_name="学生姓名")
     name_fk_search = models.CharField(max_length=100, verbose_name="学生(搜索专用)", null=True)
     candidate_number = models.CharField(max_length=20, unique=True, verbose_name="准考证号")
     major = models.CharField(max_length=100, verbose_name="申请专业")

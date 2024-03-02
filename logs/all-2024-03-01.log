@@ -1,0 +1,11 @@
+[2024-03-01 14:14:00,685] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-01 14:18:58,077] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/models.py changed, reloading.
+[2024-03-01 14:18:58,422] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-01 14:22:09,653] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-01 14:22:15,124] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET / HTTP/1.1" 200 10330
+[2024-03-01 14:22:15,513] [log.py:224] [log:log_response] [WARNING]- Not Found: /api/count
+[2024-03-01 14:22:15,515] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /api/count HTTP/1.1" 404 3147
+[2024-03-01 14:22:44,178] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-01 14:24:56,183] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Select_Information/models.py changed, reloading.
+[2024-03-01 14:24:56,895] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-01 14:25:00,250] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader

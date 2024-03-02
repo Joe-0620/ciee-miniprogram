@@ -16,3 +16,15 @@
 [2024-02-29 15:25:25,664] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
 [2024-02-29 15:25:28,933] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Quota_Review/views.py changed, reloading.
 [2024-02-29 15:25:29,487] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-02-29 15:33:18,968] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-01 02:01:26,119] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET / HTTP/1.1" 200 10330
+[2024-03-01 02:01:26,274] [log.py:224] [log:log_response] [WARNING]- Not Found: /api/count
+[2024-03-01 02:01:26,274] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /api/count HTTP/1.1" 404 3147
+[2024-03-01 02:01:26,561] [log.py:224] [log:log_response] [WARNING]- Not Found: /apple-touch-icon-precomposed.png
+[2024-03-01 02:01:26,564] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /apple-touch-icon-precomposed.png HTTP/1.1" 404 3216
+[2024-03-01 02:01:26,576] [log.py:224] [log:log_response] [WARNING]- Not Found: /apple-touch-icon.png
+[2024-03-01 02:01:26,576] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /apple-touch-icon.png HTTP/1.1" 404 3180
+[2024-03-01 02:02:01,030] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET / HTTP/1.1" 200 10330
+[2024-03-01 02:02:01,302] [log.py:224] [log:log_response] [WARNING]- Not Found: /api/count
+[2024-03-01 02:02:01,303] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /api/count HTTP/1.1" 404 3147
+[2024-03-01 14:14:00,051] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/models.py changed, reloading.

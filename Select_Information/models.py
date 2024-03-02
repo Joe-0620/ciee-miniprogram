@@ -27,7 +27,7 @@ class StudentProfessorChoice(models.Model):
     submit_date = models.DateTimeField(default=timezone.now, verbose_name="提交时间")
 
     # 审核时间
-    finish_time = models.DateTimeField(null=True, blank=True, verbose_name="选中时间")
+    finish_time = models.DateTimeField(null=True, blank=True, verbose_name="处理时间")
 
     class Meta:
         verbose_name = "学院师生互选情况"  # 设置模型的显示名称

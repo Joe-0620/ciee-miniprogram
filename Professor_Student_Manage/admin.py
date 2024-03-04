@@ -1,7 +1,8 @@
 from django.contrib import admin
+from django import forms
 
 # Register your models here.
-from .models import Student, Professor, Department
+from .models import Student, Professor, Department, Laboratory
 
 
 def check_department_head_or_deputy(modeladmin, request, queryset):
@@ -25,7 +26,7 @@ check_department_head_or_deputy.short_description = "检查有没有方向负责
 
 class ProfessorAdmin(admin.ModelAdmin):
     fieldsets = [
-        ("导师信息更改", {"fields": ["name", "teacher_identity_id", "email", "department", "department_position",
+        ("导师信息更改", {"fields": ["name", "teacher_identity_id", "email", "department", "laboratory", "department_position",
                                      "academic_quota", "professional_quota", "professional_yt_quota", "doctor_quota", "proposed_quota_approved",
                                      "have_qualification", "remaining_quota", "personal_page", "research_areas",
                                      "avatar", "phone_number"]}),
@@ -54,6 +55,46 @@ class StudentAdmin(admin.ModelAdmin):
     list_display = ["candidate_number", "name", "major", "major_direction", "study_mode", "student_type", "postgraduate_type", "is_selected"]
     list_filter = ["major"]
     search_fields = ["name"]
+
+
+# 定义一个自定义的表单
+class LaboratoryForm(forms.ModelForm):
+    professors = forms.ModelMultipleChoiceField(
+        queryset=Professor.objects.all(),
+        required=False,
+        widget=admin.widgets.FilteredSelectMultiple('Professors', False)
+    )
+
+    class Meta:
+        model = Laboratory
+        fields = "__all__"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if self.instance.pk:
+            self.fields['professors'].initial = self.instance.professor_set.all()
+
+    def save(self, commit=True):
+        laboratory = super().save(commit=False)
+        if commit:
+            laboratory.save()
+
+        if not commit:
+            self.save_m2m = self._save_m2m
+        return laboratory
+
+    def _save_m2m(self):
+        self.instance.professor_set.set(self.cleaned_data['professors'])
+
+
+class LaboratoryAdmin(admin.ModelAdmin):
+    form = LaboratoryForm
+    list_display = ["laboratory_name", "laboratory_leader", "Laboratory_quota", "get_professors"]
+
+    def get_professors(self, obj):
+        return ", ".join([professor.name for professor in obj.professor_set.all()])
+
+    get_professors.short_description = '实验室导师'
 
 
 class DepartmentAdmin(admin.ModelAdmin):
@@ -92,3 +133,4 @@ class DepartmentAdmin(admin.ModelAdmin):
 admin.site.register(Student, StudentAdmin)
 admin.site.register(Professor, ProfessorAdmin)
 admin.site.register(Department, DepartmentAdmin)
+admin.site.register(Laboratory, LaboratoryAdmin)

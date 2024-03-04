@@ -4,6 +4,11 @@ from django.utils import timezone
 from Professor_Quota_Review.models import AdmissionQuotaApproval
 
 
+class WeChatAccount(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    openid = models.CharField(max_length=255)
+
+
 class Department(models.Model):
     # 招生方向名称
     department_name = models.CharField(max_length=50, verbose_name="招生方向")
@@ -36,6 +41,30 @@ class Department(models.Model):
     #     super().save(*args, **kwargs)
 
 
+class Laboratory(models.Model):
+    # 招生方向名称
+    laboratory_name = models.CharField(max_length=50, verbose_name="烟台实验室")
+
+    # 方向学硕总招生指标
+    laboratory_leader = models.ForeignKey("Professor", on_delete=models.SET_NULL, null=True, related_name='leader_of', verbose_name="实验室负责人")
+    Laboratory_quota = models.IntegerField(null=False, default=0, verbose_name="实验室总指标")
+
+    class Meta:
+        verbose_name = "烟台实验室"  # 设置模型的显示名称
+        verbose_name_plural = "烟台实验室"  # 设置模型的复数形式显示名称
+
+    def __str__(self):
+        return self.laboratory_name
+    
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+        # 如果设置了实验室负责人，就更新负责人的 laboratory 字段
+        if self.laboratory_leader is not None:
+            self.laboratory_leader.laboratory = self
+            self.laboratory_leader.save()
+
+
 class Professor(models.Model):
     user_name = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=100, verbose_name="导师姓名")
@@ -43,6 +72,7 @@ class Professor(models.Model):
     teacher_identity_id = models.CharField(max_length=20, null=False, verbose_name="导师工号")
     email = models.EmailField(null=True, blank=True, verbose_name="导师邮箱")
     department = models.ForeignKey(Department, on_delete=models.CASCADE, verbose_name="所属招生方向")
+    laboratory = models.ForeignKey("Laboratory", on_delete=models.SET_NULL, null=True, blank=True, verbose_name="所属实验室")
     research_areas = models.TextField(null=True, blank=True, verbose_name="研究方向")
     # proposed_quota = models.IntegerField(blank=True, default=0)
     academic_quota = models.IntegerField(blank=True, default=0, verbose_name="学硕剩余名额")

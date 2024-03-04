@@ -1,1 +1,7 @@
 [2024-03-02 06:31:28,649] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-02 06:32:14,898] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-02 14:43:31,065] [log.py:224] [log:log_response] [WARNING]- Not Found: /api/count
+[2024-03-02 14:43:31,066] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /api/count HTTP/1.1" 404 3147
+[2024-03-02 14:43:33,112] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET / HTTP/1.1" 200 10330
+[2024-03-02 14:43:33,326] [log.py:224] [log:log_response] [WARNING]- Not Found: /api/count
+[2024-03-02 14:43:33,327] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /api/count HTTP/1.1" 404 3147

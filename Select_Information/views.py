@@ -121,7 +121,7 @@ class ProfessorChooseStudentView(APIView):
                 if operation == '1':
                     # 若为硕士
                     if student_type in ['1', '2']:
-                        # 若为专硕
+                        # 若为北京专硕
                         if postgraduate_type == '1':
                             # 若还有名额
                             if professor.professional_quota > 0:
@@ -150,7 +150,36 @@ class ProfessorChooseStudentView(APIView):
                                 else:
                                     return Response({'message': '不存在等待审核的记录'}, status=status.HTTP_202_ACCEPTED)
                             else:
-                                    return Response({'message': '导师专硕名额已满'}, status=status.HTTP_403_FORBIDDEN)
+                                    return Response({'message': '导师北京专硕名额已满'}, status=status.HTTP_403_FORBIDDEN)
+                        if postgraduate_type == '4':
+                            # 若还有名额
+                            if professor.professional_yt_quota > 0:
+                                # 获取最近的一条记录
+                                latest_choice = StudentProfessorChoice.objects.filter(
+                                    student=student, professor=professor).latest('submit_date')
+                                
+                                # 如果最近的记录是等待审核状态
+                                if latest_choice.status == '3':
+                                    latest_choice.status = operation
+                                    latest_choice.chosen_by_professor = True
+                                    latest_choice.finish_time = timezone.now()
+                                    latest_choice.save()
+
+                                    student.is_selected = True
+                                    student.save()
+                                    professor.professional_yt_quota -= 1
+                                    professor.save()
+
+                                    #修改方向已用指标信息
+                                    department = professor.department
+                                    department.used_professional_yt_quota += 1
+                                    department.save()
+
+                                    return Response({'message': '操作成功'}, status=status.HTTP_202_ACCEPTED)
+                                else:
+                                    return Response({'message': '不存在等待审核的记录'}, status=status.HTTP_202_ACCEPTED)
+                            else:
+                                    return Response({'message': '导师烟台专硕名额已满'}, status=status.HTTP_403_FORBIDDEN)
                         # 若为学硕
                         if postgraduate_type == '2':
                             # 若还有名额

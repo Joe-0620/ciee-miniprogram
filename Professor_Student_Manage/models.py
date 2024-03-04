@@ -10,13 +10,16 @@ class Department(models.Model):
 
     # 方向学硕总招生指标
     total_academic_quota = models.IntegerField(null=False, default=0, verbose_name="学硕总指标")
-    # 方向学硕总招生指标
-    total_professional_quota = models.IntegerField(null=False, default=0, verbose_name="专硕总指标")
+    # 方向北京专硕总招生指标
+    total_professional_quota = models.IntegerField(null=False, default=0, verbose_name="北京专硕总指标")
+    # 方向烟台专硕总招生指标
+    total_professional_yt_quota = models.IntegerField(null=False, default=0, verbose_name="烟台专硕总指标")
     # 方向学硕总招生指标
     total_doctor_quota = models.IntegerField(null=False, default=0, verbose_name="博士总指标")
     # 方向已用招生指标
     used_academic_quota = models.IntegerField(null=False, default=0, verbose_name="学硕已用指标")
-    used_professional_quota = models.IntegerField(null=False, default=0, verbose_name="专硕已用指标")
+    used_professional_quota = models.IntegerField(null=False, default=0, verbose_name="北京专硕已用指标")
+    used_professional_yt_quota = models.IntegerField(null=False, default=0, verbose_name="烟台专硕已用指标")
     used_doctor_quota = models.IntegerField(null=False, default=0, verbose_name="博士已用指标")
 
     class Meta:

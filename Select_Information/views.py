@@ -93,7 +93,7 @@ class StudentChooseProfessorView(APIView):
                 # student.is_selected = True
                 # student.save()
                 return Response({'message': '选择成功'}, status=status.HTTP_201_CREATED)
-            return Response({'message': '请选择你的方向下的导师'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({'message': '请选择你的方向下的导师'}, status=status.HTTP_501_NOT_IMPLEMENTED)
         except Professor.DoesNotExist:
             return Response({'error': '导师不存在'}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:

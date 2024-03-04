@@ -85,11 +85,15 @@ class UserLoginView(APIView):
                     }
                     res = requests.get(url, params=params)
                     data = res.json()
+                    print(data)
+                    session_key = data.get('session_key')
                     openid = data.get('openid')
 
                     if openid:
                         # 查找或创建一个与 OpenID 对应的 WeChatAccount 对象
-                        wechat_account, created = WeChatAccount.objects.get_or_create(openid=openid)
+                        wechat_account, created = WeChatAccount.objects.get_or_create(
+                            openid=openid,
+                            defaults={'user': user})
 
                         # 将 WeChatAccount 对象与 Django 账号进行绑定
                         wechat_account.user = user

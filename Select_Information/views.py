@@ -1,11 +1,12 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+import requests
 from django.utils import timezone
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate
 from .serializers import StudentProfessorChoiceSerializer
-from Professor_Student_Manage.models import Student, Professor
+from Professor_Student_Manage.models import Student, Professor, WeChatAccount
 from Select_Information.models import StudentProfessorChoice
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
@@ -174,6 +175,33 @@ class ProfessorChooseStudentView(APIView):
                                     department = professor.department
                                     department.used_professional_yt_quota += 1
                                     department.save()
+
+                                    #发送订阅消息
+                                    access_token = "78_1f-TRdT0Q_DJWlt2UYVIolmfKTzGCYaR_ixrJqvdItf9UD6q3ZnFRP1rKHAnpRrfhzjgUVvEc3Wlcg9s40-brEt_hqEweaRiqyHhvAawadHo6gUPiaWvIhFOqKcWJNaAAAERV"
+                                    url = 'https://api.weixin.qq.com/cgi-bin/message/subscribe/send'
+                                    params = {
+                                        'access_token': '78_1f-TRdT0Q_DJWlt2UYVIolmfKTzGCYaR_ixrJqvdItf9UD6q3ZnFRP1rKHAnpRrfhzjgUVvEc3Wlcg9s40-brEt_hqEweaRiqyHhvAawadHo6gUPiaWvIhFOqKcWJNaAAAERV'
+                                    }
+                                    data = {
+                                        "touser": "osRxm5XJX9U5pGLqvT_tLEdkq8OQ",
+                                        "template_id": "aV2bMEubY3p8j7-65-ddxZ9gYx5mUZVAIlFdHspqmDE",
+                                        "page": "",
+                                        "miniprogram_state":"formal",
+                                        "data": {
+                                            "phrase1": {
+                                            "DATA": "审核结果"
+                                            },
+                                            "time11": {
+                                            "DATA": "审核时间"
+                                            },
+                                            "thing18": {
+                                            "DATA": "审批人"
+                                            }
+                                        }
+                                    }
+                                    response = requests.post(url, params=params, json=data)
+                                    print(response)
+
 
                                     return Response({'message': '操作成功'}, status=status.HTTP_202_ACCEPTED)
                                 else:

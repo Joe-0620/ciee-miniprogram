@@ -8,6 +8,10 @@ class WeChatAccount(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     openid = models.CharField(max_length=255)
 
+    class Meta:
+        verbose_name = "微信账号绑定"  # 设置模型的显示名称
+        verbose_name_plural = "微信账号绑定"  # 设置模型的复数形式显示名称
+
 
 class Department(models.Model):
     # 招生方向名称

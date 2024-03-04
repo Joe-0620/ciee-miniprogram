@@ -5,7 +5,7 @@ from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate
 from .serializers import UserLoginSerializer, StudentSerializer, ProfessorSerializer, StudentPartialUpdateSerializer
 from .serializers import DepartmentSerializer, ProfessorPartialUpdateSerializer, ChangePasswordSerializer, StudentResumeSerializer
-from Professor_Student_Manage.models import Student, Professor, Department
+from Professor_Student_Manage.models import Student, Professor, Department, WeChatAccount
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import FileUploadParser
@@ -13,6 +13,7 @@ from django.conf import settings
 from django.core.files.storage import default_storage
 import os
 from django.core.exceptions import ObjectDoesNotExist
+import requests
 
 
 # 类继承自类generics.ListAPIView，这个类是Django REST Framework提供的一个基于类的视图，
@@ -59,6 +60,7 @@ class GetStudentResumeListView(APIView):
 class UserLoginView(APIView):
     def post(self, request):
         usertype = request.data.get('usertype')
+        code = request.data.get('code')  # 从请求数据中获取微信的 code
         del request.data['usertype']
         serializer = UserLoginSerializer(data=request.data)
         if serializer.is_valid():
@@ -71,6 +73,28 @@ class UserLoginView(APIView):
                 # 第一个元素是所获取或创建的对象（Token值），
                 # 第二个元素是一个布尔值，指示对象是否是新创建的（True表示新创建，False表示已存在）
                 token, created = Token.objects.get_or_create(user=user)
+
+                if code:
+                    # 使用微信的 API 将 code 换取 OpenID
+                    url = 'https://api.weixin.qq.com/sns/jscode2session'
+                    params = {
+                        'appid': 'wxa67ae78c4f1f6275',  # 你的微信小程序的 appid
+                        'secret': '7241b1950145a193f15b3584d50f3989',  # 你的微信小程序的 app secret
+                        'js_code': code,
+                        'grant_type': 'authorization_code'
+                    }
+                    res = requests.get(url, params=params)
+                    data = res.json()
+                    openid = data.get('openid')
+
+                    if openid:
+                        # 查找或创建一个与 OpenID 对应的 WeChatAccount 对象
+                        wechat_account, created = WeChatAccount.objects.get_or_create(openid=openid)
+
+                        # 将 WeChatAccount 对象与 Django 账号进行绑定
+                        wechat_account.user = user
+                        wechat_account.save()
+
                 if usertype == 'student' and hasattr(user, 'student'):
                     user_information = user.student
                     return Response({'token': token.key, 

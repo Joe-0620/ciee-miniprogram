@@ -101,3 +101,9 @@
 [2024-03-04 05:56:28,687] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
 [2024-03-04 05:56:29,877] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Select_Information/views.py changed, reloading.
 [2024-03-04 05:56:30,429] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-04 06:05:07,308] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-04 06:05:09,524] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Select_Information/views.py changed, reloading.
+[2024-03-04 06:05:09,855] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-04 06:07:10,747] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-04 06:07:39,020] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Select_Information/views.py changed, reloading.
+[2024-03-04 06:07:39,339] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader

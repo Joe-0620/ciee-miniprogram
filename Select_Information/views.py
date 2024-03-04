@@ -41,7 +41,7 @@ class SelectInformationView(APIView):
             except StudentProfessorChoice.DoesNotExist:
                 return Response(status=status.HTTP_404_NOT_FOUND)
             
-        return Response({'error': 'Usertype not correct'}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'message': 'Usertype not correct'}, status=status.HTTP_400_BAD_REQUEST)
     
 
 class StudentChooseProfessorView(APIView):
@@ -77,10 +77,10 @@ class StudentChooseProfessorView(APIView):
 
             # 创建学生导师选择记录
             if student.is_selected:
-                return Response({'error': '您已完成导师选择'}, 
+                return Response({'message': '您已完成导师选择'}, 
                                 status=status.HTTP_405_METHOD_NOT_ALLOWED)
             elif StudentProfessorChoice.objects.filter(student=student, status='3'):
-                return Response({'error': '您已选择导师，请等待回复'}, 
+                return Response({'message': '您已选择导师，请等待回复'}, 
                                 status=status.HTTP_409_CONFLICT)
             elif assert_choice:
                 choice = StudentProfessorChoice.objects.create(
@@ -95,9 +95,9 @@ class StudentChooseProfessorView(APIView):
                 return Response({'message': '选择成功'}, status=status.HTTP_201_CREATED)
             return Response({'message': '请选择你的方向下的导师'}, status=status.HTTP_501_NOT_IMPLEMENTED)
         except Professor.DoesNotExist:
-            return Response({'error': '导师不存在'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'message': '导师不存在'}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
-            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({'message': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
 
 class ProfessorChooseStudentView(APIView):
@@ -267,9 +267,9 @@ class ProfessorChooseStudentView(APIView):
 
         
                 else:
-                    return Response({'error': '操作不存在'}, status=status.HTTP_400_BAD_REQUEST)
+                    return Response({'message': '操作不存在'}, status=status.HTTP_400_BAD_REQUEST)
         except Student.DoesNotExist:
-            return Response({'error': '学生不存在'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'message': '学生不存在'}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
-            return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({'message': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         

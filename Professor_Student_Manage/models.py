@@ -7,6 +7,7 @@ from Professor_Quota_Review.models import AdmissionQuotaApproval
 class WeChatAccount(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     openid = models.CharField(max_length=255)
+    session_key = models.CharField(max_length=255)
 
     class Meta:
         verbose_name = "微信账号绑定"  # 设置模型的显示名称
@@ -38,35 +39,22 @@ class Department(models.Model):
     def __str__(self):
         return self.department_name
     
-    # def save(self, *args, **kwargs):
-    #     self.remained_academic_quota = self.total_academic_quota
-    #     self.remained_professional_quota = self.total_professional_quota
-    #     self.remained_doctor_quota = self.total_doctor_quota
-    #     super().save(*args, **kwargs)
 
+class Subject(models.Model):
+    subject_name = models.CharField(max_length=50, verbose_name="专业名称")
+    subject_code = models.CharField(max_length=10, verbose_name="专业代码")
 
-class Laboratory(models.Model):
-    # 招生方向名称
-    laboratory_name = models.CharField(max_length=50, verbose_name="烟台实验室")
-
-    # 方向学硕总招生指标
-    laboratory_leader = models.ForeignKey("Professor", on_delete=models.SET_NULL, null=True, related_name='leader_of', verbose_name="实验室负责人")
-    Laboratory_quota = models.IntegerField(null=False, default=0, verbose_name="实验室总指标")
+    SubjectType = [
+        [0, "专硕"],
+        [1, "学硕"],
+        [2, "博士"],
+    ]
+    subject_type = models.IntegerField(choices=SubjectType, verbose_name="专业所属类别")
+    subject_department = models.ManyToManyField(Department, related_name='subjects', verbose_name="可选该专业的方向")
 
     class Meta:
-        verbose_name = "烟台实验室"  # 设置模型的显示名称
-        verbose_name_plural = "烟台实验室"  # 设置模型的复数形式显示名称
-
-    def __str__(self):
-        return self.laboratory_name
-    
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-
-        # 如果设置了实验室负责人，就更新负责人的 laboratory 字段
-        if self.laboratory_leader is not None:
-            self.laboratory_leader.laboratory = self
-            self.laboratory_leader.save()
+        verbose_name = "专业"  # 设置模型的显示名称
+        verbose_name_plural = "专业"  # 设置模型的复数形式显示名称
 
 
 class Professor(models.Model):
@@ -76,7 +64,6 @@ class Professor(models.Model):
     teacher_identity_id = models.CharField(max_length=20, null=False, verbose_name="导师工号")
     email = models.EmailField(null=True, blank=True, verbose_name="导师邮箱")
     department = models.ForeignKey(Department, on_delete=models.CASCADE, verbose_name="所属招生方向")
-    laboratory = models.ForeignKey("Laboratory", on_delete=models.SET_NULL, null=True, blank=True, verbose_name="所属实验室")
     research_areas = models.TextField(null=True, blank=True, verbose_name="研究方向")
     # proposed_quota = models.IntegerField(blank=True, default=0)
     academic_quota = models.IntegerField(blank=True, default=0, verbose_name="学硕剩余名额")

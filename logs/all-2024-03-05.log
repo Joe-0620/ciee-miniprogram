@@ -1,0 +1,107 @@
+[2024-03-05 13:47:49,596] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-05 13:48:07,301] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/admin.py changed, reloading.
+[2024-03-05 13:48:07,656] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-05 13:48:55,950] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET / HTTP/1.1" 200 10330
+[2024-03-05 13:48:56,052] [log.py:224] [log:log_response] [WARNING]- Not Found: /api/count
+[2024-03-05 13:48:56,052] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /api/count HTTP/1.1" 404 3147
+[2024-03-05 13:49:00,814] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET / HTTP/1.1" 200 10330
+[2024-03-05 13:49:00,855] [log.py:224] [log:log_response] [WARNING]- Not Found: /api/count
+[2024-03-05 13:49:00,856] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /api/count HTTP/1.1" 404 3147
+[2024-03-05 13:49:02,066] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/ HTTP/1.1" 200 10598
+[2024-03-05 13:49:02,075] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/base.css HTTP/1.1" 200 19513
+[2024-03-05 13:49:02,081] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/dashboard.css HTTP/1.1" 304 0
+[2024-03-05 13:49:02,084] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/fonts.css HTTP/1.1" 304 0
+[2024-03-05 13:49:02,085] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+[2024-03-05 13:49:02,085] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+[2024-03-05 13:49:02,085] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+[2024-03-05 13:49:02,133] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 304 0
+[2024-03-05 13:49:02,133] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 304 0
+[2024-03-05 13:49:02,136] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Regular-webfont.woff HTTP/1.1" 200 85876
+[2024-03-05 13:49:02,137] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Bold-webfont.woff HTTP/1.1" 304 0
+[2024-03-05 13:49:02,148] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-deletelink.svg HTTP/1.1" 304 0
+[2024-03-05 13:49:02,155] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Light-webfont.woff HTTP/1.1" 304 0
+[2024-03-05 13:49:04,816] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/wechataccount/ HTTP/1.1" 200 9529
+[2024-03-05 13:49:04,835] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/changelists.css HTTP/1.1" 304 0
+[2024-03-05 13:49:04,842] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 304 0
+[2024-03-05 13:49:04,842] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/jquery.init.js HTTP/1.1" 304 0
+[2024-03-05 13:49:04,842] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/core.js HTTP/1.1" 304 0
+[2024-03-05 13:49:04,843] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/actions.js HTTP/1.1" 304 0
+[2024-03-05 13:49:04,846] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/urlify.js HTTP/1.1" 304 0
+[2024-03-05 13:49:04,847] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 304 0
+[2024-03-05 13:49:04,847] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 304 0
+[2024-03-05 13:49:04,846] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/prepopulate.js HTTP/1.1" 304 0
+[2024-03-05 13:49:05,198] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 13:49:05,227] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/tooltag-add.svg HTTP/1.1" 304 0
+[2024-03-05 13:49:12,440] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Professor_Student_Manage/wechataccount/ HTTP/1.1" 200 8212
+[2024-03-05 13:49:12,462] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/cancel.js HTTP/1.1" 200 884
+[2024-03-05 13:49:14,084] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Professor_Student_Manage/wechataccount/ HTTP/1.1" 302 0
+[2024-03-05 13:49:14,647] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/wechataccount/ HTTP/1.1" 200 8250
+[2024-03-05 13:49:15,040] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 13:49:15,065] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-yes.svg HTTP/1.1" 304 0
+[2024-03-05 13:49:39,638] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-05 13:50:11,188] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/models.py changed, reloading.
+[2024-03-05 13:50:11,795] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-05 13:50:20,963] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-05 13:50:38,889] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/models.py changed, reloading.
+[2024-03-05 13:50:39,446] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-05 13:50:52,771] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-05 13:52:10,770] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-05 13:52:18,592] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-05 13:52:19,829] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-05 13:52:53,670] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /userlogin/ HTTP/1.1" 200 1770
+[2024-03-05 13:52:54,144] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-05 13:52:54,871] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-05 13:52:55,513] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/get-admission-approvals/ HTTP/1.1" 200 1117
+[2024-03-05 13:52:56,234] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/get-admission-approvals/ HTTP/1.1" 200 1117
+[2024-03-05 13:52:56,290] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/department-quota-approval-list/ HTTP/1.1" 200 3580
+[2024-03-05 13:52:57,999] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/department-quota-approval-list/ HTTP/1.1" 200 3580
+[2024-03-05 13:53:02,642] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/wechataccount/ HTTP/1.1" 200 9529
+[2024-03-05 13:53:02,648] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 302 0
+[2024-03-05 13:53:02,979] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 13:53:29,972] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-05 13:53:32,435] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/wechataccount/ HTTP/1.1" 200 9748
+[2024-03-05 13:53:32,440] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 302 0
+[2024-03-05 13:53:32,824] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 13:54:30,876] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 14657
+[2024-03-05 13:54:30,895] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/search.svg HTTP/1.1" 304 0
+[2024-03-05 13:54:31,211] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 13:54:33,060] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 14042
+[2024-03-05 13:54:33,078] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-no.svg HTTP/1.1" 200 560
+[2024-03-05 13:54:33,411] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 13:54:36,884] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 14657
+[2024-03-05 13:54:36,891] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 302 0
+[2024-03-05 13:54:37,287] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 13:54:42,986] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 14657
+[2024-03-05 13:54:42,993] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 302 0
+[2024-03-05 13:54:43,332] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 13:59:08,249] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-05 13:59:27,287] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/models.py changed, reloading.
+[2024-03-05 13:59:27,630] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-05 13:59:29,502] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-05 13:59:31,740] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-05 13:59:40,638] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-05 14:02:03,546] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/models.py changed, reloading.
+[2024-03-05 14:02:03,865] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-05 14:02:54,315] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-05 14:05:17,632] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-05 14:06:40,183] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-05 14:07:03,318] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/models.py changed, reloading.
+[2024-03-05 14:07:03,626] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-05 14:08:37,086] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-05 14:14:20,086] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-05 14:14:23,698] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-05 14:14:57,202] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-05 14:15:12,359] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-05 14:15:15,658] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/models.py changed, reloading.
+[2024-03-05 14:15:15,998] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-05 14:15:28,231] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-05 14:19:24,658] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-05 14:20:07,623] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-05 14:20:12,357] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-05 14:20:38,696] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /userlogin/ HTTP/1.1" 200 1770
+[2024-03-05 14:20:39,145] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-05 14:20:39,576] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-05 14:20:39,911] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/get-admission-approvals/ HTTP/1.1" 200 1117
+[2024-03-05 14:20:40,568] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/department-quota-approval-list/ HTTP/1.1" 200 3580
+[2024-03-05 14:20:40,639] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/get-admission-approvals/ HTTP/1.1" 200 1117
+[2024-03-05 14:20:41,979] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/department-quota-approval-list/ HTTP/1.1" 200 3580

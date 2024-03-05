@@ -189,13 +189,13 @@ class ProfessorChooseStudentView(APIView):
                                         "miniprogram_state":"formal",
                                         "data": {
                                             "phrase1": {
-                                            "DATA": "审核结果"
+                                            "value": "审核结果"
                                             },
                                             "time11": {
-                                            "DATA": "审核时间"
+                                            "value": "审核时间"
                                             },
                                             "thing18": {
-                                            "DATA": "审批人"
+                                            "value": "审批人"
                                             }
                                         }
                                     }

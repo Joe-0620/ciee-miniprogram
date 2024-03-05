@@ -93,10 +93,11 @@ class UserLoginView(APIView):
                         # 查找或创建一个与 OpenID 对应的 WeChatAccount 对象
                         wechat_account, created = WeChatAccount.objects.get_or_create(
                             openid=openid,
-                            defaults={'user': user})
+                            defaults={'user': user, 'session_key': session_key})
 
                         # 将 WeChatAccount 对象与 Django 账号进行绑定
                         wechat_account.user = user
+                        wechat_account.session_key = session_key
                         wechat_account.save()
 
                 if usertype == 'student' and hasattr(user, 'student'):

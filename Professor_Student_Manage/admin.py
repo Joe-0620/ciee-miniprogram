@@ -2,7 +2,7 @@ from django.contrib import admin
 from django import forms
 
 # Register your models here.
-from .models import Student, Professor, Department, WeChatAccount
+from .models import Student, Professor, Department, WeChatAccount, Subject
 
 
 def check_department_head_or_deputy(modeladmin, request, queryset):
@@ -61,6 +61,10 @@ class WeChatAccountAdmin(admin.ModelAdmin):
     list_display = ["user", "openid", "session_key"]
 
 
+class SubjectAdmin(admin.ModelAdmin):
+    list_display = ["subject_name", "subject_code", "subject_type"]
+
+
 class DepartmentAdmin(admin.ModelAdmin):
     actions = [check_department_head_or_deputy]
     list_display = ["department_name", "total_academic_quota", "used_academic_quota", "total_professional_quota", 
@@ -98,3 +102,5 @@ admin.site.register(Student, StudentAdmin)
 admin.site.register(Professor, ProfessorAdmin)
 admin.site.register(Department, DepartmentAdmin)
 admin.site.register(WeChatAccount, WeChatAccountAdmin)
+admin.site.register(Subject, SubjectAdmin)
+

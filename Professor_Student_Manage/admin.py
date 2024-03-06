@@ -7,7 +7,7 @@ from .models import Student, Professor, WeChatAccount
 
 class ProfessorAdmin(admin.ModelAdmin):
     fieldsets = [
-        ("导师信息更改", {"fields": ["name", "teacher_identity_id", "email", "department", "department_position",
+        ("导师信息更改", {"fields": ["name", "teacher_identity_id", "email", "department",
                                      "academic_quota", "professional_quota", "professional_yt_quota", "doctor_quota", "proposed_quota_approved",
                                      "have_qualification", "remaining_quota", "personal_page", "research_areas",
                                      "avatar", "phone_number"]}),
@@ -29,7 +29,7 @@ class ProfessorAdmin(admin.ModelAdmin):
 class StudentAdmin(admin.ModelAdmin):
     # fieldsets 元组中的第一个元素是字段集的标题
     fieldsets = [
-        ("学生信息更改", {"fields": ["user_name", "name", "candidate_number", "student_type", "subject", 
+        ("学生信息更改", {"fields": ["name", "candidate_number", "student_type", "subject", 
                                "postgraduate_type", "study_mode", "resume", "avatar", "phone_number"]}),
     ]
     list_display = ["candidate_number", "name", "subject", "study_mode", "student_type", "postgraduate_type", "is_selected"]

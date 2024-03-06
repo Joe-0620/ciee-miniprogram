@@ -71,19 +71,19 @@ class Student(models.Model):
     is_selected = models.BooleanField(default=False, verbose_name="是否选好导师")
     
     STUDENT_CHOICES = [
-        ['1', "硕士推免生"],
-        ['2', "硕士统考生"],
-        ['3', "博士统考生"],
+        [1, "硕士推免生"],
+        [2, "硕士统考生"],
+        [3, "博士统考生"],
     ]
-    student_type = models.CharField(max_length=1, verbose_name="学生类型", choices=STUDENT_CHOICES)
+    student_type = models.IntegerField(verbose_name="学生类型", choices=STUDENT_CHOICES)
 
     BACHELOR_TYPE = [
-        ['1', "专业型(北京)"],
-        ['2', "学术型"],
-        ['3', "博士"],
-        ['4', "专业型(烟台)"],
+        [1, "专业型(北京)"],
+        [2, "学术型"],
+        [3, "博士"],
+        [4, "专业型(烟台)"],
     ]
-    postgraduate_type = models.CharField(max_length=1, verbose_name="研究生类型", choices=BACHELOR_TYPE)
+    postgraduate_type = models.IntegerField(verbose_name="研究生类型", choices=BACHELOR_TYPE)
 
     STUDY_MODE_CHOICES = [
         [True, "全日制"],

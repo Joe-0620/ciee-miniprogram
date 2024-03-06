@@ -131,3 +131,1099 @@
 [2024-03-05 14:25:07,038] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
 [2024-03-05 14:25:12,436] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/subject/add/ HTTP/1.1" 200 11556
 [2024-03-05 14:25:12,780] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 14:26:03,072] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Professor_Student_Manage/subject/add/ HTTP/1.1" 302 0
+[2024-03-05 14:26:03,573] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/subject/ HTTP/1.1" 200 10546
+[2024-03-05 14:26:03,895] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 14:26:06,025] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/subject/2/change/ HTTP/1.1" 200 11938
+[2024-03-05 14:26:06,367] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 14:26:09,647] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/subject/1/change/ HTTP/1.1" 200 11899
+[2024-03-05 14:26:09,986] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 14:26:13,126] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/subject/add/ HTTP/1.1" 200 11556
+[2024-03-05 14:26:13,134] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 302 0
+[2024-03-05 14:26:13,483] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 14:26:58,169] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Professor_Student_Manage/subject/add/ HTTP/1.1" 302 0
+[2024-03-05 14:26:58,726] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/subject/ HTTP/1.1" 200 10881
+[2024-03-05 14:26:59,065] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 14:27:04,182] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/subject/add/ HTTP/1.1" 200 11556
+[2024-03-05 14:27:04,190] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 302 0
+[2024-03-05 14:27:04,575] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 14:27:41,760] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Professor_Student_Manage/subject/add/ HTTP/1.1" 302 0
+[2024-03-05 14:27:42,305] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/subject/ HTTP/1.1" 200 11216
+[2024-03-05 14:27:42,656] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 14:27:45,301] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/subject/add/ HTTP/1.1" 200 11556
+[2024-03-05 14:27:45,308] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 302 0
+[2024-03-05 14:27:45,707] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 14:28:07,296] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Professor_Student_Manage/subject/add/ HTTP/1.1" 302 0
+[2024-03-05 14:28:07,845] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/subject/ HTTP/1.1" 200 11539
+[2024-03-05 14:28:08,196] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 14:28:09,915] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/subject/add/ HTTP/1.1" 200 11556
+[2024-03-05 14:28:09,922] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 302 0
+[2024-03-05 14:28:10,259] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 14:28:28,190] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Professor_Student_Manage/subject/add/ HTTP/1.1" 302 0
+[2024-03-05 14:28:28,723] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/subject/ HTTP/1.1" 200 11859
+[2024-03-05 14:28:29,066] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 14:28:32,566] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/subject/add/ HTTP/1.1" 200 11556
+[2024-03-05 14:28:32,573] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 302 0
+[2024-03-05 14:28:32,889] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 14:28:58,307] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Professor_Student_Manage/subject/add/ HTTP/1.1" 302 0
+[2024-03-05 14:28:58,880] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/subject/ HTTP/1.1" 200 12194
+[2024-03-05 14:28:59,225] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 14:31:23,711] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/subject/5/change/ HTTP/1.1" 200 11938
+[2024-03-05 14:31:24,079] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 14:31:27,719] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/subject/ HTTP/1.1" 200 11975
+[2024-03-05 14:31:28,087] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 14:32:04,752] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/department/ HTTP/1.1" 200 14180
+[2024-03-05 14:32:05,087] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 14:32:15,771] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/wechataccount/ HTTP/1.1" 200 10079
+[2024-03-05 14:32:15,777] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 302 0
+[2024-03-05 14:32:16,081] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 14:32:18,931] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 14988
+[2024-03-05 14:32:18,935] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 302 0
+[2024-03-05 14:32:19,320] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 14:32:21,693] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/wechataccount/ HTTP/1.1" 200 10079
+[2024-03-05 14:32:21,699] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 302 0
+[2024-03-05 14:32:22,032] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 14:32:25,896] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 14988
+[2024-03-05 14:32:25,901] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 302 0
+[2024-03-05 14:32:26,203] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 14:32:27,285] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 14373
+[2024-03-05 14:32:27,630] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 14:32:28,990] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/department/ HTTP/1.1" 200 14180
+[2024-03-05 14:32:29,008] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 302 0
+[2024-03-05 14:32:29,352] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 14:32:30,876] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/wechataccount/ HTTP/1.1" 200 10079
+[2024-03-05 14:32:30,884] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 302 0
+[2024-03-05 14:32:31,263] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 14:32:33,414] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Select_Information/studentprofessorchoice/ HTTP/1.1" 200 14438
+[2024-03-05 14:32:33,419] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 302 0
+[2024-03-05 14:32:33,756] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 14:33:29,224] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Select_Information/models.py changed, reloading.
+[2024-03-05 14:33:29,618] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-05 14:33:33,856] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-05 14:33:50,065] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-05 14:35:30,066] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 5335
+[2024-03-05 14:35:30,432] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 5335
+[2024-03-05 14:35:31,216] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-05 14:35:31,627] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-05 14:35:31,858] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 1722
+[2024-03-05 14:35:32,267] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 5335
+[2024-03-05 14:35:32,926] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 1722
+[2024-03-05 14:38:57,475] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-05 14:39:33,200] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-05 14:40:00,064] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-05 14:40:11,760] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-05 14:40:17,622] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-05 14:41:58,275] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-05 14:54:42,553] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Select_Information/studentprofessorchoice/ HTTP/1.1" 200 14438
+[2024-03-05 14:54:42,980] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 14:54:44,436] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 14392
+[2024-03-05 14:54:44,776] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 14:54:51,536] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/8/change/ HTTP/1.1" 200 16637
+[2024-03-05 14:54:51,885] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 14:55:04,243] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/subject/ HTTP/1.1" 200 11975
+[2024-03-05 14:55:04,547] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 14:57:04,076] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/subject/7/change/ HTTP/1.1" 200 11914
+[2024-03-05 14:57:04,412] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 14:57:16,375] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-05 14:58:04,123] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 14392
+[2024-03-05 14:58:04,163] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 14392
+[2024-03-05 14:58:04,169] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 302 0
+[2024-03-05 14:58:04,473] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 14:58:06,545] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 14392
+[2024-03-05 14:58:06,553] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 302 0
+[2024-03-05 14:58:06,952] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 14:58:08,714] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/subject/ HTTP/1.1" 200 11975
+[2024-03-05 14:58:08,722] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 302 0
+[2024-03-05 14:58:09,044] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 14:58:10,167] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 14392
+[2024-03-05 14:58:10,175] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 302 0
+[2024-03-05 14:58:10,512] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 14:58:12,098] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/add/ HTTP/1.1" 200 16309
+[2024-03-05 14:58:12,428] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 14:58:15,559] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/subject/ HTTP/1.1" 200 11975
+[2024-03-05 14:58:15,565] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 302 0
+[2024-03-05 14:58:15,886] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 14:58:19,115] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/subject/add/ HTTP/1.1" 200 11556
+[2024-03-05 14:58:19,478] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 14:58:24,448] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 14392
+[2024-03-05 14:58:24,457] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 302 0
+[2024-03-05 14:58:24,785] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 14:58:26,175] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/8/change/ HTTP/1.1" 200 16637
+[2024-03-05 14:58:26,517] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 14:58:28,806] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/subject/ HTTP/1.1" 200 11975
+[2024-03-05 14:58:28,811] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 302 0
+[2024-03-05 14:58:29,159] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 14:58:30,483] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/subject/7/change/ HTTP/1.1" 200 11914
+[2024-03-05 14:58:30,855] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 14:58:36,977] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 14392
+[2024-03-05 14:58:36,985] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 302 0
+[2024-03-05 14:58:37,325] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 14:58:38,975] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/9/change/ HTTP/1.1" 200 16605
+[2024-03-05 14:58:39,319] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 14:58:43,024] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/subject/ HTTP/1.1" 200 11975
+[2024-03-05 14:58:43,033] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 302 0
+[2024-03-05 14:58:43,352] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 14:59:42,809] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-05 15:00:10,976] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-05 15:00:20,866] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-05 15:00:27,279] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/subject/ HTTP/1.1" 200 12031
+[2024-03-05 15:00:27,600] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 15:00:30,396] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/subject/7/change/ HTTP/1.1" 200 11942
+[2024-03-05 15:00:30,405] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 302 0
+[2024-03-05 15:00:30,737] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 15:00:33,134] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/subject/ HTTP/1.1" 200 12031
+[2024-03-05 15:00:33,142] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 302 0
+[2024-03-05 15:00:33,484] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 15:00:35,041] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 14392
+[2024-03-05 15:00:35,050] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 302 0
+[2024-03-05 15:00:35,439] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 15:00:37,217] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/subject/ HTTP/1.1" 200 12031
+[2024-03-05 15:00:37,221] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 302 0
+[2024-03-05 15:00:37,558] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 15:00:38,985] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/subject/7/change/ HTTP/1.1" 200 11942
+[2024-03-05 15:00:38,989] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 302 0
+[2024-03-05 15:00:39,324] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 15:00:44,058] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 14392
+[2024-03-05 15:00:44,066] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 302 0
+[2024-03-05 15:00:44,424] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 15:01:04,187] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/models.py changed, reloading.
+[2024-03-05 15:01:04,451] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-05 15:01:14,077] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-05 15:01:38,102] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-05 15:01:47,075] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-05 15:01:53,647] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 14494
+[2024-03-05 15:01:53,965] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 15:01:55,500] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/subjectmanage/ HTTP/1.1" 200 12103
+[2024-03-05 15:01:55,838] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 15:01:57,486] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/subjectmanage/7/change/ HTTP/1.1" 200 12008
+[2024-03-05 15:01:57,856] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 15:02:07,595] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/subjectmanage/ HTTP/1.1" 200 12103
+[2024-03-05 15:02:07,939] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 15:02:10,992] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/subjectmanage/add/ HTTP/1.1" 200 11626
+[2024-03-05 15:02:11,330] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 15:02:24,264] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Professor_Student_Manage/subjectmanage/add/ HTTP/1.1" 302 0
+[2024-03-05 15:02:24,797] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/subjectmanage/ HTTP/1.1" 200 12667
+[2024-03-05 15:02:25,156] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 15:02:27,455] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/subjectmanage/8/change/ HTTP/1.1" 200 11993
+[2024-03-05 15:02:27,791] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 15:02:30,709] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 14607
+[2024-03-05 15:02:30,717] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 302 0
+[2024-03-05 15:02:31,064] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 15:02:33,688] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/subjectmanage/ HTTP/1.1" 200 12436
+[2024-03-05 15:02:33,700] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 302 0
+[2024-03-05 15:02:34,049] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 15:02:38,523] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Professor_Student_Manage/subjectmanage/ HTTP/1.1" 200 8668
+[2024-03-05 15:02:40,171] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Professor_Student_Manage/subjectmanage/ HTTP/1.1" 302 0
+[2024-03-05 15:02:40,711] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/subjectmanage/ HTTP/1.1" 200 12237
+[2024-03-05 15:02:41,076] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 15:02:49,085] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/subjectmanage/7/change/ HTTP/1.1" 200 12008
+[2024-03-05 15:02:49,428] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 15:04:49,292] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/admin.py changed, reloading.
+[2024-03-05 15:04:49,635] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-05 15:05:01,034] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-05 15:05:11,054] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-05 15:05:19,250] [log.py:224] [log:log_response] [WARNING]- Not Found: /admin/Professor_Student_Manage/subjectmanage/
+[2024-03-05 15:05:19,252] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /admin/Professor_Student_Manage/subjectmanage/ HTTP/1.1" 404 6117
+[2024-03-05 15:05:25,870] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 14988
+[2024-03-05 15:05:25,877] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 302 0
+[2024-03-05 15:05:26,184] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 15:05:27,152] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/subject/ HTTP/1.1" 200 11975
+[2024-03-05 15:05:27,159] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 302 0
+[2024-03-05 15:05:27,541] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 15:05:29,651] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/subject/7/change/ HTTP/1.1" 200 11941
+[2024-03-05 15:05:29,661] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 302 0
+[2024-03-05 15:05:30,014] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 15:08:37,958] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/wechataccount/ HTTP/1.1" 200 10079
+[2024-03-05 15:08:37,967] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 302 0
+[2024-03-05 15:08:38,305] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 15:08:40,571] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/department/ HTTP/1.1" 200 14180
+[2024-03-05 15:08:40,581] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 302 0
+[2024-03-05 15:08:40,962] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 15:08:42,924] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 14988
+[2024-03-05 15:08:42,931] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 302 0
+[2024-03-05 15:08:43,266] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 15:08:44,596] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 14428
+[2024-03-05 15:08:44,600] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 302 0
+[2024-03-05 15:08:44,913] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 15:08:46,658] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 14988
+[2024-03-05 15:08:46,668] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 302 0
+[2024-03-05 15:08:47,010] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-05 15:09:20,408] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-06 04:06:14,689] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 04:06:15,440] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/get-admission-approvals/ HTTP/1.1" 200 1117
+[2024-03-06 04:06:16,085] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/department-quota-approval-list/ HTTP/1.1" 200 3580
+[2024-03-06 04:10:28,005] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 04:10:28,714] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/get-admission-approvals/ HTTP/1.1" 200 1117
+[2024-03-06 04:10:29,414] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/department-quota-approval-list/ HTTP/1.1" 200 3580
+[2024-03-06 04:10:38,932] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 5335
+[2024-03-06 04:14:39,012] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 5335
+[2024-03-06 04:14:39,318] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 5335
+[2024-03-06 04:15:31,252] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /userlogin/ HTTP/1.1" 200 1770
+[2024-03-06 04:15:31,693] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 04:15:32,048] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 04:15:32,402] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/get-admission-approvals/ HTTP/1.1" 200 1117
+[2024-03-06 04:15:33,060] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/department-quota-approval-list/ HTTP/1.1" 200 3580
+[2024-03-06 04:15:33,094] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/get-admission-approvals/ HTTP/1.1" 200 1117
+[2024-03-06 04:15:34,382] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/department-quota-approval-list/ HTTP/1.1" 200 3580
+[2024-03-06 04:15:34,781] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 5335
+[2024-03-06 04:15:35,083] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 5335
+[2024-03-06 04:20:39,418] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 04:20:40,124] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/get-admission-approvals/ HTTP/1.1" 200 1117
+[2024-03-06 04:20:40,784] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/department-quota-approval-list/ HTTP/1.1" 200 3580
+[2024-03-06 04:20:47,385] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 04:20:48,325] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/get-admission-approvals/ HTTP/1.1" 200 1117
+[2024-03-06 04:20:48,886] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/department-quota-approval-list/ HTTP/1.1" 200 3580
+[2024-03-06 04:20:49,632] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 04:20:50,031] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 04:20:50,119] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Select_Information/get-select-info/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/fields.py", line 446, in get_attribute
+    return get_attribute(instance, self.source_attrs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/fields.py", line 96, in get_attribute
+    instance = getattr(instance, attr)
+AttributeError: 'Student' object has no attribute 'major'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Select_Information/views.py", line 41, in get
+    return Response(serializer.data, status=status.HTTP_200_OK)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 768, in data
+    ret = super().data
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 253, in data
+    self._data = self.to_representation(self.instance)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 686, in to_representation
+    return [
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 687, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 509, in to_representation
+    attribute = field.get_attribute(instance)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/fields.py", line 479, in get_attribute
+    raise type(exc)(msg)
+AttributeError: Got AttributeError when attempting to get a value for field `student_major` on serializer `StudentProfessorChoiceSerializer`.
+The serializer field might be named incorrectly and not match any attribute or key on the `StudentProfessorChoice` instance.
+Original exception text was: 'Student' object has no attribute 'major'.
+[2024-03-06 04:20:50,129] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 500 132351
+[2024-03-06 04:20:50,645] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 5335
+[2024-03-06 04:20:51,447] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Select_Information/get-select-info/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/fields.py", line 446, in get_attribute
+    return get_attribute(instance, self.source_attrs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/fields.py", line 96, in get_attribute
+    instance = getattr(instance, attr)
+AttributeError: 'Student' object has no attribute 'major'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Select_Information/views.py", line 41, in get
+    return Response(serializer.data, status=status.HTTP_200_OK)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 768, in data
+    ret = super().data
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 253, in data
+    self._data = self.to_representation(self.instance)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 686, in to_representation
+    return [
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 687, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 509, in to_representation
+    attribute = field.get_attribute(instance)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/fields.py", line 479, in get_attribute
+    raise type(exc)(msg)
+AttributeError: Got AttributeError when attempting to get a value for field `student_major` on serializer `StudentProfessorChoiceSerializer`.
+The serializer field might be named incorrectly and not match any attribute or key on the `StudentProfessorChoice` instance.
+Original exception text was: 'Student' object has no attribute 'major'.
+[2024-03-06 04:20:51,449] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 500 132351
+[2024-03-06 04:21:18,863] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /userlogin/ HTTP/1.1" 200 1770
+[2024-03-06 04:21:19,319] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 04:21:19,729] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 04:21:20,364] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/get-admission-approvals/ HTTP/1.1" 200 1117
+[2024-03-06 04:21:20,811] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/department-quota-approval-list/ HTTP/1.1" 200 3580
+[2024-03-06 04:21:21,081] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/get-admission-approvals/ HTTP/1.1" 200 1117
+[2024-03-06 04:21:21,447] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 5335
+[2024-03-06 04:21:21,748] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 5335
+[2024-03-06 04:21:22,193] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/department-quota-approval-list/ HTTP/1.1" 200 3580
+[2024-03-06 04:44:14,457] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 04:44:14,851] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 04:44:14,895] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Select_Information/get-select-info/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/fields.py", line 446, in get_attribute
+    return get_attribute(instance, self.source_attrs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/fields.py", line 96, in get_attribute
+    instance = getattr(instance, attr)
+AttributeError: 'Student' object has no attribute 'major'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Select_Information/views.py", line 41, in get
+    return Response(serializer.data, status=status.HTTP_200_OK)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 768, in data
+    ret = super().data
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 253, in data
+    self._data = self.to_representation(self.instance)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 686, in to_representation
+    return [
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 687, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 509, in to_representation
+    attribute = field.get_attribute(instance)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/fields.py", line 479, in get_attribute
+    raise type(exc)(msg)
+AttributeError: Got AttributeError when attempting to get a value for field `student_major` on serializer `StudentProfessorChoiceSerializer`.
+The serializer field might be named incorrectly and not match any attribute or key on the `StudentProfessorChoice` instance.
+Original exception text was: 'Student' object has no attribute 'major'.
+[2024-03-06 04:44:14,897] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 500 132351
+[2024-03-06 04:44:15,803] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Select_Information/get-select-info/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/fields.py", line 446, in get_attribute
+    return get_attribute(instance, self.source_attrs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/fields.py", line 96, in get_attribute
+    instance = getattr(instance, attr)
+AttributeError: 'Student' object has no attribute 'major'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Select_Information/views.py", line 41, in get
+    return Response(serializer.data, status=status.HTTP_200_OK)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 768, in data
+    ret = super().data
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 253, in data
+    self._data = self.to_representation(self.instance)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 686, in to_representation
+    return [
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 687, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 509, in to_representation
+    attribute = field.get_attribute(instance)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/fields.py", line 479, in get_attribute
+    raise type(exc)(msg)
+AttributeError: Got AttributeError when attempting to get a value for field `student_major` on serializer `StudentProfessorChoiceSerializer`.
+The serializer field might be named incorrectly and not match any attribute or key on the `StudentProfessorChoice` instance.
+Original exception text was: 'Student' object has no attribute 'major'.
+[2024-03-06 04:44:15,805] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 500 132351
+[2024-03-06 04:44:26,549] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 04:44:27,328] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/get-admission-approvals/ HTTP/1.1" 200 1117
+[2024-03-06 04:44:27,468] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 04:44:27,911] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Select_Information/get-select-info/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/fields.py", line 446, in get_attribute
+    return get_attribute(instance, self.source_attrs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/fields.py", line 96, in get_attribute
+    instance = getattr(instance, attr)
+AttributeError: 'Student' object has no attribute 'major'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Select_Information/views.py", line 41, in get
+    return Response(serializer.data, status=status.HTTP_200_OK)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 768, in data
+    ret = super().data
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 253, in data
+    self._data = self.to_representation(self.instance)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 686, in to_representation
+    return [
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 687, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 509, in to_representation
+    attribute = field.get_attribute(instance)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/fields.py", line 479, in get_attribute
+    raise type(exc)(msg)
+AttributeError: Got AttributeError when attempting to get a value for field `student_major` on serializer `StudentProfessorChoiceSerializer`.
+The serializer field might be named incorrectly and not match any attribute or key on the `StudentProfessorChoice` instance.
+Original exception text was: 'Student' object has no attribute 'major'.
+[2024-03-06 04:44:27,915] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 500 132351
+[2024-03-06 04:44:27,984] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/department-quota-approval-list/ HTTP/1.1" 200 3580
+[2024-03-06 04:44:30,284] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 04:44:30,980] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/get-admission-approvals/ HTTP/1.1" 200 1117
+[2024-03-06 04:44:31,727] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/department-quota-approval-list/ HTTP/1.1" 200 3580
+[2024-03-06 04:44:45,934] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /userlogin/ HTTP/1.1" 200 1770
+[2024-03-06 04:44:46,393] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 04:44:46,839] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 04:44:47,070] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/get-admission-approvals/ HTTP/1.1" 200 1117
+[2024-03-06 04:44:47,759] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/get-admission-approvals/ HTTP/1.1" 200 1117
+[2024-03-06 04:44:47,803] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/department-quota-approval-list/ HTTP/1.1" 200 3580
+[2024-03-06 04:44:48,057] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 04:44:48,442] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 04:44:48,558] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Select_Information/get-select-info/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/fields.py", line 446, in get_attribute
+    return get_attribute(instance, self.source_attrs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/fields.py", line 96, in get_attribute
+    instance = getattr(instance, attr)
+AttributeError: 'Student' object has no attribute 'major'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Select_Information/views.py", line 41, in get
+    return Response(serializer.data, status=status.HTTP_200_OK)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 768, in data
+    ret = super().data
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 253, in data
+    self._data = self.to_representation(self.instance)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 686, in to_representation
+    return [
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 687, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 509, in to_representation
+    attribute = field.get_attribute(instance)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/fields.py", line 479, in get_attribute
+    raise type(exc)(msg)
+AttributeError: Got AttributeError when attempting to get a value for field `student_major` on serializer `StudentProfessorChoiceSerializer`.
+The serializer field might be named incorrectly and not match any attribute or key on the `StudentProfessorChoice` instance.
+Original exception text was: 'Student' object has no attribute 'major'.
+[2024-03-06 04:44:48,560] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 500 132351
+[2024-03-06 04:44:49,199] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/department-quota-approval-list/ HTTP/1.1" 200 3580
+[2024-03-06 04:44:49,699] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Select_Information/get-select-info/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/fields.py", line 446, in get_attribute
+    return get_attribute(instance, self.source_attrs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/fields.py", line 96, in get_attribute
+    instance = getattr(instance, attr)
+AttributeError: 'Student' object has no attribute 'major'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Select_Information/views.py", line 41, in get
+    return Response(serializer.data, status=status.HTTP_200_OK)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 768, in data
+    ret = super().data
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 253, in data
+    self._data = self.to_representation(self.instance)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 686, in to_representation
+    return [
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 687, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 509, in to_representation
+    attribute = field.get_attribute(instance)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/fields.py", line 479, in get_attribute
+    raise type(exc)(msg)
+AttributeError: Got AttributeError when attempting to get a value for field `student_major` on serializer `StudentProfessorChoiceSerializer`.
+The serializer field might be named incorrectly and not match any attribute or key on the `StudentProfessorChoice` instance.
+Original exception text was: 'Student' object has no attribute 'major'.
+[2024-03-06 04:44:49,701] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 500 132351
+[2024-03-06 04:45:39,368] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 04:45:40,131] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/get-admission-approvals/ HTTP/1.1" 200 1117
+[2024-03-06 04:45:40,736] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/department-quota-approval-list/ HTTP/1.1" 200 3580
+[2024-03-06 04:47:35,461] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 04:47:35,591] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 5335
+[2024-03-06 04:47:35,626] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Select_Information/get-select-info/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/fields.py", line 446, in get_attribute
+    return get_attribute(instance, self.source_attrs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/fields.py", line 96, in get_attribute
+    instance = getattr(instance, attr)
+AttributeError: 'Student' object has no attribute 'major'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Select_Information/views.py", line 41, in get
+    return Response(serializer.data, status=status.HTTP_200_OK)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 768, in data
+    ret = super().data
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 253, in data
+    self._data = self.to_representation(self.instance)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 686, in to_representation
+    return [
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 687, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 509, in to_representation
+    attribute = field.get_attribute(instance)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/fields.py", line 479, in get_attribute
+    raise type(exc)(msg)
+AttributeError: Got AttributeError when attempting to get a value for field `student_major` on serializer `StudentProfessorChoiceSerializer`.
+The serializer field might be named incorrectly and not match any attribute or key on the `StudentProfessorChoice` instance.
+Original exception text was: 'Student' object has no attribute 'major'.
+[2024-03-06 04:47:35,628] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 500 132351
+[2024-03-06 04:47:35,904] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 5335
+[2024-03-06 04:47:36,209] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 04:47:36,638] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Select_Information/get-select-info/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/fields.py", line 446, in get_attribute
+    return get_attribute(instance, self.source_attrs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/fields.py", line 96, in get_attribute
+    instance = getattr(instance, attr)
+AttributeError: 'Student' object has no attribute 'major'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Select_Information/views.py", line 41, in get
+    return Response(serializer.data, status=status.HTTP_200_OK)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 768, in data
+    ret = super().data
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 253, in data
+    self._data = self.to_representation(self.instance)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 686, in to_representation
+    return [
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 687, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 509, in to_representation
+    attribute = field.get_attribute(instance)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/fields.py", line 479, in get_attribute
+    raise type(exc)(msg)
+AttributeError: Got AttributeError when attempting to get a value for field `student_major` on serializer `StudentProfessorChoiceSerializer`.
+The serializer field might be named incorrectly and not match any attribute or key on the `StudentProfessorChoice` instance.
+Original exception text was: 'Student' object has no attribute 'major'.
+[2024-03-06 04:47:36,640] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 500 132351
+[2024-03-06 04:47:36,791] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 04:47:37,587] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/get-admission-approvals/ HTTP/1.1" 200 1117
+[2024-03-06 04:47:38,259] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/department-quota-approval-list/ HTTP/1.1" 200 3580
+[2024-03-06 04:47:52,894] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /userlogin/ HTTP/1.1" 200 1770
+[2024-03-06 04:47:53,355] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 04:47:53,714] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 04:47:54,076] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/get-admission-approvals/ HTTP/1.1" 200 1117
+[2024-03-06 04:47:54,761] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/department-quota-approval-list/ HTTP/1.1" 200 3580
+[2024-03-06 04:47:54,803] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/get-admission-approvals/ HTTP/1.1" 200 1117
+[2024-03-06 04:47:56,151] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/department-quota-approval-list/ HTTP/1.1" 200 3580
+[2024-03-06 04:47:57,891] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 04:47:58,619] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/get-admission-approvals/ HTTP/1.1" 200 1117
+[2024-03-06 04:47:59,531] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/department-quota-approval-list/ HTTP/1.1" 200 3580
+[2024-03-06 04:51:16,183] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 04:51:16,608] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Select_Information/get-select-info/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/fields.py", line 446, in get_attribute
+    return get_attribute(instance, self.source_attrs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/fields.py", line 96, in get_attribute
+    instance = getattr(instance, attr)
+AttributeError: 'Student' object has no attribute 'major'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Select_Information/views.py", line 41, in get
+    return Response(serializer.data, status=status.HTTP_200_OK)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 768, in data
+    ret = super().data
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 253, in data
+    self._data = self.to_representation(self.instance)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 686, in to_representation
+    return [
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 687, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 509, in to_representation
+    attribute = field.get_attribute(instance)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/fields.py", line 479, in get_attribute
+    raise type(exc)(msg)
+AttributeError: Got AttributeError when attempting to get a value for field `student_major` on serializer `StudentProfessorChoiceSerializer`.
+The serializer field might be named incorrectly and not match any attribute or key on the `StudentProfessorChoice` instance.
+Original exception text was: 'Student' object has no attribute 'major'.
+[2024-03-06 04:51:16,611] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 500 132351
+[2024-03-06 04:51:16,818] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 04:51:17,507] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Select_Information/get-select-info/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/fields.py", line 446, in get_attribute
+    return get_attribute(instance, self.source_attrs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/fields.py", line 96, in get_attribute
+    instance = getattr(instance, attr)
+AttributeError: 'Student' object has no attribute 'major'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Select_Information/views.py", line 41, in get
+    return Response(serializer.data, status=status.HTTP_200_OK)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 768, in data
+    ret = super().data
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 253, in data
+    self._data = self.to_representation(self.instance)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 686, in to_representation
+    return [
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 687, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 509, in to_representation
+    attribute = field.get_attribute(instance)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/fields.py", line 479, in get_attribute
+    raise type(exc)(msg)
+AttributeError: Got AttributeError when attempting to get a value for field `student_major` on serializer `StudentProfessorChoiceSerializer`.
+The serializer field might be named incorrectly and not match any attribute or key on the `StudentProfessorChoice` instance.
+Original exception text was: 'Student' object has no attribute 'major'.
+[2024-03-06 04:51:17,509] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 500 132351
+[2024-03-06 04:51:19,074] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 04:51:19,781] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/get-admission-approvals/ HTTP/1.1" 200 1117
+[2024-03-06 04:51:20,476] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/department-quota-approval-list/ HTTP/1.1" 200 3580
+[2024-03-06 04:51:23,009] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 04:51:23,731] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/get-admission-approvals/ HTTP/1.1" 200 1117
+[2024-03-06 04:51:24,618] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/department-quota-approval-list/ HTTP/1.1" 200 3580
+[2024-03-06 04:51:27,986] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 04:51:28,721] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/get-admission-approvals/ HTTP/1.1" 200 1117
+[2024-03-06 04:51:29,520] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/department-quota-approval-list/ HTTP/1.1" 200 3580
+[2024-03-06 04:51:40,073] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 04:51:40,782] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/get-admission-approvals/ HTTP/1.1" 200 1117
+[2024-03-06 04:51:41,671] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/department-quota-approval-list/ HTTP/1.1" 200 3580
+[2024-03-06 04:51:42,351] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 04:51:43,057] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/get-admission-approvals/ HTTP/1.1" 200 1117
+[2024-03-06 04:51:43,750] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/department-quota-approval-list/ HTTP/1.1" 200 3580
+[2024-03-06 04:54:49,166] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 5335
+[2024-03-06 04:54:49,526] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 5335
+[2024-03-06 04:55:47,063] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/user-login/ HTTP/1.1" 200 36
+[2024-03-06 04:55:47,553] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 04:55:48,005] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 04:55:48,293] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/get-admission-approvals/ HTTP/1.1" 200 1117
+[2024-03-06 04:55:48,975] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/department-quota-approval-list/ HTTP/1.1" 200 3580
+[2024-03-06 04:55:49,003] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/get-admission-approvals/ HTTP/1.1" 200 1117
+[2024-03-06 04:55:50,367] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/department-quota-approval-list/ HTTP/1.1" 200 3580
+[2024-03-06 04:56:15,362] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 04:56:15,792] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 04:56:15,835] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Select_Information/get-select-info/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/fields.py", line 446, in get_attribute
+    return get_attribute(instance, self.source_attrs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/fields.py", line 96, in get_attribute
+    instance = getattr(instance, attr)
+AttributeError: 'Student' object has no attribute 'major'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Select_Information/views.py", line 41, in get
+    return Response(serializer.data, status=status.HTTP_200_OK)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 768, in data
+    ret = super().data
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 253, in data
+    self._data = self.to_representation(self.instance)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 686, in to_representation
+    return [
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 687, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 509, in to_representation
+    attribute = field.get_attribute(instance)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/fields.py", line 479, in get_attribute
+    raise type(exc)(msg)
+AttributeError: Got AttributeError when attempting to get a value for field `student_major` on serializer `StudentProfessorChoiceSerializer`.
+The serializer field might be named incorrectly and not match any attribute or key on the `StudentProfessorChoice` instance.
+Original exception text was: 'Student' object has no attribute 'major'.
+[2024-03-06 04:56:15,837] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 500 132351
+[2024-03-06 04:56:16,755] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Select_Information/get-select-info/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/fields.py", line 446, in get_attribute
+    return get_attribute(instance, self.source_attrs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/fields.py", line 96, in get_attribute
+    instance = getattr(instance, attr)
+AttributeError: 'Student' object has no attribute 'major'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Select_Information/views.py", line 41, in get
+    return Response(serializer.data, status=status.HTTP_200_OK)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 768, in data
+    ret = super().data
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 253, in data
+    self._data = self.to_representation(self.instance)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 686, in to_representation
+    return [
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 687, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 509, in to_representation
+    attribute = field.get_attribute(instance)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/fields.py", line 479, in get_attribute
+    raise type(exc)(msg)
+AttributeError: Got AttributeError when attempting to get a value for field `student_major` on serializer `StudentProfessorChoiceSerializer`.
+The serializer field might be named incorrectly and not match any attribute or key on the `StudentProfessorChoice` instance.
+Original exception text was: 'Student' object has no attribute 'major'.
+[2024-03-06 04:56:16,757] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 500 132351
+[2024-03-06 04:56:22,225] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 04:56:22,922] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/get-admission-approvals/ HTTP/1.1" 200 1117
+[2024-03-06 04:56:23,864] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/department-quota-approval-list/ HTTP/1.1" 200 3580
+[2024-03-06 05:18:56,831] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/user-login/ HTTP/1.1" 200 36
+[2024-03-06 05:18:57,298] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 05:18:57,757] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 05:18:58,047] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/get-admission-approvals/ HTTP/1.1" 200 1117
+[2024-03-06 05:18:58,719] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/department-quota-approval-list/ HTTP/1.1" 200 3580
+[2024-03-06 05:18:58,749] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/get-admission-approvals/ HTTP/1.1" 200 1117
+[2024-03-06 05:19:00,310] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/department-quota-approval-list/ HTTP/1.1" 200 3580
+[2024-03-06 05:19:05,994] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 05:19:06,612] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Select_Information/get-select-info/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/fields.py", line 446, in get_attribute
+    return get_attribute(instance, self.source_attrs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/fields.py", line 96, in get_attribute
+    instance = getattr(instance, attr)
+AttributeError: 'Student' object has no attribute 'major'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Select_Information/views.py", line 41, in get
+    return Response(serializer.data, status=status.HTTP_200_OK)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 768, in data
+    ret = super().data
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 253, in data
+    self._data = self.to_representation(self.instance)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 686, in to_representation
+    return [
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 687, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 509, in to_representation
+    attribute = field.get_attribute(instance)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/fields.py", line 479, in get_attribute
+    raise type(exc)(msg)
+AttributeError: Got AttributeError when attempting to get a value for field `student_major` on serializer `StudentProfessorChoiceSerializer`.
+The serializer field might be named incorrectly and not match any attribute or key on the `StudentProfessorChoice` instance.
+Original exception text was: 'Student' object has no attribute 'major'.
+[2024-03-06 05:19:06,613] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 05:19:06,615] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 500 132351
+[2024-03-06 05:19:07,383] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 5335
+[2024-03-06 05:19:07,435] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Select_Information/get-select-info/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/fields.py", line 446, in get_attribute
+    return get_attribute(instance, self.source_attrs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/fields.py", line 96, in get_attribute
+    instance = getattr(instance, attr)
+AttributeError: 'Student' object has no attribute 'major'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Select_Information/views.py", line 41, in get
+    return Response(serializer.data, status=status.HTTP_200_OK)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 768, in data
+    ret = super().data
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 253, in data
+    self._data = self.to_representation(self.instance)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 686, in to_representation
+    return [
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 687, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 509, in to_representation
+    attribute = field.get_attribute(instance)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/fields.py", line 479, in get_attribute
+    raise type(exc)(msg)
+AttributeError: Got AttributeError when attempting to get a value for field `student_major` on serializer `StudentProfessorChoiceSerializer`.
+The serializer field might be named incorrectly and not match any attribute or key on the `StudentProfessorChoice` instance.
+Original exception text was: 'Student' object has no attribute 'major'.
+[2024-03-06 05:19:07,436] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 500 132351
+[2024-03-06 05:19:07,773] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 5335
+[2024-03-06 05:19:09,013] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 05:19:09,762] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/get-admission-approvals/ HTTP/1.1" 200 1117
+[2024-03-06 05:19:10,736] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/department-quota-approval-list/ HTTP/1.1" 200 3580
+[2024-03-06 05:19:29,467] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 05:19:31,468] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 05:19:32,239] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/get-admission-approvals/ HTTP/1.1" 200 1117
+[2024-03-06 05:19:32,844] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 05:19:32,961] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/department-quota-approval-list/ HTTP/1.1" 200 3580
+[2024-03-06 05:19:34,899] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 05:19:35,621] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/get-admission-approvals/ HTTP/1.1" 200 1117
+[2024-03-06 05:19:36,400] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/department-quota-approval-list/ HTTP/1.1" 200 3580
+[2024-03-06 05:19:39,800] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 05:19:40,521] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/get-admission-approvals/ HTTP/1.1" 200 1117
+[2024-03-06 05:19:41,714] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/department-quota-approval-list/ HTTP/1.1" 200 3580
+[2024-03-06 05:20:31,008] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 05:20:31,761] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/get-admission-approvals/ HTTP/1.1" 200 1117
+[2024-03-06 05:20:32,464] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/department-quota-approval-list/ HTTP/1.1" 200 3580
+[2024-03-06 05:20:35,726] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 05:20:36,469] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/get-admission-approvals/ HTTP/1.1" 200 1117
+[2024-03-06 05:20:37,124] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 05:20:37,175] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/department-quota-approval-list/ HTTP/1.1" 200 3580
+[2024-03-06 05:20:38,162] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 05:20:39,040] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/get-admission-approvals/ HTTP/1.1" 200 1117
+[2024-03-06 05:20:39,592] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/department-quota-approval-list/ HTTP/1.1" 200 3580
+[2024-03-06 05:20:41,424] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 05:20:42,128] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/get-admission-approvals/ HTTP/1.1" 200 1117
+[2024-03-06 05:20:42,878] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/department-quota-approval-list/ HTTP/1.1" 200 3580
+[2024-03-06 05:22:19,914] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 05:22:20,914] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/get-admission-approvals/ HTTP/1.1" 200 1117
+[2024-03-06 05:22:21,378] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/department-quota-approval-list/ HTTP/1.1" 200 3580
+[2024-03-06 05:22:22,004] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 05:22:24,578] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 05:22:25,303] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/get-admission-approvals/ HTTP/1.1" 200 1117
+[2024-03-06 05:22:26,312] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/department-quota-approval-list/ HTTP/1.1" 200 3580
+[2024-03-06 05:22:26,796] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 05:22:28,561] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 05:22:29,624] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/get-admission-approvals/ HTTP/1.1" 200 1117
+[2024-03-06 05:22:29,992] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/department-quota-approval-list/ HTTP/1.1" 200 3580
+[2024-03-06 05:23:01,724] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 05:23:02,166] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Select_Information/get-select-info/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/fields.py", line 446, in get_attribute
+    return get_attribute(instance, self.source_attrs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/fields.py", line 96, in get_attribute
+    instance = getattr(instance, attr)
+AttributeError: 'Student' object has no attribute 'major'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Select_Information/views.py", line 41, in get
+    return Response(serializer.data, status=status.HTTP_200_OK)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 768, in data
+    ret = super().data
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 253, in data
+    self._data = self.to_representation(self.instance)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 686, in to_representation
+    return [
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 687, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 509, in to_representation
+    attribute = field.get_attribute(instance)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/fields.py", line 479, in get_attribute
+    raise type(exc)(msg)
+AttributeError: Got AttributeError when attempting to get a value for field `student_major` on serializer `StudentProfessorChoiceSerializer`.
+The serializer field might be named incorrectly and not match any attribute or key on the `StudentProfessorChoice` instance.
+Original exception text was: 'Student' object has no attribute 'major'.
+[2024-03-06 05:23:02,168] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 500 132351
+[2024-03-06 05:23:03,166] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1686
+[2024-03-06 05:23:03,902] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/get-admission-approvals/ HTTP/1.1" 200 1117
+[2024-03-06 05:23:04,939] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Quota_Review/department-quota-approval-list/ HTTP/1.1" 200 3580

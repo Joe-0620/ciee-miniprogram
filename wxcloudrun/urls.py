@@ -28,7 +28,7 @@ urlpatterns = [
     path('', index, name='index'),
     path('admin/', admin.site.urls),
     # 包含 Professor_Student_Manage 应用的URL配置
-    path('Professor_Quota_Review/', include('Professor_Quota_Review.urls')),
+    path('Enrollment_Manage/', include('Enrollment_Manage.urls')),
     path('Select_Information/', include('Select_Information.urls')),
     path('Professor_Student_Manage/', include('Professor_Student_Manage.urls')),
     # path('api/', include('api.urls')),

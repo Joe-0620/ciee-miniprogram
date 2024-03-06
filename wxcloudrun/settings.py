@@ -26,11 +26,11 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
-    "rest_framework",
-    "rest_framework.authtoken",
+    'rest_framework',
+    'rest_framework.authtoken',
     'Professor_Student_Manage.apps.ProfessorStudentManageConfig',
-    'Professor_Quota_Review.apps.ProfessorQuotaReviewConfig',
-    "Select_Information.apps.SelectInformationConfig",
+    'Select_Information.apps.SelectInformationConfig',
+    'Enrollment_Manage.apps.EnrollmentManageConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

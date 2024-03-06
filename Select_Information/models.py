@@ -7,18 +7,11 @@ class StudentProfessorChoice(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE, verbose_name="学生姓名")
     professor = models.ForeignKey(Professor, on_delete=models.CASCADE, verbose_name="导师姓名")
 
-    # ORDER_CHOICES = [
-    #     ['1', "第一志愿"],
-    #     ['2', "第二志愿"],
-    #     ['3', "第三志愿"],
-    # ]
-
-    # choice_order = models.CharField(max_length=1, default='1', choices=ORDER_CHOICES, verbose_name="志愿顺序")
-
     STATUS_CHOICES = [
         ['1', "已同意"],
         ['2', "已拒绝"],
         ['3', "请等待"],
+        ['4', "已取消"]
     ]
     status = models.CharField(max_length=1, default='3', choices=STATUS_CHOICES, verbose_name="状态")
     chosen_by_professor = models.BooleanField(default=False, verbose_name="是否选中")

@@ -31,6 +31,14 @@ class ProfessorSerializer(serializers.ModelSerializer):
         model = Professor
         fields = '__all__'  # 或者指定您想要序列化的字段
 
+class ProfessorEnrollInfoSerializer(serializers.ModelSerializer):
+    # department = serializers.StringRelatedField()
+    # enroll_subject = serializers.StringRelatedField(many=True)
+
+    class Meta:
+        model = Professor
+        fields = ['name', 'enroll_subject', 'academic_quota', 'professional_quota', 'professional_yt_quota', 'doctor_quota']
+
 
 class ProfessorPartialUpdateSerializer(serializers.ModelSerializer):
     class Meta:

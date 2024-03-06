@@ -8,12 +8,12 @@ class StudentProfessorChoice(models.Model):
     professor = models.ForeignKey(Professor, on_delete=models.CASCADE, verbose_name="导师姓名")
 
     STATUS_CHOICES = [
-        ['1', "已同意"],
-        ['2', "已拒绝"],
-        ['3', "请等待"],
-        ['4', "已取消"]
+        [1, "已同意"],
+        [2, "已拒绝"],
+        [3, "请等待"],
+        [4, "已取消"]
     ]
-    status = models.CharField(max_length=1, default='3', choices=STATUS_CHOICES, verbose_name="状态")
+    status = models.IntegerField(default=3, choices=STATUS_CHOICES, verbose_name="状态")
     chosen_by_professor = models.BooleanField(default=False, verbose_name="是否选中")
 
     # 申请时间

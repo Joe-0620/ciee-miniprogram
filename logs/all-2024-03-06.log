@@ -759,3 +759,839 @@ django.db.utils.ProgrammingError: (1146, "Table 'django_demo.Enrollment_Manage_s
 [2024-03-06 06:42:31,858] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 405
 [2024-03-06 06:42:32,595] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 2
 [2024-03-06 06:42:32,597] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 405
+[2024-03-06 06:43:13,436] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 405
+[2024-03-06 06:43:19,233] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/1/change/ HTTP/1.1" 200 16793
+[2024-03-06 06:43:19,241] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 302 0
+[2024-03-06 06:43:19,584] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-06 06:43:28,536] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Professor_Student_Manage/professor/1/change/ HTTP/1.1" 302 0
+[2024-03-06 06:43:29,159] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 12123
+[2024-03-06 06:43:29,492] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-06 06:43:32,662] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 404
+[2024-03-06 06:43:32,672] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 2
+[2024-03-06 06:43:33,743] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 404
+[2024-03-06 06:43:35,265] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 2
+[2024-03-06 06:43:35,794] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 404
+[2024-03-06 06:43:36,180] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 404
+[2024-03-06 06:43:46,292] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 404
+[2024-03-06 06:49:04,321] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-06 06:49:09,588] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-06 06:49:17,563] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/1/change/ HTTP/1.1" 200 16792
+[2024-03-06 06:49:17,568] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 302 0
+[2024-03-06 06:49:17,928] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-06 06:49:29,554] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 11911
+[2024-03-06 06:49:29,561] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 302 0
+[2024-03-06 06:49:29,907] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-06 06:49:31,564] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/add/ HTTP/1.1" 200 16460
+[2024-03-06 06:49:31,899] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-06 06:49:58,183] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/admin.py changed, reloading.
+[2024-03-06 06:49:58,810] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-06 06:50:04,394] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 11911
+[2024-03-06 06:50:04,765] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-06 06:50:06,483] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/1/change/ HTTP/1.1" 200 18123
+[2024-03-06 06:50:06,488] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 302 0
+[2024-03-06 06:50:06,803] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-06 06:50:20,646] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 11911
+[2024-03-06 06:50:20,656] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 302 0
+[2024-03-06 06:50:21,005] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-06 06:51:18,130] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/1/change/ HTTP/1.1" 200 18123
+[2024-03-06 06:51:18,845] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/1/change/ HTTP/1.1" 200 18123
+[2024-03-06 06:51:18,852] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 302 0
+[2024-03-06 06:51:19,435] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-06 06:51:30,723] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Professor_Student_Manage/professor/1/change/ HTTP/1.1" 302 0
+[2024-03-06 06:51:31,347] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 12123
+[2024-03-06 06:51:31,941] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-06 06:56:20,548] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-06 06:56:28,811] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-06 06:59:45,162] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/serializers.py changed, reloading.
+[2024-03-06 06:59:45,667] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-06 07:01:25,599] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/views.py changed, reloading.
+[2024-03-06 07:01:25,885] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-06 07:02:59,148] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-06 07:04:36,283] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/ HTTP/1.1" 200 145
+[2024-03-06 07:29:22,593] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-06 07:29:30,769] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/ HTTP/1.1" 200 194
+[2024-03-06 07:30:39,467] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/serializers.py changed, reloading.
+[2024-03-06 07:30:39,750] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-06 07:30:50,145] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/ HTTP/1.1" 200 166
+[2024-03-06 07:33:58,792] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-06 07:34:15,748] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/views.py changed, reloading.
+[2024-03-06 07:34:16,013] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-06 07:34:19,681] [log.py:224] [log:log_response] [WARNING]- Unauthorized: /Professor_Student_Manage/professors-enrollinfo/
+[2024-03-06 07:34:19,683] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /Professor_Student_Manage/professors-enrollinfo/ HTTP/1.1" 401 43
+[2024-03-06 07:34:21,106] [log.py:224] [log:log_response] [WARNING]- Unauthorized: /Professor_Student_Manage/professors-enrollinfo/
+[2024-03-06 07:34:21,107] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /Professor_Student_Manage/professors-enrollinfo/ HTTP/1.1" 401 43
+[2024-03-06 07:34:21,893] [log.py:224] [log:log_response] [WARNING]- Unauthorized: /Professor_Student_Manage/professors-enrollinfo/
+[2024-03-06 07:34:21,898] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /Professor_Student_Manage/professors-enrollinfo/ HTTP/1.1" 401 43
+[2024-03-06 07:34:22,450] [log.py:224] [log:log_response] [WARNING]- Unauthorized: /Professor_Student_Manage/professors-enrollinfo/
+[2024-03-06 07:34:22,451] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /Professor_Student_Manage/professors-enrollinfo/ HTTP/1.1" 401 43
+[2024-03-06 07:34:22,972] [log.py:224] [log:log_response] [WARNING]- Unauthorized: /Professor_Student_Manage/professors-enrollinfo/
+[2024-03-06 07:34:22,973] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /Professor_Student_Manage/professors-enrollinfo/ HTTP/1.1" 401 43
+[2024-03-06 07:34:23,433] [log.py:224] [log:log_response] [WARNING]- Unauthorized: /Professor_Student_Manage/professors-enrollinfo/
+[2024-03-06 07:34:23,435] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /Professor_Student_Manage/professors-enrollinfo/ HTTP/1.1" 401 43
+[2024-03-06 07:34:59,523] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/authtoken/tokenproxy/ HTTP/1.1" 200 8872
+[2024-03-06 07:35:16,659] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Professor_Student_Manage/professors-enrollinfo/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 511, in dispatch
+    self.response = self.finalize_response(request, response, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 423, in finalize_response
+    assert isinstance(response, HttpResponseBase), (
+AssertionError: Expected a `Response`, `HttpResponse` or `HttpStreamingResponse` to be returned from the view, but received a `<class 'NoneType'>`
+[2024-03-06 07:35:16,662] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Professor_Student_Manage/professors-enrollinfo/ HTTP/1.1" 500 73068
+[2024-03-06 07:37:45,650] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-06 07:37:49,319] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Professor_Student_Manage/professors-enrollinfo/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 204, in _get_response
+    response = response.render()
+  File "/root/.local/lib/python3.8/site-packages/django/template/response.py", line 105, in render
+    self.content = self.rendered_content
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/response.py", line 70, in rendered_content
+    ret = renderer.render(self.data, accepted_media_type, context)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/renderers.py", line 99, in render
+    ret = json.dumps(
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/utils/json.py", line 25, in dumps
+    return json.dumps(*args, **kwargs)
+  File "/usr/lib/python3.8/json/__init__.py", line 234, in dumps
+    return cls(
+  File "/usr/lib/python3.8/json/encoder.py", line 199, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "/usr/lib/python3.8/json/encoder.py", line 257, in iterencode
+    return _iterencode(o, 0)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/utils/encoders.py", line 67, in default
+    return super().default(obj)
+  File "/usr/lib/python3.8/json/encoder.py", line 179, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type property is not JSON serializable
+[2024-03-06 07:37:49,321] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Professor_Student_Manage/professors-enrollinfo/ HTTP/1.1" 500 94541
+[2024-03-06 07:38:37,237] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-06 07:38:40,937] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Professor_Student_Manage/professors-enrollinfo/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/fields.py", line 446, in get_attribute
+    return get_attribute(instance, self.source_attrs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/fields.py", line 96, in get_attribute
+    instance = getattr(instance, attr)
+AttributeError: 'QuerySet' object has no attribute 'name'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Professor_Student_Manage/views.py", line 35, in get
+    'professor_enroll_info': professor_enroll_info.data,
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 555, in data
+    ret = super().data
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 253, in data
+    self._data = self.to_representation(self.instance)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 509, in to_representation
+    attribute = field.get_attribute(instance)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/fields.py", line 479, in get_attribute
+    raise type(exc)(msg)
+AttributeError: Got AttributeError when attempting to get a value for field `name` on serializer `ProfessorEnrollInfoSerializer`.
+The serializer field might be named incorrectly and not match any attribute or key on the `QuerySet` instance.
+Original exception text was: 'QuerySet' object has no attribute 'name'.
+[2024-03-06 07:38:40,941] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Professor_Student_Manage/professors-enrollinfo/ HTTP/1.1" 500 116340
+[2024-03-06 07:39:50,952] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/views.py changed, reloading.
+[2024-03-06 07:39:51,239] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-06 07:39:54,056] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/ HTTP/1.1" 200 190
+[2024-03-06 07:41:53,042] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/ HTTP/1.1" 200 190
+[2024-03-06 07:44:42,072] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/serializers.py changed, reloading.
+[2024-03-06 07:44:42,601] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-06 07:44:45,327] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/ HTTP/1.1" 200 154
+[2024-03-06 07:47:31,271] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-06 07:47:43,544] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-06 07:48:38,473] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-06 07:53:45,605] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-06 07:53:51,678] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Professor_Student_Manage/professors-enrollinfo/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Professor_Student_Manage/views.py", line 37, in get
+    queryset_p = Professor.objects.get(id=professor_id)
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/query.py", line 435, in get
+    raise self.model.DoesNotExist(
+Professor_Student_Manage.models.Professor.DoesNotExist: Professor matching query does not exist.
+[2024-03-06 07:53:51,681] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Professor_Student_Manage/professors-enrollinfo/ HTTP/1.1" 500 96128
+[2024-03-06 07:54:59,428] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/views.py changed, reloading.
+[2024-03-06 07:54:59,710] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-06 07:55:03,094] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Professor_Student_Manage/professors-enrollinfo/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Professor_Student_Manage/views.py", line 37, in get
+    queryset_p = Professor.objects.get(id=professor_id)
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/query.py", line 435, in get
+    raise self.model.DoesNotExist(
+Professor_Student_Manage.models.Professor.DoesNotExist: Professor matching query does not exist.
+[2024-03-06 07:55:03,097] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Professor_Student_Manage/professors-enrollinfo/ HTTP/1.1" 500 96128
+[2024-03-06 07:55:28,495] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-06 07:55:36,805] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Professor_Student_Manage/professors-enrollinfo/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Professor_Student_Manage/views.py", line 37, in get
+    queryset_p = Professor.objects.get(id=professor_id)
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/query.py", line 435, in get
+    raise self.model.DoesNotExist(
+Professor_Student_Manage.models.Professor.DoesNotExist: Professor matching query does not exist.
+[2024-03-06 07:55:36,808] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Professor_Student_Manage/professors-enrollinfo/ HTTP/1.1" 500 96128
+[2024-03-06 07:55:44,242] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-06 07:55:49,111] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-06 07:56:01,783] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-06 07:56:04,355] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Professor_Student_Manage/professors-enrollinfo/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Professor_Student_Manage/views.py", line 37, in get
+    queryset_p = Professor.objects.get(id=professor_id)
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/query.py", line 435, in get
+    raise self.model.DoesNotExist(
+Professor_Student_Manage.models.Professor.DoesNotExist: Professor matching query does not exist.
+[2024-03-06 07:56:04,357] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Professor_Student_Manage/professors-enrollinfo/ HTTP/1.1" 500 94936
+[2024-03-06 07:56:15,605] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/views.py changed, reloading.
+[2024-03-06 07:56:15,868] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-06 07:56:18,456] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Professor_Student_Manage/professors-enrollinfo/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Professor_Student_Manage/views.py", line 37, in get
+    queryset_p = Professor.objects.get(id=professor_id)
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/query.py", line 435, in get
+    raise self.model.DoesNotExist(
+Professor_Student_Manage.models.Professor.DoesNotExist: Professor matching query does not exist.
+[2024-03-06 07:56:18,458] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Professor_Student_Manage/professors-enrollinfo/ HTTP/1.1" 500 94924
+[2024-03-06 07:56:36,987] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-06 07:56:39,782] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Professor_Student_Manage/professors-enrollinfo/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Professor_Student_Manage/views.py", line 37, in get
+    queryset = Professor.objects.get(id=professor_id)
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/query.py", line 435, in get
+    raise self.model.DoesNotExist(
+Professor_Student_Manage.models.Professor.DoesNotExist: Professor matching query does not exist.
+[2024-03-06 07:56:39,786] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Professor_Student_Manage/professors-enrollinfo/ HTTP/1.1" 500 94918
+[2024-03-06 07:56:41,230] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Professor_Student_Manage/professors-enrollinfo/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Professor_Student_Manage/views.py", line 37, in get
+    queryset = Professor.objects.get(id=professor_id)
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/query.py", line 435, in get
+    raise self.model.DoesNotExist(
+Professor_Student_Manage.models.Professor.DoesNotExist: Professor matching query does not exist.
+[2024-03-06 07:56:41,231] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Professor_Student_Manage/professors-enrollinfo/ HTTP/1.1" 500 94918
+[2024-03-06 07:56:42,539] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Professor_Student_Manage/professors-enrollinfo/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Professor_Student_Manage/views.py", line 37, in get
+    queryset = Professor.objects.get(id=professor_id)
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/query.py", line 435, in get
+    raise self.model.DoesNotExist(
+Professor_Student_Manage.models.Professor.DoesNotExist: Professor matching query does not exist.
+[2024-03-06 07:56:42,540] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Professor_Student_Manage/professors-enrollinfo/ HTTP/1.1" 500 94918
+[2024-03-06 07:56:43,755] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Professor_Student_Manage/professors-enrollinfo/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Professor_Student_Manage/views.py", line 37, in get
+    queryset = Professor.objects.get(id=professor_id)
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/query.py", line 435, in get
+    raise self.model.DoesNotExist(
+Professor_Student_Manage.models.Professor.DoesNotExist: Professor matching query does not exist.
+[2024-03-06 07:56:43,757] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Professor_Student_Manage/professors-enrollinfo/ HTTP/1.1" 500 94918
+[2024-03-06 07:56:50,886] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-06 07:56:53,333] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/ HTTP/1.1" 200 154
+[2024-03-06 07:57:17,964] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-06 07:57:20,845] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Professor_Student_Manage/professors-enrollinfo/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Professor_Student_Manage/views.py", line 37, in get
+    queryset = Professor.objects.get(id=professor_id)
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/query.py", line 435, in get
+    raise self.model.DoesNotExist(
+Professor_Student_Manage.models.Professor.DoesNotExist: Professor matching query does not exist.
+[2024-03-06 07:57:20,847] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Professor_Student_Manage/professors-enrollinfo/ HTTP/1.1" 500 94918
+[2024-03-06 07:57:30,815] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Professor_Student_Manage/professors-enrollinfo/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Professor_Student_Manage/views.py", line 37, in get
+    queryset = Professor.objects.get(id=professor_id)
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/query.py", line 435, in get
+    raise self.model.DoesNotExist(
+Professor_Student_Manage.models.Professor.DoesNotExist: Professor matching query does not exist.
+[2024-03-06 07:57:30,816] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Professor_Student_Manage/professors-enrollinfo/ HTTP/1.1" 500 94918
+[2024-03-06 07:57:32,920] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Professor_Student_Manage/professors-enrollinfo/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Professor_Student_Manage/views.py", line 37, in get
+    queryset = Professor.objects.get(id=professor_id)
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/query.py", line 435, in get
+    raise self.model.DoesNotExist(
+Professor_Student_Manage.models.Professor.DoesNotExist: Professor matching query does not exist.
+[2024-03-06 07:57:32,921] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Professor_Student_Manage/professors-enrollinfo/ HTTP/1.1" 500 94918
+[2024-03-06 07:57:42,653] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Professor_Student_Manage/professors-enrollinfo/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Professor_Student_Manage/views.py", line 37, in get
+    queryset = Professor.objects.get(id=professor_id)
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/query.py", line 435, in get
+    raise self.model.DoesNotExist(
+Professor_Student_Manage.models.Professor.DoesNotExist: Professor matching query does not exist.
+[2024-03-06 07:57:42,655] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Professor_Student_Manage/professors-enrollinfo/ HTTP/1.1" 500 94918
+[2024-03-06 07:57:52,669] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-06 07:57:55,056] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Professor_Student_Manage/professors-enrollinfo/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Professor_Student_Manage/views.py", line 38, in get
+    queryset = Professor.objects.get(id=professor_id)
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/query.py", line 435, in get
+    raise self.model.DoesNotExist(
+Professor_Student_Manage.models.Professor.DoesNotExist: Professor matching query does not exist.
+[2024-03-06 07:57:55,060] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Professor_Student_Manage/professors-enrollinfo/ HTTP/1.1" 500 94903
+[2024-03-06 07:58:22,272] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-06 07:58:31,831] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-06 07:58:36,827] [log.py:224] [log:log_response] [WARNING]- Unsupported Media Type: /Professor_Student_Manage/professors-enrollinfo/
+[2024-03-06 07:58:36,836] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /Professor_Student_Manage/professors-enrollinfo/ HTTP/1.1" 415 66
+[2024-03-06 07:58:42,730] [log.py:224] [log:log_response] [WARNING]- Unsupported Media Type: /Professor_Student_Manage/professors-enrollinfo/
+[2024-03-06 07:58:42,732] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /Professor_Student_Manage/professors-enrollinfo/ HTTP/1.1" 415 66
+[2024-03-06 07:59:00,496] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/views.py changed, reloading.
+[2024-03-06 07:59:00,761] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-06 07:59:03,272] [log.py:224] [log:log_response] [WARNING]- Unsupported Media Type: /Professor_Student_Manage/professors-enrollinfo/
+[2024-03-06 07:59:03,273] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /Professor_Student_Manage/professors-enrollinfo/ HTTP/1.1" 415 66
+[2024-03-06 07:59:26,902] [log.py:224] [log:log_response] [WARNING]- Unsupported Media Type: /Professor_Student_Manage/professors-enrollinfo/
+[2024-03-06 07:59:26,906] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /Professor_Student_Manage/professors-enrollinfo/ HTTP/1.1" 415 66
+[2024-03-06 07:59:31,695] [log.py:224] [log:log_response] [WARNING]- Unsupported Media Type: /Professor_Student_Manage/professors-enrollinfo/
+[2024-03-06 07:59:31,696] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /Professor_Student_Manage/professors-enrollinfo/ HTTP/1.1" 415 66
+[2024-03-06 07:59:38,454] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-06 07:59:40,451] [log.py:224] [log:log_response] [WARNING]- Unsupported Media Type: /Professor_Student_Manage/professors-enrollinfo/
+[2024-03-06 07:59:40,454] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /Professor_Student_Manage/professors-enrollinfo/ HTTP/1.1" 415 66
+[2024-03-06 07:59:54,363] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-06 07:59:56,674] [log.py:224] [log:log_response] [WARNING]- Unsupported Media Type: /Professor_Student_Manage/professors-enrollinfo/
+[2024-03-06 07:59:56,676] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /Professor_Student_Manage/professors-enrollinfo/ HTTP/1.1" 415 66
+[2024-03-06 08:00:13,886] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-06 08:00:26,220] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-06 08:00:28,000] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Professor_Student_Manage/professors-enrollinfo/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Professor_Student_Manage/views.py", line 37, in get
+    queryset = Professor.objects.get(id=professor_id)
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/query.py", line 435, in get
+    raise self.model.DoesNotExist(
+Professor_Student_Manage.models.Professor.DoesNotExist: Professor matching query does not exist.
+[2024-03-06 08:00:28,003] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Professor_Student_Manage/professors-enrollinfo/ HTTP/1.1" 500 94918
+[2024-03-06 08:00:35,915] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/views.py changed, reloading.
+[2024-03-06 08:00:36,341] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-06 08:00:38,553] [log.py:224] [log:log_response] [WARNING]- Unsupported Media Type: /Professor_Student_Manage/professors-enrollinfo/
+[2024-03-06 08:00:38,556] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /Professor_Student_Manage/professors-enrollinfo/ HTTP/1.1" 415 66
+[2024-03-06 08:01:47,421] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Professor_Student_Manage/professors-enrollinfo/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Professor_Student_Manage/views.py", line 37, in get
+    queryset = Professor.objects.get(id=professor_id)
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/query.py", line 435, in get
+    raise self.model.DoesNotExist(
+Professor_Student_Manage.models.Professor.DoesNotExist: Professor matching query does not exist.
+[2024-03-06 08:01:47,424] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 500 95381
+[2024-03-06 08:02:07,905] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/views.py changed, reloading.
+[2024-03-06 08:02:08,164] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-06 08:02:11,173] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Professor_Student_Manage/professors-enrollinfo/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Professor_Student_Manage/views.py", line 38, in get
+    queryset = Professor.objects.get(id=professor_id)
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/query.py", line 435, in get
+    raise self.model.DoesNotExist(
+Professor_Student_Manage.models.Professor.DoesNotExist: Professor matching query does not exist.
+[2024-03-06 08:02:11,176] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 500 95366
+[2024-03-06 08:03:08,838] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Professor_Student_Manage/professors-enrollinfo/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Professor_Student_Manage/views.py", line 38, in get
+    queryset = Professor.objects.get(id=professor_id)
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/query.py", line 435, in get
+    raise self.model.DoesNotExist(
+Professor_Student_Manage.models.Professor.DoesNotExist: Professor matching query does not exist.
+[2024-03-06 08:03:08,841] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 500 95366
+[2024-03-06 08:03:20,874] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-06 08:03:22,822] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 154
+[2024-03-06 08:03:30,512] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-06 08:03:57,496] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-06 08:04:00,245] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Professor_Student_Manage/professors-enrollinfo/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/fields.py", line 446, in get_attribute
+    return get_attribute(instance, self.source_attrs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/fields.py", line 96, in get_attribute
+    instance = getattr(instance, attr)
+AttributeError: 'QuerySet' object has no attribute 'subject_name'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Professor_Student_Manage/views.py", line 41, in get
+    'subjects': subject_all.data,
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 555, in data
+    ret = super().data
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 253, in data
+    self._data = self.to_representation(self.instance)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 509, in to_representation
+    attribute = field.get_attribute(instance)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/fields.py", line 479, in get_attribute
+    raise type(exc)(msg)
+AttributeError: Got AttributeError when attempting to get a value for field `subject_name` on serializer `SubjectSerializer`.
+The serializer field might be named incorrectly and not match any attribute or key on the `QuerySet` instance.
+Original exception text was: 'QuerySet' object has no attribute 'subject_name'.
+[2024-03-06 08:04:00,249] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 500 118731
+[2024-03-06 08:05:14,344] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-06 08:05:16,730] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Professor_Student_Manage/professors-enrollinfo/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 204, in _get_response
+    response = response.render()
+  File "/root/.local/lib/python3.8/site-packages/django/template/response.py", line 105, in render
+    self.content = self.rendered_content
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/response.py", line 70, in rendered_content
+    ret = renderer.render(self.data, accepted_media_type, context)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/renderers.py", line 99, in render
+    ret = json.dumps(
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/utils/json.py", line 25, in dumps
+    return json.dumps(*args, **kwargs)
+  File "/usr/lib/python3.8/json/__init__.py", line 234, in dumps
+    return cls(
+  File "/usr/lib/python3.8/json/encoder.py", line 199, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "/usr/lib/python3.8/json/encoder.py", line 257, in iterencode
+    return _iterencode(o, 0)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/utils/encoders.py", line 67, in default
+    return super().default(obj)
+  File "/usr/lib/python3.8/json/encoder.py", line 179, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type property is not JSON serializable
+[2024-03-06 08:05:16,733] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 500 97273
+[2024-03-06 08:05:44,077] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/views.py changed, reloading.
+[2024-03-06 08:05:44,341] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-06 08:05:47,205] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Professor_Student_Manage/professors-enrollinfo/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 204, in _get_response
+    response = response.render()
+  File "/root/.local/lib/python3.8/site-packages/django/template/response.py", line 105, in render
+    self.content = self.rendered_content
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/response.py", line 70, in rendered_content
+    ret = renderer.render(self.data, accepted_media_type, context)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/renderers.py", line 99, in render
+    ret = json.dumps(
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/utils/json.py", line 25, in dumps
+    return json.dumps(*args, **kwargs)
+  File "/usr/lib/python3.8/json/__init__.py", line 234, in dumps
+    return cls(
+  File "/usr/lib/python3.8/json/encoder.py", line 199, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "/usr/lib/python3.8/json/encoder.py", line 257, in iterencode
+    return _iterencode(o, 0)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/utils/encoders.py", line 67, in default
+    return super().default(obj)
+  File "/usr/lib/python3.8/json/encoder.py", line 179, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type SerializerMetaclass is not JSON serializable
+[2024-03-06 08:05:47,206] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 500 97786
+[2024-03-06 08:06:29,665] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-06 08:06:32,353] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Professor_Student_Manage/professors-enrollinfo/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 204, in _get_response
+    response = response.render()
+  File "/root/.local/lib/python3.8/site-packages/django/template/response.py", line 105, in render
+    self.content = self.rendered_content
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/response.py", line 70, in rendered_content
+    ret = renderer.render(self.data, accepted_media_type, context)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/renderers.py", line 99, in render
+    ret = json.dumps(
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/utils/json.py", line 25, in dumps
+    return json.dumps(*args, **kwargs)
+  File "/usr/lib/python3.8/json/__init__.py", line 234, in dumps
+    return cls(
+  File "/usr/lib/python3.8/json/encoder.py", line 199, in encode
+    chunks = self.iterencode(o, _one_shot=True)
+  File "/usr/lib/python3.8/json/encoder.py", line 257, in iterencode
+    return _iterencode(o, 0)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/utils/encoders.py", line 67, in default
+    return super().default(obj)
+  File "/usr/lib/python3.8/json/encoder.py", line 179, in default
+    raise TypeError(f'Object of type {o.__class__.__name__} '
+TypeError: Object of type ListSerializer is not JSON serializable
+[2024-03-06 08:06:32,355] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 500 101851
+[2024-03-06 08:06:41,848] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-06 08:06:43,746] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 678
+[2024-03-06 08:07:18,102] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 678
+[2024-03-06 08:07:52,420] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 427
+[2024-03-06 08:07:53,126] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 427
+[2024-03-06 08:10:46,215] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/student-resumeinfo/?student_id=1 HTTP/1.1" 200 66
+[2024-03-06 08:10:59,297] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 427
+[2024-03-06 08:11:00,541] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/student-resumeinfo/?student_id=1 HTTP/1.1" 200 66
+[2024-03-06 08:11:36,292] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 678
+[2024-03-06 08:12:03,688] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 678
+[2024-03-06 08:12:05,648] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 427
+[2024-03-06 08:12:06,812] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 2
+[2024-03-06 08:12:06,847] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 427
+[2024-03-06 08:12:07,511] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 427
+[2024-03-06 08:12:10,627] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 678
+[2024-03-06 08:12:19,731] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 427
+[2024-03-06 08:12:21,960] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 678
+[2024-03-06 08:12:28,417] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 678
+[2024-03-06 08:12:29,284] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 427
+[2024-03-06 08:12:30,200] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 2
+[2024-03-06 08:12:30,265] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 427
+[2024-03-06 08:12:30,778] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 427
+[2024-03-06 08:12:32,653] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 678
+[2024-03-06 08:12:54,078] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 427
+[2024-03-06 08:12:55,919] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 678
+[2024-03-06 08:14:41,088] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 678
+[2024-03-06 08:16:50,788] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 678
+[2024-03-06 08:18:46,299] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Enrollment_Manage/serializers.py changed, reloading.
+[2024-03-06 08:18:46,614] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-06 08:18:56,213] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 797
+[2024-03-06 08:20:36,045] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 797
+[2024-03-06 08:20:47,116] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 797
+[2024-03-06 08:21:03,778] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 797
+[2024-03-06 08:21:21,789] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 797

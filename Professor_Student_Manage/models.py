@@ -21,6 +21,7 @@ class Professor(models.Model):
     teacher_identity_id = models.CharField(max_length=20, null=False, verbose_name="导师工号")
     email = models.EmailField(null=True, blank=True, verbose_name="导师邮箱")
     department = models.ForeignKey(Department, on_delete=models.CASCADE, verbose_name="所属招生方向")
+    enroll_subject = models.ManyToManyField(Subject, related_name='subjects', verbose_name="招生专业")
     research_areas = models.TextField(null=True, blank=True, verbose_name="研究方向")
     academic_quota = models.IntegerField(blank=True, default=0, verbose_name="学硕剩余名额")
     professional_quota = models.IntegerField(blank=True, default=0, verbose_name="专硕剩余名额")

@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate
-from .serializers import UserLoginSerializer, StudentSerializer, ProfessorSerializer, StudentPartialUpdateSerializer
+from .serializers import UserLoginSerializer, StudentSerializer, ProfessorSerializer, StudentPartialUpdateSerializer, ProfessorEnrollInfoSerializer
 from .serializers import DepartmentSerializer, ProfessorPartialUpdateSerializer, ChangePasswordSerializer, StudentResumeSerializer
 from Professor_Student_Manage.models import Student, Professor, Department, WeChatAccount
 from rest_framework import generics
@@ -14,6 +14,8 @@ from django.core.files.storage import default_storage
 import os
 from django.core.exceptions import ObjectDoesNotExist
 import requests
+from Enrollment_Manage.models import Subject
+from Enrollment_Manage.serializers import SubjectSerializer
 
 
 # 类继承自类generics.ListAPIView，这个类是Django REST Framework提供的一个基于类的视图，
@@ -22,6 +24,23 @@ import requests
 class ProfessorListView(generics.ListAPIView):
     queryset = Professor.objects.all()
     serializer_class = ProfessorSerializer
+
+
+class ProfessorEnrollInfoView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        queryset = Subject.objects.all()
+        subject_all = SubjectSerializer(queryset, many=True)
+
+        professor_id = request.query_params.get('professor_id')
+        queryset_p = Professor.objects.get(id=professor_id)
+        professor_enroll_info = ProfessorEnrollInfoSerializer(queryset_p)
+
+        return Response({
+            'subjects': subject_all.data,
+            'professor_enroll_info': professor_enroll_info.data,
+        }, status=status.HTTP_200_OK)
 
 
 class ProfessorAndDepartmentListView(APIView):

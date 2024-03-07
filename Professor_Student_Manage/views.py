@@ -16,6 +16,7 @@ from django.core.exceptions import ObjectDoesNotExist
 import requests
 from Enrollment_Manage.models import Subject
 from Enrollment_Manage.serializers import SubjectSerializer
+from math import isnan
 
 
 # 类继承自类generics.ListAPIView，这个类是Django REST Framework提供的一个基于类的视图，
@@ -210,69 +211,6 @@ class LoginView(APIView):
     def post(self, request):
         
         return Response({"detail": "Successfully logged in."}, status=status.HTTP_200_OK)
-    
-
-# # 上传头像
-# class UploadAvatarView(APIView):
-#     permission_classes = [IsAuthenticated]  # 保证用户已经登录
-#     # parser_classes = (FileUploadParser,)  # 使用文件上传解析器
-
-#     def post(self, request):
-        
-#         server_url = 'https://django-ug4t-65547-4-1319836128.sh.run.tcloudbase.com'
-#         # server_url = 'http://127.0.0.1:27082'
-#         print(request.FILES)
-#         if 'file' not in request.FILES:
-#             return Response({'error': 'No file provided'}, status=status.HTTP_400_BAD_REQUEST)
-
-#         uploaded_file = request.FILES['file']  # 使用 'file' 字段名来接收文件
-#         # file_obj = request.data['file']
-#         # avatar = request.FILES['avatar']
-#         user = request.user
-#         usertype = request.query_params.get('usertype')
-
-#         if usertype == 'student':
-#             # 保存头像文件到用户的个人信息中
-#             student = user.student
-#             old_avatar_path = student.avatar.path if student.avatar else None
-
-#             file_path = default_storage.save(f'avatars/student_{user.id}.jpg', uploaded_file)
-#             student.avatar = file_path
-#             student.save()
-#             avatar_url = f"{server_url}{settings.MEDIA_URL}{file_path}"
-
-#             # 删除旧头像文件
-#             if old_avatar_path and os.path.exists(old_avatar_path):
-#                 os.remove(old_avatar_path)
-
-#             return Response({'success': 'Avatar uploaded successfully', 
-#                                 'avatar_url': avatar_url}, status=status.HTTP_200_OK)
-
-#         elif usertype == 'professor':
-#             professor = user.professor
-#             old_avatar_path = professor.avatar.path if professor.avatar else None
-
-#             file_path = default_storage.save(f'avatars/professor_{user.id}.jpg', uploaded_file)
-#             professor.avatar = file_path
-#             professor.save()
-#             avatar_url = f"{server_url}{settings.MEDIA_URL}{file_path}"
-
-#             # 删除旧头像文件
-#             if old_avatar_path and os.path.exists(old_avatar_path):
-#                 os.remove(old_avatar_path)
-            
-#             return Response({'success': 'Avatar uploaded successfully', 
-#                              'avatar_url': avatar_url}, status=status.HTTP_200_OK)
-        
-#         else:
-#             return Response({'error': 'Usertype not correct'}, status=status.HTTP_400_BAD_REQUEST)
-        
-        # # 构造头像的URL
-        # avatar_url = f'{settings.MEDIA_ROOT}{uploaded_file.url}'  # 拼接完整的URL
-
-        # # 返回成功响应，包括头像的URL
-        # return Response({'success': 'Avatar uploaded successfully', 'avatar_url': avatar_url}, 
-        #                 status=status.HTTP_200_OK)
 
 
 class UserLoginInfoView(APIView):
@@ -291,3 +229,52 @@ class UserLoginInfoView(APIView):
             return Response(ProfessorSerializer(user_information).data, status=status.HTTP_200_OK)
         else:
             return Response({'error': 'Invalid usertype'}, status=status.HTTP_401_UNAUTHORIZED)
+        
+
+# 提交审核信息
+class SubmitQuotaView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        try:
+            # 获取当前导师身份
+            professor = request.user.professor
+
+            academic_quota = request.data.get('academic_quota')
+            professional_quota = request.data.get('professional_quota')
+            professional_yt_quota = request.data.get('professional_yt_quota')
+            doctor_quota = request.data.get('doctor_quota')
+            academic_select_list = request.data.get('academic_select_list', [])
+            professional_select_list = request.data.get('professional_select_list', [])
+
+            # 检查数据是否包含NaN值，如果包含，将其替换为0
+            if isnan(academic_quota):
+                academic_quota = 0
+            if isnan(professional_quota):
+                professional_quota = 0
+            if isnan(professional_yt_quota):
+                professional_yt_quota = 0
+            if isnan(doctor_quota):
+                doctor_quota = 0
+
+            # 将获取的数据保存到导师的属性中
+            professor.academic_quota = academic_quota
+            professor.professional_quota = professional_quota
+            professor.professional_yt_quota = professional_yt_quota
+            professor.doctor_quota = doctor_quota
+            professor.proposed_quota_approved = True
+
+            # 清空导师的招生专业
+            professor.enroll_subject.clear()
+
+            # 根据ID列表添加新的专业
+            for subject_id in academic_select_list + professional_select_list:
+                subject = Subject.objects.get(id=subject_id)
+                professor.enroll_subject.add(subject)
+
+            # 保存导师的更改
+            professor.save()
+            
+            return Response({'message': '指标设置成功'}, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({'message': '请求异常，请重试'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

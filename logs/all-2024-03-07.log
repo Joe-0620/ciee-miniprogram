@@ -1,0 +1,274 @@
+[2024-03-07 14:05:21,446] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-07 14:05:27,390] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-07 14:06:23,659] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-07 14:09:40,588] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-07 14:09:51,359] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 797
+[2024-03-07 14:11:47,408] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 797
+[2024-03-07 14:12:35,543] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/urls.py changed, reloading.
+[2024-03-07 14:12:35,858] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-07 14:12:56,071] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/authtoken/tokenproxy/ HTTP/1.1" 200 9102
+[2024-03-07 14:12:56,117] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/sorting-icons.svg HTTP/1.1" 200 1097
+[2024-03-07 14:19:48,929] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 797
+[2024-03-07 14:21:14,082] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-07 14:21:34,209] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/submit-quota/ HTTP/1.1" 200 32
+[2024-03-07 14:22:07,811] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/views.py changed, reloading.
+[2024-03-07 14:22:08,106] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-07 14:22:19,838] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-07 14:22:22,700] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/submit-quota/ HTTP/1.1" 200 32
+[2024-03-07 14:24:24,915] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-07 14:24:29,374] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/submit-quota/ HTTP/1.1" 200 32
+[2024-03-07 14:24:44,966] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/submit-quota/ HTTP/1.1" 200 32
+[2024-03-07 14:25:33,762] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 797
+[2024-03-07 14:25:52,787] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 797
+[2024-03-07 14:25:56,038] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/submit-quota/ HTTP/1.1" 200 32
+[2024-03-07 14:25:58,010] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 14:26:04,649] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 797
+[2024-03-07 14:26:11,711] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/submit-quota/ HTTP/1.1" 200 32
+[2024-03-07 14:26:13,727] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 14:26:17,215] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 797
+[2024-03-07 14:26:26,688] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 14:26:28,141] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 797
+[2024-03-07 14:26:32,193] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/submit-quota/ HTTP/1.1" 200 32
+[2024-03-07 14:26:34,150] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 14:26:36,326] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 797
+[2024-03-07 14:26:38,676] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/submit-quota/ HTTP/1.1" 200 32
+[2024-03-07 14:26:40,652] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 14:26:46,727] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 797
+[2024-03-07 14:26:55,629] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/submit-quota/ HTTP/1.1" 200 32
+[2024-03-07 14:26:57,637] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 14:28:35,595] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 797
+[2024-03-07 14:29:24,495] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/submit-quota/ HTTP/1.1" 200 32
+[2024-03-07 14:29:26,442] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 14:29:31,249] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 797
+[2024-03-07 14:29:43,730] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/submit-quota/ HTTP/1.1" 200 32
+[2024-03-07 14:29:45,722] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 14:32:49,321] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 797
+[2024-03-07 14:33:03,152] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/submit-quota/ HTTP/1.1" 200 32
+[2024-03-07 14:33:05,136] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 14:33:14,748] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 797
+[2024-03-07 14:33:57,267] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/submit-quota/ HTTP/1.1" 200 32
+[2024-03-07 14:33:59,245] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 14:34:06,961] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 797
+[2024-03-07 14:34:09,529] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 14:34:10,641] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 797
+[2024-03-07 14:34:12,224] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/submit-quota/ HTTP/1.1" 200 32
+[2024-03-07 14:34:14,659] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 14:37:08,950] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 14:37:09,408] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 14:37:10,188] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 797
+[2024-03-07 14:40:02,131] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 797
+[2024-03-07 14:41:00,917] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 797
+[2024-03-07 14:41:31,110] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/submit-quota/ HTTP/1.1" 200 32
+[2024-03-07 14:41:33,081] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 14:41:36,592] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 797
+[2024-03-07 14:41:40,569] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/submit-quota/ HTTP/1.1" 200 32
+[2024-03-07 14:41:42,543] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 14:42:09,654] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 797
+[2024-03-07 14:42:35,980] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /userlogin/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/mysql/base.py", line 73, in execute
+    return self.cursor.execute(query, args)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/cursors.py", line 148, in execute
+    result = self._query(query)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/cursors.py", line 310, in _query
+    conn.query(q)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 548, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 775, in _read_query_result
+    result.read()
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 1156, in read
+    first_packet = self.connection._read_packet()
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 725, in _read_packet
+    packet.raise_for_error()
+  File "/root/.local/lib/python3.8/site-packages/pymysql/protocol.py", line 221, in raise_for_error
+    err.raise_mysql_exception(self._data)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/err.py", line 143, in raise_mysql_exception
+    raise errorclass(errno, errval)
+pymysql.err.IntegrityError: (1062, "Duplicate entry '4' for key 'user_id'")
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Professor_Student_Manage/views.py", line 121, in post
+    wechat_account.save()
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/base.py", line 726, in save
+    self.save_base(using=using, force_insert=force_insert,
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/base.py", line 763, in save_base
+    updated = self._save_table(
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/base.py", line 845, in _save_table
+    updated = self._do_update(base_qs, using, pk_val, values, update_fields,
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/base.py", line 899, in _do_update
+    return filtered._update(values) > 0
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/query.py", line 802, in _update
+    return query.get_compiler(self.db).execute_sql(CURSOR)
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/sql/compiler.py", line 1559, in execute_sql
+    cursor = super().execute_sql(result_type)
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/sql/compiler.py", line 1175, in execute_sql
+    cursor.execute(sql, params)
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/utils.py", line 98, in execute
+    return super().execute(sql, params)
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/utils.py", line 66, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/utils.py", line 75, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "/root/.local/lib/python3.8/site-packages/django/db/utils.py", line 90, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/mysql/base.py", line 73, in execute
+    return self.cursor.execute(query, args)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/cursors.py", line 148, in execute
+    result = self._query(query)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/cursors.py", line 310, in _query
+    conn.query(q)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 548, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 775, in _read_query_result
+    result.read()
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 1156, in read
+    first_packet = self.connection._read_packet()
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 725, in _read_packet
+    packet.raise_for_error()
+  File "/root/.local/lib/python3.8/site-packages/pymysql/protocol.py", line 221, in raise_for_error
+    err.raise_mysql_exception(self._data)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/err.py", line 143, in raise_mysql_exception
+    raise errorclass(errno, errval)
+django.db.utils.IntegrityError: (1062, "Duplicate entry '4' for key 'user_id'")
+[2024-03-07 14:42:35,985] [basehttp.py:161] [basehttp:log_message] [ERROR]- "POST /userlogin/ HTTP/1.1" 500 234760
+[2024-03-07 14:43:21,852] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /userlogin/ HTTP/1.1" 200 1411
+[2024-03-07 14:43:22,366] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 14:43:22,849] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 14:43:24,650] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 797
+[2024-03-07 14:43:31,718] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/submit-quota/ HTTP/1.1" 200 32
+[2024-03-07 14:43:33,661] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 14:43:36,121] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 797
+[2024-03-07 14:43:49,578] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-07 14:43:53,232] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 14:43:54,218] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 797
+[2024-03-07 14:43:59,179] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/submit-quota/ HTTP/1.1" 200 32
+[2024-03-07 14:44:01,169] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 15:06:21,020] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 797
+[2024-03-07 15:06:23,617] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/submit-quota/ HTTP/1.1" 200 32
+[2024-03-07 15:06:25,577] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 15:06:27,591] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 797
+[2024-03-07 15:06:33,273] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/submit-quota/ HTTP/1.1" 200 32
+[2024-03-07 15:06:35,262] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 15:06:50,991] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/views.py changed, reloading.
+[2024-03-07 15:06:51,319] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-07 15:15:53,588] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-07 15:15:56,434] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 797
+[2024-03-07 15:16:01,572] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/submit-quota/ HTTP/1.1" 200 32
+[2024-03-07 15:16:03,542] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 15:16:05,845] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 797
+[2024-03-07 15:16:10,178] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/submit-quota/ HTTP/1.1" 200 32
+[2024-03-07 15:16:12,123] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 15:16:13,408] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 797
+[2024-03-07 15:16:19,145] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/submit-quota/ HTTP/1.1" 200 32
+[2024-03-07 15:16:20,132] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/submit-quota/ HTTP/1.1" 200 32
+[2024-03-07 15:16:21,101] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 15:16:22,949] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 797
+[2024-03-07 15:16:27,781] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/submit-quota/ HTTP/1.1" 200 32
+[2024-03-07 15:16:29,772] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1329
+[2024-03-07 15:16:33,795] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 799
+[2024-03-07 15:16:52,314] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1329
+[2024-03-07 15:16:53,594] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 799
+[2024-03-07 15:17:02,954] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/submit-quota/ HTTP/1.1" 200 32
+[2024-03-07 15:17:04,906] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1330
+[2024-03-07 15:17:12,827] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 799
+[2024-03-07 15:17:18,658] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/submit-quota/ HTTP/1.1" 200 32
+[2024-03-07 15:17:20,621] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1334
+[2024-03-07 15:17:22,446] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 803
+[2024-03-07 15:17:29,307] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/submit-quota/ HTTP/1.1" 200 32
+[2024-03-07 15:17:31,282] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1338
+[2024-03-07 15:17:32,817] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 807
+[2024-03-07 15:17:40,614] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/submit-quota/ HTTP/1.1" 200 32
+[2024-03-07 15:17:42,596] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1328
+[2024-03-07 15:17:44,060] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 797
+[2024-03-07 15:17:47,418] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/submit-quota/ HTTP/1.1" 200 32
+[2024-03-07 15:17:49,388] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1325
+[2024-03-07 15:17:50,753] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 794
+[2024-03-07 15:18:42,796] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-07 15:19:23,853] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/views.py changed, reloading.
+[2024-03-07 15:19:24,135] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-07 15:20:23,631] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-07 15:22:28,887] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 794
+[2024-03-07 15:22:34,474] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/submit-quota/ HTTP/1.1" 200 32
+[2024-03-07 15:22:36,449] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 15:22:40,093] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 3369
+[2024-03-07 15:22:40,550] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 3369
+[2024-03-07 15:22:44,486] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 3369
+[2024-03-07 15:22:45,074] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 15:22:46,801] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 15:22:47,490] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 15:22:47,500] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 803
+[2024-03-07 15:22:47,882] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 803
+[2024-03-07 15:22:47,907] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 3369
+[2024-03-07 15:22:47,932] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 15:22:52,936] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 15:31:02,923] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 797
+[2024-03-07 15:31:04,258] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 15:31:05,410] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 797
+[2024-03-07 15:31:06,842] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 15:31:09,674] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 15:31:11,216] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 15:31:13,434] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 797
+[2024-03-07 15:31:16,593] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 15:31:17,704] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 15:31:21,759] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 15:31:24,369] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 803
+[2024-03-07 15:31:24,403] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 15:31:26,030] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 3369
+[2024-03-07 15:31:36,845] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 15:31:37,957] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 15:31:40,757] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 15:33:25,046] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 803
+[2024-03-07 15:33:25,071] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 15:33:25,673] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 15:33:28,818] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 803
+[2024-03-07 15:33:29,071] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 15:33:29,840] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 15:33:30,690] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors-enrollinfo/?professor_id=1 HTTP/1.1" 200 797
+[2024-03-07 15:33:32,090] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 15:33:33,014] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 15:33:34,969] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 15:33:36,370] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 15:33:41,263] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 15:33:42,121] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 15:33:43,787] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 15:33:50,345] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 15:33:53,711] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 15:33:53,712] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 803
+[2024-03-07 15:33:57,770] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 15:33:58,482] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 15:33:58,483] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 803
+[2024-03-07 15:33:59,056] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 3369
+[2024-03-07 15:38:32,326] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /userlogin/ HTTP/1.1" 200 1411
+[2024-03-07 15:38:32,828] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 15:38:33,286] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 15:38:35,124] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 15:38:35,168] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 803
+[2024-03-07 15:38:35,590] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 803
+[2024-03-07 15:38:35,591] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 15:38:37,105] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1327
+[2024-03-07 15:38:38,219] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 3369
+[2024-03-07 15:38:38,644] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 3369

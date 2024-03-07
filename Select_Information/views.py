@@ -10,6 +10,7 @@ from Professor_Student_Manage.models import Student, Professor, WeChatAccount
 from Select_Information.models import StudentProfessorChoice
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
+from Professor_Student_Manage.serializers import StudentSerializer
 
 
 # Create your views here.
@@ -34,11 +35,19 @@ class SelectInformationView(APIView):
 
         elif usertype == 'professor':
             professor = user.professor
+            enroll_subjects = professor.enroll_subject.all()
 
             try:
+                # Get all students who haven't chosen a professor yet and are in the subjects the professor enrolls
+                students_without_professor = Student.objects.filter(is_selected=False)
+                student_serializer = StudentSerializer(students_without_professor, many=True)
+
                 student_choices = StudentProfessorChoice.objects.filter(professor=professor)
                 serializer = StudentProfessorChoiceSerializer(student_choices, many=True)
-                return Response(serializer.data, status=status.HTTP_200_OK)
+                return Response({
+                    'student_choices': serializer.data,
+                    'students_without_professor': student_serializer.data
+                }, status=status.HTTP_200_OK)
             except StudentProfessorChoice.DoesNotExist:
                 return Response(status=status.HTTP_404_NOT_FOUND)
             

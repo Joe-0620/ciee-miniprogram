@@ -27,9 +27,13 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class ProfessorSerializer(serializers.ModelSerializer):
+    enroll_subject = serializers.StringRelatedField(many=True)
+    
     class Meta:
         model = Professor
-        fields = '__all__'  # 或者指定您想要序列化的字段
+        # print()
+        fields = [f.name for f in Professor._meta.get_fields() if f.name != 'enroll_subject' and f.name != 'studentprofessorchoice'] + ['enroll_subject']
+
 
 class ProfessorEnrollInfoSerializer(serializers.ModelSerializer):
     # department = serializers.StringRelatedField()

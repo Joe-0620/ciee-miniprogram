@@ -18,28 +18,26 @@ class SelectInformationView(APIView):
     permission_classes = [IsAuthenticated]  # 保证用户已经登录
     
     def get(self, request):
-        # usertype = request.data.get('usertype')
         usertype = request.query_params.get('usertype')
         user = request.user
         
 
         if usertype == 'student':
-            student = user.student
-
             try:
+                student = user.student
                 student_choices = StudentProfessorChoice.objects.filter(student=student)
                 serializer = StudentProfessorChoiceSerializer(student_choices, many=True)
                 return Response(serializer.data, status=status.HTTP_200_OK)
-            except StudentProfessorChoice.DoesNotExist:
-                return Response(status=status.HTTP_404_NOT_FOUND)
+            except Student.DoesNotExist:
+                return Response({"message": "Student object does not exist."}, status=status.HTTP_404_NOT_FOUND)
 
         elif usertype == 'professor':
-            professor = user.professor
-            enroll_subjects = professor.enroll_subject.all()
-
             try:
+                professor = user.professor
+                enroll_subjects = professor.enroll_subject.all()
+
                 # Get all students who haven't chosen a professor yet and are in the subjects the professor enrolls
-                students_without_professor = Student.objects.filter(is_selected=False)
+                students_without_professor = Student.objects.filter(is_selected=False, subject__in=enroll_subjects)
                 student_serializer = StudentSerializer(students_without_professor, many=True)
 
                 student_choices = StudentProfessorChoice.objects.filter(professor=professor)
@@ -48,8 +46,8 @@ class SelectInformationView(APIView):
                     'student_choices': serializer.data,
                     'students_without_professor': student_serializer.data
                 }, status=status.HTTP_200_OK)
-            except StudentProfessorChoice.DoesNotExist:
-                return Response(status=status.HTTP_404_NOT_FOUND)
+            except Professor.DoesNotExist:
+                return Response({"message": "Professor object does not exist."}, status=status.HTTP_404_NOT_FOUND)
             
         return Response({'message': 'Usertype not correct'}, status=status.HTTP_400_BAD_REQUEST)
     

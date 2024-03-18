@@ -30,7 +30,9 @@ class StudentAdmin(admin.ModelAdmin):
     # fieldsets 元组中的第一个元素是字段集的标题
     fieldsets = [
         ("学生信息更改", {"fields": ["name", "candidate_number", "student_type", "subject", 
-                               "postgraduate_type", "study_mode", "resume", "avatar", "phone_number"]}),
+                               "postgraduate_type", "study_mode", "resume", "avatar", "phone_number",
+                               "initial_exam_score", "initial_rank", "secondary_exam_score",
+                               "secondary_rank", "final_rank"]}),
     ]
     list_display = ["candidate_number", "name", "subject", "study_mode", "student_type", "postgraduate_type", "is_selected"]
     list_filter = ["subject"]

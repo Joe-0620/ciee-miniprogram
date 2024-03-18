@@ -1,0 +1,10 @@
+[2024-03-18 01:36:55,314] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-18 01:36:57,126] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-18 01:36:59,161] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-18 01:37:00,471] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/admin.py changed, reloading.
+[2024-03-18 01:37:00,780] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-18 01:37:02,083] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/serializers.py changed, reloading.
+[2024-03-18 01:37:02,405] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-18 01:37:03,699] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/views.py changed, reloading.
+[2024-03-18 01:37:04,019] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-18 01:37:05,066] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader

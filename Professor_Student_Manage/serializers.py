@@ -4,9 +4,31 @@ from django.contrib.auth.models import User
 
 
 class StudentSerializer(serializers.ModelSerializer):
+    
+    subject = serializers.SlugRelatedField(
+        read_only=True,
+        slug_field='subject_name'
+     )
+
     class Meta:
         model = Student
         fields = '__all__'  # 或者指定您想要序列化的字段
+
+    def to_representation(self, instance):
+        rep = super().to_representation(instance)
+        rep['student_type'] = self._get_student_type_display(instance)
+        rep['postgraduate_type'] = self._get_postgraduate_type_display(instance)
+        rep['study_mode'] = self._get_study_mode_display(instance)
+        return rep
+
+    def _get_student_type_display(self, instance):
+        return instance.get_student_type_display()
+    
+    def _get_postgraduate_type_display(self, instance):
+        return instance.get_postgraduate_type_display()
+    
+    def _get_study_mode_display(self, instance):
+        return instance.get_study_mode_display()
 
 
 class StudentResumeSerializer(serializers.ModelSerializer):

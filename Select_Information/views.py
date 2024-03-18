@@ -27,7 +27,9 @@ class SelectInformationView(APIView):
                 student = user.student
                 student_choices = StudentProfessorChoice.objects.filter(student=student)
                 serializer = StudentProfessorChoiceSerializer(student_choices, many=True)
-                return Response(serializer.data, status=status.HTTP_200_OK)
+                return Response({
+                    'student_choices': serializer.data
+                }, status=status.HTTP_200_OK)
             except Student.DoesNotExist:
                 return Response({"message": "Student object does not exist."}, status=status.HTTP_404_NOT_FOUND)
 
@@ -63,47 +65,36 @@ class StudentChooseProfessorView(APIView):
 
             # 查询导师是否存在
             professor = Professor.objects.get(id=professor_id)
+            print(professor)
 
-            # 确保学生和导师所在方向相同
-            student_major_direction = student.major_direction
-            professor_department = professor.department.department_name
+            # 确保学生的报考专业包含在导师的招生专业中
+            student_subject = student.subject
+            professor_enroll_subject = professor.enroll_subject.all()
 
-            if student_major_direction == '1':
-                student_department = "电气工程"
-            elif student_major_direction == '2':
-                student_department = "农业工程"
-            elif student_major_direction == '3':
-                student_department = "计算机学科方向一"
-            elif student_major_direction == '4':
-                student_department = "计算机学科方向二"
-            elif student_major_direction == '5':
-                student_department = "计算机学科方向三"
-            elif student_major_direction == '6':
-                student_department = "计算机学科方向四"
-
-            assert_choice = (student_department == professor_department)
-
+            assert_choice = student_subject in professor_enroll_subject
+            print(assert_choice)
             # 创建学生导师选择记录
             if student.is_selected:
                 return Response({'message': '您已完成导师选择'}, 
                                 status=status.HTTP_405_METHOD_NOT_ALLOWED)
-            elif StudentProfessorChoice.objects.filter(student=student, status='3'):
+            elif StudentProfessorChoice.objects.filter(student=student, status=3):
                 return Response({'message': '您已选择导师，请等待回复'}, 
                                 status=status.HTTP_409_CONFLICT)
             elif assert_choice:
                 choice = StudentProfessorChoice.objects.create(
                     student=student,
                     professor=professor,
-                    status='3',  # 请等待
+                    status=3,  # 请等待
                     chosen_by_professor=False
                 )
                 # 更新学生是否选好导师字段
                 # student.is_selected = True
                 # student.save()
-                return Response({'message': '选择成功'}, status=status.HTTP_201_CREATED)
-            return Response({'message': '请选择你的方向下的导师'}, status=status.HTTP_501_NOT_IMPLEMENTED)
+                return Response({'message': '选择成功，请等待回复'}, status=status.HTTP_201_CREATED)
+            else:
+                return Response({'message': '请选择在你的专业下招生的导师'}, status=status.HTTP_400_BAD_REQUEST)
         except Professor.DoesNotExist:
-            return Response({'message': '导师不存在'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'message': '导师不存在'}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({'message': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
@@ -115,9 +106,11 @@ class ProfessorChooseStudentView(APIView):
         try:
             professor = request.user.professor
             student_id = request.data.get('student_id')
-            student_type = request.data.get('student_type')
-            postgraduate_type = request.data.get('postgraduate_type')
+            student_type = int(request.data.get('student_type'))
+            postgraduate_type = int(request.data.get('postgraduate_type'))
             operation = request.data.get('operation')
+
+            print(operation)
             # 查询学生是否存在
             student = Student.objects.get(id=student_id)
             # 若学生已经完成导师选择
@@ -128,9 +121,10 @@ class ProfessorChooseStudentView(APIView):
                 # 同意请求
                 if operation == '1':
                     # 若为硕士
-                    if student_type in ['1', '2']:
+                    if student_type in [1, 2]:
                         # 若为北京专硕
-                        if postgraduate_type == '1':
+                        if postgraduate_type == 1:
+                            print("接受请求")
                             # 若还有名额
                             if professor.professional_quota > 0:
                                 # 获取最近的一条记录
@@ -138,7 +132,7 @@ class ProfessorChooseStudentView(APIView):
                                     student=student, professor=professor).latest('submit_date')
                                 
                                 # 如果最近的记录是等待审核状态
-                                if latest_choice.status == '3':
+                                if latest_choice.status == 3:
                                     latest_choice.status = operation
                                     latest_choice.chosen_by_professor = True
                                     latest_choice.finish_time = timezone.now()
@@ -159,7 +153,7 @@ class ProfessorChooseStudentView(APIView):
                                     return Response({'message': '不存在等待审核的记录'}, status=status.HTTP_202_ACCEPTED)
                             else:
                                     return Response({'message': '导师北京专硕名额已满'}, status=status.HTTP_403_FORBIDDEN)
-                        if postgraduate_type == '4':
+                        if postgraduate_type == 4:
                             # 若还有名额
                             if professor.professional_yt_quota > 0:
                                 # 获取最近的一条记录
@@ -167,7 +161,7 @@ class ProfessorChooseStudentView(APIView):
                                     student=student, professor=professor).latest('submit_date')
                                 
                                 # 如果最近的记录是等待审核状态
-                                if latest_choice.status == '3':
+                                if latest_choice.status == 3:
                                     latest_choice.status = operation
                                     latest_choice.chosen_by_professor = True
                                     latest_choice.finish_time = timezone.now()
@@ -216,7 +210,7 @@ class ProfessorChooseStudentView(APIView):
                             else:
                                     return Response({'message': '导师烟台专硕名额已满'}, status=status.HTTP_403_FORBIDDEN)
                         # 若为学硕
-                        if postgraduate_type == '2':
+                        if postgraduate_type == 2:
                             # 若还有名额
                             if professor.academic_quota > 0:
                                 # 获取最近的一条记录
@@ -225,7 +219,7 @@ class ProfessorChooseStudentView(APIView):
                                 
                                 print(latest_choice)
                                 # 如果最近的记录是等待审核状态
-                                if latest_choice.status == '3':
+                                if latest_choice.status == 3:
                                     latest_choice.status = operation
                                     latest_choice.chosen_by_professor = True
                                     latest_choice.finish_time = timezone.now()
@@ -248,7 +242,7 @@ class ProfessorChooseStudentView(APIView):
                                 return Response({'message': '导师学硕名额已满'}, status=status.HTTP_403_FORBIDDEN)
 
                     # 若为博士
-                    if student_type == '3':
+                    if student_type == 3:
                         # 若还有名额
                         if professor.doctor_quota > 0:
                             # 获取最近的一条记录
@@ -256,7 +250,7 @@ class ProfessorChooseStudentView(APIView):
                                     student=student, professor=professor).latest('submit_date')
                                 
                                 # 如果最近的记录是等待审核状态
-                                if latest_choice.status == '3':
+                                if latest_choice.status == 3:
                                     latest_choice.status = operation
                                     latest_choice.chosen_by_professor = True
                                     latest_choice.finish_time = timezone.now()
@@ -277,9 +271,9 @@ class ProfessorChooseStudentView(APIView):
                                     return Response({'message': '已存在等待审核的记录'}, status=status.HTTP_202_ACCEPTED)
                         else:
                             return Response({'message': '导师博士名额已满'}, status=status.HTTP_403_FORBIDDEN)
-
                 # 拒绝请求
                 elif operation == '2':
+                    print("拒绝请求")
                     StudentProfessorChoice.objects.filter(student=student, professor=professor).update(
                         status=operation,  # 拒绝
                         chosen_by_professor=False,
@@ -291,7 +285,7 @@ class ProfessorChooseStudentView(APIView):
                         student=student, professor=professor).latest('submit_date')
                     
                     # 如果最近的记录是等待审核状态
-                    if latest_choice.status == '3':
+                    if latest_choice.status == 3:
                         latest_choice.status = operation
                         latest_choice.finish_time = timezone.now()
                         latest_choice.chosen_by_professor = False
@@ -306,5 +300,6 @@ class ProfessorChooseStudentView(APIView):
         except Student.DoesNotExist:
             return Response({'message': '学生不存在'}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
-            return Response({'message': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({'message': '其他错误'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response({'message': '未知错误'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         

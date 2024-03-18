@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 
 class StudentProfessorChoiceSerializer(serializers.ModelSerializer):
     student = serializers.CharField(source='student.name')
-    student_major = serializers.CharField(source='student.major')
+    student_subject = serializers.CharField(source='student.subject')
     student_type = serializers.CharField(source='student.student_type')
     student_postgraduate_type = serializers.CharField(source='student.postgraduate_type')
     student_id = serializers.CharField(source='student.id')
@@ -17,7 +17,7 @@ class StudentProfessorChoiceSerializer(serializers.ModelSerializer):
     class Meta:
         model = StudentProfessorChoice
         # fields = '__all__'  # 或者指定您想要序列化的字段
-        fields = ['student', 'student_major', 'student_type', 'student_postgraduate_type', 'student_id', 
+        fields = ['student', 'student_subject', 'student_type', 'student_postgraduate_type', 'student_id', 
                   'professor', 'professor_department', 'status', 'chosen_by_professor', 'submit_date', 
                   'finish_time', 'student_phone']
 

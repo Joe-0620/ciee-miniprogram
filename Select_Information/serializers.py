@@ -10,6 +10,7 @@ class StudentProfessorChoiceSerializer(serializers.ModelSerializer):
     student_type = serializers.CharField(source='student.student_type')
     student_postgraduate_type = serializers.CharField(source='student.postgraduate_type')
     student_id = serializers.CharField(source='student.id')
+    professor_id = serializers.CharField(source='professor.id')
     professor = serializers.CharField(source='professor.name')
     professor_department = serializers.CharField(source='professor.department')
     student_phone = serializers.CharField(source='student.phone_number')
@@ -18,7 +19,7 @@ class StudentProfessorChoiceSerializer(serializers.ModelSerializer):
         model = StudentProfessorChoice
         # fields = '__all__'  # 或者指定您想要序列化的字段
         fields = ['student', 'student_subject', 'student_type', 'student_postgraduate_type', 'student_id', 
-                  'professor', 'professor_department', 'status', 'chosen_by_professor', 'submit_date', 
+                  'professor', 'professor_id', 'professor_department', 'status', 'chosen_by_professor', 'submit_date', 
                   'finish_time', 'student_phone']
 
     def get_student_name(self, obj):

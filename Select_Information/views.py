@@ -303,3 +303,29 @@ class ProfessorChooseStudentView(APIView):
             return Response({'message': '其他错误'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return Response({'message': '未知错误'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
+class StudentCancelView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def post(self, request):
+        try:
+            student = request.user.student  # 获取当前登录的学生
+
+            professor_id = request.data.get('professor_id')  # 获取导师的id
+
+            # 查找学生提交的选择
+            choice = StudentProfessorChoice.objects.filter(student=student, 
+                                                           professor__id=professor_id, 
+                                                           status=3).first()
+            if choice:
+                # 如果选择存在并且还在等待状态，那么更改状态为已撤销
+                choice.status = 4
+                choice.finish_time = timezone.now()
+                choice.save()
+                return Response({'message': '成功撤销选择'}, status=status.HTTP_200_OK)
+            else:
+                # 如果没有找到符合条件的选择，那么返回一个错误消息
+                return Response({'message': '没有找到符合条件的选择'}, status=status.HTTP_400_BAD_REQUEST)
+        except Student.DoesNotExist:
+            return Response({'message': '学生不存在'}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response({'message': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

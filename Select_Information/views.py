@@ -224,33 +224,7 @@ class ProfessorChooseStudentView(APIView):
                                     department.used_professional_yt_quota += 1
                                     department.save()
 
-                                    #发送订阅消息
-                                    access_token = "78_1f-TRdT0Q_DJWlt2UYVIolmfKTzGCYaR_ixrJqvdItf9UD6q3ZnFRP1rKHAnpRrfhzjgUVvEc3Wlcg9s40-brEt_hqEweaRiqyHhvAawadHo6gUPiaWvIhFOqKcWJNaAAAERV"
-                                    url = 'https://api.weixin.qq.com/cgi-bin/message/subscribe/send'
-                                    params = {
-                                        'access_token': '78_1f-TRdT0Q_DJWlt2UYVIolmfKTzGCYaR_ixrJqvdItf9UD6q3ZnFRP1rKHAnpRrfhzjgUVvEc3Wlcg9s40-brEt_hqEweaRiqyHhvAawadHo6gUPiaWvIhFOqKcWJNaAAAERV'
-                                    }
-                                    data = {
-                                        # 接收者（用户）的 openid
-                                        "touser": "osRxm5XJX9U5pGLqvT_tLEdkq8OQ",
-                                        "template_id": "aV2bMEubY3p8j7-65-ddxZ9gYx5mUZVAIlFdHspqmDE",
-                                        "page": "",
-                                        "miniprogram_state":"formal",
-                                        "data": {
-                                            "phrase1": {
-                                            "value": "审核结果"
-                                            },
-                                            "time11": {
-                                            "value": "审核时间"
-                                            },
-                                            "thing18": {
-                                            "value": "审批人"
-                                            }
-                                        }
-                                    }
-                                    response = requests.post(url, params=params, json=data)
-                                    print(response)
-
+                                    self.send_notification(student_openid, 'accepted')
 
                                     return Response({'message': '操作成功'}, status=status.HTTP_202_ACCEPTED)
                                 else:
@@ -283,6 +257,8 @@ class ProfessorChooseStudentView(APIView):
                                     department.used_academic_quota += 1
                                     department.save()
 
+                                    self.send_notification(student_openid, 'accepted')
+
                                     return Response({'message': '操作成功'}, status=status.HTTP_202_ACCEPTED)
                                 else:
                                     return Response({'message': '不存在等待审核的记录'}, status=status.HTTP_202_ACCEPTED)
@@ -314,6 +290,8 @@ class ProfessorChooseStudentView(APIView):
                                     department.used_doctor_quota += 1
                                     department.save()
 
+                                    self.send_notification(student_openid, 'accepted')
+
                                     return Response({'message': '操作成功'}, status=status.HTTP_202_ACCEPTED)
                                 else:
                                     return Response({'message': '已存在等待审核的记录'}, status=status.HTTP_202_ACCEPTED)
@@ -321,8 +299,7 @@ class ProfessorChooseStudentView(APIView):
                             return Response({'message': '导师博士名额已满'}, status=status.HTTP_403_FORBIDDEN)
                 # 拒绝请求
                 elif operation == '2':
-                    self.send_notification(student_openid, 'rejected')
-
+                    
                     print("拒绝请求")
                     StudentProfessorChoice.objects.filter(student=student, professor=professor).update(
                         status=operation,  # 拒绝
@@ -340,6 +317,9 @@ class ProfessorChooseStudentView(APIView):
                         latest_choice.finish_time = timezone.now()
                         latest_choice.chosen_by_professor = False
                         latest_choice.save()
+
+                        self.send_notification(student_openid, 'rejected')
+                        
                         return Response({'message': '操作成功'}, status=status.HTTP_202_ACCEPTED)
                     else:
                         return Response({'message': '不存在等待审核的记录'}, status=status.HTTP_202_ACCEPTED)

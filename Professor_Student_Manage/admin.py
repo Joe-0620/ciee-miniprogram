@@ -32,7 +32,7 @@ class StudentAdmin(admin.ModelAdmin):
         ("学生信息更改", {"fields": ["name", "candidate_number", "student_type", "subject", 
                                "postgraduate_type", "study_mode", "resume", "avatar", "phone_number",
                                "initial_exam_score", "initial_rank", "secondary_exam_score",
-                               "secondary_rank", "final_rank"]}),
+                               "secondary_rank", "final_rank", "is_selected"]}),
     ]
     list_display = ["candidate_number", "name", "subject", "study_mode", "student_type", "postgraduate_type", "is_selected"]
     list_filter = ["subject"]

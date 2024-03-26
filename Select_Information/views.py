@@ -66,6 +66,10 @@ class StudentChooseProfessorView(APIView):
             # 查询导师是否存在
             professor = Professor.objects.get(id=professor_id)
             print(professor)
+            # 查询导师的openid
+            professor_wechat_account = WeChatAccount.objects.get(user=professor.user_name)
+            professor_openid = professor_wechat_account.openid
+            print(professor_openid)
 
             # 确保学生的报考专业包含在导师的招生专业中
             student_subject = student.subject
@@ -90,6 +94,7 @@ class StudentChooseProfessorView(APIView):
                 # 更新学生是否选好导师字段
                 # student.is_selected = True
                 # student.save()
+                self.send_notification(professor_openid)
                 return Response({'message': '选择成功，请等待回复'}, status=status.HTTP_201_CREATED)
             else:
                 return Response({'message': '请选择在你的专业下招生的导师'}, status=status.HTTP_400_BAD_REQUEST)
@@ -97,6 +102,40 @@ class StudentChooseProfessorView(APIView):
             return Response({'message': '导师不存在'}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({'message': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    def send_notification(self, professor_openid):
+        # 学生的openid和小程序的access_token
+        access_token = "78__Ce8rE6383BT_YbCwlCnHe0lJAeJZl7nDGqsmdLNH3d2qEmwUt3fNgUEZJtE49HaPIBe_3hQokIw0RirU4ZJyFyjsZQp-FwYgF1TvlOZQhN0k1-0O-9T0KaUzFQZJBgACAQAS"  # 从某处安全地获取access_token
+
+        # 微信小程序发送订阅消息的API endpoint
+        url = f'https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token={access_token}'
+
+        # 构造消息数据
+        # 注意：这里的key（如phrase1, time11等）和template_id需要根据你在微信后台配置的模板来确定
+        data = {
+            "touser": professor_openid,
+            "template_id": "ofYpszNgPbZ2GO8ATfQBXobuKRuWco1DjSUrGeU8mLE",  # 你在微信小程序后台设置的模板ID
+            "page": "index",  # 用户点击消息后跳转的小程序页面
+            "data": {
+                "phrase8": {"value": "有学生选择了您，需要您进行处理"},
+                "date3": {"value": "2024-03-26"},
+                "date4": {"value": "2024-03-26"}
+            }
+        }
+
+        # 补充其他必要的信息，如审核时间和审批人姓名
+        data["data"]["date3"]["value"] = "2024-03-26 10:00:00"  # 示例时间，应替换为实际时间
+        data["data"]["date4"]["value"] = "2024-03-26 11:00:00"
+
+        # 发送POST请求
+        response = requests.post(url, json=data)
+        response_data = response.json()
+
+        # 检查请求是否成功
+        if response_data.get("errcode") == 0:
+            print("通知发送成功")
+        else:
+            print(f"通知发送失败: {response_data.get('errmsg')}")
         
 
 class ProfessorChooseStudentView(APIView):
@@ -153,6 +192,8 @@ class ProfessorChooseStudentView(APIView):
                                     department = professor.department
                                     department.used_professional_quota += 1
                                     department.save()
+
+                                    self.send_notification(student_openid, 'accepted')
 
                                     return Response({'message': '操作成功'}, status=status.HTTP_202_ACCEPTED)
                                 else:
@@ -280,7 +321,7 @@ class ProfessorChooseStudentView(APIView):
                             return Response({'message': '导师博士名额已满'}, status=status.HTTP_403_FORBIDDEN)
                 # 拒绝请求
                 elif operation == '2':
-                    send_notification(student_openid, 'rejected')
+                    self.send_notification(student_openid, 'rejected')
 
                     print("拒绝请求")
                     StudentProfessorChoice.objects.filter(student=student, professor=professor).update(

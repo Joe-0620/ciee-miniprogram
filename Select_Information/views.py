@@ -108,6 +108,7 @@ class StudentChooseProfessorView(APIView):
     def send_notification(self, professor_openid):
         # 学生的openid和小程序的access_token
         access_token = cache.get('access_token')
+        print(access_token)
         # 微信小程序发送订阅消息的API endpoint
         url = f'https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token={access_token}'
 
@@ -340,6 +341,7 @@ class ProfessorChooseStudentView(APIView):
     def send_notification(self, student_openid, action):
         # 学生的openid和小程序的access_token
         access_token = cache.get('access_token')
+        print(access_token)
         # 微信小程序发送订阅消息的API endpoint
         url = f'https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token={access_token}'
 

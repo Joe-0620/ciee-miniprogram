@@ -115,12 +115,12 @@ class StudentChooseProfessorView(APIView):
         # 注意：这里的key（如phrase1, time11等）和template_id需要根据你在微信后台配置的模板来确定
         data = {
             "touser": professor_openid,
-            "template_id": "ofYpszNgPbZ2GO8ATfQBXobuKRuWco1DjSUrGeU8mLE",  # 你在微信小程序后台设置的模板ID
+            "template_id": "38wdqTPRI4y4eyGFrE1LrcO0Gd5-z2f2AJGK3DM0mS4",  # 你在微信小程序后台设置的模板ID
             "page": "index",  # 用户点击消息后跳转的小程序页面
             "data": {
-                "phrase8": {"value": "有学生选择了您，需要您进行处理"},
-                "date3": {"value": "2024-03-26"},
-                "date4": {"value": "2024-03-26"}
+                "thing1": {"value": "有学生选择了您"},
+                "time7": {"value": "2024-03-26"},
+                "phrase10": {"value": "有学生选择了您，需要您进行处理"}
             }
         }
 
@@ -131,8 +131,7 @@ class StudentChooseProfessorView(APIView):
         formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S")
 
         # 将格式化后的时间设置为消息数据中的时间值
-        data["data"]["date3"]["value"] = formatted_time
-        data["data"]["date4"]["value"] = formatted_time
+        data["data"]["time7"]["value"] = formatted_time
 
         # 发送POST请求
         response = requests.post(url, json=data)
@@ -304,7 +303,6 @@ class ProfessorChooseStudentView(APIView):
                             return Response({'message': '导师博士名额已满'}, status=status.HTTP_403_FORBIDDEN)
                 # 拒绝请求
                 elif operation == '2':
-                    self.send_notification(student_openid, 'rejected')
                     print("拒绝请求")
                     StudentProfessorChoice.objects.filter(student=student, professor=professor).update(
                         status=operation,  # 拒绝
@@ -315,6 +313,8 @@ class ProfessorChooseStudentView(APIView):
                     # 获取最近的一条记录
                     latest_choice = StudentProfessorChoice.objects.filter(
                         student=student, professor=professor).latest('submit_date')
+
+                    self.send_notification(student_openid, 'rejected')
                     
                     # 如果最近的记录是等待审核状态
                     if latest_choice.status == 3:
@@ -323,7 +323,9 @@ class ProfessorChooseStudentView(APIView):
                         latest_choice.chosen_by_professor = False
                         latest_choice.save()
 
-                        return Response({'message': '操作成功'}, status=status.HTTP_202_ACCEPTED)
+                        print("即将执行发送消息")
+
+                        return Response({'message': '操作成功'}, status=status.HTTP_200_OK)
                     else:
                         return Response({'message': '不存在等待审核的记录'}, status=status.HTTP_202_ACCEPTED)
 

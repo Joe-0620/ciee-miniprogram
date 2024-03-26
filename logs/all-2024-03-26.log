@@ -948,3 +948,30 @@ django.db.utils.IntegrityError: (1062, "Duplicate entry '2' for key 'user_id'")
 [2024-03-26 09:45:32,992] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
 [2024-03-26 09:45:38,604] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
 [2024-03-26 09:46:18,589] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 09:47:31,008] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 09:47:52,824] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 09:47:57,573] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 4062
+[2024-03-26 09:47:58,163] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1584
+[2024-03-26 09:48:07,759] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 42891
+[2024-03-26 09:48:15,980] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Select_Information/select-student/ HTTP/1.1" 202 44
+[2024-03-26 09:48:17,599] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 42891
+[2024-03-26 09:48:26,997] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 42921
+[2024-03-26 09:49:02,050] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Select_Information/views.py changed, reloading.
+[2024-03-26 09:49:02,485] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 09:49:22,440] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Select_Information/views.py changed, reloading.
+[2024-03-26 09:49:22,696] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 09:49:24,469] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 09:49:41,955] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 42921
+[2024-03-26 09:49:49,741] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 4062
+[2024-03-26 09:49:50,358] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1584
+[2024-03-26 09:49:59,969] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 43614
+[2024-03-26 09:50:09,842] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 43614
+[2024-03-26 09:50:12,658] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Select_Information/select-student/ HTTP/1.1" 202 44
+[2024-03-26 09:50:24,328] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 43644
+[2024-03-26 09:51:32,036] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 09:54:41,979] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1584
+[2024-03-26 09:54:42,410] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1584
+[2024-03-26 09:54:51,430] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 44337
+[2024-03-26 09:54:55,237] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 09:55:59,370] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 09:56:08,114] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader

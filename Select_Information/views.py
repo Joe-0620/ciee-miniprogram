@@ -78,6 +78,7 @@ class StudentChooseProfessorView(APIView):
 
             assert_choice = student_subject in professor_enroll_subject
             print(assert_choice)
+            self.send_notification(professor_openid)
             # 创建学生导师选择记录
             if student.is_selected:
                 return Response({'message': '您已完成导师选择'}, 
@@ -95,7 +96,6 @@ class StudentChooseProfessorView(APIView):
                 # 更新学生是否选好导师字段
                 # student.is_selected = True
                 # student.save()
-                self.send_notification(professor_openid)
                 return Response({'message': '选择成功，请等待回复'}, status=status.HTTP_201_CREATED)
             else:
                 return Response({'message': '请选择在你的专业下招生的导师'}, status=status.HTTP_400_BAD_REQUEST)
@@ -177,6 +177,7 @@ class ProfessorChooseStudentView(APIView):
                         # 若为北京专硕
                         if postgraduate_type == 1:
                             print("接受请求")
+                            self.send_notification(student_openid, 'accepted')
                             # 若还有名额
                             if professor.professional_quota > 0:
                                 # 获取最近的一条记录
@@ -200,14 +201,13 @@ class ProfessorChooseStudentView(APIView):
                                     department.used_professional_quota += 1
                                     department.save()
 
-                                    self.send_notification(student_openid, 'accepted')
-
                                     return Response({'message': '操作成功'}, status=status.HTTP_202_ACCEPTED)
                                 else:
                                     return Response({'message': '不存在等待审核的记录'}, status=status.HTTP_202_ACCEPTED)
                             else:
                                     return Response({'message': '导师北京专硕名额已满'}, status=status.HTTP_403_FORBIDDEN)
                         if postgraduate_type == 4:
+                            self.send_notification(student_openid, 'accepted')
                             # 若还有名额
                             if professor.professional_yt_quota > 0:
                                 # 获取最近的一条记录
@@ -230,8 +230,6 @@ class ProfessorChooseStudentView(APIView):
                                     department = professor.department
                                     department.used_professional_yt_quota += 1
                                     department.save()
-
-                                    self.send_notification(student_openid, 'accepted')
 
                                     return Response({'message': '操作成功'}, status=status.HTTP_202_ACCEPTED)
                                 else:
@@ -306,7 +304,7 @@ class ProfessorChooseStudentView(APIView):
                             return Response({'message': '导师博士名额已满'}, status=status.HTTP_403_FORBIDDEN)
                 # 拒绝请求
                 elif operation == '2':
-                    
+                    self.send_notification(student_openid, 'rejected')
                     print("拒绝请求")
                     StudentProfessorChoice.objects.filter(student=student, professor=professor).update(
                         status=operation,  # 拒绝
@@ -324,8 +322,6 @@ class ProfessorChooseStudentView(APIView):
                         latest_choice.finish_time = timezone.now()
                         latest_choice.chosen_by_professor = False
                         latest_choice.save()
-
-                        self.send_notification(student_openid, 'rejected')
 
                         return Response({'message': '操作成功'}, status=status.HTTP_202_ACCEPTED)
                     else:

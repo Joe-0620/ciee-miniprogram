@@ -113,6 +113,12 @@ class ProfessorChooseStudentView(APIView):
             print(operation)
             # 查询学生是否存在
             student = Student.objects.get(id=student_id)
+            # 查询学生的openid
+            student_wechat_account = WeChatAccount.objects.get(user=student.user_name)
+            student_openid = student_wechat_account.openid
+            print(student_openid)
+
+
             # 若学生已经完成导师选择
             if student.is_selected:
                 return Response({'message': '该学生已完成导师选择'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
@@ -184,6 +190,7 @@ class ProfessorChooseStudentView(APIView):
                                         'access_token': '78_1f-TRdT0Q_DJWlt2UYVIolmfKTzGCYaR_ixrJqvdItf9UD6q3ZnFRP1rKHAnpRrfhzjgUVvEc3Wlcg9s40-brEt_hqEweaRiqyHhvAawadHo6gUPiaWvIhFOqKcWJNaAAAERV'
                                     }
                                     data = {
+                                        # 接收者（用户）的 openid
                                         "touser": "osRxm5XJX9U5pGLqvT_tLEdkq8OQ",
                                         "template_id": "aV2bMEubY3p8j7-65-ddxZ9gYx5mUZVAIlFdHspqmDE",
                                         "page": "",
@@ -273,6 +280,8 @@ class ProfessorChooseStudentView(APIView):
                             return Response({'message': '导师博士名额已满'}, status=status.HTTP_403_FORBIDDEN)
                 # 拒绝请求
                 elif operation == '2':
+                    send_notification(student_openid, 'rejected')
+
                     print("拒绝请求")
                     StudentProfessorChoice.objects.filter(student=student, professor=professor).update(
                         status=operation,  # 拒绝
@@ -302,6 +311,46 @@ class ProfessorChooseStudentView(APIView):
         except Exception as e:
             return Response({'message': '其他错误'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return Response({'message': '未知错误'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    def send_notification(self, student_openid, action):
+        # 学生的openid和小程序的access_token
+        access_token = "78__Ce8rE6383BT_YbCwlCnHe0lJAeJZl7nDGqsmdLNH3d2qEmwUt3fNgUEZJtE49HaPIBe_3hQokIw0RirU4ZJyFyjsZQp-FwYgF1TvlOZQhN0k1-0O-9T0KaUzFQZJBgACAQAS"  # 从某处安全地获取access_token
+
+        # 微信小程序发送订阅消息的API endpoint
+        url = f'https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token={access_token}'
+
+        # 构造消息数据
+        # 注意：这里的key（如phrase1, time11等）和template_id需要根据你在微信后台配置的模板来确定
+        data = {
+            "touser": student_openid,
+            "template_id": "S1D5wX7_WY5BIfZqw0dEn8BQ6oqGlF_hFO73ZSmG9YI",  # 你在微信小程序后台设置的模板ID
+            "page": "index",  # 用户点击消息后跳转的小程序页面
+            "data": {
+                "phrase5": {"value": "审核结果"},
+                "date6": {"value": "2024-03-26"},
+                "date7": {"value": "2024-03-26"}
+            }
+        }
+
+        # 对于不同的操作，发送不同的消息
+        if action == "accepted":
+            data["data"]["phrase5"]["value"] = "接受"
+        elif action == "rejected":
+            data["data"]["phrase5"]["value"] = "拒绝"
+
+        # 补充其他必要的信息，如审核时间和审批人姓名
+        data["data"]["date6"]["value"] = "2024-03-26 10:00:00"  # 示例时间，应替换为实际时间
+        data["data"]["date7"]["value"] = "2024-03-26 11:00:00"
+
+        # 发送POST请求
+        response = requests.post(url, json=data)
+        response_data = response.json()
+
+        # 检查请求是否成功
+        if response_data.get("errcode") == 0:
+            print("通知发送成功")
+        else:
+            print(f"通知发送失败: {response_data.get('errmsg')}")
         
 class StudentCancelView(APIView):
     permission_classes = [IsAuthenticated]

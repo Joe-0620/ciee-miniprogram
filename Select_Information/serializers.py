@@ -11,6 +11,7 @@ class StudentProfessorChoiceSerializer(serializers.ModelSerializer):
     student_postgraduate_type = serializers.CharField(source='student.postgraduate_type')
     student_id = serializers.CharField(source='student.id')
     professor_id = serializers.CharField(source='professor.id')
+    professor_avatar = serializers.CharField(source='professor.avatar')
     professor = serializers.CharField(source='professor.name')
     professor_department = serializers.CharField(source='professor.department')
     student_avatar = serializers.CharField(source='student.avatar')
@@ -24,7 +25,7 @@ class StudentProfessorChoiceSerializer(serializers.ModelSerializer):
     class Meta:
         model = StudentProfessorChoice
         # fields = '__all__'  # 或者指定您想要序列化的字段
-        fields = ['student', 'student_subject', 'student_type', 'student_postgraduate_type', 'student_id', 
+        fields = ['student', 'student_subject', 'student_type', 'student_postgraduate_type', 'student_id', 'professor_avatar',
                   'professor', 'professor_id', 'professor_department', 'status', 'chosen_by_professor', 'submit_date', 
                   'finish_time', 'student_phone', 'student_avatar', 'student_initial_exam_score', 'student_secondary_exam_score',
                   'student_initial_rank', 'student_secondary_rank', 'student_final_rank']

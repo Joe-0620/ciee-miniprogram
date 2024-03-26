@@ -69,7 +69,7 @@ class ProfessorEnrollInfoSerializer(serializers.ModelSerializer):
 class ProfessorPartialUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Professor
-        fields = ['email', 'research_areas', 'personal_page', 'avatar']  # 允许修改的字段
+        fields = ['email', 'research_areas', 'personal_page', 'avatar', 'contact_details']  # 允许修改的字段
 
 
 class StudentPartialUpdateSerializer(serializers.ModelSerializer):

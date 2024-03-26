@@ -376,3 +376,8 @@ django.db.utils.IntegrityError: (1062, "Duplicate entry '2' for key 'user_id'")
 [2024-03-26 06:08:54,741] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
 [2024-03-26 06:20:37,607] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Select_Information/serializers.py changed, reloading.
 [2024-03-26 06:20:38,043] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 06:27:22,391] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/models.py changed, reloading.
+[2024-03-26 06:27:22,704] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 06:27:44,102] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 06:48:57,939] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 06:48:59,533] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader

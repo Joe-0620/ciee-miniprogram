@@ -32,6 +32,7 @@ class Professor(models.Model):
     remaining_quota = models.IntegerField(default=0, verbose_name="总剩余名额")
     personal_page = models.CharField(max_length=300, blank=True, verbose_name="个人介绍")
     avatar = models.CharField(max_length=500, null=True, blank=True, verbose_name="照片下载地址")
+    contact_details = models.CharField(max_length=50, null=True, blank=True, verbose_name="联系方式")
 
     Department_Position = [
         [0, "非审核人"],

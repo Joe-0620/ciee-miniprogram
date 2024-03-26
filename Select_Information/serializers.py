@@ -21,6 +21,7 @@ class StudentProfessorChoiceSerializer(serializers.ModelSerializer):
     student_initial_rank = serializers.CharField(source='student.initial_rank')
     student_secondary_rank = serializers.CharField(source='student.secondary_rank')
     student_final_rank = serializers.CharField(source='student.final_rank')
+    # student_final_rank = serializers.CharField(source='student.final_rank')
 
     class Meta:
         model = StudentProfessorChoice

@@ -885,3 +885,5 @@ django.db.utils.IntegrityError: (1062, "Duplicate entry '2' for key 'user_id'")
 [2024-03-26 09:15:22,869] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
 [2024-03-26 09:15:33,353] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
 [2024-03-26 09:16:59,930] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 09:28:18,348] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 09:29:17,606] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader

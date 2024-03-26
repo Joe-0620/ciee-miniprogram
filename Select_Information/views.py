@@ -11,6 +11,7 @@ from Select_Information.models import StudentProfessorChoice
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from Professor_Student_Manage.serializers import StudentSerializer
+from datetime import datetime
 
 
 # Create your views here.
@@ -123,9 +124,15 @@ class StudentChooseProfessorView(APIView):
             }
         }
 
-        # 补充其他必要的信息，如审核时间和审批人姓名
-        data["data"]["date3"]["value"] = "2024-03-26 10:00:00"  # 示例时间，应替换为实际时间
-        data["data"]["date4"]["value"] = "2024-03-26 11:00:00"
+        # 获取当前时间
+        current_time = datetime.now()
+
+        # 格式化时间为 YYYY-MM-DD HH:MM:SS 格式
+        formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S")
+
+        # 将格式化后的时间设置为消息数据中的时间值
+        data["data"]["date3"]["value"] = formatted_time
+        data["data"]["date4"]["value"] = formatted_time
 
         # 发送POST请求
         response = requests.post(url, json=data)
@@ -319,7 +326,7 @@ class ProfessorChooseStudentView(APIView):
                         latest_choice.save()
 
                         self.send_notification(student_openid, 'rejected')
-                        
+
                         return Response({'message': '操作成功'}, status=status.HTTP_202_ACCEPTED)
                     else:
                         return Response({'message': '不存在等待审核的记录'}, status=status.HTTP_202_ACCEPTED)

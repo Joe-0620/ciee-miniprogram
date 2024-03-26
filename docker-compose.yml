@@ -18,6 +18,36 @@ services:
       - MYSQL_USERNAME=root
       - MYSQL_PASSWORD=WSGnnA83
       - MYSQL_ADDRESS=sh-cynosdbmysql-grp-buouyy58.sql.tencentcdb.com:26437
+    depends_on:
+      - redis
+  redis:
+    image: redis:alpine
+    container_name: wxcloud_ciee-miniprogram_redis
+    ports:
+      - '6379:6379'
+  celeryworker:
+    build: .
+    volumes:
+      - .:/app
+    command: /root/.local/bin/celery -A wxcloudrun worker --loglevel=info
+    environment:
+      - C_FORCE_ROOT=true
+      - MYSQL_USERNAME=root
+      - MYSQL_PASSWORD=WSGnnA83
+      - MYSQL_ADDRESS=sh-cynosdbmysql-grp-buouyy58.sql.tencentcdb.com:26437
+    depends_on:
+      - app
+  celerybeat:
+    build: .
+    volumes:
+      - .:/app
+    command: /root/.local/bin/celery -A wxcloudrun beat --loglevel=info
+    environment:
+      - MYSQL_USERNAME=root
+      - MYSQL_PASSWORD=WSGnnA83
+      - MYSQL_ADDRESS=sh-cynosdbmysql-grp-buouyy58.sql.tencentcdb.com:26437
+    depends_on:
+      - app
 networks:
   default:
     external:

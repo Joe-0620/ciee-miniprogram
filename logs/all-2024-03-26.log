@@ -975,3 +975,269 @@ django.db.utils.IntegrityError: (1062, "Duplicate entry '2' for key 'user_id'")
 [2024-03-26 09:54:55,237] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
 [2024-03-26 09:55:59,370] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
 [2024-03-26 09:56:08,114] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 09:59:20,471] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/user-login/ HTTP/1.1" 200 36
+[2024-03-26 09:59:20,963] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1584
+[2024-03-26 09:59:21,413] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1584
+[2024-03-26 09:59:23,177] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1584
+[2024-03-26 09:59:23,615] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1584
+[2024-03-26 09:59:31,735] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1584
+[2024-03-26 09:59:32,161] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1584
+[2024-03-26 09:59:32,594] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1584
+[2024-03-26 09:59:33,000] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1584
+[2024-03-26 09:59:33,435] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 44337
+[2024-03-26 09:59:43,301] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 44337
+[2024-03-26 10:01:01,751] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/wechataccount/ HTTP/1.1" 200 10008
+[2024-03-26 10:01:02,081] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-26 10:02:46,195] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Select_Information/views.py changed, reloading.
+[2024-03-26 10:02:46,496] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 10:07:01,162] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 10:07:27,266] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 10:08:01,073] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/wechataccount/ HTTP/1.1" 200 10008
+[2024-03-26 10:08:01,396] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-26 10:08:03,380] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Professor_Student_Manage/wechataccount/ HTTP/1.1" 302 0
+[2024-03-26 10:08:03,895] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/wechataccount/ HTTP/1.1" 200 10129
+[2024-03-26 10:08:04,227] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-26 10:08:04,246] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-alert.svg HTTP/1.1" 200 504
+[2024-03-26 10:08:07,869] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Professor_Student_Manage/wechataccount/ HTTP/1.1" 200 8311
+[2024-03-26 10:08:07,888] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/cancel.js HTTP/1.1" 200 884
+[2024-03-26 10:08:09,278] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Professor_Student_Manage/wechataccount/ HTTP/1.1" 302 0
+[2024-03-26 10:08:09,783] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/wechataccount/ HTTP/1.1" 200 8159
+[2024-03-26 10:08:10,117] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-26 10:08:22,725] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 18590
+[2024-03-26 10:08:23,066] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-26 10:08:36,805] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/wechataccount/ HTTP/1.1" 200 9657
+[2024-03-26 10:08:36,809] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 302 0
+[2024-03-26 10:08:37,159] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-26 10:08:41,787] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /userlogin/ HTTP/1.1" 200 521
+[2024-03-26 10:08:42,285] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 436
+[2024-03-26 10:08:42,736] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 436
+[2024-03-26 10:08:45,194] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 436
+[2024-03-26 10:08:45,653] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 436
+[2024-03-26 10:08:47,150] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=student HTTP/1.1" 200 8667
+[2024-03-26 10:08:47,294] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 4062
+[2024-03-26 10:08:47,713] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 4062
+[2024-03-26 10:08:49,575] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=student HTTP/1.1" 200 8667
+[2024-03-26 10:08:54,367] [log.py:224] [log:log_response] [WARNING]- Conflict: /Select_Information/select-professor/
+[2024-03-26 10:08:54,370] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /Select_Information/select-professor/ HTTP/1.1" 409 50
+[2024-03-26 10:10:22,172] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 436
+[2024-03-26 10:10:24,186] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=student HTTP/1.1" 200 8667
+[2024-03-26 10:10:25,818] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Select_Information/student-cancel-select/ HTTP/1.1" 200 32
+[2024-03-26 10:10:26,245] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 436
+[2024-03-26 10:10:28,206] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=student HTTP/1.1" 200 8697
+[2024-03-26 10:10:29,889] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 4062
+[2024-03-26 10:10:30,721] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=student HTTP/1.1" 200 8697
+[2024-03-26 10:10:40,520] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Select_Information/select-professor/ HTTP/1.1" 201 44
+[2024-03-26 10:13:50,724] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Select_Information/views.py changed, reloading.
+[2024-03-26 10:13:51,180] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 10:14:07,072] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Select_Information/views.py changed, reloading.
+[2024-03-26 10:14:07,339] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 10:14:09,323] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 436
+[2024-03-26 10:14:10,737] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 4062
+[2024-03-26 10:14:11,537] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=student HTTP/1.1" 200 9390
+[2024-03-26 10:14:11,554] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 436
+[2024-03-26 10:14:14,396] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=student HTTP/1.1" 200 9390
+[2024-03-26 10:14:14,945] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Select_Information/student-cancel-select/ HTTP/1.1" 200 32
+[2024-03-26 10:14:15,425] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 436
+[2024-03-26 10:14:15,970] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 4062
+[2024-03-26 10:14:17,926] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=student HTTP/1.1" 200 9420
+[2024-03-26 10:14:20,810] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=student HTTP/1.1" 200 9420
+[2024-03-26 10:14:24,994] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Select_Information/select-professor/ HTTP/1.1" 201 44
+[2024-03-26 10:14:42,086] [log.py:224] [log:log_response] [WARNING]- Conflict: /Select_Information/select-professor/
+[2024-03-26 10:14:42,087] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /Select_Information/select-professor/ HTTP/1.1" 409 50
+[2024-03-26 10:14:50,954] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 436
+[2024-03-26 10:14:53,702] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=student HTTP/1.1" 200 10113
+[2024-03-26 10:14:58,001] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=student HTTP/1.1" 200 10113
+[2024-03-26 10:14:58,115] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Select_Information/student-cancel-select/ HTTP/1.1" 200 32
+[2024-03-26 10:14:58,556] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 436
+[2024-03-26 10:15:00,779] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=student HTTP/1.1" 200 10143
+[2024-03-26 10:15:01,389] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 4062
+[2024-03-26 10:15:03,560] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=student HTTP/1.1" 200 10143
+[2024-03-26 10:15:05,736] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Select_Information/select-professor/ HTTP/1.1" 201 44
+[2024-03-26 10:17:47,292] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 4062
+[2024-03-26 10:17:47,708] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 4062
+[2024-03-26 10:17:56,448] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 10:22:31,949] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 10:22:40,241] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 10:32:19,400] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 10:32:53,021] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/wxcloudrun/settings.py changed, reloading.
+[2024-03-26 10:32:53,256] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 10:32:56,473] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/wxcloudrun/settings.py changed, reloading.
+[2024-03-26 10:32:56,819] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 10:45:18,678] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 10:46:42,971] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 10:46:46,172] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/wxcloudrun/settings.py changed, reloading.
+[2024-03-26 10:46:46,390] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 10:49:20,395] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 11:31:46,867] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/wxcloudrun/settings.py changed, reloading.
+[2024-03-26 11:31:47,504] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 11:32:52,197] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/wxcloudrun/__init__.py changed, reloading.
+[2024-03-26 11:32:52,710] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 11:33:18,291] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/wxcloudrun/celery.py changed, reloading.
+[2024-03-26 11:33:19,216] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 11:34:15,862] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 11:34:34,587] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 11:38:34,379] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/wxcloudrun/celery.py changed, reloading.
+[2024-03-26 11:38:35,363] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 11:39:15,770] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 11:41:14,737] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 11:41:33,487] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 11:41:43,816] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/wxcloudrun/settings.py changed, reloading.
+[2024-03-26 11:41:44,064] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 11:41:51,381] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 11:42:04,899] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 11:42:40,623] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/wxcloudrun/settings.py changed, reloading.
+[2024-03-26 11:42:40,905] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 11:45:08,720] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 11:46:33,972] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 11:46:39,728] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 11:47:08,839] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 11:58:40,950] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 12:05:44,376] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 12:13:15,344] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 12:15:54,089] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 12:17:39,370] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 12:20:50,665] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 12:23:23,270] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 12:26:32,723] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 12:33:24,908] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 12:33:29,205] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 12:33:42,232] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 12:33:51,797] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/wxcloudrun/settings.py changed, reloading.
+[2024-03-26 12:33:52,110] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 12:34:33,077] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/wxcloudrun/settings.py changed, reloading.
+[2024-03-26 12:34:33,561] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 12:34:58,607] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 12:35:00,800] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 12:39:35,081] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 12:48:05,729] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 12:49:43,591] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 12:56:06,583] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 12:57:30,770] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 12:59:45,200] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 13:04:38,326] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 13:04:42,713] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Select_Information/apps.py changed, reloading.
+[2024-03-26 13:06:20,186] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 13:07:32,278] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 13:07:37,676] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Select_Information/__init__.py changed, reloading.
+[2024-03-26 13:07:37,986] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 13:07:39,267] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 13:08:56,521] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 13:09:34,589] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 13:10:15,477] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Select_Information/apps.py changed, reloading.
+[2024-03-26 13:10:21,882] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 13:11:43,423] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 13:12:42,906] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 13:14:16,148] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 13:14:52,707] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/ HTTP/1.1" 200 10716
+[2024-03-26 13:14:52,718] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/base.css HTTP/1.1" 200 19513
+[2024-03-26 13:14:52,731] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 200 2271
+[2024-03-26 13:14:52,732] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/login.css HTTP/1.1" 200 939
+[2024-03-26 13:14:52,735] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 200 1360
+[2024-03-26 13:14:52,737] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/fonts.css HTTP/1.1" 200 423
+[2024-03-26 13:14:52,739] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 200 2271
+[2024-03-26 13:14:52,739] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 200 1360
+[2024-03-26 13:14:52,739] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/responsive.css HTTP/1.1" 200 18545
+[2024-03-26 13:14:52,739] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/responsive.css HTTP/1.1" 200 18545
+[2024-03-26 13:14:52,740] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/dashboard.css HTTP/1.1" 200 380
+[2024-03-26 13:14:52,741] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/fonts.css HTTP/1.1" 200 423
+[2024-03-26 13:14:52,743] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Light-webfont.woff HTTP/1.1" 200 85692
+[2024-03-26 13:14:52,744] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Regular-webfont.woff HTTP/1.1" 200 85876
+[2024-03-26 13:14:52,746] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Bold-webfont.woff HTTP/1.1" 200 86184
+[2024-03-26 13:14:52,776] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 200 331
+[2024-03-26 13:14:52,777] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 200 380
+[2024-03-26 13:14:52,778] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-deletelink.svg HTTP/1.1" 200 392
+[2024-03-26 13:14:59,882] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 18590
+[2024-03-26 13:14:59,899] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 302 0
+[2024-03-26 13:14:59,909] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+[2024-03-26 13:14:59,910] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/core.js HTTP/1.1" 200 5698
+[2024-03-26 13:14:59,915] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/base.css HTTP/1.1" 304 0
+[2024-03-26 13:14:59,918] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/jquery.init.js HTTP/1.1" 200 347
+[2024-03-26 13:14:59,918] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+[2024-03-26 13:14:59,921] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/prepopulate.js HTTP/1.1" 200 1531
+[2024-03-26 13:14:59,921] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/actions.js HTTP/1.1" 200 7867
+[2024-03-26 13:14:59,922] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/changelists.css HTTP/1.1" 200 6874
+[2024-03-26 13:14:59,922] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 200 5984
+[2024-03-26 13:14:59,923] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/urlify.js HTTP/1.1" 200 7902
+[2024-03-26 13:14:59,924] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+[2024-03-26 13:14:59,926] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/fonts.css HTTP/1.1" 304 0
+[2024-03-26 13:14:59,934] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/search.svg HTTP/1.1" 200 458
+[2024-03-26 13:14:59,937] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-no.svg HTTP/1.1" 200 560
+[2024-03-26 13:14:59,939] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 287630
+[2024-03-26 13:14:59,940] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-yes.svg HTTP/1.1" 200 436
+[2024-03-26 13:14:59,941] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 200 232381
+[2024-03-26 13:15:00,247] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-26 13:15:00,300] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 304 0
+[2024-03-26 13:15:00,300] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Regular-webfont.woff HTTP/1.1" 304 0
+[2024-03-26 13:15:00,301] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/tooltag-add.svg HTTP/1.1" 200 331
+[2024-03-26 13:15:00,301] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Bold-webfont.woff HTTP/1.1" 304 0
+[2024-03-26 13:15:00,306] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Light-webfont.woff HTTP/1.1" 304 0
+[2024-03-26 13:15:08,530] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 12445
+[2024-03-26 13:15:08,547] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/jquery.init.js HTTP/1.1" 304 0
+[2024-03-26 13:15:08,548] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+[2024-03-26 13:15:08,548] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/changelists.css HTTP/1.1" 304 0
+[2024-03-26 13:15:08,548] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+[2024-03-26 13:15:08,548] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/base.css HTTP/1.1" 304 0
+[2024-03-26 13:15:08,564] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/urlify.js HTTP/1.1" 304 0
+[2024-03-26 13:15:08,564] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 304 0
+[2024-03-26 13:15:08,564] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/core.js HTTP/1.1" 304 0
+[2024-03-26 13:15:08,566] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 304 0
+[2024-03-26 13:15:08,567] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/actions.js HTTP/1.1" 304 0
+[2024-03-26 13:15:08,569] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/prepopulate.js HTTP/1.1" 304 0
+[2024-03-26 13:15:08,569] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+[2024-03-26 13:15:08,571] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 304 0
+[2024-03-26 13:15:08,571] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/fonts.css HTTP/1.1" 304 0
+[2024-03-26 13:15:08,573] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/search.svg HTTP/1.1" 304 0
+[2024-03-26 13:15:08,574] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-yes.svg HTTP/1.1" 304 0
+[2024-03-26 13:15:08,975] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-26 13:15:09,004] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 304 0
+[2024-03-26 13:15:09,004] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Bold-webfont.woff HTTP/1.1" 304 0
+[2024-03-26 13:15:09,005] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Regular-webfont.woff HTTP/1.1" 304 0
+[2024-03-26 13:15:09,006] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/tooltag-add.svg HTTP/1.1" 304 0
+[2024-03-26 13:15:09,006] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Light-webfont.woff HTTP/1.1" 304 0
+[2024-03-26 13:16:06,585] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 12445
+[2024-03-26 13:16:06,591] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 302 0
+[2024-03-26 13:16:06,602] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+[2024-03-26 13:16:06,609] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/changelists.css HTTP/1.1" 304 0
+[2024-03-26 13:16:06,611] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/jquery.init.js HTTP/1.1" 304 0
+[2024-03-26 13:16:06,612] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/base.css HTTP/1.1" 304 0
+[2024-03-26 13:16:06,613] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+[2024-03-26 13:16:06,615] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/actions.js HTTP/1.1" 304 0
+[2024-03-26 13:16:06,616] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 304 0
+[2024-03-26 13:16:06,617] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/core.js HTTP/1.1" 304 0
+[2024-03-26 13:16:06,619] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/urlify.js HTTP/1.1" 304 0
+[2024-03-26 13:16:06,624] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 304 0
+[2024-03-26 13:16:06,625] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/prepopulate.js HTTP/1.1" 304 0
+[2024-03-26 13:16:06,629] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 304 0
+[2024-03-26 13:16:06,631] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+[2024-03-26 13:16:06,632] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/fonts.css HTTP/1.1" 304 0
+[2024-03-26 13:16:06,636] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/search.svg HTTP/1.1" 304 0
+[2024-03-26 13:16:06,637] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-yes.svg HTTP/1.1" 304 0
+[2024-03-26 13:16:06,978] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-03-26 13:16:07,011] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 304 0
+[2024-03-26 13:16:07,014] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/tooltag-add.svg HTTP/1.1" 304 0
+[2024-03-26 13:16:07,014] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Bold-webfont.woff HTTP/1.1" 304 0
+[2024-03-26 13:16:07,015] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Regular-webfont.woff HTTP/1.1" 304 0
+[2024-03-26 13:16:07,015] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Light-webfont.woff HTTP/1.1" 304 0
+[2024-03-26 13:17:43,060] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Select_Information/views.py changed, reloading.
+[2024-03-26 13:17:44,619] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-03-26 13:18:04,793] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 436
+[2024-03-26 13:18:26,808] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /userlogin/ HTTP/1.1" 200 521
+[2024-03-26 13:18:27,415] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 436
+[2024-03-26 13:18:27,894] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 436
+[2024-03-26 13:18:30,746] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 436
+[2024-03-26 13:18:31,183] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 436
+[2024-03-26 13:18:33,484] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=student HTTP/1.1" 200 10836
+[2024-03-26 13:18:34,223] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 436
+[2024-03-26 13:18:35,092] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 436
+[2024-03-26 13:18:36,303] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=student HTTP/1.1" 200 10836
+[2024-03-26 13:18:37,553] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 4062
+[2024-03-26 13:18:37,950] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 4062
+[2024-03-26 13:18:39,369] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=student HTTP/1.1" 200 10836
+[2024-03-26 13:18:41,150] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 436
+[2024-03-26 13:18:43,489] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=student HTTP/1.1" 200 10836
+[2024-03-26 13:18:45,584] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Select_Information/student-cancel-select/ HTTP/1.1" 200 32
+[2024-03-26 13:18:46,057] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 436
+[2024-03-26 13:18:48,615] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=student HTTP/1.1" 200 10866
+[2024-03-26 13:18:51,319] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=student HTTP/1.1" 200 10866
+[2024-03-26 13:18:51,992] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 4062
+[2024-03-26 13:19:09,822] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Select_Information/select-professor/ HTTP/1.1" 201 44

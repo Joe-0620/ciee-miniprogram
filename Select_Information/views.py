@@ -12,6 +12,7 @@ from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from Professor_Student_Manage.serializers import StudentSerializer
 from datetime import datetime
+from django.core.cache import cache
 
 
 # Create your views here.
@@ -106,8 +107,7 @@ class StudentChooseProfessorView(APIView):
 
     def send_notification(self, professor_openid):
         # 学生的openid和小程序的access_token
-        access_token = "78__Ce8rE6383BT_YbCwlCnHe0lJAeJZl7nDGqsmdLNH3d2qEmwUt3fNgUEZJtE49HaPIBe_3hQokIw0RirU4ZJyFyjsZQp-FwYgF1TvlOZQhN0k1-0O-9T0KaUzFQZJBgACAQAS"  # 从某处安全地获取access_token
-
+        access_token = cache.get('access_token')
         # 微信小程序发送订阅消息的API endpoint
         url = f'https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token={access_token}'
 
@@ -115,12 +115,11 @@ class StudentChooseProfessorView(APIView):
         # 注意：这里的key（如phrase1, time11等）和template_id需要根据你在微信后台配置的模板来确定
         data = {
             "touser": professor_openid,
-            "template_id": "38wdqTPRI4y4eyGFrE1LrcO0Gd5-z2f2AJGK3DM0mS4",  # 你在微信小程序后台设置的模板ID
+            "template_id": "38wdqTPRI4y4eyGFrE1LrZy3o2CJB99oqehwfpv_AmE",  # 你在微信小程序后台设置的模板ID
             "page": "index",  # 用户点击消息后跳转的小程序页面
             "data": {
                 "thing1": {"value": "有学生选择了您"},
-                "time7": {"value": "2024-03-26"},
-                "phrase10": {"value": "有学生选择了您，需要您进行处理"}
+                "time7": {"value": "2024-03-26"}
             }
         }
 
@@ -340,8 +339,7 @@ class ProfessorChooseStudentView(APIView):
 
     def send_notification(self, student_openid, action):
         # 学生的openid和小程序的access_token
-        access_token = "78__Ce8rE6383BT_YbCwlCnHe0lJAeJZl7nDGqsmdLNH3d2qEmwUt3fNgUEZJtE49HaPIBe_3hQokIw0RirU4ZJyFyjsZQp-FwYgF1TvlOZQhN0k1-0O-9T0KaUzFQZJBgACAQAS"  # 从某处安全地获取access_token
-
+        access_token = cache.get('access_token')
         # 微信小程序发送订阅消息的API endpoint
         url = f'https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token={access_token}'
 
@@ -349,7 +347,7 @@ class ProfessorChooseStudentView(APIView):
         # 注意：这里的key（如phrase1, time11等）和template_id需要根据你在微信后台配置的模板来确定
         data = {
             "touser": student_openid,
-            "template_id": "S1D5wX7_WY5BIfZqw0dEn8BQ6oqGlF_hFO73ZSmG9YI",  # 你在微信小程序后台设置的模板ID
+            "template_id": "S1D5wX7_WY5BIfZqw0dEnyoYjjAtNPmz9QlfApZ9uOs",  # 你在微信小程序后台设置的模板ID
             "page": "index",  # 用户点击消息后跳转的小程序页面
             "data": {
                 "phrase5": {"value": "审核结果"},

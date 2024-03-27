@@ -1476,3 +1476,18 @@ django.db.utils.IntegrityError: (1062, "Duplicate entry '2' for key 'user_id'")
 [2024-03-26 16:19:51,581] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 66402
 [2024-03-26 16:20:07,258] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 66402
 [2024-03-26 16:20:22,279] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 66402
+[2024-03-26 16:21:18,030] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 66825
+[2024-03-26 16:21:39,378] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 67511
+[2024-03-26 16:21:48,832] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Select_Information/select-student/ HTTP/1.1" 202 26
+[2024-03-26 16:21:49,253] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1584
+[2024-03-26 16:21:55,456] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 67088
+[2024-03-26 16:22:10,625] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 67117
+[2024-03-26 16:22:26,067] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 67117
+[2024-03-26 16:23:02,215] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 67538
+[2024-03-26 16:23:17,297] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1584
+[2024-03-26 16:23:17,575] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68223
+[2024-03-26 16:23:18,772] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1584
+[2024-03-26 16:23:23,915] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Select_Information/select-student/ HTTP/1.1" 202 26
+[2024-03-26 16:23:24,330] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1584
+[2024-03-26 16:23:32,806] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 67802
+[2024-03-26 16:23:46,261] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader

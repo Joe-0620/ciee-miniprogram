@@ -75,6 +75,9 @@ class StudentChooseProfessorView(APIView):
             existing_choice = StudentProfessorChoice.objects.filter(student=student, status=3).exists()
             if existing_choice:
                 return Response({'message': '您已选择导师，请等待回复'}, status=status.HTTP_409_CONFLICT)
+            
+            if not self.has_quota(professor, student):
+                return Response({'message': '导师没有该学生类型的名额'}, status=status.HTTP_400_BAD_REQUEST)
 
             if student.subject in professor.enroll_subject.all():
                 StudentProfessorChoice.objects.create(
@@ -99,6 +102,19 @@ class StudentChooseProfessorView(APIView):
         except Exception as e:
             # 更通用的异常处理
             return Response({'message': '服务器错误，请稍后再试'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+    def has_quota(self, professor, student):
+        # 这里需要实现逻辑来检查是否有足够的名额
+        # 示例逻辑，实际应用中可能会更复杂
+        if student.postgraduate_type == 1:  # 专业型(北京)
+            return professor.professional_quota > 0
+        elif student.postgraduate_type == 4:  # 专业型(烟台)
+            return professor.professional_yt_quota > 0
+        elif student.postgraduate_type == 2:  # 学术型
+            return professor.academic_quota > 0
+        elif student.postgraduate_type == 3:  # 博士
+            return professor.doctor_quota > 0
+        return False
 
     def send_notification(self, professor_openid):
         # 学生的openid和小程序的access_token
@@ -159,7 +175,6 @@ class ProfessorChooseStudentView(APIView):
             print(latest_choice)
             if latest_choice.status != 3:  # 状态不是"请等待"
                 return Response({'message': '不存在等待审核的记录'}, status=status.HTTP_409_CONFLICT)
-            print("断点")
             if operation == '1':  # 同意请求
                 if self.has_quota(professor, student):
                     latest_choice.status = 1  # 同意请求

@@ -9,5 +9,3 @@ class SelectInformationConfig(AppConfig):
     def ready(self):
         import Select_Information.signals  # 激活信号处理器
         # import departments.signals
-        from .tasks import request_access_token
-        request_access_token()

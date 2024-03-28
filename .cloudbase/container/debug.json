@@ -4,7 +4,8 @@
       "name": "ciee-miniprogram",
       "domain": "",
       "ip": "",
-      "mode": "compose"
+      "mode": "compose",
+      "containerId": "43f5598f00b683526ccfc4637f2fff118252c2b3b8ca73245a381e43a0d2136d"
     }
   ],
   "config": {

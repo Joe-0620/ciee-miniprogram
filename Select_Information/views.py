@@ -91,7 +91,7 @@ class StudentChooseProfessorView(APIView):
                     professor_wechat_account = WeChatAccount.objects.get(user=professor.user_name)
                     professor_openid = professor_wechat_account.openid
                     self.send_notification(professor_openid)  # 发送通知
-                except ObjectDoesNotExist:
+                except WeChatAccount.DoesNotExist:
                     # 如果导师的微信账号不存在，则不发送通知，但选择仍然成功
                     pass
                 return Response({'message': '选择成功，请等待回复'}, status=status.HTTP_201_CREATED)
@@ -118,10 +118,10 @@ class StudentChooseProfessorView(APIView):
 
     def send_notification(self, professor_openid):
         # 学生的openid和小程序的access_token
-        access_token = cache.get('access_token')
+        # access_token = cache.get('access_token')
         # print(access_token)
         # 微信小程序发送订阅消息的API endpoint
-        url = f'https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token={access_token}'
+        url = f'https://api.weixin.qq.com/cgi-bin/message/subscribe/send'
 
         # 构造消息数据
         # 注意：这里的key（如phrase1, time11等）和template_id需要根据你在微信后台配置的模板来确定
@@ -236,10 +236,10 @@ class ProfessorChooseStudentView(APIView):
         try:
             student_wechat_account = WeChatAccount.objects.get(user=student.user_name)
             student_openid = student_wechat_account.openid
-            access_token = cache.get('access_token')
-            if access_token and student_openid:
+            # access_token = cache.get('access_token')
+            if student_openid:
                 # 微信小程序发送订阅消息的API endpoint
-                url = f'https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token={access_token}'
+                url = f'https://api.weixin.qq.com/cgi-bin/message/subscribe/send'
 
                 # 构造消息数据
                 # 注意：这里的key（如phrase1, time11等）和template_id需要根据你在微信后台配置的模板来确定

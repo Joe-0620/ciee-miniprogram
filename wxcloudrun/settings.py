@@ -1,7 +1,7 @@
 import os
 from pathlib import Path
 import time
-from celery.schedules import crontab
+# from celery.schedules import crontab
 
 CUR_PATH = os.path.dirname(os.path.realpath(__file__))  
 LOG_PATH = os.path.join(os.path.dirname(CUR_PATH), 'logs') # LOG_PATH是存放日志的路径
@@ -24,8 +24,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-CELERY_BROKER_URL = 'redis://redis:6379/0'
-CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
+# CELERY_BROKER_URL = 'redis://redis:6379/0'
+# CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
 
 # Application definition
 
@@ -220,9 +220,9 @@ REST_FRAMEWORK = {
     ],
 }
 
-CELERY_BEAT_SCHEDULE = {
-    'request-access-token-every-7000-seconds': {
-        'task': 'Select_Information.tasks.request_access_token',  # 使用你的实际应用名称和任务函数名称
-        'schedule': 3600.0,  # 指定任务执行的周期，单位为秒
-    },
-}
+# CELERY_BEAT_SCHEDULE = {
+#     'request-access-token-every-7000-seconds': {
+#         'task': 'Select_Information.tasks.request_access_token',  # 使用你的实际应用名称和任务函数名称
+#         'schedule': 6000.0,  # 指定任务执行的周期，单位为秒
+#     },
+# }

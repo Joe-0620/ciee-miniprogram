@@ -1,8 +1,14 @@
 from rest_framework import serializers
 from Professor_Student_Manage.models import Professor, Student
-from Select_Information.models import StudentProfessorChoice
+from Select_Information.models import StudentProfessorChoice, SelectionTime
 from django.contrib.auth.models import User
 
+
+class SelectionTimeSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = SelectionTime
+        fields = '__all__'  # 或者指定您想要序列化的字段
 
 class StudentProfessorChoiceSerializer(serializers.ModelSerializer):
     student = serializers.CharField(source='student.name')

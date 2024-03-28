@@ -5,14 +5,18 @@ import requests
 from django.utils import timezone
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate
-from .serializers import StudentProfessorChoiceSerializer
+from .serializers import StudentProfessorChoiceSerializer, SelectionTimeSerializer
 from Professor_Student_Manage.models import Student, Professor, WeChatAccount
-from Select_Information.models import StudentProfessorChoice
+from Select_Information.models import StudentProfessorChoice, SelectionTime
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from Professor_Student_Manage.serializers import StudentSerializer
 from datetime import datetime
 from django.core.cache import cache
+
+class GetSelectionTimeView(generics.ListAPIView):
+    queryset = SelectionTime.objects.all()
+    serializer_class = SelectionTimeSerializer
 
 
 # Create your views here.
@@ -59,6 +63,15 @@ class StudentChooseProfessorView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
+        # 检查互选是否开放
+        now = timezone.now()
+        try:
+            selection_time = SelectionTime.objects.get(id=1)  # 假设只有一个SelectionTime对象
+            if not (selection_time.open_time <= now <= selection_time.close_time):
+                return Response({"message": "不在互选开放时间内"}, status=status.HTTP_400_BAD_REQUEST)
+        except SelectionTime.DoesNotExist:
+            return Response({"message": "互选时间设置不存在"}, status=status.HTTP_404_NOT_FOUND)
+
         student = request.user.student  # 假设你的 User 模型有一个名为 student 的 OneToOneField
 
         professor_id = request.data.get('professor_id')
@@ -77,7 +90,7 @@ class StudentChooseProfessorView(APIView):
                 return Response({'message': '您已选择导师，请等待回复'}, status=status.HTTP_409_CONFLICT)
             
             if not self.has_quota(professor, student):
-                return Response({'message': '导师没有该学生类型的名额'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'message': '导师已没有名额'}, status=status.HTTP_400_BAD_REQUEST)
 
             if student.subject in professor.enroll_subject.all():
                 StudentProfessorChoice.objects.create(
@@ -128,7 +141,7 @@ class StudentChooseProfessorView(APIView):
         data = {
             "touser": professor_openid,
             "template_id": "38wdqTPRI4y4eyGFrE1LrZy3o2CJB99oqehwfpv_AmE",  # 你在微信小程序后台设置的模板ID
-            "page": "index",  # 用户点击消息后跳转的小程序页面
+            "page": "index/selectinformation",  # 用户点击消息后跳转的小程序页面
             "data": {
                 "thing1": {"value": "有学生选择了您"},
                 "time7": {"value": "2024-03-31"}
@@ -246,7 +259,7 @@ class ProfessorChooseStudentView(APIView):
                 data = {
                     "touser": student_openid,
                     "template_id": "S1D5wX7_WY5BIfZqw0dEnyoYjjAtNPmz9QlfApZ9uOs",  # 你在微信小程序后台设置的模板ID
-                    "page": "index",  # 用户点击消息后跳转的小程序页面
+                    "page": "index/selectinformation",  # 用户点击消息后跳转的小程序页面
                     "data": {
                         "phrase5": {"value": "审核结果"},
                         "date7": {"value": timezone.now().strftime("%Y-%m-%d")}

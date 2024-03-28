@@ -2,6 +2,16 @@ from django.db import models
 from Professor_Student_Manage.models import Student, Professor
 from django.utils import timezone
 
+class SelectionTime(models.Model):
+    open_time = models.DateTimeField(verbose_name="开放时间")
+    close_time = models.DateTimeField(verbose_name="关闭时间")
+
+    def __str__(self):
+        return f"开放时间：{self.open_time}, 关闭时间：{self.close_time}"
+    
+    class Meta:
+        verbose_name = "学院师生互选时间设置"  # 设置模型的显示名称
+        verbose_name_plural = "学院师生互选时间设置"  # 设置模型的复数形式显示名称
 
 class StudentProfessorChoice(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE, verbose_name="学生姓名")

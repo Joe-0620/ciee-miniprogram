@@ -251,7 +251,10 @@ class ProfessorChooseStudentView(APIView):
         # 生成 PDF
         packet = self.create_overlay(student_name, student_major, professor_name, date)
 
-        save_path = f'/app/Select_Information/tempFile/{student.user_name.username}_agreement.pdf'
+        save_dir = '/app/Select_Information/tempFile/'
+        if not os.path.exists(save_dir):
+            os.makedirs(save_dir)
+        save_path = os.path.join(save_dir, f'{student.user_name.username}_agreement.pdf')
 
         # 将图层与现有的 PDF 模板合并
         self.merge_pdfs(save_path, packet)
@@ -315,7 +318,7 @@ class ProfessorChooseStudentView(APIView):
 
 
         # 1. 设置用户属性, 包括 secret_id, secret_key, region 等。Appid 已在CosConfig中移除，请在参数 Bucket 中带上 Appid。Bucket 由 BucketName-Appid 组成
-        secret_id = os.environ.get("COS_SECRET_ID"),    # 用户的 SecretId，建议使用子账号密钥，授权遵循最小权限指引，降低使用风险。子账号密钥获取可参见 https://cloud.tencent.com/document/product/598/37140
+        secret_id = os.environ.get("COS_SECRET_ID")    # 用户的 SecretId，建议使用子账号密钥，授权遵循最小权限指引，降低使用风险。子账号密钥获取可参见 https://cloud.tencent.com/document/product/598/37140
         secret_key = os.environ.get("COS_SECRET_KEY")   # 用户的 SecretKey，建议使用子账号密钥，授权遵循最小权限指引，降低使用风险。子账号密钥获取可参见 https://cloud.tencent.com/document/product/598/37140
         region = 'ap-shanghai'      # 替换为用户的 region，已创建桶归属的region可以在控制台查看，https://console.cloud.tencent.com/cos5/bucket
                                 # COS 支持的所有 region 列表参见 https://cloud.tencent.com/document/product/436/6224
@@ -326,16 +329,19 @@ class ProfessorChooseStudentView(APIView):
         config = CosConfig(Region=region, SecretId=secret_id, SecretKey=secret_key, Token=token, Scheme=scheme)
         client = CosS3Client(config)
 
-        # 根据文件大小自动选择简单上传或分块上传，分块上传具备断点续传功能。
-        response = client.upload_file(
-            Bucket=os.environ.get("COS_BUCKET"),
-            LocalFilePath=save_path,
-            Key=cloud_path,
-            PartSize=1,
-            MAXThread=10,
-            EnableMD5=False
-        )
-        print(response['ETag'])
+        try:
+            # 根据文件大小自动选择简单上传或分块上传，分块上传具备断点续传功能。
+            response = client.upload_file(
+                Bucket=os.environ.get("COS_BUCKET"),
+                LocalFilePath=save_path,
+                Key=cloud_path,
+                PartSize=1,
+                MAXThread=10,
+                EnableMD5=False
+            )
+            print(response['ETag'])
+        except Exception as e:
+            print(f"文件上传失败: {str(e)}")
 
 
     def has_quota(self, professor, student):

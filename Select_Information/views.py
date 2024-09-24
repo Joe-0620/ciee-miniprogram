@@ -329,11 +329,39 @@ class ProfessorChooseStudentView(APIView):
         if response_data.get("errcode") == 0:
             upload_url = response_data.get("url")
             upload_file_id = response_data.get("file_id")
+            upload_token = response_data.get("token")
+            upload_authorization = response_data.get("authorization")
+            upload_cos_file_id = response_data.get("cos_file_id")
 
             print("url:", upload_url)
             print("file_id:", upload_file_id)
+
+            # 上传成功后，设置文件的访问权限为 public-read
+            # self.set_file_public_read(path)
         else:
             print(f"文件上传失败(外): {response_data.get('errmsg')}")
+
+    def set_file_public_read(self, path):
+        """设置文件为公有读"""
+        # 腾讯云 COS 配置
+
+        region = 'ap-shanghai'  # 替换为你的存储桶所在区域
+        bucket_name = '7072-prod-2g1jrmkk21c1d283-1319836128'  # 替换为你的存储桶名称
+        token = None  # 如果使用永久密钥，不需要填入 token
+
+        config = CosConfig(Region=region, SecretId=secret_id, SecretKey=secret_key, Token=token)
+        client = CosS3Client(config)
+
+        # 设置对象的 ACL 为 public-read
+        try:
+            response = client.put_object_acl(
+                Bucket=bucket_name,
+                Key=path,
+                ACL='public-read'  # 设置为公有读
+            )
+            print(f"成功设置文件 {path} 为公有读")
+        except Exception as e:
+            print(f"设置文件 {path} 为公有读失败: {e}")
 
     def has_quota(self, professor, student):
         # 封装可扩展的名额检查逻辑

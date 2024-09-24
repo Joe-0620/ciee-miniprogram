@@ -314,7 +314,7 @@ class ProfessorChooseStudentView(APIView):
         # 请求微信云托管的上传文件接口
         url = f'https://api.weixin.qq.com/tcb/uploadfile'
 
-        path = '7072-prod-2g1jrmkk21c1d283-1319836128/' + path
+        # path = '7072-prod-2g1jrmkk21c1d283-1319836128/' + path
 
         data = {
             "env": "prod-2g1jrmkk21c1d283",  # 微信云环境ID
@@ -328,17 +328,12 @@ class ProfessorChooseStudentView(APIView):
 
         if response_data.get("errcode") == 0:
             upload_url = response_data.get("url")
+            upload_file_id = response_data.get("file_id")
 
-            # 使用 PUT 方法上传文件
-            files = {'file': pdf_file.getvalue()}  # 读取 BytesIO 文件流的内容
-            upload_response = requests.put(upload_url, files=files)
-
-            if upload_response.status_code == 204:
-                print("文件上传成功")
-            else:
-                print(f"文件上传失败: {upload_response.text}")
+            print("url:", upload_url)
+            print("file_id:", upload_file_id)
         else:
-            print(f"文件上传失败: {response_data.get('errmsg')}")
+            print(f"文件上传失败(外): {response_data.get('errmsg')}")
 
     def has_quota(self, professor, student):
         # 封装可扩展的名额检查逻辑

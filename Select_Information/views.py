@@ -252,7 +252,7 @@ class ProfessorChooseStudentView(APIView):
         filled_pdf = self.merge_pdfs(packet)
 
         # 上传到微信云托管
-        pdf_path = f"signature/student/{student.user_name.username}_agreement.pdf"
+        pdf_path = f"/signature/student/{student.user_name.username}_agreement.pdf"
         self.upload_to_wechat_cloud(pdf_path, filled_pdf)
 
     def merge_pdfs(self, overlay_pdf):

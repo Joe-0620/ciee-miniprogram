@@ -20,6 +20,11 @@ from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfbase import pdfmetrics
 from PyPDF2 import PdfReader, PdfWriter
 import traceback
+from qcloud_cos import CosConfig
+from qcloud_cos import CosS3Client
+import sys
+import os
+import logging
 
 class GetSelectionTimeView(generics.ListAPIView):
     queryset = SelectionTime.objects.all()
@@ -246,16 +251,16 @@ class ProfessorChooseStudentView(APIView):
         # 生成 PDF
         packet = self.create_overlay(student_name, student_major, professor_name, date)
 
-        print(packet)
+        save_path = f'/app/Select_Information/tempFile/{student.user_name.username}_agreement.pdf'
 
         # 将图层与现有的 PDF 模板合并
-        filled_pdf = self.merge_pdfs(packet)
+        self.merge_pdfs(save_path, packet)
 
         # 上传到微信云托管
-        pdf_path = f"signature/student/{student.user_name.username}_agreement.pdf"
-        self.upload_to_wechat_cloud(pdf_path, filled_pdf)
+        cloud_path = f"signature/student/{student.user_name.username}_agreement.pdf"
+        self.upload_to_wechat_cloud(save_path, cloud_path)
 
-    def merge_pdfs(self, overlay_pdf):
+    def merge_pdfs(self, save_path, overlay_pdf):
         """将生成的 PDF 图层与模板合并"""
         template_pdf_path = r'/app/Select_Information/pdfTemplate/template.pdf'
         
@@ -263,26 +268,21 @@ class ProfessorChooseStudentView(APIView):
         template_pdf = PdfReader(template_pdf_path)
         output = PdfWriter()
 
-        # 读取插入内容的 PDF 图层
-        overlay_pdf.seek(0)  # 重置读取指针
-        overlay_reader = PdfReader(overlay_pdf)
+        # 读取插入内容的 PDF
+        overlay_pdf = PdfReader(overlay_pdf)
 
-        # 只合并一页的情况
-        if len(template_pdf.pages) > 0:
-            template_page = template_pdf.pages[0]  # 模板第一页
-            overlay_page = overlay_reader.pages[0]  # 图层第一页
+        # 合并两个 PDF
+        for i in range(len(template_pdf.pages)):
+            template_page = template_pdf.pages[i]
+            overlay_page = overlay_pdf.pages[i]
 
             # 将插入内容叠加到模板上
             template_page.merge_page(overlay_page)
             output.add_page(template_page)
 
-        print("done1!")
-        # 将合并后的 PDF 保存到内存中
-        merged_pdf = io.BytesIO()
-        output.write(merged_pdf)
-        merged_pdf.seek(0)  # 重置读取指针
-
-        return merged_pdf
+        # 保存合并后的 PDF
+        with open(save_path, "wb") as output_stream:
+            output.write(output_stream)
 
     def create_overlay(self, name, major, professor_name, date):
         """生成 PDF 文件的动态内容"""
@@ -309,41 +309,33 @@ class ProfessorChooseStudentView(APIView):
         # print("done4")
         return packet
 
-    def upload_to_wechat_cloud(self, path, pdf_file):
-        """上传生成的 PDF 文件到微信云托管"""
-        # 请求微信云托管的上传文件接口
-        url = f'https://api.weixin.qq.com/tcb/uploadfile'
-
-        # path = '7072-prod-2g1jrmkk21c1d283-1319836128/' + path
-
-        data = {
-            "env": "prod-2g1jrmkk21c1d283",  # 微信云环境ID
-            "path": path,  # 上传的文件路径
-        }
-        print(path)
-        print(pdf_file)
-
-        response = requests.post(url, json=data)
-        response_data = response.json()
-
-        if response_data.get("errcode") == 0:
-            upload_url = response_data.get("url")
-            upload_file_id = response_data.get("file_id")
-            upload_token = response_data.get("token")
-            upload_authorization = response_data.get("authorization")
-            upload_cos_file_id = response_data.get("cos_file_id")
-
-            print("url: ", upload_url)
-            print("file_id: ", upload_file_id)
-            print("upload_token: ", upload_token)
-            print("upload_authorization: ", upload_authorization)
-            print("upload_cos_file_id: ", upload_cos_file_id)
+    def upload_to_wechat_cloud(self, save_path, cloud_path):
+        # 正常情况日志级别使用 INFO，需要定位时可以修改为 DEBUG，此时 SDK 会打印和服务端的通信信息
+        logging.basicConfig(level=logging.INFO, stream=sys.stdout)
 
 
-            # 上传成功后，设置文件的访问权限为 public-read
-            # self.set_file_public_read(path)
-        else:
-            print(f"文件上传失败(外): {response_data.get('errmsg')}")
+        # 1. 设置用户属性, 包括 secret_id, secret_key, region 等。Appid 已在CosConfig中移除，请在参数 Bucket 中带上 Appid。Bucket 由 BucketName-Appid 组成
+        secret_id = os.environ.get("COS_SECRET_ID"),    # 用户的 SecretId，建议使用子账号密钥，授权遵循最小权限指引，降低使用风险。子账号密钥获取可参见 https://cloud.tencent.com/document/product/598/37140
+        secret_key = os.environ.get("COS_SECRET_KEY")   # 用户的 SecretKey，建议使用子账号密钥，授权遵循最小权限指引，降低使用风险。子账号密钥获取可参见 https://cloud.tencent.com/document/product/598/37140
+        region = 'ap-shanghai'      # 替换为用户的 region，已创建桶归属的region可以在控制台查看，https://console.cloud.tencent.com/cos5/bucket
+                                # COS 支持的所有 region 列表参见 https://cloud.tencent.com/document/product/436/6224
+        token = None               # 如果使用永久密钥不需要填入 token，如果使用临时密钥需要填入，临时密钥生成和使用指引参见 https://cloud.tencent.com/document/product/436/14048
+        scheme = 'https'           # 指定使用 http/https 协议来访问 COS，默认为 https，可不填
+
+
+        config = CosConfig(Region=region, SecretId=secret_id, SecretKey=secret_key, Token=token, Scheme=scheme)
+        client = CosS3Client(config)
+
+        # 根据文件大小自动选择简单上传或分块上传，分块上传具备断点续传功能。
+        response = client.upload_file(
+            Bucket='7072-prod-2g1jrmkk21c1d283-1319836128',
+            LocalFilePath=save_path,
+            Key=cloud_path,
+            PartSize=1,
+            MAXThread=10,
+            EnableMD5=False
+        )
+        print(response['ETag'])
 
     def set_file_public_read(self, path):
         """设置文件为公有读"""

@@ -18,6 +18,8 @@ services:
       - MYSQL_USERNAME=root
       - MYSQL_PASSWORD=WSGnnA83
       - MYSQL_ADDRESS=sh-cynosdbmysql-grp-buouyy58.sql.tencentcdb.com:26437
+      - COS_SECRET_ID=AKIDPhsgYR8brtnV8e3ZFnGYcXE1g9VdCvWt
+      - COS_SECRET_KEY=EDyV4bv1tZ6Uf8mZaxAA1pTvX6e2DCwS
 networks:
   default:
     external:

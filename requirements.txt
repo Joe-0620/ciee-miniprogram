@@ -8,3 +8,4 @@ djangorestframework==3.14.0
 Pillow==10.0.0
 reportlab
 PyPDF2
+cos-python-sdk-v5

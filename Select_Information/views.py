@@ -243,6 +243,15 @@ class ProfessorChooseStudentView(APIView):
         student_major = student.subject.subject_name
         professor_name = professor.name
 
+        # 获取当前时间
+        now = datetime.now()
+
+        # 将当前时间转换为时间戳
+        timestamp = int(now.timestamp())
+
+        # 将时间戳转换为字符串
+        timestamp_str = str(timestamp)
+
         print(date)
         print(student_name)
         print(student_major)
@@ -254,7 +263,7 @@ class ProfessorChooseStudentView(APIView):
         save_dir = '/app/Select_Information/tempFile/'
         if not os.path.exists(save_dir):
             os.makedirs(save_dir)
-        save_path = os.path.join(save_dir, f'{student.user_name.username}_agreement.pdf')
+        save_path = os.path.join(save_dir, f'{student.user_name.username}_{timestamp_str}_agreement.pdf')
 
         print("sava_path: ", save_path)
 
@@ -264,7 +273,7 @@ class ProfessorChooseStudentView(APIView):
         print("sava file")
 
         # 上传到微信云托管
-        cloud_path = f"signature/student/{student.user_name.username}_agreement.pdf"
+        cloud_path = f"signature/student/{student.user_name.username}_{timestamp_str}_agreement.pdf"
         self.upload_to_wechat_cloud(save_path, cloud_path, student)
 
     def merge_pdfs(self, save_path, overlay_pdf):
@@ -336,6 +345,21 @@ class ProfessorChooseStudentView(APIView):
         print("upload file")
 
         try:
+            url = f'https://api.weixin.qq.com/tcb/uploadfile'
+
+            data = {
+                "env": 'prod-2g1jrmkk21c1d283',
+                "path": cloud_path,
+            }
+
+            # 发送POST请求
+            response = requests.post(url, json=data)
+            response_data = response.json()
+            print(response_data)
+            # 自定义 metadata，包括 `x-cos-meta-fileid`
+            # metadata = {
+            #     "x-cos-meta-fileid": cloud_path
+            # }
             # 根据文件大小自动选择简单上传或分块上传，分块上传具备断点续传功能。
             response = client.upload_file(
                 Bucket=os.environ.get("COS_BUCKET"),
@@ -343,7 +367,10 @@ class ProfessorChooseStudentView(APIView):
                 Key=cloud_path,
                 PartSize=1,
                 MAXThread=10,
-                EnableMD5=False
+                EnableMD5=False,
+                Metadata={
+                    'x-cos-meta-fileid': response_data[cos_file_id]  # 自定义元数据
+                }
             )
             print(f"文件上传成功: {response['ETag']}")
             # print(f"文件上传成功: {response}")

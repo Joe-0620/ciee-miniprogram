@@ -597,3 +597,4 @@ Traceback (most recent call last):
 requests.exceptions.ConnectionError: HTTPSConnectionPool(host='api.weixin.qq.com', port=443): Max retries exceeded with url: /sns/jscode2session?appid=wxa67ae78c4f1f6275&secret=7241b1950145a193f15b3584d50f3989&js_code=0b1Ln1ml2Pq1fe4MRtll2ZCJxB0Ln1mt&grant_type=authorization_code (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0xffffa4926310>: Failed to establish a new connection: [Errno 111] Connection refused'))
 [2024-09-24 10:32:46,715] [basehttp.py:161] [basehttp:log_message] [ERROR]- "POST /userlogin/ HTTP/1.1" 500 180960
 [2024-09-24 10:33:53,472] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-09-24 10:35:14,531] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader

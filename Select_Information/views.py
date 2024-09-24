@@ -333,11 +333,11 @@ class ProfessorChooseStudentView(APIView):
             upload_authorization = response_data.get("authorization")
             upload_cos_file_id = response_data.get("cos_file_id")
 
-            print("url:", upload_url)
-            print("file_id:", upload_file_id)
-            print("upload_token:", upload_token)
-            print("upload_authorization:", upload_authorization)
-            print("upload_cos_file_id:", upload_cos_file_id)
+            print("url: ", upload_url)
+            print("file_id: ", upload_file_id)
+            print("upload_token: ", upload_token)
+            print("upload_authorization: ", upload_authorization)
+            print("upload_cos_file_id: ", upload_cos_file_id)
 
 
             # 上传成功后，设置文件的访问权限为 public-read

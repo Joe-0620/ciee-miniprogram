@@ -13,6 +13,13 @@ from rest_framework.permissions import IsAuthenticated
 from Professor_Student_Manage.serializers import StudentSerializer
 from datetime import datetime
 from django.core.cache import cache
+import io
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfbase.ttfonts import TTFont
+from reportlab.pdfbase import pdfmetrics
+from PyPDF2 import PdfReader, PdfWriter
+import traceback
 
 class GetSelectionTimeView(generics.ListAPIView):
     queryset = SelectionTime.objects.all()
@@ -185,11 +192,12 @@ class ProfessorChooseStudentView(APIView):
                 return Response({'message': '该学生已完成导师选择'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
             
             latest_choice = StudentProfessorChoice.objects.filter(student=student, professor=professor).latest('submit_date')
-            print(latest_choice)
+            # print(latest_choice)
             if latest_choice.status != 3:  # 状态不是"请等待"
                 return Response({'message': '不存在等待审核的记录'}, status=status.HTTP_409_CONFLICT)
             if operation == '1':  # 同意请求
                 if self.has_quota(professor, student):
+                    # 更新选择状态
                     latest_choice.status = 1  # 同意请求
                     latest_choice.chosen_by_professor = True
                     latest_choice.finish_time = timezone.now()
@@ -197,8 +205,12 @@ class ProfessorChooseStudentView(APIView):
 
                     student.is_selected = True
                     student.save()
-
                     self.update_quota(professor, student)
+
+                    # print("done!")
+                    # 生成 PDF 并上传
+                    self.generate_and_upload_pdf(student, professor)
+
                     self.send_notification(student, 'accepted')
                     return Response({'message': '操作成功'}, status=status.HTTP_202_ACCEPTED)
                 else:
@@ -218,31 +230,150 @@ class ProfessorChooseStudentView(APIView):
         except Exception as e:
             return Response({'message': '服务器错���，请稍后再试'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+    def generate_and_upload_pdf(self, student, professor):
+        """生成包含学生和导师信息的PDF，并上传到微信云托管"""
+        # 获取当前时间
+        date = timezone.now().strftime("%Y-%m-%d")
+        student_name = student.name
+        student_major = student.subject.subject_name
+        professor_name = professor.name
+
+        print(date)
+        print(student_name)
+        print(student_major)
+        print(professor_name)
+
+        # 生成 PDF
+        packet = self.create_overlay(student_name, student_major, professor_name, date)
+
+        print(packet)
+
+        # 将图层与现有的 PDF 模板合并
+        filled_pdf = self.merge_pdfs(packet)
+
+        # 上传到微信云托管
+        pdf_path = f"signature/student/{student.user_name.username}_agreement.pdf"
+        self.upload_to_wechat_cloud(pdf_path, filled_pdf)
+
+    def merge_pdfs(self, overlay_pdf):
+        """将生成的 PDF 图层与模板合并"""
+        template_pdf_path = r'/app/Select_Information/pdfTemplate/template.pdf'
+        
+        # 读取现有的 PDF 模板
+        template_pdf = PdfReader(template_pdf_path)
+        output = PdfWriter()
+
+        # 读取插入内容的 PDF 图层
+        overlay_pdf.seek(0)  # 重置读取指针
+        overlay_reader = PdfReader(overlay_pdf)
+
+        # 只合并一页的情况
+        if len(template_pdf.pages) > 0:
+            template_page = template_pdf.pages[0]  # 模板第一页
+            overlay_page = overlay_reader.pages[0]  # 图层第一页
+
+            # 将插入内容叠加到模板上
+            template_page.merge_page(overlay_page)
+            output.add_page(template_page)
+
+        print("done1!")
+        # 将合并后的 PDF 保存到内存中
+        merged_pdf = io.BytesIO()
+        output.write(merged_pdf)
+        merged_pdf.seek(0)  # 重置读取指针
+
+        return merged_pdf
+
+    def create_overlay(self, name, major, professor_name, date):
+        """生成 PDF 文件的动态内容"""
+        packet = io.BytesIO()
+        # print("done!")
+        can = canvas.Canvas(packet, pagesize=letter)
+
+        try:
+            # 注册支持中文的字体
+            pdfmetrics.registerFont(TTFont('simsun', r'/app/Select_Information/pdfTemplate/simsun.ttc'))
+            can.setFont('simsun', 12)
+        except Exception as e:
+            # 打印异常堆栈信息
+            print("Error occurred while registering the font:")
+            traceback.print_exc()
+
+        can.drawString(150, 683.5, name)
+        can.drawString(345, 683.5, major)
+        can.drawString(490, 638, professor_name)
+        can.drawString(324, 497, date)
+
+        can.save()
+        packet.seek(0)
+        # print("done4")
+        return packet
+
+    def upload_to_wechat_cloud(self, path, pdf_file):
+        """上传生成的 PDF 文件到微信云托管"""
+        # 请求微信云托管的上传文件接口
+        url = f'https://api.weixin.qq.com/tcb/uploadfile'
+
+        path = '7072-prod-2g1jrmkk21c1d283-1319836128/' + path
+
+        data = {
+            "env": "prod-2g1jrmkk21c1d283",  # 微信云环境ID
+            "path": path,  # 上传的文件路径
+        }
+        print(path)
+        print(pdf_file)
+
+        response = requests.post(url, json=data)
+        response_data = response.json()
+
+        if response_data.get("errcode") == 0:
+            upload_url = response_data.get("url")
+
+            # 使用 PUT 方法上传文件
+            files = {'file': pdf_file.getvalue()}  # 读取 BytesIO 文件流的内容
+            upload_response = requests.put(upload_url, files=files)
+
+            if upload_response.status_code == 204:
+                print("文件上传成功")
+            else:
+                print(f"文件上传失败: {upload_response.text}")
+        else:
+            print(f"文件上传失败: {response_data.get('errmsg')}")
+
     def has_quota(self, professor, student):
-        # 这里需要实现逻辑来检查是否有足够的名额
-        # 示例逻辑，实际应用中可能会更复杂
-        if student.postgraduate_type == 1:  # 专业型(北京)
-            return professor.professional_quota > 0
-        elif student.postgraduate_type == 4:  # 专业型(烟台)
-            return professor.professional_yt_quota > 0
-        elif student.postgraduate_type == 2:  # 学术型
-            return professor.academic_quota > 0
-        elif student.postgraduate_type == 3:  # 博士
-            return professor.doctor_quota > 0
-        return False
+        # 封装可扩展的名额检查逻辑
+        quota_mapping = {
+            1: professor.professional_quota,
+            4: professor.professional_yt_quota,
+            2: professor.academic_quota,
+            3: professor.doctor_quota
+        }
+        return quota_mapping.get(student.postgraduate_type, 0) > 0
 
     def update_quota(self, professor, student):
-        # 这里需要实现逻辑来更新名额
-        # 示例逻辑，实际应用中可能会更复杂
-        if student.postgraduate_type == 1:  # 专业型(北京)
-            professor.professional_quota -= 1
-        elif student.postgraduate_type == 4:  # 专业型(烟台)
-            professor.professional_yt_quota -= 1
-        elif student.postgraduate_type == 2:  # "学术型"
-            professor.academic_quota -= 1
-        elif student.postgraduate_type == 3:  # 博士
-            professor.doctor_quota -= 1
-        professor.save()
+        # # 这里需要实现逻辑来更新名额
+        # # 示例逻辑，实际应用中可能会更复杂
+        # if student.postgraduate_type == 1:  # 专业型(北京)
+        #     professor.professional_quota -= 1
+        # elif student.postgraduate_type == 4:  # 专业型(烟台)
+        #     professor.professional_yt_quota -= 1
+        # elif student.postgraduate_type == 2:  # "学术型"
+        #     professor.academic_quota -= 1
+        # elif student.postgraduate_type == 3:  # 博士
+        #     professor.doctor_quota -= 1
+        # professor.save()
+
+        # 更新名额
+        quota_fields = {
+            1: 'professional_quota',
+            4: 'professional_yt_quota',
+            2: 'academic_quota',
+            3: 'doctor_quota'
+        }
+        quota_field = quota_fields.get(student.postgraduate_type)
+        if quota_field:
+            setattr(professor, quota_field, getattr(professor, quota_field) - 1)
+            professor.save()
 
     def send_notification(self, student, action):
         # 学生的openid和小程序的access_token

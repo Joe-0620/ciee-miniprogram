@@ -33,6 +33,7 @@ class Professor(models.Model):
     personal_page = models.CharField(max_length=300, blank=True, verbose_name="个人介绍")
     avatar = models.CharField(max_length=500, null=True, blank=True, verbose_name="照片下载地址")
     contact_details = models.CharField(max_length=50, null=True, blank=True, verbose_name="联系方式")
+    signature_temp = models.CharField(max_length=500, null=True, blank=True, verbose_name="签名临时下载地址")
 
     Department_Position = [
         [0, "非审核人"],
@@ -93,6 +94,8 @@ class Student(models.Model):
     ]
     study_mode = models.BooleanField(max_length=20, choices=STUDY_MODE_CHOICES, default=True, verbose_name="学习方式")
     avatar = models.CharField(max_length=200, null=True, blank=True, verbose_name="头像")
+    signature_temp = models.CharField(max_length=500, null=True, blank=True, verbose_name="签名临时下载地址")
+    # signature_table = models.CharField(max_length=500, null=True, blank=True, verbose_name="导师意向表下载地址")
     resume = models.CharField(max_length=200, null=True, blank=True, verbose_name="简历")
     phone_number = models.CharField(max_length=20, null=True, blank=True, verbose_name="手机号")
     # 初试成绩

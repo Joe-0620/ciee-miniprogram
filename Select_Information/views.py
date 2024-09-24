@@ -369,7 +369,7 @@ class ProfessorChooseStudentView(APIView):
                 MAXThread=10,
                 EnableMD5=False,
                 Metadata={
-                    'x-cos-meta-fileid': response_data[cos_file_id]  # 自定义元数据
+                    'x-cos-meta-fileid': response_data['cos_file_id']  # 自定义元数据
                 }
             )
             print(f"文件上传成功: {response['ETag']}")

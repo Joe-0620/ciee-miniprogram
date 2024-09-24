@@ -256,12 +256,16 @@ class ProfessorChooseStudentView(APIView):
             os.makedirs(save_dir)
         save_path = os.path.join(save_dir, f'{student.user_name.username}_agreement.pdf')
 
+        print("sava_path: ", save_path)
+
         # 将图层与现有的 PDF 模板合并
         self.merge_pdfs(save_path, packet)
 
+        print("sava file")
+
         # 上传到微信云托管
         cloud_path = f"signature/student/{student.user_name.username}_agreement.pdf"
-        self.upload_to_wechat_cloud(save_path, cloud_path)
+        self.upload_to_wechat_cloud(save_path, cloud_path, student)
 
     def merge_pdfs(self, save_path, overlay_pdf):
         """将生成的 PDF 图层与模板合并"""
@@ -312,7 +316,7 @@ class ProfessorChooseStudentView(APIView):
         # print("done4")
         return packet
 
-    def upload_to_wechat_cloud(self, save_path, cloud_path):
+    def upload_to_wechat_cloud(self, save_path, cloud_path, student):
         # 正常情况日志级别使用 INFO，需要定位时可以修改为 DEBUG，此时 SDK 会打印和服务端的通信信息
         logging.basicConfig(level=logging.INFO, stream=sys.stdout)
 
@@ -329,6 +333,8 @@ class ProfessorChooseStudentView(APIView):
         config = CosConfig(Region=region, SecretId=secret_id, SecretKey=secret_key, Token=token, Scheme=scheme)
         client = CosS3Client(config)
 
+        print("upload file")
+
         try:
             # 根据文件大小自动选择简单上传或分块上传，分块上传具备断点续传功能。
             response = client.upload_file(
@@ -339,7 +345,20 @@ class ProfessorChooseStudentView(APIView):
                 MAXThread=10,
                 EnableMD5=False
             )
-            print(response['ETag'])
+            print(f"文件上传成功: {response['ETag']}")
+            # print(f"文件上传成功: {response}")
+            # 上传成功后删除本地的临时文件
+            if os.path.exists(save_path):
+                os.remove(save_path)
+                print(f"本地临时文件已删除: {save_path}")
+            else:
+                print(f"本地文件不存在: {save_path}")
+
+            # 上传成功后将路径保存到学生模型的 signature_table 字段
+            student.signature_table = cloud_path
+            student.save()  # 保存更新后的学生信息
+            print(f"文件路径已保存到学生的 signature_table: {cloud_path}")
+
         except Exception as e:
             print(f"文件上传失败: {str(e)}")
 

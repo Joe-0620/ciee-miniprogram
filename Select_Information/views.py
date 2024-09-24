@@ -328,7 +328,7 @@ class ProfessorChooseStudentView(APIView):
 
         # 根据文件大小自动选择简单上传或分块上传，分块上传具备断点续传功能。
         response = client.upload_file(
-            Bucket='7072-prod-2g1jrmkk21c1d283-1319836128',
+            Bucket=os.environ.get("COS_BUCKET"),
             LocalFilePath=save_path,
             Key=cloud_path,
             PartSize=1,
@@ -337,27 +337,6 @@ class ProfessorChooseStudentView(APIView):
         )
         print(response['ETag'])
 
-    def set_file_public_read(self, path):
-        """设置文件为公有读"""
-        # 腾讯云 COS 配置
-
-        region = 'ap-shanghai'  # 替换为你的存储桶所在区域
-        bucket_name = '7072-prod-2g1jrmkk21c1d283-1319836128'  # 替换为你的存储桶名称
-        token = None  # 如果使用永久密钥，不需要填入 token
-
-        config = CosConfig(Region=region, SecretId=secret_id, SecretKey=secret_key, Token=token)
-        client = CosS3Client(config)
-
-        # 设置对象的 ACL 为 public-read
-        try:
-            response = client.put_object_acl(
-                Bucket=bucket_name,
-                Key=path,
-                ACL='public-read'  # 设置为公有读
-            )
-            print(f"成功设置文件 {path} 为公有读")
-        except Exception as e:
-            print(f"设置文件 {path} 为公有读失败: {e}")
 
     def has_quota(self, professor, student):
         # 封装可扩展的名额检查逻辑

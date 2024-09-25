@@ -301,7 +301,7 @@ class UpdateProfessorView(APIView):
         can.drawImage(signature_image_path, 420, 320, width=100, height=50)
         can.drawString(172, 427, student.name)
         can.drawString(363, 427, student.subject.subject_name)
-        date = timezone.now().strftime("%Y年 %m月 %d日")
+        date = timezone.now().strftime("%Y 年 %m 月 %d 日")
         can.drawString(324, 305, date)
         can.save()
         packet.seek(0)
@@ -388,13 +388,189 @@ class UpdateStudentView(APIView):
         user = request.user
         student = user.student
 
-        serializer = StudentPartialUpdateSerializer(student, data=request.data, partial=True)
+        # 检查是否传入了 signature_temp 字段
+        signature_temp = request.data.get('signature_temp', None)
+        if signature_temp:
+            student_pdf_file_id = student.signature_table
 
+            # 获取签名图片的下载地址
+            response_data_signature = self.get_fileid_download_url(signature_temp)
+            if response_data_signature.get("errcode") == 0:
+                signature_download_url = response_data_signature['file_list'][0]['download_url']
+                print(f"签名图片下载地址: {signature_download_url}")
+            else:
+                return Response({'message': '获取签名图片下载地址失败'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+            # 获取学生PDF的下载地址
+            response_data_pdf = self.get_fileid_download_url(student_pdf_file_id)
+            if response_data_pdf.get("errcode") == 0:
+                pdf_download_url = response_data_pdf['file_list'][0]['download_url']
+                print(f"PDF下载地址: {pdf_download_url}")
+            else:
+                return Response({'message': '获取PDF下载地址失败'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+            try:
+                self.generate_and_upload_pdf(signature_download_url, pdf_download_url, student)
+            except Exception as e:
+                return Response({'message': f'生成或上传PDF失败: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+        # 将 request.data 转换为一个可修改的字典
+        mutable_data = request.data.copy()
+        mutable_data.pop('student_id', None)
+        mutable_data.pop('professor_id', None)
+
+        serializer = StudentPartialUpdateSerializer(student, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def get_fileid_download_url(self, file_id):
+        """
+        根据 file_id 获取下载地址
+        """
+        url = f'https://api.weixin.qq.com/tcb/batchdownloadfile'
+        data = {
+            "env": 'prod-2g1jrmkk21c1d283',
+            "file_list": [
+                {
+                    "fileid": file_id,
+                    "max_age":7200
+                }
+            ]
+        }
+
+        # 发送POST请求
+        response = requests.post(url, json=data)
+        return response.json()
+
+
+
+    def generate_and_upload_pdf(self, signature_url, pdf_url, student):
+        """
+        生成包含签名图片和导师信息的PDF，并上传到微信云托管
+        """
+        # 下载签名图片和PDF
+        signature_image = self.download_file(signature_url)
+        pdf_file = self.download_file(pdf_url)
+
+        # 使用PyPDF2等库合并签名图片和PDF文件
+        updated_pdf_path = self.add_signature_to_pdf(pdf_file, signature_image, student)
+        print("完成签名")
+        # 上传合并后的PDF文件
+        cloud_path = f"signature/student/{student.candidate_number}_signed_agreement.pdf"
+        print("开始上传")
+        self.upload_to_wechat_cloud(updated_pdf_path, cloud_path, student)
+
+    def download_file(self, url):
+        """
+        下载文件并返回文件的二进制内容
+        """
+        response = requests.get(url)
+        if response.status_code == 200:
+            return response.content
+        else:
+            raise Exception(f"文件下载失败，状态码: {response.status_code}")
+
+    def add_signature_to_pdf(self, pdf_data, signature_data, student):
+        """
+        将签名图片添加到PDF中，并返回包含签名的PDF文件路径
+        """
+        # 将签名图片保存为临时文件
+        signature_image_path = f"/app/Select_Information/tempFile/{student.candidate_number}_signature_image.png"  # 你可以根据需要更改保存路径
+        with open(signature_image_path, "wb") as f:
+            f.write(signature_data)
+        # 假设使用 reportlab 和 PyPDF2 来处理PDF和签名合并
+        packet = io.BytesIO()
+        can = canvas.Canvas(packet, pagesize=letter)
+        try:
+            # 注册支持中文的字体
+            pdfmetrics.registerFont(TTFont('simsun', r'/app/Select_Information/pdfTemplate/simsun.ttc'))
+            can.setFont('simsun', 12)
+        except Exception as e:
+            # 打印异常堆栈信息
+            print("Error occurred while registering the font:")
+            traceback.print_exc()
+
+        can.drawImage(signature_image_path, 390, 498, width=100, height=50)
+        date = timezone.now().strftime("%Y 年 %m 月 %d 日")
+        can.drawString(324, 485, date)
+        can.save()
+        packet.seek(0)
+
+        overlay_pdf = PdfReader(packet)
+        existing_pdf = PdfReader(io.BytesIO(pdf_data))
+
+        output = PdfWriter()
+        for i in range(len(existing_pdf.pages)):
+            page = existing_pdf.pages[i]
+            if i == 0:  # 假设我们只在第一页添加签名
+                page.merge_page(overlay_pdf.pages[0])
+            output.add_page(page)
+
+        updated_pdf_path = f"/app/Select_Information/tempFile/{student.candidate_number}_signed_agreement.pdf"
+        with open(updated_pdf_path, "wb") as f_out:
+            output.write(f_out)
+
+        return updated_pdf_path
+
+    def upload_to_wechat_cloud(self, save_path, cloud_path, student):
+        """
+        上传生成的PDF到微信云托管
+        """
+        # 正常情况日志级别使用 INFO，需要定位时可以修改为 DEBUG，此时 SDK 会打印和服务端的通信信息
+        logging.basicConfig(level=logging.INFO, stream=sys.stdout)
+
+        secret_id = os.environ.get("COS_SECRET_ID")
+        secret_key = os.environ.get("COS_SECRET_KEY")
+        region = 'ap-shanghai'
+        token = None
+        scheme = 'https'
+
+        config = CosConfig(Region=region, SecretId=secret_id, SecretKey=secret_key, Token=token, Scheme=scheme)
+        client = CosS3Client(config)
+
+        print("正在开始上传")
+
+        try:
+            url = f'https://api.weixin.qq.com/tcb/uploadfile'
+
+            data = {
+                "env": 'prod-2g1jrmkk21c1d283',
+                "path": cloud_path,
+            }
+
+            # 发送POST请求
+            response = requests.post(url, json=data)
+            response_data = response.json()
+            print(response_data)
+
+            response = client.upload_file(
+                Bucket=os.environ.get("COS_BUCKET"),
+                LocalFilePath=save_path,
+                Key=cloud_path,
+                PartSize=1,
+                MAXThread=10,
+                EnableMD5=False,
+                Metadata={
+                    'x-cos-meta-fileid': response_data['cos_file_id']  # 自定义元数据
+                }
+            )
+            print(f"文件上传成功: {response['ETag']}")
+
+            # 上传成功后将路径保存到学生模型的 signature_table 字段
+            student.signature_table = response_data['file_id']
+            student.save()
+            print(f"文件路径已保存到学生的 signature_table: {cloud_path}")
+
+            # 删除本地临时文件
+            if os.path.exists(save_path):
+                os.remove(save_path)
+                print(f"本地临时文件已删除: {save_path}")
+
+        except Exception as e:
+            print(f"文件上传失败: {str(e)}")
         
 
 # 退出登录

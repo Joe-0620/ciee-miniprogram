@@ -34,7 +34,7 @@ class StudentSerializer(serializers.ModelSerializer):
 class StudentResumeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
-        fields = ['phone_number', 'avatar', 'resume']  # 或者指定您想要序列化的字段
+        fields = ['phone_number', 'avatar', 'resume', 'signature_table']  # 或者指定您想要序列化的字段
 
 
 class ChangePasswordSerializer(serializers.Serializer):
@@ -74,7 +74,7 @@ class ProfessorPartialUpdateSerializer(serializers.ModelSerializer):
 class StudentPartialUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
-        fields = ['phone_number', 'avatar', 'resume']  # 允许修改的字段
+        fields = ['phone_number', 'avatar', 'resume', 'signature_temp']  # 允许修改的字段
 
 
 class UserLoginSerializer(serializers.Serializer):

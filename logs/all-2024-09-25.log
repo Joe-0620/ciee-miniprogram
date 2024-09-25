@@ -814,3 +814,57 @@ requests.exceptions.ConnectionError: HTTPSConnectionPool(host='api.weixin.qq.com
 [2024-09-25 11:14:53,070] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68692
 [2024-09-25 11:16:14,112] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
 [2024-09-25 11:16:58,244] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-09-25 11:31:07,602] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-09-25 15:14:31,016] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-09-25 15:19:30,546] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /userlogin/ HTTP/1.1" 200 742
+[2024-09-25 15:19:31,043] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 656
+[2024-09-25 15:19:31,497] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 656
+[2024-09-25 15:19:33,437] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 656
+[2024-09-25 15:19:33,848] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 656
+[2024-09-25 15:19:37,898] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68692
+[2024-09-25 15:19:44,351] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68692
+[2024-09-25 15:19:51,726] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-09-25 15:19:53,202] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-09-25 15:19:55,374] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/student-resumeinfo/?student_id=250 HTTP/1.1" 200 308
+[2024-09-25 15:19:56,735] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 656
+[2024-09-25 15:20:01,057] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68692
+[2024-09-25 15:21:40,190] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 656
+[2024-09-25 15:21:40,622] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 656
+[2024-09-25 15:21:44,822] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68692
+[2024-09-25 15:21:48,733] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/student-resumeinfo/?student_id=250 HTTP/1.1" 200 308
+[2024-09-25 15:21:50,018] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68692
+[2024-09-25 15:21:50,212] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 656
+[2024-09-25 15:21:54,892] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68692
+[2024-09-25 15:22:00,106] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68692
+[2024-09-25 15:22:19,100] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 656
+[2024-09-25 15:22:21,143] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/user-logout/ HTTP/1.1" 200 37
+[2024-09-25 15:22:52,602] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /userlogin/ HTTP/1.1" 200 791
+[2024-09-25 15:22:53,136] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 705
+[2024-09-25 15:22:53,505] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 705
+[2024-09-25 15:22:55,989] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 705
+[2024-09-25 15:22:56,110] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=student HTTP/1.1" 200 651
+[2024-09-25 15:22:56,370] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 705
+[2024-09-25 15:22:56,592] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=student HTTP/1.1" 200 651
+[2024-09-25 15:24:46,557] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /userlogin/ HTTP/1.1" 200 791
+[2024-09-25 15:24:47,061] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 705
+[2024-09-25 15:24:47,437] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 705
+[2024-09-25 15:24:49,076] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 705
+[2024-09-25 15:24:49,197] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=student HTTP/1.1" 200 651
+[2024-09-25 15:24:49,472] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 705
+[2024-09-25 15:24:49,703] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=student HTTP/1.1" 200 651
+[2024-09-25 15:25:32,438] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/student-resumeinfo/?student_id=250 HTTP/1.1" 200 308
+[2024-09-25 15:25:34,027] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 705
+[2024-09-25 15:25:34,154] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=student HTTP/1.1" 200 651
+[2024-09-25 15:25:57,799] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-09-25 15:27:07,096] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-09-25 15:28:42,512] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 705
+[2024-09-25 15:28:42,652] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=student HTTP/1.1" 200 651
+[2024-09-25 15:28:42,925] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 705
+[2024-09-25 15:28:43,124] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=student HTTP/1.1" 200 651
+[2024-09-25 15:28:45,505] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 705
+[2024-09-25 15:28:45,893] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 705
+[2024-09-25 15:28:46,774] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 705
+[2024-09-25 15:28:46,888] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=student HTTP/1.1" 200 651
+[2024-09-25 15:31:32,017] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-09-25 15:42:54,629] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-09-25 15:43:40,787] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader

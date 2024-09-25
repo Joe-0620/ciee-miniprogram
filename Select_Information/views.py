@@ -238,7 +238,7 @@ class ProfessorChooseStudentView(APIView):
     def generate_and_upload_pdf(self, student, professor):
         """生成包含学生和导师信息的PDF，并上传到微信云托管"""
         # 获取当前时间
-        date = timezone.now().strftime("%Y-%m-%d")
+        date = timezone.now().strftime("%Y 年 %m 月 %d 日")
         student_name = student.name
         student_major = student.subject.subject_name
         professor_name = professor.name
@@ -252,10 +252,10 @@ class ProfessorChooseStudentView(APIView):
         # 将时间戳转换为字符串
         timestamp_str = str(timestamp)
 
-        print(date)
-        print(student_name)
-        print(student_major)
-        print(professor_name)
+        # print(date)
+        # print(student_name)
+        # print(student_major)
+        # print(professor_name)
 
         # 生成 PDF
         packet = self.create_overlay(student_name, student_major, professor_name, date)

@@ -251,8 +251,7 @@ class UpdateProfessorView(APIView):
         pdf_file = self.download_file(pdf_url)
 
         # 使用PyPDF2等库合并签名图片和PDF文件
-        updated_pdf_path = self.add_signature_to_pdf(pdf_file, signature_image, professor)
-
+        updated_pdf_path = self.add_signature_to_pdf(pdf_file, signature_image, professor, student)
         # 上传合并后的PDF文件
         cloud_path = f"signature/student/{student.candidate_number}_signed_agreement.pdf"
         self.upload_to_wechat_cloud(updated_pdf_path, cloud_path, student)
@@ -267,14 +266,17 @@ class UpdateProfessorView(APIView):
         else:
             raise Exception(f"文件下载失败，状态码: {response.status_code}")
 
-    def add_signature_to_pdf(self, pdf_data, signature_data, professor):
+    def add_signature_to_pdf(self, pdf_data, signature_data, professor, student):
         """
         将签名图片添加到PDF中，并返回包含签名的PDF文件路径
         """
+        # 将签名图片保存为临时文件
+        signature_image_path = f"/app/Select_Information/tempFile/{professor.teacher_identity_id}_signature_image.png"  # 你可以根据需要更改保存路径
+        with open(signature_image_path, "wb") as f:
+            f.write(signature_data)
         # 假设使用 reportlab 和 PyPDF2 来处理PDF和签名合并
         packet = io.BytesIO()
         can = canvas.Canvas(packet, pagesize=letter)
-
         try:
             # 注册支持中文的字体
             pdfmetrics.registerFont(TTFont('simsun', r'/app/Select_Information/pdfTemplate/simsun.ttc'))
@@ -284,8 +286,12 @@ class UpdateProfessorView(APIView):
             print("Error occurred while registering the font:")
             traceback.print_exc()
 
-        can.drawImage(io.BytesIO(signature_data), 150, 100, width=100, height=50)
-        can.drawString(100, 50, f"导师: {professor.name}")
+        can.drawImage(signature_image_path, 420, 320, width=100, height=50)
+        can.drawString(172, 427, student.name)
+        can.drawString(363, 427, student.subject.subject_name)
+        date = timezone.now().strftime("%Y年 %m月 %d日")
+        # 插入日期
+        can.drawString(324, 305, date)
         can.save()
         packet.seek(0)
 

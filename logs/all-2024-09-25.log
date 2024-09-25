@@ -726,3 +726,49 @@ requests.exceptions.ConnectionError: HTTPSConnectionPool(host='api.weixin.qq.com
 [2024-09-25 09:46:02,026] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
 [2024-09-25 09:46:13,242] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
 [2024-09-25 09:57:52,199] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-09-25 10:08:23,533] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-09-25 10:08:58,080] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /userlogin/ HTTP/1.1" 200 742
+[2024-09-25 10:08:58,672] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 656
+[2024-09-25 10:08:59,080] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 656
+[2024-09-25 10:09:01,111] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 656
+[2024-09-25 10:09:01,528] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 656
+[2024-09-25 10:09:05,501] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68692
+[2024-09-25 10:09:11,869] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68692
+[2024-09-25 10:09:16,513] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 656
+[2024-09-25 10:09:16,711] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Professor_Student_Manage/update-professor/
+[2024-09-25 10:09:16,711] [basehttp.py:161] [basehttp:log_message] [ERROR]- "PATCH /Professor_Student_Manage/update-professor/ HTTP/1.1" 500 98
+[2024-09-25 10:09:16,785] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68692
+[2024-09-25 10:09:21,782] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68692
+[2024-09-25 10:10:14,701] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-09-25 10:10:21,950] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 656
+[2024-09-25 10:10:22,008] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Professor_Student_Manage/update-professor/
+[2024-09-25 10:10:22,008] [basehttp.py:161] [basehttp:log_message] [ERROR]- "PATCH /Professor_Student_Manage/update-professor/ HTTP/1.1" 500 98
+[2024-09-25 10:10:26,548] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68692
+[2024-09-25 10:11:13,030] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-09-25 10:11:20,586] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 656
+[2024-09-25 10:11:20,980] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Professor_Student_Manage/update-professor/
+[2024-09-25 10:11:20,981] [basehttp.py:161] [basehttp:log_message] [ERROR]- "PATCH /Professor_Student_Manage/update-professor/ HTTP/1.1" 500 98
+[2024-09-25 10:11:25,104] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68692
+[2024-09-25 10:12:22,391] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-09-25 10:12:29,260] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Professor_Student_Manage/update-professor/
+[2024-09-25 10:12:29,260] [basehttp.py:161] [basehttp:log_message] [ERROR]- "PATCH /Professor_Student_Manage/update-professor/ HTTP/1.1" 500 98
+[2024-09-25 10:12:29,328] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 656
+[2024-09-25 10:12:34,095] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68692
+[2024-09-25 10:15:00,501] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-09-25 10:15:37,654] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-09-25 10:15:46,007] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 656
+[2024-09-25 10:15:47,525] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Professor_Student_Manage/update-professor/
+[2024-09-25 10:15:47,526] [basehttp.py:161] [basehttp:log_message] [ERROR]- "PATCH /Professor_Student_Manage/update-professor/ HTTP/1.1" 500 69
+[2024-09-25 10:15:51,346] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68692
+[2024-09-25 10:16:26,968] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-09-25 10:16:46,066] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-09-25 10:41:02,337] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-09-25 10:42:40,426] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-09-25 10:42:50,067] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-09-25 10:45:40,935] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-09-25 10:46:26,272] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-09-25 10:46:30,419] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-09-25 10:46:39,996] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 656
+[2024-09-25 10:46:40,642] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 656
+[2024-09-25 10:46:44,569] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68692
+[2024-09-25 10:46:50,095] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68692

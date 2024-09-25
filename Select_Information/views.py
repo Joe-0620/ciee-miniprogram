@@ -382,7 +382,7 @@ class ProfessorChooseStudentView(APIView):
                 print(f"本地文件不存在: {save_path}")
 
             # 上传成功后将路径保存到学生模型的 signature_table 字段
-            student.signature_table = cloud_path
+            student.signature_table = response_data['file_id']
             student.save()  # 保存更新后的学生信息
             print(f"文件路径已保存到学生的 signature_table: {cloud_path}")
 

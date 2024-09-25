@@ -56,7 +56,6 @@ class ProfessorSerializer(serializers.ModelSerializer):
         # print()
         fields = [f.name for f in Professor._meta.get_fields() if f.name != 'enroll_subject' and f.name != 'studentprofessorchoice'] + ['enroll_subject']
 
-
 class ProfessorEnrollInfoSerializer(serializers.ModelSerializer):
     # department = serializers.StringRelatedField()
     # enroll_subject = serializers.StringRelatedField(many=True)
@@ -69,7 +68,7 @@ class ProfessorEnrollInfoSerializer(serializers.ModelSerializer):
 class ProfessorPartialUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Professor
-        fields = ['email', 'research_areas', 'personal_page', 'avatar', 'contact_details']  # 允许修改的字段
+        fields = ['email', 'research_areas', 'personal_page', 'avatar', 'contact_details', 'signature_temp']  # 允许修改的字段
 
 
 class StudentPartialUpdateSerializer(serializers.ModelSerializer):

@@ -188,11 +188,13 @@ class UpdateProfessorView(APIView):
             try:
                 # 获取该ID的学生
                 student = Student.objects.get(id=student_id)
+                # 获取待导师签名的pdf云端文件id
+                student_pdf_file_id = student.signature_table
             except Student.DoesNotExist:
                 return Response({'message': '学生不存在'}, status=status.HTTP_404_NOT_FOUND)
 
             # 获取签名图片的下载地址
-            response_data_signature = self.get_fileid_download_url(signature_file_id)
+            response_data_signature = self.get_fileid_download_url(signature_temp)
             if response_data_signature.get("errcode") == 0:
                 signature_download_url = response_data_signature['file_list'][0]['download_url']
                 print(f"签名图片下载地址: {signature_download_url}")

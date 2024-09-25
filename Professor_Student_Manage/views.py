@@ -186,9 +186,8 @@ class UpdateProfessorView(APIView):
                 return Response({'message': '学生ID未提供'}, status=status.HTTP_400_BAD_REQUEST)
 
             try:
-                # 获取该ID的学生
+                # 获取该ID的学生并获取待导师签名的pdf云端文件id
                 student = Student.objects.get(id=student_id)
-                # 获取待导师签名的pdf云端文件id
                 student_pdf_file_id = student.signature_table
             except Student.DoesNotExist:
                 return Response({'message': '学生不存在'}, status=status.HTTP_404_NOT_FOUND)

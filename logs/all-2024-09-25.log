@@ -772,3 +772,4 @@ requests.exceptions.ConnectionError: HTTPSConnectionPool(host='api.weixin.qq.com
 [2024-09-25 10:46:40,642] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 656
 [2024-09-25 10:46:44,569] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68692
 [2024-09-25 10:46:50,095] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68692
+[2024-09-25 10:49:04,743] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader

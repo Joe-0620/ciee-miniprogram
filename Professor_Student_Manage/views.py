@@ -290,7 +290,6 @@ class UpdateProfessorView(APIView):
         can.drawString(172, 427, student.name)
         can.drawString(363, 427, student.subject.subject_name)
         date = timezone.now().strftime("%Y年 %m月 %d日")
-        # 插入日期
         can.drawString(324, 305, date)
         can.save()
         packet.seek(0)

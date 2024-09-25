@@ -214,7 +214,11 @@ class UpdateProfessorView(APIView):
             except Exception as e:
                 return Response({'message': f'生成或上传PDF失败: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-        serializer = ProfessorPartialUpdateSerializer(professor, data=request.data, partial=True)
+        # 将 request.data 转换为一个可修改的字典
+        mutable_data = request.data.copy()
+        mutable_data.pop('student_id', None)
+        mutable_data.pop('professor_id', None)
+        serializer = ProfessorPartialUpdateSerializer(professor, data=mutable_data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
@@ -252,8 +256,10 @@ class UpdateProfessorView(APIView):
 
         # 使用PyPDF2等库合并签名图片和PDF文件
         updated_pdf_path = self.add_signature_to_pdf(pdf_file, signature_image, professor, student)
+        print("完成签名")
         # 上传合并后的PDF文件
         cloud_path = f"signature/student/{student.candidate_number}_signed_agreement.pdf"
+        print("开始上传")
         self.upload_to_wechat_cloud(updated_pdf_path, cloud_path, student)
 
     def download_file(self, url):
@@ -314,7 +320,6 @@ class UpdateProfessorView(APIView):
         """
         上传生成的PDF到微信云托管
         """
-
         # 正常情况日志级别使用 INFO，需要定位时可以修改为 DEBUG，此时 SDK 会打印和服务端的通信信息
         logging.basicConfig(level=logging.INFO, stream=sys.stdout)
 

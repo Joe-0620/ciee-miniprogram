@@ -868,3 +868,13 @@ requests.exceptions.ConnectionError: HTTPSConnectionPool(host='api.weixin.qq.com
 [2024-09-25 15:31:32,017] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
 [2024-09-25 15:42:54,629] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
 [2024-09-25 15:43:40,787] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-09-25 15:45:41,465] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-09-25 15:47:52,522] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/student-resumeinfo/?student_id=250 HTTP/1.1" 200 308
+[2024-09-25 15:47:54,366] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 705
+[2024-09-25 15:47:54,426] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=student HTTP/1.1" 200 651
+[2024-09-25 15:48:26,029] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=student HTTP/1.1" 200 651
+[2024-09-25 17:07:22,167] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=student HTTP/1.1" 200 651
+[2024-09-25 17:07:23,858] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2024-09-25 17:07:24,128] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2024-09-25 17:07:28,331] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 82429
+[2024-09-25 17:07:35,516] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 82429

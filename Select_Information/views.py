@@ -318,7 +318,7 @@ class ProfessorChooseStudentView(APIView):
         can.drawString(150, 683.5, name)
         can.drawString(345, 683.5, major)
         can.drawString(490, 638, professor_name)
-        can.drawString(324, 497, date)
+        # can.drawString(324, 497, date)
 
         can.save()
         packet.seek(0)

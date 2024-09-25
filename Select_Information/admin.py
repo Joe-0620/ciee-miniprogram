@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import StudentProfessorChoice, SelectionTime
+from .models import StudentProfessorChoice, SelectionTime, ReviewRecord
 
 
 class StudentProfessorChoiceApprovalAdmin(admin.ModelAdmin):
@@ -20,6 +20,13 @@ class SelectionTimeAdmin(admin.ModelAdmin):
     ]
     list_display = ["open_time", "close_time"]
 
+class ReviewRecordAdmin(admin.ModelAdmin):
+    fieldsets = [
+        ("审核信息", {"fields": ["student", "professor", "file_id", "review_status", "review_time", "reviewer"]}),
+    ]
+    list_display = ["student", "professor", "file_id", "review_status", "review_time", "reviewer"]
+    search_fields = ["student__name_fk_search", "professor__name_fk_search"]
 
 admin.site.register(StudentProfessorChoice, StudentProfessorChoiceApprovalAdmin)
 admin.site.register(SelectionTime, SelectionTimeAdmin)
+admin.site.register(ReviewRecord, ReviewRecordAdmin)

@@ -7,7 +7,7 @@ from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate
 from .serializers import StudentProfessorChoiceSerializer, SelectionTimeSerializer
 from Professor_Student_Manage.models import Student, Professor, WeChatAccount
-from Select_Information.models import StudentProfessorChoice, SelectionTime
+from Select_Information.models import StudentProfessorChoice, SelectionTime, ReviewRecord
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from Professor_Student_Manage.serializers import StudentSerializer
@@ -160,7 +160,7 @@ class StudentChooseProfessorView(APIView):
             }
         }
 
-        # 获取当前时间
+        # 获取��前时间
         current_time = datetime.now()
 
         # 格式化时间为 YYYY-MM-DD HH:MM:SS 格式
@@ -233,7 +233,7 @@ class ProfessorChooseStudentView(APIView):
         except Student.DoesNotExist:
             return Response({'message': '学生不存在'}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
-            return Response({'message': '服务器错���，请稍后再试'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({'message': '服务器错，请稍后再试'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def generate_and_upload_pdf(self, student, professor):
         """生成包含学生和导师信息的PDF，并上传到微信云托管"""
@@ -479,7 +479,7 @@ class StudentCancelView(APIView):
                                                            professor__id=professor_id, 
                                                            status=3).first()
             if choice:
-                # 如果选择存在并且还在等待状态，那么更改状态为已撤销
+                # 如���选择存在并且还在等待状态，那么更改状态为已撤销
                 choice.status = 4
                 choice.finish_time = timezone.now()
                 choice.save()
@@ -492,121 +492,44 @@ class StudentCancelView(APIView):
         except Exception as e:
             return Response({'message': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-class StudentSignatureView(APIView):
+class SubmitSignatureFileView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        student = request.user.student  # 假设你的 User 模型有一个名为 student 的 OneToOneField
-        professor_id = request.data.get('professor_id')  # 获取导师的id
-        signature_file = request.FILES.get('signature_file')  # 获取上传的签名文件
+        professor = request.user.professor
+        student_id = request.data.get('student_id')
+        file_id = request.data.get('file_id')
 
-        if not signature_file:
-            return Response({'message': '请上传签名文件'}, status=status.HTTP_400_BAD_REQUEST)
+        if not student_id or not file_id:
+            return Response({'message': '学生ID和文件ID是必需的'}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
-            # 使用select_related减少数据库查询
-            professor = Professor.objects.select_related('user_name').get(id=professor_id)
-            print(professor)
+            student = Student.objects.get(id=student_id)
+            choice = StudentProfessorChoice.objects.filter(student=student, professor=professor, status=1).first()
 
-            if student.is_selected:
-                return Response({'message': '您已完成导师选择'}, 
-                                status=status.HTTP_405_METHOD_NOT_ALLOWED)
+            if not choice:
+                return Response({'message': '没有找到已同意的互选记录'}, status=status.HTTP_404_NOT_FOUND)
 
-            existing_choice = StudentProfessorChoice.objects.filter(student=student, status=3).exists()
-            if existing_choice:
-                return Response({'message': '您已选择导师，请等待回复'}, status=status.HTTP_409_CONFLICT)
-            
-            if not self.has_quota(professor, student):
-                return Response({'message': '导师已没有名额'}, status=status.HTTP_400_BAD_REQUEST)
+            # 创建审核记录
+            review_record = ReviewRecord.objects.create(
+                student=student,
+                professor=professor,
+                file_id=file_id,
+                review_status=False,  # 初始状态为未审核
+                review_time=None,
+                reviewer=None  # 审核人初始为空
+            )
 
-            if student.subject in professor.enroll_subject.all():
-                StudentProfessorChoice.objects.create(
-                    student=student, 
-                    professor=professor, 
-                    status=3)
-                # 考虑使用Django信号发送通知
-                # 查询导师的openid
-                # 尝试查询导师的微信账号，如果存在则发送通知
-                try:
-                    professor_wechat_account = WeChatAccount.objects.get(user=professor.user_name)
-                    professor_openid = professor_wechat_account.openid
-                    self.send_notification(professor_openid)  # 发送通知
-                except WeChatAccount.DoesNotExist:
-                    # 如果导师的微信账号不存在，则不发送通知，但选择仍然成功
-                    pass
+            # 发送通知给方向审核人（假设方向审核人是一个特定的用户）
+            self.notify_department_reviewer(professor, student)
 
-                # 上传签名文件
-                upload_response = self.uploadfile(signature_file)
-                if upload_response.get("errcode") != 0:
-                    return Response({'message': '签名文件上传失败'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-                return Response({'message': '选择成功，请等待回复'}, status=status.HTTP_201_CREATED)
-            else:
-                return Response({'message': '请选择在你的专业下招生的导师'}, status=status.HTTP_400_BAD_REQUEST)
-        except Professor.DoesNotExist:
-            return Response({'message': '导师不存在'}, status=status.HTTP_404_NOT_FOUND)
+            return Response({'message': '签名表提交成功，等待审核'}, status=status.HTTP_200_OK)
+        except Student.DoesNotExist:
+            return Response({'message': '学生不存在'}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
-            # 更通用的异常处理
-            return Response({'message': '服务器错误，请稍后再试'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({'message': f'服务器错误: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-    def uploadfile(self, signature_file):
-        try:
-            student = self.request.user.student
-            student_wechat_account = WeChatAccount.objects.get(user=student.user_name)
-            student_openid = student_wechat_account.openid
-
-            if student_openid:
-                url = f'https://api.weixin.qq.com/tcb/uploadfile'
-
-                data = {
-                    "env": "prod-2g1jrmkk21c1d283",
-                    "path": f"signature/student/{student.user_name.username}_signature.png",
-                }
-
-                response = requests.post(url, json=data)
-                response_data = response.json()
-
-                if response_data.get("errcode") == 0:
-                    upload_url = response_data.get("url")
-                    upload_response = requests.put(upload_url, files={'file': signature_file})
-                    if upload_response.status_code == 204:
-                        print("文件上传成功")
-                    else:
-                        print(f"文件上传失败: {upload_response.text}")
-                else:
-                    print(f"文件上传失败: {response_data.get('errmsg')}")
-                return response_data
-        except WeChatAccount.DoesNotExist:
-            print("学生微信账号不存在，无法上传文件。")
-            return {"errcode": 1, "errmsg": "学生微信账号不存在"}
-
-    def downloadfile(self, path):
-        try:
-            student = self.request.user.student
-            student_wechat_account = WeChatAccount.objects.get(user=student.user_name)
-            student_openid = student_wechat_account.openid
-
-            if student_openid:
-                url = f'https://api.weixin.qq.com/tcb/batchdownloadfile'
-
-                data = {
-                    "env": "prod-2g1jrmkk21c1d283",
-                    "file_list": [
-                        {
-                            "fileid": path,
-                            "max_age": 7200
-                        }
-                    ]
-                }
-
-                response = requests.post(url, json=data)
-                response_data = response.json()
-
-                if response_data.get("errcode") == 0:
-                    print("文件下载成功")
-                else:
-                    print(f"文件下载失败: {response_data.get('errmsg')}")
-                return response_data
-        except WeChatAccount.DoesNotExist:
-            print("学生微信账号不存在，无法下载文件。")
-            return {"errcode": 1, "errmsg": "学生微信账号不存在"}
+    def notify_department_reviewer(self, professor, student):
+        # 这里实现通知方向审核人的逻辑
+        # 可以通过发送邮件、微信通知等方式通知审核人
+        pass

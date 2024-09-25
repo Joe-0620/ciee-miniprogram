@@ -25,6 +25,10 @@ from PyPDF2 import PdfReader, PdfWriter
 import io
 from django.utils import timezone
 from datetime import datetime
+from qcloud_cos import CosConfig
+from qcloud_cos import CosS3Client
+import sys
+import logging
 
 
 # 类继承自类generics.ListAPIView，这个类是Django REST Framework提供的一个基于类的视图，
@@ -208,6 +212,8 @@ class UpdateProfessorView(APIView):
             else:
                 return Response({'message': '获取PDF下载地址失败'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+            # signature_download_url = 'https://7072-prod-2g1jrmkk21c1d283-1319836128.tcb.qcloud.la/signature/professor/zhujian123_signature.png'
+            # pdf_download_url = 'https://7072-prod-2g1jrmkk21c1d283-1319836128.tcb.qcloud.la/signature/student/S2022666_1727257165_agreement.pdf'
             # 生成包含签名和导师信息的PDF
             try:
                 self.generate_and_upload_pdf(professor, signature_download_url, pdf_download_url, student)
@@ -331,6 +337,8 @@ class UpdateProfessorView(APIView):
 
         config = CosConfig(Region=region, SecretId=secret_id, SecretKey=secret_key, Token=token, Scheme=scheme)
         client = CosS3Client(config)
+
+        print("正在开始上传")
 
         try:
             url = f'https://api.weixin.qq.com/tcb/uploadfile'

@@ -27,6 +27,6 @@ class ReviewRecordAdmin(admin.ModelAdmin):
     list_display = ["student", "professor", "file_id", "review_status", "review_time", "reviewer"]
     search_fields = ["student__name_fk_search", "professor__name_fk_search"]
 
+admin.site.register(ReviewRecord, ReviewRecordAdmin)
 admin.site.register(StudentProfessorChoice, StudentProfessorChoiceApprovalAdmin)
 admin.site.register(SelectionTime, SelectionTimeAdmin)
-admin.site.register(ReviewRecord, ReviewRecordAdmin)

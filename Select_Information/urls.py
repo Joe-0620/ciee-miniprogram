@@ -1,5 +1,6 @@
 from django.urls import path
 from .views import SelectInformationView, StudentChooseProfessorView, ProfessorChooseStudentView, StudentCancelView, GetSelectionTimeView
+from .views import SubmitSignatureFileView
 
 app_name = 'Select_Information'
 
@@ -9,4 +10,5 @@ urlpatterns = [
     path('select-professor/', StudentChooseProfessorView.as_view(), name='student-select-professor'),
     path('select-student/', ProfessorChooseStudentView.as_view(), name='professor-select-student'),
     path('student-cancel-select/', StudentCancelView.as_view(), name='student-cancel-select'),
+    path('submit-pdf-review/', SubmitSignatureFileView.as_view(), name='submit-pdf-review'),
 ]

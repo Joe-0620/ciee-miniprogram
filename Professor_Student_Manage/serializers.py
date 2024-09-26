@@ -86,3 +86,14 @@ class DepartmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Department
         fields = '__all__'  # 或者指定您想要序列化的字段
+
+class DepartmentReviewerSerializer(serializers.ModelSerializer):
+    reviewers = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Department
+        fields = ['id', 'department_name', 'reviewers']
+
+    def get_reviewers(self, obj):
+        reviewers = Professor.objects.filter(department=obj, department_position__in=[1, 2])
+        return ProfessorSerializer(reviewers, many=True).data

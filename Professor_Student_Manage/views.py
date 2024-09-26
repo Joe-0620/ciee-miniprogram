@@ -5,6 +5,7 @@ from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate
 from .serializers import UserLoginSerializer, StudentSerializer, ProfessorSerializer, StudentPartialUpdateSerializer, ProfessorEnrollInfoSerializer
 from .serializers import DepartmentSerializer, ProfessorPartialUpdateSerializer, ChangePasswordSerializer, StudentResumeSerializer
+from .serializers import DepartmentReviewerSerializer
 from Professor_Student_Manage.models import Student, Professor, Department, WeChatAccount
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
@@ -656,3 +657,12 @@ class SubmitQuotaView(APIView):
             return Response({'message': '指标设置成功'}, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({'message': '请求异常，请重试'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class DepartmentReviewersView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        departments = Department.objects.all()
+        serializer = DepartmentReviewerSerializer(departments, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)

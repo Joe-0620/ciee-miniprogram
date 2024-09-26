@@ -38,3 +38,19 @@ class StudentProfessorChoice(models.Model):
 
     def __str__(self):
         return f"{self.student} - {self.professor}"
+
+class ReviewRecord(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, verbose_name="学生")
+    professor = models.ForeignKey(Professor, on_delete=models.CASCADE, verbose_name="导师", related_name='review_records')
+    file_id = models.CharField(max_length=500, verbose_name="文件ID")
+    review_status = models.BooleanField(default=False, verbose_name="审核状态")
+    review_time = models.DateTimeField(null=True, blank=True, verbose_name="审核时间")
+    reviewer = models.ForeignKey(Professor, related_name='reviewer', on_delete=models.SET_NULL, null=True, blank=True, verbose_name="审核人")
+
+    class Meta:
+        verbose_name = "审核记录"
+        verbose_name_plural = "审核记录"
+
+    def __str__(self):
+        return f"{self.student} - {self.professor} - {self.review_status}"
+

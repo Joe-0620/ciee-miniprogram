@@ -499,16 +499,19 @@ class SubmitSignatureFileView(APIView):
         professor = request.user.professor
         student_id = request.data.get('student_id')
         file_id = request.data.get('file_id')
+        review_professor_id = request.data.get('teacher_identity_id')
 
         if not student_id or not file_id:
             return Response({'message': '学生ID和文件ID是必需的'}, status=status.HTTP_400_BAD_REQUEST)
-
+        
         try:
             student = Student.objects.get(id=student_id)
             choice = StudentProfessorChoice.objects.filter(student=student, professor=professor, status=1).first()
 
             if not choice:
                 return Response({'message': '没有找到已同意的互选记录'}, status=status.HTTP_404_NOT_FOUND)
+            
+            review_professor = Professor.objects.get(teacher_identity_id=review_professor_id)
 
             # 创建审核记录
             review_record = ReviewRecord.objects.create(
@@ -517,7 +520,7 @@ class SubmitSignatureFileView(APIView):
                 file_id=file_id,
                 review_status=False,  # 初始状态为未审核
                 review_time=None,
-                reviewer=None  # 审核人初始为空
+                reviewer=review_professor  # 审核人初始为空
             )
 
             # 发送通知给方向审核人（假设方向审核人是一个特定的用户）

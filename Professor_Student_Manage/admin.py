@@ -10,7 +10,7 @@ class ProfessorAdmin(admin.ModelAdmin):
         ("导师信息更改", {"fields": ["name", "teacher_identity_id", "email", "department", "enroll_subject",
                                      "academic_quota", "professional_quota", "professional_yt_quota", "doctor_quota", "proposed_quota_approved",
                                      "have_qualification", "remaining_quota", "personal_page", "research_areas",
-                                     "avatar", "contact_details"]}),
+                                     "avatar", "contact_details", "department_position"]}),
     ]
     list_display = ["teacher_identity_id", "name", "department", "have_qualification", "proposed_quota_approved"]
     readonly_fields = ["remaining_quota"]

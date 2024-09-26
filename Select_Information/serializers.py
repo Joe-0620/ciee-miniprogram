@@ -28,6 +28,7 @@ class StudentProfessorChoiceSerializer(serializers.ModelSerializer):
     student_initial_rank = serializers.CharField(source='student.initial_rank')
     student_secondary_rank = serializers.CharField(source='student.secondary_rank')
     student_final_rank = serializers.CharField(source='student.final_rank')
+    student_pdf_file_id = serializers.CharField(source='student.signature_table')
     # student_final_rank = serializers.CharField(source='student.final_rank')
 
     class Meta:
@@ -36,7 +37,7 @@ class StudentProfessorChoiceSerializer(serializers.ModelSerializer):
         fields = ['student', 'student_subject', 'student_type', 'student_postgraduate_type', 'student_id', 'professor_avatar',
                   'professor', 'professor_id', 'professor_department', 'status', 'chosen_by_professor', 'submit_date', 
                   'finish_time', 'student_phone', 'student_avatar', 'student_initial_exam_score', 'student_secondary_exam_score',
-                  'student_initial_rank', 'student_secondary_rank', 'student_final_rank', 'professor_contact_details']
+                  'student_initial_rank', 'student_secondary_rank', 'student_final_rank', 'professor_contact_details', 'student_pdf_file_id']
 
     def get_student_name(self, obj):
         return obj.student.name

@@ -513,6 +513,15 @@ class SubmitSignatureFileView(APIView):
             if not choice:
                 return Response({'message': '没有找到已同意的互选记录'}, status=status.HTTP_404_NOT_FOUND)
             
+            existing_record = ReviewRecord.objects.filter(
+                student=student,
+                professor=professor
+            ).exclude(status=2).first()
+
+            if existing_record:
+                return Response({'message': '已存在未驳回的审核记录'}, status=status.HTTP_400_BAD_REQUEST)
+
+            # 更新学生信息  
             review_professor = Professor.objects.get(teacher_identity_id=review_professor_id)
 
             # 创建审核记录
@@ -525,8 +534,11 @@ class SubmitSignatureFileView(APIView):
                 reviewer=review_professor  # 审核人初始为空
             )
 
+            student.signature_table_review_status = 3
+            student.save()
+
             # 发送通知给方向审核人（假设方向审核人是一个特定的用户）
-            self.notify_department_reviewer(professor, student)
+            # self.notify_department_reviewer(professor, student)
 
             return Response({'message': '签名表提交成功，等待审核'}, status=status.HTTP_200_OK)
         except Student.DoesNotExist:
@@ -560,5 +572,8 @@ class ReviewRecordUpdateView(APIView):
         serializer = ReviewRecordUpdateSerializer(review_record, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save(review_time=timezone.now())
+            student = review_record.student
+            student.signature_table_review_status = 1
+            student.save()
             return Response({'message': '审核成功'}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

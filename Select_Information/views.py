@@ -25,6 +25,8 @@ from qcloud_cos import CosS3Client
 import sys
 import os
 import logging
+from .models import ReviewRecord
+from .serializers import ReviewRecordSerializer
 
 class GetSelectionTimeView(generics.ListAPIView):
     queryset = SelectionTime.objects.all()
@@ -536,3 +538,12 @@ class SubmitSignatureFileView(APIView):
         # 这里实现通知方向审核人的逻辑
         # 可以通过发送邮件、微信通知等方式通知审核人
         pass
+
+class ReviewerReviewRecordsView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        reviewer = request.user.professor
+        review_records = ReviewRecord.objects.filter(reviewer=reviewer)
+        serializer = ReviewRecordSerializer(review_records, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)

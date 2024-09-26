@@ -2,6 +2,7 @@ from rest_framework import serializers
 from Professor_Student_Manage.models import Professor, Student
 from Select_Information.models import StudentProfessorChoice, SelectionTime
 from django.contrib.auth.models import User
+from .models import ReviewRecord
 
 
 class SelectionTimeSerializer(serializers.ModelSerializer):
@@ -44,3 +45,38 @@ class StudentProfessorChoiceSerializer(serializers.ModelSerializer):
 
     def get_professor_name(self, obj):
         return obj.professor.name
+    
+
+class ReviewRecordSerializer(serializers.ModelSerializer):
+    student_name = serializers.CharField(source='student.name', read_only=True)
+    professor_name = serializers.CharField(source='professor.name', read_only=True)
+    reviewer_name = serializers.CharField(source='reviewer.name', read_only=True)
+    reviewer_name = serializers.CharField(source='reviewer.name', read_only=True)
+    student_subject = serializers.CharField(source='student.subject', read_only=True)
+    student_type = serializers.CharField(source='student.student_type', read_only=True)
+    student_postgraduate_type = serializers.CharField(source='student.postgraduate_type', read_only=True)
+    student_postgraduate_type_display = serializers.SerializerMethodField()
+    student_type_display = serializers.SerializerMethodField()
+
+    class Meta:
+        model = ReviewRecord
+        fields = ['id', 'student_name', 'professor_name', 'file_id', 'review_status', 'review_time', 
+                  'reviewer_name', 'student_subject', 'student_type', 'student_postgraduate_type', 
+                  'student_postgraduate_type_display', 'student_type_display']
+        
+    def get_student_postgraduate_type_display(self, obj):
+        BACHELOR_TYPE = [
+            [1, "专业型(北京)"],
+            [2, "学术型"],
+            [3, "博士"],
+            [4, "专业型(烟台)"],
+        ]
+        return dict(BACHELOR_TYPE).get(obj.student.postgraduate_type, '未知类型')
+    
+    def get_student_type_display(self, obj):
+        STUDENT_CHOICES = [
+            [1, "硕士推免生"],
+            [2, "硕士统考生"],
+            [3, "博士统考生"],
+        ]
+        return dict(STUDENT_CHOICES).get(obj.student.student_type, '未知类型')

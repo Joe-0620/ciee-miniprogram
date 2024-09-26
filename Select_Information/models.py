@@ -46,6 +46,7 @@ class ReviewRecord(models.Model):
     review_status = models.BooleanField(default=False, verbose_name="审核状态")
     review_time = models.DateTimeField(null=True, blank=True, verbose_name="审核时间")
     reviewer = models.ForeignKey(Professor, related_name='reviewer', on_delete=models.SET_NULL, null=True, blank=True, verbose_name="审核人")
+    
 
     class Meta:
         verbose_name = "审核记录"

@@ -44,9 +44,14 @@ class ReviewRecord(models.Model):
     professor = models.ForeignKey(Professor, on_delete=models.CASCADE, verbose_name="导师", related_name='review_records')
     file_id = models.CharField(max_length=500, verbose_name="文件ID")
     review_status = models.BooleanField(default=False, verbose_name="审核状态")
+    submit_time = models.DateTimeField(default=timezone.now, verbose_name="提交时间")
     review_time = models.DateTimeField(null=True, blank=True, verbose_name="审核时间")
     reviewer = models.ForeignKey(Professor, related_name='reviewer', on_delete=models.SET_NULL, null=True, blank=True, verbose_name="审核人")
-    
+    status = models.IntegerField(default=3, choices=[
+        (1, "已通过"),
+        (2, "已驳回"),
+        (3, "待审核")
+    ], verbose_name="状态")
 
     class Meta:
         verbose_name = "审核记录"

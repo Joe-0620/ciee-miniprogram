@@ -26,7 +26,7 @@ import sys
 import os
 import logging
 from .models import ReviewRecord
-from .serializers import ReviewRecordSerializer
+from .serializers import ReviewRecordSerializer, ReviewRecordUpdateSerializer
 
 class GetSelectionTimeView(generics.ListAPIView):
     queryset = SelectionTime.objects.all()
@@ -547,3 +547,18 @@ class ReviewerReviewRecordsView(APIView):
         review_records = ReviewRecord.objects.filter(reviewer=reviewer)
         serializer = ReviewRecordSerializer(review_records, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+class ReviewRecordUpdateView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, pk):
+        try:
+            review_record = ReviewRecord.objects.get(pk=pk, reviewer=request.user.professor)
+        except ReviewRecord.DoesNotExist:
+            return Response({'message': '审核记录不存在或您无权审核此记录'}, status=status.HTTP_404_NOT_FOUND)
+
+        serializer = ReviewRecordUpdateSerializer(review_record, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save(review_time=timezone.now())
+            return Response({'message': '审核成功'}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

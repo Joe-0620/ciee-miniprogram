@@ -436,3 +436,530 @@ AssertionError: The field 'student_type_display' was declared on serializer Revi
 [2024-09-26 05:44:45,508] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
 [2024-09-26 05:44:48,296] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
 [2024-09-26 05:44:51,972] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-09-26 05:45:27,644] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /userlogin/ HTTP/1.1" 200 778
+[2024-09-26 05:45:28,243] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 692
+[2024-09-26 05:45:28,736] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 692
+[2024-09-26 05:45:31,823] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 692
+[2024-09-26 05:45:31,991] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1083
+[2024-09-26 05:45:32,326] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 692
+[2024-09-26 05:45:32,736] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1083
+[2024-09-26 05:45:33,066] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2024-09-26 05:45:33,320] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2024-09-26 05:45:36,309] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68832
+[2024-09-26 05:45:38,668] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 692
+[2024-09-26 05:45:38,861] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1083
+[2024-09-26 05:45:42,163] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 692
+[2024-09-26 05:45:43,320] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68832
+[2024-09-26 05:45:48,962] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 86205
+[2024-09-26 05:45:49,328] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68832
+[2024-09-26 05:46:09,345] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 86205
+[2024-09-26 05:46:46,446] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 692
+[2024-09-26 05:46:46,789] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1083
+[2024-09-26 05:46:52,092] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68832
+[2024-09-26 05:46:55,645] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Select_Information/submit-pdf-review/ HTTP/1.1" 200 50
+[2024-09-26 05:48:30,492] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 696
+[2024-09-26 05:48:30,738] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1087
+[2024-09-26 05:48:30,933] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 696
+[2024-09-26 05:48:31,408] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1087
+[2024-09-26 05:48:34,899] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68832
+[2024-09-26 05:48:39,539] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68832
+[2024-09-26 05:48:43,139] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Select_Information/submit-pdf-review/ HTTP/1.1" 200 50
+[2024-09-26 05:49:40,492] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 700
+[2024-09-26 05:56:19,887] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 700
+[2024-09-26 05:56:20,221] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1091
+[2024-09-26 05:56:21,755] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 700
+[2024-09-26 05:56:26,114] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68832
+[2024-09-26 05:57:35,829] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 700
+[2024-09-26 05:57:36,054] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1091
+[2024-09-26 05:57:38,170] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 700
+[2024-09-26 05:57:41,603] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68832
+[2024-09-26 05:57:47,897] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 700
+[2024-09-26 06:02:49,668] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 700
+[2024-09-26 06:02:50,236] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 700
+[2024-09-26 06:04:45,491] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 700
+[2024-09-26 06:04:46,014] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 700
+[2024-09-26 06:05:27,763] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 700
+[2024-09-26 06:05:28,205] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 1369
+[2024-09-26 06:05:28,345] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 700
+[2024-09-26 06:06:49,899] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 700
+[2024-09-26 06:06:50,488] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 1369
+[2024-09-26 06:06:50,581] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 700
+[2024-09-26 06:40:06,773] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 700
+[2024-09-26 06:40:07,076] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 1369
+[2024-09-26 06:40:07,266] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 700
+[2024-09-26 06:40:08,687] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 700
+[2024-09-26 06:40:08,866] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1091
+[2024-09-26 06:40:09,436] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 700
+[2024-09-26 06:40:13,374] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68832
+[2024-09-26 06:40:18,190] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 700
+[2024-09-26 06:40:22,309] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 700
+[2024-09-26 06:40:22,490] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1091
+[2024-09-26 06:40:23,003] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 700
+[2024-09-26 06:40:25,916] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 700
+[2024-09-26 06:40:26,602] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68832
+[2024-09-26 06:41:16,091] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /userlogin/ HTTP/1.1" 200 786
+[2024-09-26 06:41:16,761] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 700
+[2024-09-26 06:41:17,113] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 1369
+[2024-09-26 06:41:17,222] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 700
+[2024-09-26 06:41:23,197] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 700
+[2024-09-26 06:41:23,329] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1091
+[2024-09-26 06:41:23,670] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 700
+[2024-09-26 06:41:23,991] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1091
+[2024-09-26 06:41:26,766] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 700
+[2024-09-26 06:41:27,089] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 1369
+[2024-09-26 06:41:27,747] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68832
+[2024-09-26 06:41:32,373] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 700
+[2024-09-26 06:41:33,131] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 1369
+[2024-09-26 06:41:33,902] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68832
+[2024-09-26 06:41:35,069] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 700
+[2024-09-26 06:41:35,520] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 1369
+[2024-09-26 06:50:01,782] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2024-09-26 06:50:02,173] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2024-09-26 06:50:22,081] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 86213
+[2024-09-26 06:50:55,083] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 86213
+[2024-09-26 06:54:41,589] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 700
+[2024-09-26 06:54:41,953] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 1369
+[2024-09-26 06:55:15,895] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 700
+[2024-09-26 06:55:16,080] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1091
+[2024-09-26 06:55:21,167] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68832
+[2024-09-26 07:01:25,853] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 700
+[2024-09-26 07:01:26,282] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 1369
+[2024-09-26 07:13:48,521] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Select_Information/get-select-info/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/mysql/base.py", line 73, in execute
+    return self.cursor.execute(query, args)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/cursors.py", line 148, in execute
+    result = self._query(query)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/cursors.py", line 310, in _query
+    conn.query(q)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 548, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 775, in _read_query_result
+    result.read()
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 1156, in read
+    first_packet = self.connection._read_packet()
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 692, in _read_packet
+    packet_header = self._read_bytes(4)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 748, in _read_bytes
+    raise err.OperationalError(
+pymysql.err.OperationalError: (2013, 'Lost connection to MySQL server during query')
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Select_Information/views.py", line 67, in get
+    'student_choices': serializer.data,
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 768, in data
+    ret = super().data
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 253, in data
+    self._data = self.to_representation(self.instance)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 686, in to_representation
+    return [
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/query.py", line 280, in __iter__
+    self._fetch_all()
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/query.py", line 1324, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/query.py", line 51, in __iter__
+    results = compiler.execute_sql(chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size)
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/sql/compiler.py", line 1175, in execute_sql
+    cursor.execute(sql, params)
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/utils.py", line 98, in execute
+    return super().execute(sql, params)
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/utils.py", line 66, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/utils.py", line 75, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "/root/.local/lib/python3.8/site-packages/django/db/utils.py", line 90, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/mysql/base.py", line 73, in execute
+    return self.cursor.execute(query, args)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/cursors.py", line 148, in execute
+    result = self._query(query)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/cursors.py", line 310, in _query
+    conn.query(q)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 548, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 775, in _read_query_result
+    result.read()
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 1156, in read
+    first_packet = self.connection._read_packet()
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 692, in _read_packet
+    packet_header = self._read_bytes(4)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 748, in _read_bytes
+    raise err.OperationalError(
+django.db.utils.OperationalError: (2013, 'Lost connection to MySQL server during query')
+[2024-09-26 07:13:48,526] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 500 223602
+[2024-09-26 07:13:48,590] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 700
+[2024-09-26 07:13:48,744] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Professor_Student_Manage/departments/reviewers/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/mysql/base.py", line 73, in execute
+    return self.cursor.execute(query, args)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/cursors.py", line 148, in execute
+    result = self._query(query)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/cursors.py", line 310, in _query
+    conn.query(q)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 548, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 775, in _read_query_result
+    result.read()
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 1156, in read
+    first_packet = self.connection._read_packet()
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 692, in _read_packet
+    packet_header = self._read_bytes(4)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 748, in _read_bytes
+    raise err.OperationalError(
+pymysql.err.OperationalError: (2013, 'Lost connection to MySQL server during query')
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Professor_Student_Manage/views.py", line 668, in get
+    return Response(serializer.data, status=status.HTTP_200_OK)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 768, in data
+    ret = super().data
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 253, in data
+    self._data = self.to_representation(self.instance)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 686, in to_representation
+    return [
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 687, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 522, in to_representation
+    ret[field.field_name] = field.to_representation(attribute)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/fields.py", line 1838, in to_representation
+    return method(value)
+  File "/app/Professor_Student_Manage/serializers.py", line 99, in get_reviewers
+    return ProfessorSerializer(reviewers, many=True).data
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 768, in data
+    ret = super().data
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 253, in data
+    self._data = self.to_representation(self.instance)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 686, in to_representation
+    return [
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/query.py", line 280, in __iter__
+    self._fetch_all()
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/query.py", line 1324, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/query.py", line 51, in __iter__
+    results = compiler.execute_sql(chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size)
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/sql/compiler.py", line 1175, in execute_sql
+    cursor.execute(sql, params)
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/utils.py", line 98, in execute
+    return super().execute(sql, params)
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/utils.py", line 66, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/utils.py", line 75, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "/root/.local/lib/python3.8/site-packages/django/db/utils.py", line 90, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/mysql/base.py", line 73, in execute
+    return self.cursor.execute(query, args)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/cursors.py", line 148, in execute
+    result = self._query(query)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/cursors.py", line 310, in _query
+    conn.query(q)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 548, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 775, in _read_query_result
+    result.read()
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 1156, in read
+    first_packet = self.connection._read_packet()
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 692, in _read_packet
+    packet_header = self._read_bytes(4)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 748, in _read_bytes
+    raise err.OperationalError(
+django.db.utils.OperationalError: (2013, 'Lost connection to MySQL server during query')
+[2024-09-26 07:13:48,746] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 500 267884
+[2024-09-26 07:13:49,945] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 700
+[2024-09-26 07:13:50,283] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 1369
+[2024-09-26 07:21:07,839] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-09-26 07:21:28,015] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-09-26 07:22:26,542] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-09-26 07:22:34,365] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-09-26 07:23:21,315] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-09-26 07:23:37,891] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-09-26 07:24:12,807] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-09-26 07:25:20,756] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Select_Information/reviewer/review_record/3/ HTTP/1.1" 200 26
+[2024-09-26 07:25:27,374] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 700
+[2024-09-26 07:25:27,556] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1091
+[2024-09-26 07:25:29,290] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 700
+[2024-09-26 07:25:29,664] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 1398
+[2024-09-26 07:25:31,834] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68832
+[2024-09-26 07:25:32,568] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 700
+[2024-09-26 07:25:32,990] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 1398
+[2024-09-26 07:26:03,093] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 1398
+[2024-09-26 07:26:16,214] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Select_Information/submit-pdf-review/ HTTP/1.1" 200 50
+[2024-09-26 07:26:20,550] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 704
+[2024-09-26 07:26:21,045] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 1854
+[2024-09-26 07:26:25,137] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 704
+[2024-09-26 07:26:25,315] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1095
+[2024-09-26 07:26:30,426] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68832
+[2024-09-26 07:26:33,615] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 704
+[2024-09-26 07:26:34,131] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 1854
+[2024-09-26 07:27:18,095] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-09-26 07:27:23,176] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Select_Information/submit-pdf-review/ HTTP/1.1" 200 50
+[2024-09-26 07:27:35,484] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 07:27:35,682] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1099
+[2024-09-26 07:27:37,913] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 07:27:38,577] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 2555
+[2024-09-26 07:27:40,144] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68832
+[2024-09-26 07:30:01,346] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 07:30:02,033] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 07:30:02,120] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 2555
+[2024-09-26 07:31:10,319] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 07:31:10,934] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 07:31:11,239] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 2555
+[2024-09-26 07:31:30,254] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Select_Information/reviewrecord/ HTTP/1.1" 200 13863
+[2024-09-26 07:31:30,280] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+[2024-09-26 07:31:30,282] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/changelists.css HTTP/1.1" 304 0
+[2024-09-26 07:31:30,284] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/jquery.init.js HTTP/1.1" 304 0
+[2024-09-26 07:31:30,285] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/base.css HTTP/1.1" 304 0
+[2024-09-26 07:31:30,285] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+[2024-09-26 07:31:30,286] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/core.js HTTP/1.1" 304 0
+[2024-09-26 07:31:30,286] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 304 0
+[2024-09-26 07:31:30,289] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 304 0
+[2024-09-26 07:31:30,289] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/actions.js HTTP/1.1" 304 0
+[2024-09-26 07:31:30,290] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/urlify.js HTTP/1.1" 304 0
+[2024-09-26 07:31:30,291] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+[2024-09-26 07:31:30,292] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/prepopulate.js HTTP/1.1" 304 0
+[2024-09-26 07:31:30,293] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 304 0
+[2024-09-26 07:31:30,294] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/fonts.css HTTP/1.1" 304 0
+[2024-09-26 07:31:30,295] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/search.svg HTTP/1.1" 304 0
+[2024-09-26 07:31:30,296] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-no.svg HTTP/1.1" 304 0
+[2024-09-26 07:31:30,297] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-yes.svg HTTP/1.1" 304 0
+[2024-09-26 07:31:30,622] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-09-26 07:31:30,672] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Regular-webfont.woff HTTP/1.1" 304 0
+[2024-09-26 07:31:30,672] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Bold-webfont.woff HTTP/1.1" 304 0
+[2024-09-26 07:31:30,674] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 304 0
+[2024-09-26 07:31:30,676] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/tooltag-add.svg HTTP/1.1" 304 0
+[2024-09-26 07:31:30,682] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Light-webfont.woff HTTP/1.1" 304 0
+[2024-09-26 07:31:38,320] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Select_Information/reviewrecord/ HTTP/1.1" 200 9533
+[2024-09-26 07:31:38,337] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/cancel.js HTTP/1.1" 304 0
+[2024-09-26 07:31:40,284] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Select_Information/reviewrecord/ HTTP/1.1" 302 0
+[2024-09-26 07:31:40,842] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Select_Information/reviewrecord/ HTTP/1.1" 200 9125
+[2024-09-26 07:31:41,223] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-09-26 07:32:06,999] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 690
+[2024-09-26 07:32:07,244] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1081
+[2024-09-26 07:32:09,000] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 2
+[2024-09-26 07:32:09,141] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 690
+[2024-09-26 07:32:12,581] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68832
+[2024-09-26 07:32:13,186] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 2
+[2024-09-26 07:32:13,319] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 690
+[2024-09-26 07:32:15,891] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Select_Information/reviewrecord/ HTTP/1.1" 200 8985
+[2024-09-26 07:32:16,269] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2024-09-26 07:32:38,179] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /userlogin/ HTTP/1.1" 200 776
+[2024-09-26 07:32:38,783] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 2
+[2024-09-26 07:32:38,940] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 690
+[2024-09-26 07:32:39,479] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 690
+[2024-09-26 07:33:24,932] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-09-26 07:33:28,202] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Select_Information/submit-pdf-review/ HTTP/1.1" 200 50
+[2024-09-26 07:33:31,229] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 692
+[2024-09-26 07:33:31,410] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1083
+[2024-09-26 07:33:31,834] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 692
+[2024-09-26 07:33:32,167] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1083
+[2024-09-26 07:33:32,503] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 692
+[2024-09-26 07:33:32,527] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 506
+[2024-09-26 07:33:36,485] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68832
+[2024-09-26 07:33:44,483] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68832
+[2024-09-26 07:33:59,496] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-09-26 07:34:02,799] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 692
+[2024-09-26 07:34:03,001] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1083
+[2024-09-26 07:34:04,218] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 692
+[2024-09-26 07:34:04,238] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 517
+[2024-09-26 07:34:08,036] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68832
+[2024-09-26 07:36:03,297] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 692
+[2024-09-26 07:36:03,332] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 517
+[2024-09-26 07:36:24,869] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 692
+[2024-09-26 07:36:24,945] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 517
+[2024-09-26 07:36:45,704] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Select_Information/submit-pdf-review/ HTTP/1.1" 200 50
+[2024-09-26 07:36:56,938] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Select_Information/reviewer/review_record/8/ HTTP/1.1" 200 26
+[2024-09-26 07:37:00,484] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Select_Information/submit-pdf-review/ HTTP/1.1" 200 50
+[2024-09-26 07:37:07,492] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Select_Information/reviewer/review_record/9/ HTTP/1.1" 200 26
+[2024-09-26 07:37:10,738] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 702
+[2024-09-26 07:37:10,974] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1093
+[2024-09-26 07:37:12,870] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 702
+[2024-09-26 07:37:13,359] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 1608
+[2024-09-26 07:37:15,745] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68832
+[2024-09-26 07:38:44,846] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Select_Information/submit-pdf-review/ HTTP/1.1" 200 50
+[2024-09-26 07:38:47,788] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 07:38:48,043] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1099
+[2024-09-26 07:38:49,145] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 07:38:49,770] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 2125
+[2024-09-26 07:38:53,214] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68832
+[2024-09-26 07:41:39,792] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 07:41:40,045] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1099
+[2024-09-26 07:41:40,731] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2024-09-26 07:41:41,044] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2024-09-26 07:41:42,582] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 07:41:42,800] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1099
+[2024-09-26 07:41:44,542] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68832
+[2024-09-26 07:41:44,991] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 07:41:45,597] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 2125
+[2024-09-26 07:41:50,318] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68832
+[2024-09-26 07:41:56,517] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 86221
+[2024-09-26 07:42:14,027] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 86221
+[2024-09-26 07:44:19,865] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 07:44:20,309] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 07:44:20,376] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 2125
+[2024-09-26 07:46:19,789] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 07:46:20,326] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 07:46:20,427] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 2125
+[2024-09-26 07:46:26,603] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2024-09-26 07:46:27,403] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2024-09-26 07:46:28,175] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2024-09-26 07:46:42,378] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 86221
+[2024-09-26 07:46:59,167] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 86221
+[2024-09-26 07:47:04,685] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 86221
+[2024-09-26 07:47:18,080] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 07:47:18,700] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 2125
+[2024-09-26 07:47:27,534] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 07:47:28,134] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 2125
+[2024-09-26 07:47:38,505] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 07:47:39,319] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 2125
+[2024-09-26 07:50:29,014] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 07:50:29,668] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 07:50:29,676] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 2125
+[2024-09-26 07:50:34,227] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 07:50:34,800] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 07:50:34,868] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 2125
+[2024-09-26 07:52:45,882] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 07:52:46,474] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 07:52:46,492] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 2125
+[2024-09-26 07:53:24,726] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 07:53:25,273] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 07:53:25,427] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 2125
+[2024-09-26 07:53:28,224] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 07:53:28,770] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 07:53:28,881] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 2125
+[2024-09-26 07:53:50,042] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /userlogin/ HTTP/1.1" 200 794
+[2024-09-26 07:53:50,925] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 07:53:51,396] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 07:53:51,455] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 2125
+[2024-09-26 07:53:56,697] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 07:53:57,294] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 2125
+[2024-09-26 07:55:31,450] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 07:55:32,044] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 07:55:32,135] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 2125
+[2024-09-26 07:55:57,344] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 07:55:57,921] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 07:55:57,968] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 2125
+[2024-09-26 07:59:03,769] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 07:59:04,339] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 07:59:04,841] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 2125
+[2024-09-26 07:59:26,859] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /userlogin/ HTTP/1.1" 200 794
+[2024-09-26 07:59:27,703] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 07:59:28,273] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 07:59:28,320] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 2125
+[2024-09-26 07:59:40,954] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Select_Information/reviewer/review_record/10/ HTTP/1.1" 200 26
+[2024-09-26 07:59:50,304] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 07:59:50,541] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1099
+[2024-09-26 07:59:50,911] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 07:59:51,312] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1099
+[2024-09-26 07:59:51,493] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 07:59:51,737] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 2154
+[2024-09-26 07:59:55,557] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68832
+[2024-09-26 08:00:03,038] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68832
+[2024-09-26 08:00:37,056] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 08:00:37,620] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 08:00:37,676] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 2154
+[2024-09-26 08:00:50,706] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /userlogin/ HTTP/1.1" 200 794
+[2024-09-26 08:00:51,414] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 08:00:51,985] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 08:00:52,074] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 2154
+[2024-09-26 08:01:07,580] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Select_Information/reviewer/review_record/11/ HTTP/1.1" 200 26
+[2024-09-26 08:01:08,645] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 2183
+[2024-09-26 08:01:16,273] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 08:01:16,488] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1099
+[2024-09-26 08:01:16,749] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 08:01:17,145] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1099
+[2024-09-26 08:01:21,068] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68832
+[2024-09-26 08:01:28,350] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68832
+[2024-09-26 08:11:56,627] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 08:11:56,784] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1099
+[2024-09-26 08:11:57,127] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 08:11:57,501] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1099
+[2024-09-26 08:12:01,278] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68832
+[2024-09-26 08:12:06,259] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68832
+[2024-09-26 08:12:34,892] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2024-09-26 08:12:35,133] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2024-09-26 08:12:35,991] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 08:12:36,209] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1099
+[2024-09-26 08:12:40,265] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68832
+[2024-09-26 08:12:48,408] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 86221
+[2024-09-26 08:13:04,954] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 86221
+[2024-09-26 08:13:28,267] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /userlogin/ HTTP/1.1" 200 794
+[2024-09-26 08:13:28,955] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 08:13:29,467] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 2183
+[2024-09-26 08:13:29,469] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 08:13:30,828] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 08:13:31,084] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1099
+[2024-09-26 08:13:31,279] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 08:13:31,723] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1099
+[2024-09-26 08:13:35,196] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68832
+[2024-09-26 08:13:43,021] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68832
+[2024-09-26 08:13:58,055] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 08:13:58,217] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1099
+[2024-09-26 08:13:58,491] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 08:13:58,905] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1099
+[2024-09-26 08:14:02,662] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68832
+[2024-09-26 08:14:07,379] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68832
+[2024-09-26 08:17:52,369] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 08:17:52,504] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1099
+[2024-09-26 08:17:52,846] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 08:17:53,131] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1099
+[2024-09-26 08:17:56,583] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68832
+[2024-09-26 08:18:01,448] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 68832
+[2024-09-26 08:22:04,973] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-09-26 08:22:13,658] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-09-26 08:26:09,490] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-09-26 08:26:15,302] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-09-26 08:26:36,055] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-09-26 08:28:33,322] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-09-26 08:34:21,453] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-09-26 08:35:29,975] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /userlogin/ HTTP/1.1" 200 794
+[2024-09-26 08:35:30,648] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 08:35:31,170] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 708
+[2024-09-26 08:35:31,249] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 2183

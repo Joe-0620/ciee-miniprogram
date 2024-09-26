@@ -96,6 +96,15 @@ class Student(models.Model):
     avatar = models.CharField(max_length=200, null=True, blank=True, verbose_name="头像")
     signature_temp = models.CharField(max_length=500, null=True, blank=True, verbose_name="签名临时下载地址")
     signature_table = models.CharField(max_length=500, null=True, blank=True, verbose_name="导师意向表下载地址")
+    
+    REVIEW_STATUS = [
+        [1, "已同意"],
+        [2, "已拒绝"],
+        [3, "待审核"],
+        [4, "未提交"]
+    ]
+
+    signature_table_review_status = models.IntegerField(choices=REVIEW_STATUS, default=4, verbose_name="导师意向表审核状态")
     resume = models.CharField(max_length=200, null=True, blank=True, verbose_name="简历")
     phone_number = models.CharField(max_length=20, null=True, blank=True, verbose_name="手机号")
     # 初试成绩

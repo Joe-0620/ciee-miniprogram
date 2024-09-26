@@ -30,7 +30,9 @@ class StudentProfessorChoiceSerializer(serializers.ModelSerializer):
     student_secondary_rank = serializers.CharField(source='student.secondary_rank')
     student_final_rank = serializers.CharField(source='student.final_rank')
     student_pdf_file_id = serializers.CharField(source='student.signature_table')
+    student_signature_table_review_status = serializers.CharField(source='student.signature_table_review_status')
     # student_final_rank = serializers.CharField(source='student.final_rank')
+    signature_table_review_status = serializers.SerializerMethodField()
 
     class Meta:
         model = StudentProfessorChoice
@@ -38,7 +40,17 @@ class StudentProfessorChoiceSerializer(serializers.ModelSerializer):
         fields = ['student', 'student_subject', 'student_type', 'student_postgraduate_type', 'student_id', 'professor_avatar',
                   'professor', 'professor_id', 'professor_department', 'status', 'chosen_by_professor', 'submit_date', 
                   'finish_time', 'student_phone', 'student_avatar', 'student_initial_exam_score', 'student_secondary_exam_score',
-                  'student_initial_rank', 'student_secondary_rank', 'student_final_rank', 'professor_contact_details', 'student_pdf_file_id']
+                  'student_initial_rank', 'student_secondary_rank', 'student_final_rank', 'professor_contact_details', 'student_pdf_file_id',
+                  'signature_table_review_status']
+
+    def get_student_signature_table_review_status_display(self, obj):
+        REVIEW_STATUS = [
+            [1, "已同意"],
+            [2, "已拒绝"],
+            [3, "待审核"],
+            [4, "未提交"]
+        ]
+        return dict(REVIEW_STATUS).get(obj.student.signature_table_review_status, '未知类型')
 
     def get_student_name(self, obj):
         return obj.student.name
@@ -60,9 +72,9 @@ class ReviewRecordSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ReviewRecord
-        fields = ['id', 'student_name', 'professor_name', 'file_id', 'review_status', 'review_time', 
+        fields = ['id', 'student_name', 'professor_name', 'file_id', 'status', 'review_status', 'review_time', 
                   'reviewer_name', 'student_subject', 'student_type', 'student_postgraduate_type', 
-                  'student_postgraduate_type_display', 'student_type_display']
+                  'student_postgraduate_type_display', 'student_type_display', 'submit_time']
         
     def get_student_postgraduate_type_display(self, obj):
         BACHELOR_TYPE = [
@@ -80,3 +92,8 @@ class ReviewRecordSerializer(serializers.ModelSerializer):
             [3, "博士统考生"],
         ]
         return dict(STUDENT_CHOICES).get(obj.student.student_type, '未知类型')
+    
+class ReviewRecordUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ReviewRecord
+        fields = ['review_status', 'status']

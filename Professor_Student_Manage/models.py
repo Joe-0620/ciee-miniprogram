@@ -96,6 +96,8 @@ class Student(models.Model):
     avatar = models.CharField(max_length=200, null=True, blank=True, verbose_name="头像")
     signature_temp = models.CharField(max_length=500, null=True, blank=True, verbose_name="签名临时下载地址")
     signature_table = models.CharField(max_length=500, null=True, blank=True, verbose_name="导师意向表下载地址")
+    giveup_signature_table = models.CharField(max_length=500, null=True, blank=True, verbose_name="放弃说明表下载地址")
+    is_giveup = models.BooleanField(default=False, verbose_name="是否放弃拟录取")
     
     REVIEW_STATUS = [
         [1, "已同意"],

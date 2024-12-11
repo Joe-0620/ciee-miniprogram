@@ -391,7 +391,8 @@ class UpdateStudentView(APIView):
 
         # 检查是否传入了 signature_temp 字段
         signature_temp = request.data.get('signature_temp', None)
-        if signature_temp:
+        professor_id = request.data.get('professor_id', None)
+        if signature_temp and professor_id != '-1':
             student_pdf_file_id = student.signature_table
 
             # 获取签名图片的下载地址
@@ -414,6 +415,30 @@ class UpdateStudentView(APIView):
                 self.generate_and_upload_pdf(signature_download_url, pdf_download_url, student)
             except Exception as e:
                 return Response({'message': f'生成或上传PDF失败: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        if signature_temp and professor_id == '-1':
+            student_pdf_file_id = student.signature_table
+
+            # 获取签名图片的下载地址
+            response_data_signature = self.get_fileid_download_url(signature_temp)
+            if response_data_signature.get("errcode") == 0:
+                signature_download_url = response_data_signature['file_list'][0]['download_url']
+                print(f"签名图片下载地址: {signature_download_url}")
+            else:
+                return Response({'message': '获取签名图片下载地址失败'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+            # 获取学生PDF的下载地址
+            response_data_pdf = self.get_fileid_download_url(student_pdf_file_id)
+            if response_data_pdf.get("errcode") == 0:
+                pdf_download_url = response_data_pdf['file_list'][0]['download_url']
+                print(f"PDF下载地址: {pdf_download_url}")
+            else:
+                return Response({'message': '获取PDF下载地址失败'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+            try:
+                self.generate_and_upload_pdf(signature_download_url, pdf_download_url, student)
+            except Exception as e:
+                return Response({'message': f'生成或上传PDF失败: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
         # 将 request.data 转换为一个可修改的字典
         mutable_data = request.data.copy()

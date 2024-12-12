@@ -1,0 +1,85 @@
+[2024-12-12 06:19:53,944] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-12-12 06:20:34,696] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET / HTTP/1.1" 200 10330
+[2024-12-12 06:20:35,652] [log.py:224] [log:log_response] [WARNING]- Not Found: /api/count
+[2024-12-12 06:20:35,653] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /api/count HTTP/1.1" 404 3142
+[2024-12-12 06:20:48,884] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /userlogin/ HTTP/1.1" 200 643
+[2024-12-12 06:20:49,472] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 557
+[2024-12-12 06:20:49,918] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 557
+[2024-12-12 06:20:56,906] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 557
+[2024-12-12 06:20:56,913] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=student HTTP/1.1" 200 22
+[2024-12-12 06:20:57,314] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=student HTTP/1.1" 200 22
+[2024-12-12 06:20:57,416] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 557
+[2024-12-12 06:20:59,461] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 557
+[2024-12-12 06:21:06,636] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Professor_Student_Manage/student-giveup/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/reportlab/lib/utils.py", line 70, in asUnicode
+    return v.decode(enc)
+AttributeError: 'NoneType' object has no attribute 'decode'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Professor_Student_Manage/views.py", line 710, in post
+    self.generate_and_upload_giveup_signature(student)
+  File "/app/Professor_Student_Manage/views.py", line 731, in generate_and_upload_giveup_signature
+    packet = self.create_overlay(student_name, student_major, date, identity_number)
+  File "/app/Professor_Student_Manage/views.py", line 790, in create_overlay
+    can.drawString(150, 660.5, identity_number)
+  File "/root/.local/lib/python3.8/site-packages/reportlab/pdfgen/canvas.py", line 1612, in drawString
+    text = asUnicode(text)
+  File "/root/.local/lib/python3.8/site-packages/reportlab/lib/utils.py", line 72, in asUnicode
+    annotateException('asUnicode(%s,enc=%s) error: ' % (ascii(v),ascii(enc)))
+  File "/root/.local/lib/python3.8/site-packages/reportlab/lib/utils.py", line 1176, in annotateException
+    rl_reraise(t,t(sep.join((_ for _ in (msg,str(v),postMsg) if _))),b)
+  File "/root/.local/lib/python3.8/site-packages/reportlab/lib/utils.py", line 138, in rl_reraise
+    raise v.with_traceback(b)
+  File "/root/.local/lib/python3.8/site-packages/reportlab/lib/utils.py", line 70, in asUnicode
+    return v.decode(enc)
+AttributeError: asUnicode(None,enc='utf8') error:  'NoneType' object has no attribute 'decode'
+[2024-12-12 06:21:06,638] [basehttp.py:161] [basehttp:log_message] [ERROR]- "POST /Professor_Student_Manage/student-giveup/ HTTP/1.1" 500 122453
+[2024-12-12 06:23:07,378] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/views.py changed, reloading.
+[2024-12-12 06:23:07,915] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-12-12 06:23:11,954] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Professor_Student_Manage/student-giveup/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Professor_Student_Manage/views.py", line 710, in post
+    self.generate_and_upload_giveup_signature(student)
+  File "/app/Professor_Student_Manage/views.py", line 747, in generate_and_upload_giveup_signature
+    self.upload_to_wechat_cloud(save_path, cloud_path, student)
+  File "/app/Professor_Student_Manage/views.py", line 812, in upload_to_wechat_cloud
+    config = CosConfig(Region=region, SecretId=secret_id, SecretKey=secret_key, Token=token, Scheme=scheme)
+  File "/root/.local/lib/python3.8/site-packages/qcloud_cos/cos_client.py", line 142, in __init__
+    raise CosClientError('SecretId and SecretKey is Required!')
+qcloud_cos.cos_exception.CosClientError: SecretId and SecretKey is Required!
+[2024-12-12 06:23:11,959] [basehttp.py:161] [basehttp:log_message] [ERROR]- "POST /Professor_Student_Manage/student-giveup/ HTTP/1.1" 500 107572

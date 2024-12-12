@@ -701,7 +701,9 @@ class CreateGiveupSignatureView(APIView):
         student_id = request.data.get('student_id')
 
         # 查询学生是否存在
-        student = Student.objects.get(id=int(student_id))
+        student = Student.objects.get(id=student_id)
+
+        print(student)
 
         # 生成放弃说明表
         if student.giveup_signature_table == None:
@@ -716,7 +718,7 @@ class CreateGiveupSignatureView(APIView):
         date = timezone.now().strftime("%Y 年 %m 月 %d 日")
         student_name = student.name
         student_major = student.subject.subject_name
-        identity_number = student.identify_number
+        identity_number = student.identify_number or ''
 
         # 获取当前时间
         now = datetime.now()

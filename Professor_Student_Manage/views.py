@@ -24,6 +24,7 @@ from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfbase import pdfmetrics
 from PyPDF2 import PdfReader, PdfWriter
 import io
+import traceback
 from django.utils import timezone
 from datetime import datetime
 from qcloud_cos import CosConfig
@@ -691,3 +692,167 @@ class DepartmentReviewersView(APIView):
         departments = Department.objects.all()
         serializer = DepartmentReviewerSerializer(departments, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    
+class CreateGiveupSignatureView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        student_id = request.data.get('student_id')
+
+        # 查询学生是否存在
+        student = Student.objects.get(id=student_id)
+
+        # 生成放弃说明表
+        if student.giveup_signature_table == None:
+            self.generate_and_upload_giveup_signature(student)
+            
+            return Response({'message': '放弃拟录取成功'}, status=status.HTTP_200_OK)
+        else:
+            return Response({'message': '放弃拟录取已提交'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+    def generate_and_upload_giveup_signature(self, student):
+        date = timezone.now().strftime("%Y 年 %m 月 %d 日")
+        student_name = student.name
+        student_major = student.subject.subject_name
+        identity_number = student.identify_number
+
+        # 获取当前时间
+        now = datetime.now()
+        # 将当前时间转换为时间戳
+        timestamp = int(now.timestamp())
+        # 将时间戳转换为字符串
+        timestamp_str = str(timestamp)
+
+        # 生成 PDF
+        packet = self.create_overlay(student_name, student_major, date, identity_number)
+
+        save_dir = '/app/Select_Information/tempFile/'
+        if not os.path.exists(save_dir):
+            os.makedirs(save_dir)
+        save_path = os.path.join(save_dir, f'{student.user_name.username}_{timestamp_str}_giveup_table.pdf')
+
+        print("sava_path: ", save_path)
+
+        # 将图层与现有的 PDF 模板合并
+        self.merge_pdfs(save_path, packet)
+
+        print("sava file")
+
+        # 上传到微信云托管
+        cloud_path = f"signature/student/{student.user_name.username}_{timestamp_str}_giveup_table.pdf"
+        self.upload_to_wechat_cloud(save_path, cloud_path, student)
+
+    def merge_pdfs(self, save_path, overlay_pdf):
+        """将生成的 PDF 图层与模板合并"""
+        template_pdf_path = r'/app/Select_Information/pdfTemplate/giveup.pdf'
+        
+        # 读取现有的 PDF 模板
+        template_pdf = PdfReader(template_pdf_path)
+        output = PdfWriter()
+
+        # 读取插入内容的 PDF
+        overlay_pdf = PdfReader(overlay_pdf)
+
+        # 合并两个 PDF
+        for i in range(len(template_pdf.pages)):
+            template_page = template_pdf.pages[i]
+            overlay_page = overlay_pdf.pages[i]
+
+            # 将插入内容叠加到模板上
+            template_page.merge_page(overlay_page)
+            output.add_page(template_page)
+
+        # 保存合并后的 PDF
+        with open(save_path, "wb") as output_stream:
+            output.write(output_stream)
+
+    def create_overlay(self, name, major, date, identity_number):
+        """生成 PDF 文件的动态内容"""
+        packet = io.BytesIO()
+        # print("done!")
+        can = canvas.Canvas(packet, pagesize=letter)
+
+        try:
+            # 注册支持中文的字体
+            pdfmetrics.registerFont(TTFont('simsun', r'/app/Select_Information/pdfTemplate/simsun.ttc'))
+            can.setFont('simsun', 12)
+        except Exception as e:
+            # 打印异常堆栈信息
+            print("Error occurred while registering the font:")
+            traceback.print_exc()
+
+        can.drawString(150, 707, name)
+        can.drawString(150, 683.5, major)
+        can.drawString(150, 660.5, identity_number)
+        # can.drawString(324, 497, date)
+
+        can.save()
+        packet.seek(0)
+        # print("done4")
+        return packet
+
+    def upload_to_wechat_cloud(self, save_path, cloud_path, student):
+        # 正常情况日志级别使用 INFO，需要定位时可以修改为 DEBUG，此时 SDK 会打印和服务端的通信信息
+        logging.basicConfig(level=logging.INFO, stream=sys.stdout)
+
+
+        # 1. 设置用户属性, 包括 secret_id, secret_key, region 等。Appid 已在CosConfig中移除，请在参数 Bucket 中带上 Appid。Bucket 由 BucketName-Appid 组成
+        secret_id = os.environ.get("COS_SECRET_ID")    # 用户的 SecretId，建议使用子账号密钥，授权遵循最小权限指引，降低使用风险。子账号密钥获取可参见 https://cloud.tencent.com/document/product/598/37140
+        secret_key = os.environ.get("COS_SECRET_KEY")   # 用户的 SecretKey，建议使用子账号密钥，授权遵循最小权限指引，降低使用风险。子账号密钥获取可参见 https://cloud.tencent.com/document/product/598/37140
+        region = 'ap-shanghai'      # 替换为用户的 region，已创建桶归属的region可以在控制台查看，https://console.cloud.tencent.com/cos5/bucket
+                                # COS 支持的所有 region 列表参见 https://cloud.tencent.com/document/product/436/6224
+        token = None               # 如果使用永久密钥不需要填入 token，如果使用临时密钥需要填入，临时密钥生成和使用指引参见 https://cloud.tencent.com/document/product/436/14048
+        scheme = 'https'           # 指定使用 http/https 协议来访问 COS，默认为 https，可不填
+
+
+        config = CosConfig(Region=region, SecretId=secret_id, SecretKey=secret_key, Token=token, Scheme=scheme)
+        client = CosS3Client(config)
+
+        print("upload file")
+
+        try:
+            url = f'https://api.weixin.qq.com/tcb/uploadfile'
+
+            data = {
+                "env": 'prod-2g1jrmkk21c1d283',
+                "path": cloud_path,
+            }
+
+            # 发送POST请求
+            response = requests.post(url, json=data)
+            response_data = response.json()
+            print(response_data)
+            # 自定义 metadata，包括 `x-cos-meta-fileid`
+            # metadata = {
+            #     "x-cos-meta-fileid": cloud_path
+            # }
+            # 根据文件大小自动选择简单上传或分块上传，分块上传具备断点续传功能。
+            response = client.upload_file(
+                Bucket=os.environ.get("COS_BUCKET"),
+                LocalFilePath=save_path,
+                Key=cloud_path,
+                PartSize=1,
+                MAXThread=10,
+                EnableMD5=False,
+                Metadata={
+                    'x-cos-meta-fileid': response_data['cos_file_id']  # 自定义元数据
+                }
+            )
+            print(f"文件上传成功: {response['ETag']}")
+            # print(f"文件上传成功: {response}")
+            # 上传成功后删除本地的临时文件
+            if os.path.exists(save_path):
+                os.remove(save_path)
+                print(f"本地临时文件已删除: {save_path}")
+            else:
+                print(f"本地文件不存在: {save_path}")
+
+            # 上传成功后将路径保存到学生模型的 signature_table 字段
+            student.giveup_signature_table = response_data['file_id']
+            student.save()  # 保存更新后的学生信息
+            print(f"文件路径已保存到学生的 giveup_signature_table: {cloud_path}")
+
+        except Exception as e:
+            print(f"文件上传失败: {str(e)}")

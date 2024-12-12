@@ -83,3 +83,16 @@ Traceback (most recent call last):
     raise CosClientError('SecretId and SecretKey is Required!')
 qcloud_cos.cos_exception.CosClientError: SecretId and SecretKey is Required!
 [2024-12-12 06:23:11,959] [basehttp.py:161] [basehttp:log_message] [ERROR]- "POST /Professor_Student_Manage/student-giveup/ HTTP/1.1" 500 107572
+[2024-12-12 06:24:48,637] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 557
+[2024-12-12 06:24:48,710] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=student HTTP/1.1" 200 22
+[2024-12-12 06:24:49,140] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 557
+[2024-12-12 06:24:49,621] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 557
+[2024-12-12 06:24:50,016] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 557
+[2024-12-12 06:24:50,099] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=student HTTP/1.1" 200 22
+[2024-12-12 06:32:06,762] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/serializers.py changed, reloading.
+[2024-12-12 06:32:07,268] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-12-12 06:32:09,582] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-12-12 06:32:11,596] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-12-12 06:32:14,590] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-12-12 06:32:17,282] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2024-12-12 06:32:22,922] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader

@@ -701,7 +701,7 @@ class CreateGiveupSignatureView(APIView):
         student_id = request.data.get('student_id')
 
         # 查询学生是否存在
-        student = Student.objects.get(id=student_id)
+        student = Student.objects.get(id=int(student_id))
 
         # 生成放弃说明表
         if student.giveup_signature_table == None:

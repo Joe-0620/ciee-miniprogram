@@ -2,7 +2,7 @@ from django.urls import path
 from .views import ProfessorAndDepartmentListView, ChangePasswordView, UpdateProfessorView
 from .views import LogoutView, UserLoginInfoView, UpdateStudentView, GetStudentResumeListView
 from .views import LoginView, ProfessorEnrollInfoView, SubmitQuotaView
-from .views import DepartmentReviewersView, CreateGiveupSignatureView
+from .views import DepartmentReviewersView, CreateGiveupSignatureView, SubmitGiveupSignatureView
 
 urlpatterns = [
     # path('userlogin/', UserLoginView.as_view(), name='user-login'),
@@ -21,4 +21,5 @@ urlpatterns = [
     path('submit-quota/', SubmitQuotaView.as_view(), name='submit_quota'),
     path('departments/reviewers/', DepartmentReviewersView.as_view(), name='department_reviewers'),
     path('student-giveup/', CreateGiveupSignatureView.as_view(), name='student_giveup'),
+    path('submit-giveup/', SubmitGiveupSignatureView.as_view(), name='submit_giveup'),
 ]

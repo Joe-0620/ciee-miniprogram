@@ -973,3 +973,23 @@ class CreateGiveupSignatureView(APIView):
 
         except Exception as e:
             print(f"文件上传失败: {str(e)}")
+
+class SubmitGiveupSignatureView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        student_id = request.data.get('student_id')
+
+        # 查询学生是否存在
+        student = Student.objects.get(id=student_id)
+
+        print(student)
+
+        # 生成放弃说明表
+        if student.giveup_signature_table != None:
+            student.is_giveup = True
+            student.save()
+            
+            return Response({'message': '放弃拟录取成功'}, status=status.HTTP_200_OK)
+        else:
+            return Response({'message': '放弃拟录取失败，请重试'}, status=status.HTTP_400_BAD_REQUEST)

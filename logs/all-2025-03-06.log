@@ -680,3 +680,130 @@ NameError: name 'status' is not defined
 [2025-03-06 07:42:13,948] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/ HTTP/1.1" 200 12454
 [2025-03-06 07:42:19,458] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/ HTTP/1.1" 200 12454
 [2025-03-06 07:43:23,438] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/ HTTP/1.1" 200 12334
+[2025-03-06 07:44:32,208] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /admin/logout/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/template/backends/django.py", line 61, in render
+    return self.template.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 170, in render
+    return self._render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 162, in _render
+    return self.nodelist.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/loader_tags.py", line 150, in render
+    return compiled_parent._render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 162, in _render
+    return self.nodelist.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/loader_tags.py", line 150, in render
+    return compiled_parent._render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 162, in _render
+    return self.nodelist.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/defaulttags.py", line 312, in render
+    return nodelist.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/loader_tags.py", line 62, in render
+    result = block.nodelist.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/defaulttags.py", line 312, in render
+    return nodelist.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/loader_tags.py", line 183, in render
+    template = context.template.engine.select_template(template_name)
+  File "/root/.local/lib/python3.8/site-packages/django/template/engine.py", line 180, in select_template
+    raise TemplateDoesNotExist(', '.join(not_found))
+django.template.exceptions.TemplateDoesNotExist: admin/color_theme_toggle.html
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 204, in _get_response
+    response = response.render()
+  File "/root/.local/lib/python3.8/site-packages/django/template/response.py", line 105, in render
+    self.content = self.rendered_content
+  File "/root/.local/lib/python3.8/site-packages/django/template/response.py", line 83, in rendered_content
+    return template.render(context, self._request)
+  File "/root/.local/lib/python3.8/site-packages/django/template/backends/django.py", line 63, in render
+    reraise(exc, self.backend)
+  File "/root/.local/lib/python3.8/site-packages/django/template/backends/django.py", line 84, in reraise
+    raise new from exc
+django.template.exceptions.TemplateDoesNotExist: admin/color_theme_toggle.html
+[2025-03-06 07:44:32,210] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /admin/logout/ HTTP/1.1" 500 343193
+[2025-03-06 07:45:21,147] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/logout/ HTTP/1.1" 302 0
+[2025-03-06 07:45:21,152] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/ HTTP/1.1" 302 0
+[2025-03-06 07:45:21,170] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/login/?next=/admin/ HTTP/1.1" 200 3202
+[2025-03-06 07:45:21,177] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/login.css HTTP/1.1" 304 0
+[2025-03-06 07:48:07,807] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4467
+[2025-03-06 07:48:07,820] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /static/admin/js/theme.js HTTP/1.1" 404 1811
+[2025-03-06 07:48:07,821] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /static/admin/css/dark_mode.css HTTP/1.1" 404 1829
+[2025-03-06 07:48:08,670] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4467
+[2025-03-06 07:48:08,685] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /static/admin/js/theme.js HTTP/1.1" 404 1811
+[2025-03-06 07:48:08,687] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /static/admin/css/dark_mode.css HTTP/1.1" 404 1829
+[2025-03-06 07:48:09,261] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4467
+[2025-03-06 07:48:09,277] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /static/admin/js/theme.js HTTP/1.1" 404 1811
+[2025-03-06 07:48:09,277] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /static/admin/css/dark_mode.css HTTP/1.1" 404 1829
+[2025-03-06 07:48:09,838] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4467
+[2025-03-06 07:48:09,851] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /static/admin/css/dark_mode.css HTTP/1.1" 404 1829
+[2025-03-06 07:48:09,855] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /static/admin/js/theme.js HTTP/1.1" 404 1811
+[2025-03-06 07:48:10,296] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4467
+[2025-03-06 07:48:10,310] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /static/admin/css/dark_mode.css HTTP/1.1" 404 1829
+[2025-03-06 07:48:10,311] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /static/admin/js/theme.js HTTP/1.1" 404 1811
+[2025-03-06 07:48:10,728] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4467
+[2025-03-06 07:48:10,771] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /static/admin/css/dark_mode.css HTTP/1.1" 404 1829
+[2025-03-06 07:48:10,773] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /static/admin/js/theme.js HTTP/1.1" 404 1811
+[2025-03-06 07:48:11,104] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4467
+[2025-03-06 07:48:11,116] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /static/admin/css/dark_mode.css HTTP/1.1" 404 1829
+[2025-03-06 07:48:11,118] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /static/admin/js/theme.js HTTP/1.1" 404 1811
+[2025-03-06 07:48:11,654] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4467
+[2025-03-06 07:48:11,671] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /static/admin/css/dark_mode.css HTTP/1.1" 404 1829
+[2025-03-06 07:48:11,672] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /static/admin/js/theme.js HTTP/1.1" 404 1811
+[2025-03-06 07:48:12,220] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4467
+[2025-03-06 07:48:12,236] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /static/admin/css/dark_mode.css HTTP/1.1" 404 1829
+[2025-03-06 07:48:12,236] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /static/admin/js/theme.js HTTP/1.1" 404 1811
+[2025-03-06 07:48:12,614] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4467
+[2025-03-06 07:48:12,627] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /static/admin/css/dark_mode.css HTTP/1.1" 404 1829
+[2025-03-06 07:48:12,630] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /static/admin/js/theme.js HTTP/1.1" 404 1811
+[2025-03-06 07:48:12,931] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4467
+[2025-03-06 07:48:12,946] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /static/admin/js/theme.js HTTP/1.1" 404 1811
+[2025-03-06 07:48:12,946] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /static/admin/css/dark_mode.css HTTP/1.1" 404 1829
+[2025-03-06 07:48:13,400] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4467
+[2025-03-06 07:48:13,414] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /static/admin/js/theme.js HTTP/1.1" 404 1811
+[2025-03-06 07:48:13,415] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /static/admin/css/dark_mode.css HTTP/1.1" 404 1829
+[2025-03-06 07:48:13,633] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4467
+[2025-03-06 07:48:13,646] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /static/admin/css/dark_mode.css HTTP/1.1" 404 1829
+[2025-03-06 07:48:13,650] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /static/admin/js/theme.js HTTP/1.1" 404 1811
+[2025-03-06 07:48:19,627] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4476
+[2025-03-06 07:48:19,635] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /static/admin/css/dark_mode.css HTTP/1.1" 404 1829
+[2025-03-06 07:48:19,638] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /static/admin/js/theme.js HTTP/1.1" 404 1811
+[2025-03-06 07:48:25,763] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4476
+[2025-03-06 07:48:25,774] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /static/admin/css/dark_mode.css HTTP/1.1" 404 1829
+[2025-03-06 07:48:25,779] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /static/admin/js/theme.js HTTP/1.1" 404 1811
+[2025-03-06 07:48:26,431] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/login/?next=/admin/ HTTP/1.1" 200 4476
+[2025-03-06 07:48:26,446] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /static/admin/js/theme.js HTTP/1.1" 404 1811
+[2025-03-06 07:48:26,447] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /static/admin/css/dark_mode.css HTTP/1.1" 404 1829
+[2025-03-06 07:48:39,384] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-06 07:48:40,675] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/login/?next=/admin/ HTTP/1.1" 200 2216
+[2025-03-06 07:48:41,471] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/login/?next=/admin/ HTTP/1.1" 200 2216
+[2025-03-06 07:48:42,221] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/login/?next=/admin/ HTTP/1.1" 200 2216
+[2025-03-06 07:48:56,068] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+[2025-03-06 07:48:56,461] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/ HTTP/1.1" 200 11986

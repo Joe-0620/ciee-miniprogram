@@ -57,7 +57,7 @@ class StudentAdmin(admin.ModelAdmin):
                 return Response({'message': '获取放弃说明表下载地址失败'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
             return format_html(
-                "<a href='{}' download>下载互选表</a>", signature_download_url
+                "<a href='{}' download>下载</a>", signature_download_url
             )
         return '未完成'
 
@@ -76,7 +76,7 @@ class StudentAdmin(admin.ModelAdmin):
                 return Response({'message': '获取签名图片下载地址失败'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
             return format_html(
-                "<a href='{}' download>下载互选表</a>", signature_download_url
+                "<a href='{}' download>下载</a>", signature_download_url
             )
         return '未完成'
 
@@ -100,7 +100,7 @@ class StudentAdmin(admin.ModelAdmin):
         return response.json()
 
     download_hx_file.short_description = "互选表下载"
-    download_fq_file.short_description = "放弃表下载"
+    download_fq_file.short_description = "弃选表下载"
 
 
 class WeChatAccountAdmin(admin.ModelAdmin):

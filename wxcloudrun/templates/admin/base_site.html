@@ -1,0 +1,32 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
+
+{% block extrahead %}
+  {{ block.super }}
+  <style>
+    #site-name {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    #site-name a {
+      font-size: 24px;
+      font-weight: bold;
+      text-decoration: none;
+    }
+  </style>
+{% endblock %}
+
+{% block branding %}
+<div id="site-name">
+  <img src="{% static 'logo.png' %}" alt="Logo" style="height:50px; margin-right:10px;">
+  <a href="{% url 'admin:index' %}">CIEE导师互选微信小程序后台管理</a>
+</div>
+{% if user.is_anonymous %}
+  {% include "admin/color_theme_toggle.html" %}
+{% endif %}
+{% endblock %}
+
+{% block nav-global %}{% endblock %}

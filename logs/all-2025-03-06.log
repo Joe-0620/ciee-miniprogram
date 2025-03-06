@@ -21,3 +21,486 @@
 [2025-03-06 05:12:53,032] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Bold-webfont.woff HTTP/1.1" 200 86184
 [2025-03-06 05:24:16,791] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
 [2025-03-06 05:24:19,389] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-06 05:58:53,451] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/admin.py changed, reloading.
+[2025-03-06 05:58:53,911] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-06 05:58:55,846] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-06 05:59:07,052] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET / HTTP/1.1" 200 10330
+[2025-03-06 05:59:07,183] [log.py:224] [log:log_response] [WARNING]- Not Found: /api/count
+[2025-03-06 05:59:07,184] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /api/count HTTP/1.1" 404 3142
+[2025-03-06 05:59:10,233] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET / HTTP/1.1" 200 10330
+[2025-03-06 05:59:10,248] [log.py:224] [log:log_response] [WARNING]- Not Found: /api/count
+[2025-03-06 05:59:10,249] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /api/count HTTP/1.1" 404 3142
+[2025-03-06 05:59:11,141] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/ HTTP/1.1" 302 0
+[2025-03-06 05:59:11,172] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/login/?next=/admin/ HTTP/1.1" 200 2216
+[2025-03-06 05:59:11,176] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/login.css HTTP/1.1" 304 0
+[2025-03-06 05:59:11,176] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+[2025-03-06 05:59:11,177] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/base.css HTTP/1.1" 304 0
+[2025-03-06 05:59:11,177] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+[2025-03-06 05:59:11,177] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/fonts.css HTTP/1.1" 304 0
+[2025-03-06 05:59:11,178] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Regular-webfont.woff HTTP/1.1" 304 0
+[2025-03-06 05:59:11,180] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Light-webfont.woff HTTP/1.1" 304 0
+[2025-03-06 05:59:11,180] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+[2025-03-06 05:59:11,182] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Bold-webfont.woff HTTP/1.1" 304 0
+[2025-03-06 05:59:16,548] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+[2025-03-06 05:59:17,009] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/ HTTP/1.1" 200 12046
+[2025-03-06 05:59:17,019] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/dashboard.css HTTP/1.1" 200 380
+[2025-03-06 05:59:17,026] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 200 380
+[2025-03-06 05:59:17,027] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 200 331
+[2025-03-06 05:59:17,030] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-deletelink.svg HTTP/1.1" 200 392
+[2025-03-06 05:59:21,651] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 28785
+[2025-03-06 05:59:21,671] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/core.js HTTP/1.1" 200 5698
+[2025-03-06 05:59:21,673] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/changelists.css HTTP/1.1" 200 6874
+[2025-03-06 05:59:21,674] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/jquery.init.js HTTP/1.1" 200 347
+[2025-03-06 05:59:21,677] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 200 5984
+[2025-03-06 05:59:21,679] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/prepopulate.js HTTP/1.1" 200 1531
+[2025-03-06 05:59:21,680] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/actions.js HTTP/1.1" 200 7867
+[2025-03-06 05:59:21,683] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/urlify.js HTTP/1.1" 200 7902
+[2025-03-06 05:59:21,685] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 287630
+[2025-03-06 05:59:21,690] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 200 232381
+[2025-03-06 05:59:21,691] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/search.svg HTTP/1.1" 200 458
+[2025-03-06 05:59:21,693] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-no.svg HTTP/1.1" 200 560
+[2025-03-06 05:59:21,695] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-yes.svg HTTP/1.1" 200 436
+[2025-03-06 05:59:22,024] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-06 05:59:22,058] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/tooltag-add.svg HTTP/1.1" 200 331
+[2025-03-06 05:59:36,801] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 65794
+[2025-03-06 05:59:37,120] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-06 05:59:41,632] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 65794
+[2025-03-06 05:59:42,905] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 28785
+[2025-03-06 05:59:43,233] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-06 05:59:51,874] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/?o=8 HTTP/1.1" 200 29824
+[2025-03-06 05:59:52,282] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-06 05:59:52,302] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/sorting-icons.svg HTTP/1.1" 200 1097
+[2025-03-06 05:59:54,709] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/?o=-8 HTTP/1.1" 200 29868
+[2025-03-06 05:59:55,040] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-06 06:00:03,002] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 65794
+[2025-03-06 06:00:03,333] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-06 06:00:11,962] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Enrollment_Manage/subject/ HTTP/1.1" 200 12522
+[2025-03-06 06:00:12,306] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-06 06:00:14,309] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Enrollment_Manage/department/ HTTP/1.1" 200 14416
+[2025-03-06 06:00:14,621] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-06 06:00:23,700] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Select_Information/reviewrecord/ HTTP/1.1" 200 11395
+[2025-03-06 06:00:23,991] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-06 06:00:26,176] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Select_Information/selectiontime/ HTTP/1.1" 200 10231
+[2025-03-06 06:00:26,517] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-06 06:00:28,902] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Select_Information/studentprofessorchoice/ HTTP/1.1" 200 14765
+[2025-03-06 06:00:29,242] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-06 06:00:36,302] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 28785
+[2025-03-06 06:00:36,624] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-06 06:00:43,440] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 65794
+[2025-03-06 06:00:43,752] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-06 06:00:47,816] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 28785
+[2025-03-06 06:00:48,154] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-06 06:01:34,515] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/?o=7 HTTP/1.1" 200 29824
+[2025-03-06 06:01:34,846] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-06 06:01:38,428] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/?o=-7 HTTP/1.1" 200 29868
+[2025-03-06 06:01:38,767] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-06 06:02:15,142] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 65794
+[2025-03-06 06:02:15,504] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-06 06:02:19,184] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 28785
+[2025-03-06 06:02:19,463] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-06 06:15:20,207] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-06 06:15:23,256] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-06 06:15:31,699] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /admin/Professor_Student_Manage/student/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/options.py", line 608, in get_field
+    return self.fields_map[field_name]
+KeyError: 'download_hx_file'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/admin/utils.py", line 265, in lookup_field
+    f = _get_non_gfk_field(opts, name)
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/admin/utils.py", line 296, in _get_non_gfk_field
+    field = opts.get_field(name)
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/options.py", line 610, in get_field
+    raise FieldDoesNotExist("%s has no field named '%s'" % (self.object_name, field_name))
+django.core.exceptions.FieldDoesNotExist: Student has no field named 'download_hx_file'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 204, in _get_response
+    response = response.render()
+  File "/root/.local/lib/python3.8/site-packages/django/template/response.py", line 105, in render
+    self.content = self.rendered_content
+  File "/root/.local/lib/python3.8/site-packages/django/template/response.py", line 83, in rendered_content
+    return template.render(context, self._request)
+  File "/root/.local/lib/python3.8/site-packages/django/template/backends/django.py", line 61, in render
+    return self.template.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 170, in render
+    return self._render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 162, in _render
+    return self.nodelist.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/loader_tags.py", line 150, in render
+    return compiled_parent._render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 162, in _render
+    return self.nodelist.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/loader_tags.py", line 150, in render
+    return compiled_parent._render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 162, in _render
+    return self.nodelist.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/loader_tags.py", line 62, in render
+    result = block.nodelist.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/loader_tags.py", line 62, in render
+    result = block.nodelist.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/admin/templatetags/base.py", line 33, in render
+    return super().render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/library.py", line 214, in render
+    _dict = self.func(*resolved_args, **resolved_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/admin/templatetags/admin_list.py", line 308, in result_list
+    'results': list(results(cl)),
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/admin/templatetags/admin_list.py", line 284, in results
+    yield ResultList(None, items_for_result(cl, res, None))
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/admin/templatetags/admin_list.py", line 275, in __init__
+    super().__init__(*items)
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/admin/templatetags/admin_list.py", line 200, in items_for_result
+    f, attr, value = lookup_field(field_name, result, cl.model_admin)
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/admin/utils.py", line 274, in lookup_field
+    value = attr(obj)
+  File "/app/Professor_Student_Manage/admin.py", line 46, in download_hx_file
+    return format_html(
+NameError: name 'format_html' is not defined
+[2025-03-06 06:15:31,706] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 500 376683
+[2025-03-06 06:15:50,224] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/admin.py changed, reloading.
+[2025-03-06 06:15:50,626] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-06 06:15:55,366] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 30272
+[2025-03-06 06:15:55,390] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+[2025-03-06 06:15:55,390] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+[2025-03-06 06:15:55,390] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/base.css HTTP/1.1" 304 0
+[2025-03-06 06:15:55,393] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/changelists.css HTTP/1.1" 304 0
+[2025-03-06 06:15:55,395] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/jquery.init.js HTTP/1.1" 304 0
+[2025-03-06 06:15:55,395] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 304 0
+[2025-03-06 06:15:55,395] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 304 0
+[2025-03-06 06:15:55,397] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/core.js HTTP/1.1" 304 0
+[2025-03-06 06:15:55,400] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/urlify.js HTTP/1.1" 304 0
+[2025-03-06 06:15:55,402] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/prepopulate.js HTTP/1.1" 304 0
+[2025-03-06 06:15:55,402] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/actions.js HTTP/1.1" 304 0
+[2025-03-06 06:15:55,403] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 304 0
+[2025-03-06 06:15:55,404] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/search.svg HTTP/1.1" 304 0
+[2025-03-06 06:15:55,405] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-no.svg HTTP/1.1" 304 0
+[2025-03-06 06:15:55,406] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-yes.svg HTTP/1.1" 304 0
+[2025-03-06 06:15:55,407] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+[2025-03-06 06:15:55,408] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/fonts.css HTTP/1.1" 304 0
+[2025-03-06 06:15:55,654] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-06 06:15:55,689] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Regular-webfont.woff HTTP/1.1" 304 0
+[2025-03-06 06:15:55,691] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/tooltag-add.svg HTTP/1.1" 304 0
+[2025-03-06 06:15:55,693] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 304 0
+[2025-03-06 06:15:55,694] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Bold-webfont.woff HTTP/1.1" 304 0
+[2025-03-06 06:15:55,694] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Light-webfont.woff HTTP/1.1" 304 0
+[2025-03-06 06:16:48,275] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 65794
+[2025-03-06 06:16:48,584] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-06 06:16:52,245] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Select_Information/reviewrecord/ HTTP/1.1" 200 11395
+[2025-03-06 06:16:52,556] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-06 06:18:10,581] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-06 06:18:13,127] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-06 06:18:24,551] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 30455
+[2025-03-06 06:18:24,960] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-06 06:29:10,990] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-06 06:29:19,055] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-06 06:29:22,100] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /admin/Professor_Student_Manage/student/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/options.py", line 608, in get_field
+    return self.fields_map[field_name]
+KeyError: 'download_hx_file'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/admin/utils.py", line 265, in lookup_field
+    f = _get_non_gfk_field(opts, name)
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/admin/utils.py", line 296, in _get_non_gfk_field
+    field = opts.get_field(name)
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/options.py", line 610, in get_field
+    raise FieldDoesNotExist("%s has no field named '%s'" % (self.object_name, field_name))
+django.core.exceptions.FieldDoesNotExist: Student has no field named 'download_hx_file'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 204, in _get_response
+    response = response.render()
+  File "/root/.local/lib/python3.8/site-packages/django/template/response.py", line 105, in render
+    self.content = self.rendered_content
+  File "/root/.local/lib/python3.8/site-packages/django/template/response.py", line 83, in rendered_content
+    return template.render(context, self._request)
+  File "/root/.local/lib/python3.8/site-packages/django/template/backends/django.py", line 61, in render
+    return self.template.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 170, in render
+    return self._render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 162, in _render
+    return self.nodelist.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/loader_tags.py", line 150, in render
+    return compiled_parent._render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 162, in _render
+    return self.nodelist.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/loader_tags.py", line 150, in render
+    return compiled_parent._render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 162, in _render
+    return self.nodelist.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/loader_tags.py", line 62, in render
+    result = block.nodelist.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/loader_tags.py", line 62, in render
+    result = block.nodelist.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/admin/templatetags/base.py", line 33, in render
+    return super().render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/library.py", line 214, in render
+    _dict = self.func(*resolved_args, **resolved_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/admin/templatetags/admin_list.py", line 308, in result_list
+    'results': list(results(cl)),
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/admin/templatetags/admin_list.py", line 284, in results
+    yield ResultList(None, items_for_result(cl, res, None))
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/admin/templatetags/admin_list.py", line 275, in __init__
+    super().__init__(*items)
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/admin/templatetags/admin_list.py", line 200, in items_for_result
+    f, attr, value = lookup_field(field_name, result, cl.model_admin)
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/admin/utils.py", line 274, in lookup_field
+    value = attr(obj)
+  File "/app/Professor_Student_Manage/admin.py", line 49, in download_hx_file
+    response_data_signature = self.get_fileid_download_url(obj.signature_table)
+  File "/app/Professor_Student_Manage/admin.py", line 77, in get_fileid_download_url
+    response = requests.post(url, json=data)
+NameError: name 'requests' is not defined
+[2025-03-06 06:29:22,103] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 500 381506
+[2025-03-06 06:30:19,000] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-06 06:30:20,807] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /admin/Professor_Student_Manage/student/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/options.py", line 608, in get_field
+    return self.fields_map[field_name]
+KeyError: 'download_hx_file'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/admin/utils.py", line 265, in lookup_field
+    f = _get_non_gfk_field(opts, name)
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/admin/utils.py", line 296, in _get_non_gfk_field
+    field = opts.get_field(name)
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/options.py", line 610, in get_field
+    raise FieldDoesNotExist("%s has no field named '%s'" % (self.object_name, field_name))
+django.core.exceptions.FieldDoesNotExist: Student has no field named 'download_hx_file'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 204, in _get_response
+    response = response.render()
+  File "/root/.local/lib/python3.8/site-packages/django/template/response.py", line 105, in render
+    self.content = self.rendered_content
+  File "/root/.local/lib/python3.8/site-packages/django/template/response.py", line 83, in rendered_content
+    return template.render(context, self._request)
+  File "/root/.local/lib/python3.8/site-packages/django/template/backends/django.py", line 61, in render
+    return self.template.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 170, in render
+    return self._render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 162, in _render
+    return self.nodelist.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/loader_tags.py", line 150, in render
+    return compiled_parent._render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 162, in _render
+    return self.nodelist.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/loader_tags.py", line 150, in render
+    return compiled_parent._render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 162, in _render
+    return self.nodelist.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/loader_tags.py", line 62, in render
+    result = block.nodelist.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/loader_tags.py", line 62, in render
+    result = block.nodelist.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/admin/templatetags/base.py", line 33, in render
+    return super().render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/library.py", line 214, in render
+    _dict = self.func(*resolved_args, **resolved_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/admin/templatetags/admin_list.py", line 308, in result_list
+    'results': list(results(cl)),
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/admin/templatetags/admin_list.py", line 284, in results
+    yield ResultList(None, items_for_result(cl, res, None))
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/admin/templatetags/admin_list.py", line 275, in __init__
+    super().__init__(*items)
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/admin/templatetags/admin_list.py", line 200, in items_for_result
+    f, attr, value = lookup_field(field_name, result, cl.model_admin)
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/admin/utils.py", line 274, in lookup_field
+    value = attr(obj)
+  File "/app/Professor_Student_Manage/admin.py", line 55, in download_hx_file
+    return Response({'message': '获取签名图片下载地址失败'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+NameError: name 'Response' is not defined
+[2025-03-06 06:30:20,809] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 500 377270
+[2025-03-06 06:30:30,052] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-06 06:30:31,903] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /admin/Professor_Student_Manage/student/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/options.py", line 608, in get_field
+    return self.fields_map[field_name]
+KeyError: 'download_hx_file'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/admin/utils.py", line 265, in lookup_field
+    f = _get_non_gfk_field(opts, name)
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/admin/utils.py", line 296, in _get_non_gfk_field
+    field = opts.get_field(name)
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/options.py", line 610, in get_field
+    raise FieldDoesNotExist("%s has no field named '%s'" % (self.object_name, field_name))
+django.core.exceptions.FieldDoesNotExist: Student has no field named 'download_hx_file'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 204, in _get_response
+    response = response.render()
+  File "/root/.local/lib/python3.8/site-packages/django/template/response.py", line 105, in render
+    self.content = self.rendered_content
+  File "/root/.local/lib/python3.8/site-packages/django/template/response.py", line 83, in rendered_content
+    return template.render(context, self._request)
+  File "/root/.local/lib/python3.8/site-packages/django/template/backends/django.py", line 61, in render
+    return self.template.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 170, in render
+    return self._render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 162, in _render
+    return self.nodelist.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/loader_tags.py", line 150, in render
+    return compiled_parent._render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 162, in _render
+    return self.nodelist.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/loader_tags.py", line 150, in render
+    return compiled_parent._render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 162, in _render
+    return self.nodelist.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/loader_tags.py", line 62, in render
+    result = block.nodelist.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/loader_tags.py", line 62, in render
+    result = block.nodelist.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/admin/templatetags/base.py", line 33, in render
+    return super().render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/library.py", line 214, in render
+    _dict = self.func(*resolved_args, **resolved_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/admin/templatetags/admin_list.py", line 308, in result_list
+    'results': list(results(cl)),
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/admin/templatetags/admin_list.py", line 284, in results
+    yield ResultList(None, items_for_result(cl, res, None))
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/admin/templatetags/admin_list.py", line 275, in __init__
+    super().__init__(*items)
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/admin/templatetags/admin_list.py", line 200, in items_for_result
+    f, attr, value = lookup_field(field_name, result, cl.model_admin)
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/admin/utils.py", line 274, in lookup_field
+    value = attr(obj)
+  File "/app/Professor_Student_Manage/admin.py", line 56, in download_hx_file
+    return Response({'message': '获取签名图片下载地址失败'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+NameError: name 'status' is not defined
+[2025-03-06 06:30:31,905] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 500 377258
+[2025-03-06 06:31:13,719] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-06 06:31:17,144] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 30276
+[2025-03-06 06:31:17,170] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/changelists.css HTTP/1.1" 304 0
+[2025-03-06 06:31:17,170] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/base.css HTTP/1.1" 304 0
+[2025-03-06 06:31:17,171] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+[2025-03-06 06:31:17,173] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/core.js HTTP/1.1" 304 0
+[2025-03-06 06:31:17,175] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 304 0
+[2025-03-06 06:31:17,176] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/jquery.init.js HTTP/1.1" 304 0
+[2025-03-06 06:31:17,177] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/actions.js HTTP/1.1" 304 0
+[2025-03-06 06:31:17,178] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 304 0
+[2025-03-06 06:31:17,178] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+[2025-03-06 06:31:17,180] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/urlify.js HTTP/1.1" 304 0
+[2025-03-06 06:31:17,181] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/prepopulate.js HTTP/1.1" 304 0
+[2025-03-06 06:31:17,182] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 304 0
+[2025-03-06 06:31:17,183] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/search.svg HTTP/1.1" 304 0
+[2025-03-06 06:31:17,185] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-no.svg HTTP/1.1" 304 0
+[2025-03-06 06:31:17,185] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+[2025-03-06 06:31:17,187] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-yes.svg HTTP/1.1" 304 0
+[2025-03-06 06:31:17,188] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/fonts.css HTTP/1.1" 304 0
+[2025-03-06 06:31:17,445] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-06 06:31:17,481] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Regular-webfont.woff HTTP/1.1" 304 0
+[2025-03-06 06:31:17,483] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Bold-webfont.woff HTTP/1.1" 304 0
+[2025-03-06 06:31:17,484] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/tooltag-add.svg HTTP/1.1" 304 0
+[2025-03-06 06:31:17,486] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 304 0
+[2025-03-06 06:31:17,487] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Light-webfont.woff HTTP/1.1" 304 0
+[2025-03-06 06:32:22,129] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-06 06:32:25,125] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-06 06:32:28,689] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader

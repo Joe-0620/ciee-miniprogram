@@ -38,9 +38,28 @@ class StudentAdmin(admin.ModelAdmin):
                                "initial_exam_score", "initial_rank", "secondary_exam_score",
                                "secondary_rank", "final_rank", "is_selected", "is_giveup"]}),
     ]
-    list_display = ["candidate_number", "name", "subject", "study_mode", "student_type", "postgraduate_type", "is_selected", "is_giveup", "download_hx_file"]
+    list_display = ["candidate_number", "name", "subject", "study_mode", "student_type", "postgraduate_type", "is_selected", "is_giveup", "download_hx_file", "download_fq_file"]
     list_filter = ["subject"]
     search_fields = ["name"]
+
+    def download_fq_file(self, obj):
+        """
+        若学生已放弃拟录取并且 hx_file 有文件，则显示下载链接；否则显示 '-'
+        """
+        if obj.is_giveup == True:
+
+            # 获取下载地址
+            response_data_signature = self.get_fileid_download_url(obj.giveup_signature_table)
+            if response_data_signature.get("errcode") == 0:
+                signature_download_url = response_data_signature['file_list'][0]['download_url']
+                print(f"放弃说明表下载地址: {signature_download_url}")
+            else:
+                return Response({'message': '获取放弃说明表下载地址失败'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+            return format_html(
+                "<a href='{}' download>下载互选表</a>", signature_download_url
+            )
+        return '未完成'
 
     def download_hx_file(self, obj):
         """
@@ -81,6 +100,7 @@ class StudentAdmin(admin.ModelAdmin):
         return response.json()
 
     download_hx_file.short_description = "互选表下载"
+    download_fq_file.short_description = "放弃表下载"
 
 
 class WeChatAccountAdmin(admin.ModelAdmin):

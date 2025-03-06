@@ -262,11 +262,20 @@ class UpdateProfessorView(APIView):
         signature_image = self.download_file(signature_url)
         pdf_file = self.download_file(pdf_url)
 
+        # 获取当前时间
+        now = datetime.now()
+
+        # 将当前时间转换为时间戳
+        timestamp = int(now.timestamp())
+
+        # 将时间戳转换为字符串
+        timestamp_str = str(timestamp)
+
         # 使用PyPDF2等库合并签名图片和PDF文件
         updated_pdf_path = self.add_signature_to_pdf(pdf_file, signature_image, professor, student)
         print("完成签名")
         # 上传合并后的PDF文件
-        cloud_path = f"signature/student/{student.candidate_number}_signed_agreement.pdf"
+        cloud_path = f"signature/student/{student.candidate_number}_{timestamp_str}_signed_agreement.pdf"
         print("开始上传")
         self.upload_to_wechat_cloud(updated_pdf_path, cloud_path, student)
 
@@ -318,7 +327,16 @@ class UpdateProfessorView(APIView):
                 page.merge_page(overlay_pdf.pages[0])
             output.add_page(page)
 
-        updated_pdf_path = f"/app/Select_Information/tempFile/{professor.user_name.username}_signed_agreement.pdf"
+        # 获取当前时间
+        now = datetime.now()
+
+        # 将当前时间转换为时间戳
+        timestamp = int(now.timestamp())
+
+        # 将时间戳转换为字符串
+        timestamp_str = str(timestamp)
+
+        updated_pdf_path = f"/app/Select_Information/tempFile/{professor.user_name.username}_{timestamp_str}_signed_agreement.pdf"
         with open(updated_pdf_path, "wb") as f_out:
             output.write(f_out)
 
@@ -482,11 +500,20 @@ class UpdateStudentView(APIView):
         signature_image = self.download_file(signature_url)
         pdf_file = self.download_file(pdf_url)
 
+        # 获取当前时间
+        now = datetime.now()
+
+        # 将当前时间转换为时间戳
+        timestamp = int(now.timestamp())
+
+        # 将时间戳转换为字符串
+        timestamp_str = str(timestamp)
+
         # 使用PyPDF2等库合并签名图片和PDF文件
         updated_pdf_path = self.add_signature_to_pdf(pdf_file, signature_image, student)
         print("完成签名")
         # 上传合并后的PDF文件
-        cloud_path = f"signature/student/{student.candidate_number}_signed_agreement.pdf"
+        cloud_path = f"signature/student/{student.candidate_number}_{timestamp_str}_signed_agreement.pdf"
         print("开始上传")
         self.upload_to_wechat_cloud(updated_pdf_path, cloud_path, student)
 
@@ -498,11 +525,20 @@ class UpdateStudentView(APIView):
         signature_image = self.download_file(signature_url)
         pdf_file = self.download_file(pdf_url)
 
+        # 获取当前时间
+        now = datetime.now()
+
+        # 将当前时间转换为时间戳
+        timestamp = int(now.timestamp())
+
+        # 将时间戳转换为字符串
+        timestamp_str = str(timestamp)
+
         # 使用PyPDF2等库合并签名图片和PDF文件
         updated_pdf_path = self.add_signature_to_giveup_pdf(pdf_file, signature_image, student)
         print("完成签名")
         # 上传合并后的PDF文件
-        cloud_path = f"signature/student/{student.candidate_number}_signed_giveup_table.pdf"
+        cloud_path = f"signature/student/{student.candidate_number}_{timestamp_str}_signed_giveup_table.pdf"
         print("开始上传")
         self.upload_to_wechat_cloud_giveup(updated_pdf_path, cloud_path, student)
 
@@ -552,7 +588,16 @@ class UpdateStudentView(APIView):
                 page.merge_page(overlay_pdf.pages[0])
             output.add_page(page)
 
-        updated_pdf_path = f"/app/Select_Information/tempFile/{student.candidate_number}_signed_agreement.pdf"
+        # 获取当前时间
+        now = datetime.now()
+
+        # 将当前时间转换为时间戳
+        timestamp = int(now.timestamp())
+
+        # 将时间戳转换为字符串
+        timestamp_str = str(timestamp)
+
+        updated_pdf_path = f"/app/Select_Information/tempFile/{student.candidate_number}_{timestamp_str}_signed_agreement.pdf"
         with open(updated_pdf_path, "wb") as f_out:
             output.write(f_out)
 
@@ -593,8 +638,17 @@ class UpdateStudentView(APIView):
             if i == 0:  # 假设我们只在第一页添加签名
                 page.merge_page(overlay_pdf.pages[0])
             output.add_page(page)
+        
+        # 获取当前时间
+        now = datetime.now()
 
-        updated_pdf_path = f"/app/Select_Information/tempFile/{student.candidate_number}_signed_giveup_table.pdf"
+        # 将当前时间转换为时间戳
+        timestamp = int(now.timestamp())
+
+        # 将时间戳转换为字符串
+        timestamp_str = str(timestamp)
+
+        updated_pdf_path = f"/app/Select_Information/tempFile/{student.candidate_number}_{timestamp_str}_signed_giveup_table.pdf"
         with open(updated_pdf_path, "wb") as f_out:
             output.write(f_out)
 

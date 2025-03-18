@@ -388,6 +388,7 @@ class UpdateProfessorView(APIView):
 
             # 上传成功后将路径保存到学生模型的 signature_table 字段
             student.signature_table = response_data['file_id']
+            student.signature_table_professor_signatured = True
             student.save()
             print(f"文件路径已保存到学生的 signature_table: {cloud_path}")
 
@@ -411,6 +412,8 @@ class UpdateStudentView(APIView):
         # 检查是否传入了 signature_temp 字段
         signature_temp = request.data.get('signature_temp', None)
         professor_id = request.data.get('professor_id', None)
+
+        # 学生签名意向表
         if signature_temp and professor_id != '-1':
             student_pdf_file_id = student.signature_table
 
@@ -434,6 +437,8 @@ class UpdateStudentView(APIView):
                 self.generate_and_upload_pdf(signature_download_url, pdf_download_url, student)
             except Exception as e:
                 return Response({'message': f'生成或上传PDF失败: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        
+        # 学生签名放弃表
         if signature_temp and professor_id == '-1':
             student_pdf_file_id = student.giveup_signature_table
 
@@ -700,6 +705,7 @@ class UpdateStudentView(APIView):
 
             # 上传成功后将路径保存到学生模型的 signature_table 字段
             student.signature_table = response_data['file_id']
+            student.signature_table_student_signatured = True
             student.save()
             print(f"文件路径已保存到学生的 signature_table: {cloud_path}")
 

@@ -508,6 +508,10 @@ class SubmitSignatureFileView(APIView):
         
         try:
             student = Student.objects.get(id=student_id)
+
+            if student.signature_table_professor_signatured == False and student.signature_table_student_signatured == False:
+                return Response({'message': '互选表双方未完成签署'}, status=status.HTTP_400_BAD_REQUEST)
+
             choice = StudentProfessorChoice.objects.filter(student=student, professor=professor, status=1).first()
 
             if not choice:
@@ -519,10 +523,17 @@ class SubmitSignatureFileView(APIView):
             ).exclude(status=2).first()
 
             if existing_record:
-                return Response({'message': '已存在未驳回的审核记录'}, status=status.HTTP_400_BAD_REQUEST)
+                # print("existing_record: ", existing_record.status)
+                if existing_record.status == 1:
+                    return Response({'message': '审核已通过，无需提交'}, status=status.HTTP_400_BAD_REQUEST)
+                else:
+                    return Response({'message': '待审核中，请勿重复提交'}, status=status.HTTP_400_BAD_REQUEST)
 
             # 更新学生信息  
             review_professor = Professor.objects.get(teacher_identity_id=review_professor_id)
+            # print(review_professor)
+            if review_professor.department_position == 0:
+                return Response({'message': '该导师不是审核人'}, status=status.HTTP_400_BAD_REQUEST)
 
             # 创建审核记录
             review_record = ReviewRecord.objects.create(

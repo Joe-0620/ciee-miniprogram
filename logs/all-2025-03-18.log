@@ -1,0 +1,280 @@
+[2025-03-18 03:00:41,440] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-18 03:05:27,354] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-18 03:05:32,711] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET / HTTP/1.1" 200 10330
+[2025-03-18 03:05:33,197] [log.py:224] [log:log_response] [WARNING]- Not Found: /api/count
+[2025-03-18 03:05:33,198] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /api/count HTTP/1.1" 404 3142
+[2025-03-18 03:05:33,262] [log.py:224] [log:log_response] [WARNING]- Not Found: /apple-touch-icon-precomposed.png
+[2025-03-18 03:05:33,262] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /apple-touch-icon-precomposed.png HTTP/1.1" 404 3211
+[2025-03-18 03:05:33,267] [log.py:224] [log:log_response] [WARNING]- Not Found: /apple-touch-icon.png
+[2025-03-18 03:05:33,268] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /apple-touch-icon.png HTTP/1.1" 404 3175
+[2025-03-18 03:05:36,568] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET / HTTP/1.1" 200 10330
+[2025-03-18 03:05:36,581] [log.py:224] [log:log_response] [WARNING]- Not Found: /api/count
+[2025-03-18 03:05:36,581] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /api/count HTTP/1.1" 404 3142
+[2025-03-18 03:05:38,607] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/ HTTP/1.1" 200 11589
+[2025-03-18 03:05:38,620] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/base.css HTTP/1.1" 200 19513
+[2025-03-18 03:05:38,624] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/responsive.css HTTP/1.1" 200 18545
+[2025-03-18 03:05:38,628] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 200 2271
+[2025-03-18 03:05:38,628] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/dashboard.css HTTP/1.1" 200 380
+[2025-03-18 03:05:38,628] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/fonts.css HTTP/1.1" 200 423
+[2025-03-18 03:05:38,628] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 200 1360
+[2025-03-18 03:05:38,637] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Regular-webfont.woff HTTP/1.1" 200 85876
+[2025-03-18 03:05:38,637] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Bold-webfont.woff HTTP/1.1" 200 86184
+[2025-03-18 03:05:38,640] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 200 331
+[2025-03-18 03:05:38,641] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Light-webfont.woff HTTP/1.1" 200 85692
+[2025-03-18 03:05:38,643] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 200 380
+[2025-03-18 03:05:38,644] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-deletelink.svg HTTP/1.1" 200 392
+[2025-03-18 03:05:38,666] [log.py:224] [log:log_response] [WARNING]- Not Found: /favicon.ico
+[2025-03-18 03:05:38,666] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /favicon.ico HTTP/1.1" 404 3148
+[2025-03-18 03:05:38,799] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin HTTP/1.1" 301 0
+[2025-03-18 03:05:39,752] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/ HTTP/1.1" 200 11589
+[2025-03-18 03:05:39,767] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/base.css HTTP/1.1" 304 0
+[2025-03-18 03:05:39,769] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/dashboard.css HTTP/1.1" 304 0
+[2025-03-18 03:05:39,769] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+[2025-03-18 03:05:39,770] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+[2025-03-18 03:05:39,770] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+[2025-03-18 03:05:39,772] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/fonts.css HTTP/1.1" 304 0
+[2025-03-18 03:05:39,782] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-deletelink.svg HTTP/1.1" 304 0
+[2025-03-18 03:05:39,783] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 304 0
+[2025-03-18 03:05:39,783] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 304 0
+[2025-03-18 03:05:39,786] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Bold-webfont.woff HTTP/1.1" 304 0
+[2025-03-18 03:05:39,786] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Regular-webfont.woff HTTP/1.1" 304 0
+[2025-03-18 03:05:39,788] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Light-webfont.woff HTTP/1.1" 304 0
+[2025-03-18 03:06:41,035] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 27874
+[2025-03-18 03:06:41,049] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/changelists.css HTTP/1.1" 200 6874
+[2025-03-18 03:06:41,075] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+[2025-03-18 03:06:41,081] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/base.css HTTP/1.1" 304 0
+[2025-03-18 03:06:41,082] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/jquery.init.js HTTP/1.1" 200 347
+[2025-03-18 03:06:41,084] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+[2025-03-18 03:06:41,084] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/urlify.js HTTP/1.1" 200 7902
+[2025-03-18 03:06:41,084] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/core.js HTTP/1.1" 200 5698
+[2025-03-18 03:06:41,093] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/actions.js HTTP/1.1" 200 7867
+[2025-03-18 03:06:41,094] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/prepopulate.js HTTP/1.1" 200 1531
+[2025-03-18 03:06:41,095] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 200 5984
+[2025-03-18 03:06:41,096] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-yes.svg HTTP/1.1" 200 436
+[2025-03-18 03:06:41,098] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-no.svg HTTP/1.1" 200 560
+[2025-03-18 03:06:41,100] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/fonts.css HTTP/1.1" 304 0
+[2025-03-18 03:06:41,101] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+[2025-03-18 03:06:41,102] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 200 232381
+[2025-03-18 03:06:41,103] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 287630
+[2025-03-18 03:06:41,109] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/search.svg HTTP/1.1" 200 458
+[2025-03-18 03:06:41,552] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-18 03:06:41,589] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Bold-webfont.woff HTTP/1.1" 304 0
+[2025-03-18 03:06:41,590] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Regular-webfont.woff HTTP/1.1" 304 0
+[2025-03-18 03:06:41,591] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 304 0
+[2025-03-18 03:06:41,592] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/tooltag-add.svg HTTP/1.1" 200 331
+[2025-03-18 03:06:41,593] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Light-webfont.woff HTTP/1.1" 304 0
+[2025-03-18 03:07:17,993] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 65797
+[2025-03-18 03:07:18,004] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+[2025-03-18 03:07:18,023] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+[2025-03-18 03:07:18,024] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/base.css HTTP/1.1" 304 0
+[2025-03-18 03:07:18,026] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 304 0
+[2025-03-18 03:07:18,026] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/changelists.css HTTP/1.1" 304 0
+[2025-03-18 03:07:18,027] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 304 0
+[2025-03-18 03:07:18,028] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/core.js HTTP/1.1" 304 0
+[2025-03-18 03:07:18,029] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/actions.js HTTP/1.1" 304 0
+[2025-03-18 03:07:18,031] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/urlify.js HTTP/1.1" 304 0
+[2025-03-18 03:07:18,031] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/jquery.init.js HTTP/1.1" 304 0
+[2025-03-18 03:07:18,032] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/prepopulate.js HTTP/1.1" 304 0
+[2025-03-18 03:07:18,035] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 304 0
+[2025-03-18 03:07:18,036] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+[2025-03-18 03:07:18,041] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/search.svg HTTP/1.1" 304 0
+[2025-03-18 03:07:18,042] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-yes.svg HTTP/1.1" 304 0
+[2025-03-18 03:07:18,043] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-no.svg HTTP/1.1" 304 0
+[2025-03-18 03:07:18,043] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/fonts.css HTTP/1.1" 304 0
+[2025-03-18 03:07:18,862] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-18 03:07:18,889] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Regular-webfont.woff HTTP/1.1" 304 0
+[2025-03-18 03:07:18,892] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/tooltag-add.svg HTTP/1.1" 304 0
+[2025-03-18 03:07:18,892] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 304 0
+[2025-03-18 03:07:18,893] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Bold-webfont.woff HTTP/1.1" 304 0
+[2025-03-18 03:07:18,893] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Light-webfont.woff HTTP/1.1" 304 0
+[2025-03-18 03:07:28,909] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /userlogin/ HTTP/1.1" 200 637
+[2025-03-18 03:07:30,061] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 551
+[2025-03-18 03:07:31,281] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 1657
+[2025-03-18 03:07:31,548] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 551
+[2025-03-18 03:07:37,892] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 551
+[2025-03-18 03:07:38,737] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1743
+[2025-03-18 03:07:38,969] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 551
+[2025-03-18 03:07:39,032] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 3904
+[2025-03-18 03:07:40,564] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1743
+[2025-03-18 03:07:41,492] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 3904
+[2025-03-18 03:07:45,973] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/student-resumeinfo/?student_id=281 HTTP/1.1" 200 426
+[2025-03-18 03:07:49,720] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 551
+[2025-03-18 03:07:50,601] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1743
+[2025-03-18 03:07:50,968] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 3904
+[2025-03-18 03:08:44,789] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 551
+[2025-03-18 03:08:45,715] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1743
+[2025-03-18 03:08:45,997] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 551
+[2025-03-18 03:08:46,244] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 3904
+[2025-03-18 03:08:47,409] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1743
+[2025-03-18 03:08:48,652] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 3904
+[2025-03-18 03:08:49,017] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/user-login/ HTTP/1.1" 200 36
+[2025-03-18 03:08:50,211] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 551
+[2025-03-18 03:08:51,009] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 1657
+[2025-03-18 03:08:51,432] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 551
+[2025-03-18 03:08:52,648] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1743
+[2025-03-18 03:08:52,709] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 551
+[2025-03-18 03:08:52,769] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-03-18 03:08:53,074] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 3904
+[2025-03-18 03:08:53,467] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-03-18 03:08:53,773] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 551
+[2025-03-18 03:08:54,666] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1743
+[2025-03-18 03:08:54,850] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 551
+[2025-03-18 03:08:55,260] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 3904
+[2025-03-18 03:08:56,750] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1743
+[2025-03-18 03:08:57,814] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 3904
+[2025-03-18 03:09:24,957] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 86778
+[2025-03-18 03:09:47,044] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 86778
+[2025-03-18 03:11:14,757] [log.py:224] [log:log_response] [WARNING]- Bad Request: /Select_Information/submit-pdf-review/
+[2025-03-18 03:11:14,759] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /Select_Information/submit-pdf-review/ HTTP/1.1" 400 47
+[2025-03-18 03:11:26,220] [log.py:224] [log:log_response] [WARNING]- Bad Request: /Select_Information/submit-pdf-review/
+[2025-03-18 03:11:26,222] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /Select_Information/submit-pdf-review/ HTTP/1.1" 400 47
+[2025-03-18 03:14:09,362] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-18 03:14:23,375] [log.py:224] [log:log_response] [WARNING]- Bad Request: /Select_Information/submit-pdf-review/
+[2025-03-18 03:14:23,377] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /Select_Information/submit-pdf-review/ HTTP/1.1" 400 47
+[2025-03-18 03:14:57,853] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Select_Information/views.py changed, reloading.
+[2025-03-18 03:14:58,356] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-18 03:15:04,474] [log.py:224] [log:log_response] [WARNING]- Bad Request: /Select_Information/submit-pdf-review/
+[2025-03-18 03:15:04,475] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /Select_Information/submit-pdf-review/ HTTP/1.1" 400 47
+[2025-03-18 03:15:27,844] [log.py:224] [log:log_response] [WARNING]- Bad Request: /Select_Information/submit-pdf-review/
+[2025-03-18 03:15:27,846] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /Select_Information/submit-pdf-review/ HTTP/1.1" 400 47
+[2025-03-18 03:16:41,128] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-18 03:17:47,570] [log.py:224] [log:log_response] [WARNING]- Bad Request: /Select_Information/submit-pdf-review/
+[2025-03-18 03:17:47,571] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /Select_Information/submit-pdf-review/ HTTP/1.1" 400 44
+[2025-03-18 03:17:54,425] [log.py:224] [log:log_response] [WARNING]- Bad Request: /Select_Information/submit-pdf-review/
+[2025-03-18 03:17:54,430] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /Select_Information/submit-pdf-review/ HTTP/1.1" 400 44
+[2025-03-18 03:18:29,909] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 551
+[2025-03-18 03:18:30,010] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1743
+[2025-03-18 03:18:30,542] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 3904
+[2025-03-18 03:18:31,107] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 551
+[2025-03-18 03:18:31,736] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1743
+[2025-03-18 03:18:32,172] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 3904
+[2025-03-18 03:18:33,417] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/user-login/ HTTP/1.1" 200 36
+[2025-03-18 03:18:34,432] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 551
+[2025-03-18 03:18:35,358] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 1657
+[2025-03-18 03:18:36,074] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 551
+[2025-03-18 03:18:36,317] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1743
+[2025-03-18 03:18:36,736] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 551
+[2025-03-18 03:18:36,736] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 3904
+[2025-03-18 03:18:38,248] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 551
+[2025-03-18 03:18:38,467] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1743
+[2025-03-18 03:18:38,861] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 3904
+[2025-03-18 03:18:42,687] [log.py:224] [log:log_response] [WARNING]- Bad Request: /Select_Information/submit-pdf-review/
+[2025-03-18 03:18:42,688] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /Select_Information/submit-pdf-review/ HTTP/1.1" 400 44
+[2025-03-18 03:18:55,270] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 551
+[2025-03-18 03:18:55,957] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1743
+[2025-03-18 03:18:56,070] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 3904
+[2025-03-18 03:18:57,251] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 551
+[2025-03-18 03:18:59,894] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1743
+[2025-03-18 03:19:01,080] [log.py:224] [log:log_response] [WARNING]- Bad Request: /Select_Information/submit-pdf-review/
+[2025-03-18 03:19:01,083] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /Select_Information/submit-pdf-review/ HTTP/1.1" 400 44
+[2025-03-18 03:19:02,009] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 3904
+[2025-03-18 03:19:40,074] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1743
+[2025-03-18 03:19:40,437] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 551
+[2025-03-18 03:19:41,686] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 3904
+[2025-03-18 03:19:42,109] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 551
+[2025-03-18 03:19:43,130] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1743
+[2025-03-18 03:19:44,868] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 3904
+[2025-03-18 03:19:45,627] [log.py:224] [log:log_response] [WARNING]- Bad Request: /Select_Information/submit-pdf-review/
+[2025-03-18 03:19:45,628] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /Select_Information/submit-pdf-review/ HTTP/1.1" 400 44
+[2025-03-18 03:20:38,081] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-18 03:20:49,233] [log.py:224] [log:log_response] [WARNING]- Bad Request: /Select_Information/submit-pdf-review/
+[2025-03-18 03:20:49,234] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /Select_Information/submit-pdf-review/ HTTP/1.1" 400 44
+[2025-03-18 03:20:56,300] [log.py:224] [log:log_response] [WARNING]- Bad Request: /Select_Information/submit-pdf-review/
+[2025-03-18 03:20:56,301] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /Select_Information/submit-pdf-review/ HTTP/1.1" 400 44
+[2025-03-18 03:20:59,798] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 551
+[2025-03-18 03:21:00,915] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 1657
+[2025-03-18 03:21:01,561] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 551
+[2025-03-18 03:21:02,767] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1743
+[2025-03-18 03:21:02,884] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 3904
+[2025-03-18 06:14:23,464] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-03-18 06:14:23,784] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-03-18 06:14:37,241] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 86778
+[2025-03-18 06:14:51,455] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 86778
+[2025-03-18 06:18:17,325] [log.py:224] [log:log_response] [WARNING]- Unauthorized: /Select_Information/reviewer/review_records/
+[2025-03-18 06:18:17,327] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 401 34
+[2025-03-18 06:18:17,330] [log.py:224] [log:log_response] [WARNING]- Unauthorized: /Select_Information/get-select-info/
+[2025-03-18 06:18:17,331] [log.py:224] [log:log_response] [WARNING]- Unauthorized: /Professor_Student_Manage/user-info/
+[2025-03-18 06:18:17,331] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 401 34
+[2025-03-18 06:18:17,332] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 401 34
+[2025-03-18 06:18:17,352] [log.py:224] [log:log_response] [WARNING]- Unauthorized: /Professor_Student_Manage/departments/reviewers/
+[2025-03-18 06:18:17,353] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 401 34
+[2025-03-18 06:18:17,361] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-03-18 06:18:17,611] [log.py:224] [log:log_response] [WARNING]- Unauthorized: /Select_Information/get-select-info/
+[2025-03-18 06:18:17,614] [log.py:224] [log:log_response] [WARNING]- Unauthorized: /Professor_Student_Manage/user-info/
+[2025-03-18 06:18:17,615] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 401 34
+[2025-03-18 06:18:17,615] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 401 34
+[2025-03-18 06:18:17,626] [log.py:224] [log:log_response] [WARNING]- Unauthorized: /Professor_Student_Manage/departments/reviewers/
+[2025-03-18 06:18:17,626] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 401 34
+[2025-03-18 06:18:17,732] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-03-18 06:18:17,906] [log.py:224] [log:log_response] [WARNING]- Unauthorized: /Professor_Student_Manage/user-info/
+[2025-03-18 06:18:17,907] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 401 34
+[2025-03-18 06:18:18,156] [log.py:224] [log:log_response] [WARNING]- Unauthorized: /Professor_Student_Manage/user-info/
+[2025-03-18 06:18:18,156] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 401 34
+[2025-03-18 06:18:30,429] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 86778
+[2025-03-18 08:32:09,675] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-18 08:33:22,343] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-18 08:33:46,017] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 65812
+[2025-03-18 08:33:46,040] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+[2025-03-18 08:33:46,042] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/core.js HTTP/1.1" 304 0
+[2025-03-18 08:33:46,044] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/jquery.init.js HTTP/1.1" 304 0
+[2025-03-18 08:33:46,044] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/changelists.css HTTP/1.1" 304 0
+[2025-03-18 08:33:46,044] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+[2025-03-18 08:33:46,045] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/base.css HTTP/1.1" 304 0
+[2025-03-18 08:33:46,047] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 304 0
+[2025-03-18 08:33:46,047] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 304 0
+[2025-03-18 08:33:46,048] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/actions.js HTTP/1.1" 304 0
+[2025-03-18 08:33:46,050] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/prepopulate.js HTTP/1.1" 304 0
+[2025-03-18 08:33:46,052] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/urlify.js HTTP/1.1" 304 0
+[2025-03-18 08:33:46,053] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 304 0
+[2025-03-18 08:33:46,055] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+[2025-03-18 08:33:46,068] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-no.svg HTTP/1.1" 304 0
+[2025-03-18 08:33:46,074] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/search.svg HTTP/1.1" 304 0
+[2025-03-18 08:33:46,076] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-yes.svg HTTP/1.1" 304 0
+[2025-03-18 08:33:46,076] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/fonts.css HTTP/1.1" 304 0
+[2025-03-18 08:33:46,332] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-18 08:33:46,371] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Regular-webfont.woff HTTP/1.1" 304 0
+[2025-03-18 08:33:46,371] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/tooltag-add.svg HTTP/1.1" 304 0
+[2025-03-18 08:33:46,372] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 304 0
+[2025-03-18 08:33:46,372] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Bold-webfont.woff HTTP/1.1" 304 0
+[2025-03-18 08:33:46,374] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Light-webfont.woff HTTP/1.1" 304 0
+[2025-03-18 08:33:58,986] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /userlogin/ HTTP/1.1" 200 866
+[2025-03-18 08:33:59,561] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 780
+[2025-03-18 08:34:00,155] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 780
+[2025-03-18 08:34:00,364] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 2195
+[2025-03-18 08:34:03,576] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 780
+[2025-03-18 08:34:03,923] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1972
+[2025-03-18 08:34:04,098] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 780
+[2025-03-18 08:34:04,618] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 6431
+[2025-03-18 08:34:04,871] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1972
+[2025-03-18 08:34:06,055] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 6431
+[2025-03-18 08:34:10,650] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 780
+[2025-03-18 08:34:11,261] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 2195
+[2025-03-18 08:34:16,983] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 780
+[2025-03-18 08:34:17,344] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1972
+[2025-03-18 08:34:17,945] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 6431
+[2025-03-18 08:34:24,183] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 780
+[2025-03-18 08:34:24,926] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 2195
+[2025-03-18 08:34:26,993] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Select_Information/reviewer/review_record/34/ HTTP/1.1" 200 26
+[2025-03-18 08:34:28,154] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 2224
+[2025-03-18 08:34:33,248] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 780
+[2025-03-18 08:34:33,612] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1972
+[2025-03-18 08:34:34,197] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 6431
+[2025-03-18 08:34:37,016] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 6431
+[2025-03-18 08:34:43,785] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Select_Information/submit-pdf-review/ HTTP/1.1" 200 50
+[2025-03-18 08:34:54,360] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 786
+[2025-03-18 08:34:55,095] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 2762
+[2025-03-18 08:36:34,152] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-18 08:38:51,885] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-18 08:38:58,938] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-18 08:39:21,939] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-18 08:40:48,749] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-18 08:40:52,168] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-18 08:41:42,722] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-18 08:41:47,088] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-18 08:50:22,173] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 786
+[2025-03-18 08:50:22,552] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1978
+[2025-03-18 08:50:23,155] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 6431
+[2025-03-18 08:59:46,403] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-18 09:00:53,323] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-18 09:01:28,298] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-18 09:03:34,802] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader

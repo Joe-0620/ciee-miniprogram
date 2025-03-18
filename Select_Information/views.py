@@ -509,6 +509,7 @@ class SubmitSignatureFileView(APIView):
         try:
             student = Student.objects.get(id=student_id)
 
+            # 未签署不能提交
             if student.signature_table_professor_signatured == False and student.signature_table_student_signatured == False:
                 return Response({'message': '互选表双方未完成签署'}, status=status.HTTP_400_BAD_REQUEST)
 

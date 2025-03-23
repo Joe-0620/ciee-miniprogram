@@ -31,6 +31,7 @@ from qcloud_cos import CosConfig
 from qcloud_cos import CosS3Client
 import sys
 import logging
+from django.contrib.auth.models import User
 
 
 # 类继承自类generics.ListAPIView，这个类是Django REST Framework提供的一个基于类的视图，
@@ -95,7 +96,9 @@ class UserLoginView(APIView):
     def post(self, request):
         usertype = request.data.get('usertype')
         code = request.data.get('code')  # 从请求数据中获取微信的 code
+        device_id = request.data.get('device_id')  # 设备唯一标识符（可选）
         del request.data['usertype']
+
         serializer = UserLoginSerializer(data=request.data)
         if serializer.is_valid():
             username = serializer.validated_data['username']
@@ -104,9 +107,16 @@ class UserLoginView(APIView):
             user = authenticate(username=username, password=password)
 
             if user:
-                # 第一个元素是所获取或创建的对象（Token值），
-                # 第二个元素是一个布尔值，指示对象是否是新创建的（True表示新创建，False表示已存在）
-                token, created = Token.objects.get_or_create(user=user)
+                # 删除该用户的所有旧 Token
+                Token.objects.filter(user=user).delete()
+
+                # 生成一个新的 Token
+                token = Token.objects.create(user=user)
+
+                # 如果设备 ID 存在，将其与 Token 关联（可选）
+                if device_id:
+                    token.device_id = device_id
+                    token.save()
 
                 if code:
                     # 使用微信的 API 将 code 换取 OpenID
@@ -129,8 +139,27 @@ class UserLoginView(APIView):
                             openid=openid,
                             defaults={'user': user, 'session_key': session_key})
 
-                        # 将 WeChatAccount 对象与 Django 账号进行绑定
-                        wechat_account.user = user
+                        # 检查 WeChatAccount 的 user 是否存在
+                        if not User.objects.filter(id=wechat_account.user_id).exists():
+                            # 如果 user 不存在，删除该 WeChatAccount 记录
+                            wechat_account.delete()
+                            # 重新创建 WeChatAccount 记录
+                            wechat_account = WeChatAccount.objects.create(
+                                openid=openid,
+                                user=user,
+                                session_key=session_key
+                            )
+
+                        # 如果 WeChatAccount 已经绑定了其他用户，拒绝登录
+                        if wechat_account.user != user:
+                            # 返回已绑定用户的用户名
+                            bound_username = wechat_account.user.username
+                            return Response({
+                                'error': '该微信账号已绑定其他用户: ' + bound_username,
+                                'bound_username': bound_username  # 返回已绑定用户的用户名
+                            }, status=status.HTTP_400_BAD_REQUEST)
+
+                        # 更新 WeChatAccount 的 session_key
                         wechat_account.session_key = session_key
                         wechat_account.save()
 

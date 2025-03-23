@@ -513,3 +513,159 @@ KeyError: 'academic'
 [2025-03-23 16:39:47,390] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 66554
 [2025-03-23 16:39:47,685] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
 [2025-03-23 16:39:51,580] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/import-quota/ HTTP/1.1" 200 1878
+[2025-03-23 16:58:18,214] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-23 16:59:20,747] [log.py:224] [log:log_response] [WARNING]- Bad Request: /userlogin/
+[2025-03-23 16:59:20,750] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /userlogin/ HTTP/1.1" 400 48
+[2025-03-23 16:59:21,072] [log.py:224] [log:log_response] [WARNING]- Bad Request: /userlogin/
+[2025-03-23 16:59:21,073] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /userlogin/ HTTP/1.1" 400 48
+[2025-03-23 17:00:02,735] [log.py:224] [log:log_response] [WARNING]- Bad Request: /userlogin/
+[2025-03-23 17:00:02,738] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /userlogin/ HTTP/1.1" 400 48
+[2025-03-23 17:00:40,419] [log.py:224] [log:log_response] [WARNING]- Bad Request: /userlogin/
+[2025-03-23 17:00:40,421] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /userlogin/ HTTP/1.1" 400 48
+[2025-03-23 17:04:12,987] [log.py:224] [log:log_response] [WARNING]- Bad Request: /userlogin/
+[2025-03-23 17:04:12,989] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /userlogin/ HTTP/1.1" 400 48
+[2025-03-23 17:06:42,943] [log.py:224] [log:log_response] [WARNING]- Bad Request: /userlogin/
+[2025-03-23 17:06:42,945] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /userlogin/ HTTP/1.1" 400 48
+[2025-03-23 17:08:44,453] [log.py:224] [log:log_response] [WARNING]- Bad Request: /userlogin/
+[2025-03-23 17:08:44,456] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /userlogin/ HTTP/1.1" 400 48
+[2025-03-23 17:14:14,298] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-23 17:14:34,205] [log.py:224] [log:log_response] [WARNING]- Bad Request: /userlogin/
+[2025-03-23 17:14:34,207] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /userlogin/ HTTP/1.1" 400 58
+[2025-03-23 17:14:44,298] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-23 17:14:48,924] [log.py:224] [log:log_response] [WARNING]- Bad Request: /userlogin/
+[2025-03-23 17:14:48,926] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /userlogin/ HTTP/1.1" 400 51
+[2025-03-23 17:14:52,737] [log.py:224] [log:log_response] [WARNING]- Bad Request: /userlogin/
+[2025-03-23 17:14:52,739] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /userlogin/ HTTP/1.1" 400 51
+[2025-03-23 17:15:42,070] [log.py:224] [log:log_response] [WARNING]- Bad Request: /userlogin/
+[2025-03-23 17:15:42,072] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /userlogin/ HTTP/1.1" 400 51
+[2025-03-23 17:15:54,486] [log.py:224] [log:log_response] [WARNING]- Bad Request: /userlogin/
+[2025-03-23 17:15:54,489] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /userlogin/ HTTP/1.1" 400 51
+[2025-03-23 17:18:43,773] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-23 17:18:53,295] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/views.py changed, reloading.
+[2025-03-23 17:18:53,798] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-23 17:19:02,324] [log.py:224] [log:log_response] [WARNING]- Bad Request: /userlogin/
+[2025-03-23 17:19:02,324] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /userlogin/ HTTP/1.1" 400 75
+[2025-03-23 17:19:26,972] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-23 17:19:31,882] [log.py:224] [log:log_response] [WARNING]- Bad Request: /userlogin/
+[2025-03-23 17:19:31,884] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /userlogin/ HTTP/1.1" 400 84
+[2025-03-23 17:19:45,408] [log.py:224] [log:log_response] [WARNING]- Bad Request: /userlogin/
+[2025-03-23 17:19:45,412] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /userlogin/ HTTP/1.1" 400 84
+[2025-03-23 17:22:28,442] [log.py:224] [log:log_response] [WARNING]- Unauthorized: /userlogin/
+[2025-03-23 17:22:28,445] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /userlogin/ HTTP/1.1" 401 31
+[2025-03-23 17:24:12,426] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /userlogin/ HTTP/1.1" 200 606
+[2025-03-23 17:24:12,963] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 2
+[2025-03-23 17:24:13,040] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 520
+[2025-03-23 17:24:13,523] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 520
+[2025-03-23 17:24:45,456] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/user-logout/ HTTP/1.1" 200 37
+[2025-03-23 17:24:53,974] [log.py:224] [log:log_response] [WARNING]- Bad Request: /userlogin/
+[2025-03-23 17:24:53,975] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /userlogin/ HTTP/1.1" 400 84
+[2025-03-23 17:27:54,022] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-23 17:32:51,455] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-23 17:32:56,699] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /userlogin/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Professor_Student_Manage/views.py", line 142, in post
+    if not User.objects.filter(id=wechat_account.user_id).exists():
+NameError: name 'User' is not defined
+[2025-03-23 17:32:56,702] [basehttp.py:161] [basehttp:log_message] [ERROR]- "POST /userlogin/ HTTP/1.1" 500 88960
+[2025-03-23 17:33:02,185] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /userlogin/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Professor_Student_Manage/views.py", line 142, in post
+    if not User.objects.filter(id=wechat_account.user_id).exists():
+NameError: name 'User' is not defined
+[2025-03-23 17:33:02,186] [basehttp.py:161] [basehttp:log_message] [ERROR]- "POST /userlogin/ HTTP/1.1" 500 88960
+[2025-03-23 17:33:28,854] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /userlogin/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Professor_Student_Manage/views.py", line 142, in post
+    if not User.objects.filter(id=wechat_account.user_id).exists():
+NameError: name 'User' is not defined
+[2025-03-23 17:33:28,857] [basehttp.py:161] [basehttp:log_message] [ERROR]- "POST /userlogin/ HTTP/1.1" 500 88960
+[2025-03-23 17:34:02,365] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-23 17:34:06,269] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /userlogin/ HTTP/1.1" 200 606
+[2025-03-23 17:34:06,757] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 2
+[2025-03-23 17:34:06,817] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 520
+[2025-03-23 17:34:07,227] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 520
+[2025-03-23 17:34:09,547] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/user-logout/ HTTP/1.1" 200 37
+[2025-03-23 17:34:15,708] [log.py:224] [log:log_response] [WARNING]- Bad Request: /userlogin/
+[2025-03-23 17:34:15,709] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /userlogin/ HTTP/1.1" 400 84
+[2025-03-23 17:34:25,075] [log.py:224] [log:log_response] [WARNING]- Bad Request: /userlogin/
+[2025-03-23 17:34:25,078] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /userlogin/ HTTP/1.1" 400 84
+[2025-03-23 17:34:39,998] [log.py:224] [log:log_response] [WARNING]- Bad Request: /userlogin/
+[2025-03-23 17:34:40,001] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /userlogin/ HTTP/1.1" 400 84
+[2025-03-23 17:34:52,681] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /userlogin/ HTTP/1.1" 200 613
+[2025-03-23 17:34:53,178] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 2
+[2025-03-23 17:34:53,299] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 527
+[2025-03-23 17:34:53,760] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 527
+[2025-03-23 17:34:56,150] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/user-logout/ HTTP/1.1" 200 37
+[2025-03-23 17:35:03,637] [log.py:224] [log:log_response] [WARNING]- Bad Request: /userlogin/
+[2025-03-23 17:35:03,638] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /userlogin/ HTTP/1.1" 400 84
+[2025-03-23 17:35:16,020] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /userlogin/ HTTP/1.1" 200 606
+[2025-03-23 17:35:16,434] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 2
+[2025-03-23 17:35:16,536] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 520
+[2025-03-23 17:35:17,011] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 520
+[2025-03-23 17:35:19,354] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/user-logout/ HTTP/1.1" 200 37
+[2025-03-23 17:35:44,375] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /userlogin/ HTTP/1.1" 200 606
+[2025-03-23 17:35:44,806] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 2
+[2025-03-23 17:35:44,914] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 520
+[2025-03-23 17:35:45,369] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 520
+[2025-03-23 17:37:24,686] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 54
+[2025-03-23 17:37:24,827] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 520
+[2025-03-23 17:37:25,012] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1192
+[2025-03-23 17:37:25,054] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 54
+[2025-03-23 17:37:25,236] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 520
+[2025-03-23 17:37:25,658] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1192
+[2025-03-23 17:37:25,879] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-03-23 17:37:26,120] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-03-23 17:37:32,172] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 54
+[2025-03-23 17:37:32,246] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 520
+[2025-03-23 17:37:32,447] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1192
+[2025-03-23 17:37:32,557] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 2
+[2025-03-23 17:37:32,651] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 520
+[2025-03-23 17:37:38,497] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 87325

@@ -1,0 +1,13 @@
+<!-- templates/admin/professor_change_list.html -->
+{% extends "admin/change_list.html" %}
+{% block content_title %}
+    <h1>导师管理</h1>
+    <div style="margin-bottom: 20px;">
+        <a href="{% url 'admin:import_quota' %}" class="addlink">
+            一键导入导师名额
+        </a>
+    </div>
+{% endblock %}
+{% block object-tools %}
+    {{ block.super }}
+{% endblock %}

@@ -1,0 +1,11 @@
+<!-- templates/admin/import_quota.html -->
+{% extends "admin/base_site.html" %}
+{% block content %}
+<!-- <h1>一键导入导师名额</h1> -->
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="button">导入</button>
+    <a href="{% url 'admin:Professor_Student_Manage_professor_changelist' %}" class="button">取消</a>
+</form>
+{% endblock %}

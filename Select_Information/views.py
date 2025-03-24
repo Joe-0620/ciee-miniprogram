@@ -563,10 +563,42 @@ class SubmitSignatureFileView(APIView):
         except Exception as e:
             return Response({'message': f'服务器错误: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-    def notify_department_reviewer(self, professor, student):
-        # 这里实现通知方向审核人的逻辑
-        # 可以通过发送邮件、微信通知等方式通知审核人
-        pass
+    def notify_department_reviewer(self, professor):
+        # 学生的openid和小程序的access_token
+        try:
+            professor_wechat_account = WeChatAccount.objects.get(user=professor.user_name)
+            professor_openid = professor_wechat_account.openid
+            # access_token = cache.get('access_token')
+            if professor_openid:
+                # 微信小程序发送订阅消息的API endpoint
+                url = f'https://api.weixin.qq.com/cgi-bin/message/subscribe/send'
+
+                # 构造消息数据
+                # 注意：这里的key（如phrase1, time11等）和template_id需要根据你在微信后台配置的模板来确定
+                data = {
+                    "touser": professor_openid,
+                    "template_id": "viilL7yUx1leDVAsGCsrBEkQS9v7A9NT6yH90MFP3jg",  # 你在微信小程序后台设置的模板ID
+                    "page": "pages/profile/profile",  # 用户点击消息后跳转的小程序页面
+                    "data": {
+                        "short_thing23": {"value": "导师意向表审核申请"},
+                        "name1": {"value": professor.user_name},
+                        "time19": {"value": timezone.now().strftime("%Y-%m-%d")}
+                    }
+                }
+
+            # 发送POST请求
+            response = requests.post(url, json=data)
+            response_data = response.json()
+
+            # 检查请求是否成功
+            if response_data.get("errcode") == 0:
+                print("通知发送成功")
+            else:
+                print(f"通知发送失败: {response_data.get('errmsg')}")
+        except WeChatAccount.DoesNotExist:
+            # 如果学生没有绑定微信账号信息，则不发送通知
+            print("导师微信账号不存在，无法发送通知。")
+
 
 class ReviewerReviewRecordsView(APIView):
     permission_classes = [IsAuthenticated]

@@ -810,8 +810,31 @@ class LogoutView(APIView):
     # parser_classes = (FileUploadParser,)  # 使用文件上传解析器
 
     def post(self, request):
-        request.user.auth_token.delete()  # 删除用户的 Token
-        return Response({"detail": "Successfully logged out."}, status=status.HTTP_200_OK)
+        # request.user.auth_token.delete()  # 删除用户的 Token
+        # return Response({"detail": "Successfully logged out."}, status=status.HTTP_200_OK)
+
+        # 获取当前用户的 Token
+        token_key = request.auth.key
+        try:
+            token = Token.objects.get(key=token_key)
+            user = token.user
+
+            # 解除微信账号绑定
+            try:
+                wechat_account = WeChatAccount.objects.get(user=user)
+                wechat_account.delete()  # 删除与当前用户关联的 WeChatAccount 记录
+            except WeChatAccount.DoesNotExist:
+                pass  # 如果没有绑定微信账号，直接跳过
+
+            # 删除 Token
+            token.delete()
+
+            # 执行 Django 的登出操作（可选）
+            # logout(request)
+
+            return Response({'message': '退出成功，微信账号已解绑'}, status=status.HTTP_200_OK)
+        except Token.DoesNotExist:
+            return Response({'error': '无效的 Token'}, status=status.HTTP_400_BAD_REQUEST)
     
 # 自动登录
 class LoginView(APIView):

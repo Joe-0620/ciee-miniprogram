@@ -30,9 +30,9 @@ class Professor(models.Model):
     proposed_quota_approved = models.BooleanField(default=False, verbose_name="设置指标")
     have_qualification = models.BooleanField(default=True, verbose_name="招生资格")
     remaining_quota = models.IntegerField(default=0, verbose_name="总剩余名额")
-    personal_page = models.CharField(max_length=300, blank=True, verbose_name="个人介绍")
+    personal_page = models.CharField(max_length=500, blank=True, verbose_name="个人介绍")
     avatar = models.CharField(max_length=500, null=True, blank=True, verbose_name="照片下载地址")
-    contact_details = models.CharField(max_length=50, null=True, blank=True, verbose_name="联系方式")
+    contact_details = models.CharField(max_length=100, null=True, blank=True, verbose_name="联系方式")
     signature_temp = models.CharField(max_length=500, null=True, blank=True, verbose_name="签名临时下载地址")
 
     Department_Position = [

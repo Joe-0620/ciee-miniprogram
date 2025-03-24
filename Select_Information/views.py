@@ -555,7 +555,7 @@ class SubmitSignatureFileView(APIView):
             student.save()
 
             # 发送通知给方向审核人（假设方向审核人是一个特定的用户）
-            # self.notify_department_reviewer(professor, student)
+            self.notify_department_reviewer(professor, review_professor)
 
             return Response({'message': '签名表提交成功，等待审核'}, status=status.HTTP_200_OK)
         except Student.DoesNotExist:
@@ -563,10 +563,10 @@ class SubmitSignatureFileView(APIView):
         except Exception as e:
             return Response({'message': f'服务器错误: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-    def notify_department_reviewer(self, professor):
+    def notify_department_reviewer(self, professor, review_professor):
         # 学生的openid和小程序的access_token
         try:
-            professor_wechat_account = WeChatAccount.objects.get(user=professor.user_name)
+            professor_wechat_account = WeChatAccount.objects.get(user=review_professor.user_name)
             professor_openid = professor_wechat_account.openid
             # access_token = cache.get('access_token')
             if professor_openid:

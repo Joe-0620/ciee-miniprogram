@@ -517,6 +517,7 @@ class SubmitSignatureFileView(APIView):
             if student.signature_table_review_status == True:
                 return Response({'message': '互选表已通过审核，请勿重复提交'}, status=status.HTTP_400_BAD_REQUEST)
 
+
             choice = StudentProfessorChoice.objects.filter(student=student, professor=professor, status=1).first()
 
             if not choice:

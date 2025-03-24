@@ -872,28 +872,30 @@ class SubmitQuotaView(APIView):
             # 获取当前导师身份
             professor = request.user.professor
 
-            academic_quota = request.data.get('academic_quota')
-            professional_quota = request.data.get('professional_quota')
-            professional_yt_quota = request.data.get('professional_yt_quota')
-            doctor_quota = request.data.get('doctor_quota')
+            # academic_quota = request.data.get('academic_quota')
+            # professional_quota = request.data.get('professional_quota')
+            # professional_yt_quota = request.data.get('professional_yt_quota')
+            # doctor_quota = request.data.get('doctor_quota')
             academic_select_list = request.data.get('academic_select_list', [])
             professional_select_list = request.data.get('professional_select_list', [])
 
             # 检查数据是否包含NaN值，如果包含，将其替换为0
-            if isnan(academic_quota):
-                academic_quota = 0
-            if isnan(professional_quota):
-                professional_quota = 0
-            if isnan(professional_yt_quota):
-                professional_yt_quota = 0
-            if isnan(doctor_quota):
-                doctor_quota = 0
+            
+            # if isnan(academic_quota):
+            #     academic_quota = 0
+            # if isnan(professional_quota):
+            #     professional_quota = 0
+            # if isnan(professional_yt_quota):
+            #     professional_yt_quota = 0
+            # if isnan(doctor_quota):
+            #     doctor_quota = 0
 
             # 将获取的数据保存到导师的属性中
-            professor.academic_quota = academic_quota
-            professor.professional_quota = professional_quota
-            professor.professional_yt_quota = professional_yt_quota
-            professor.doctor_quota = doctor_quota
+
+            # professor.academic_quota = academic_quota
+            # professor.professional_quota = professional_quota
+            # professor.professional_yt_quota = professional_yt_quota
+            # professor.doctor_quota = doctor_quota
             professor.proposed_quota_approved = True
 
             # 清空导师的招生专业

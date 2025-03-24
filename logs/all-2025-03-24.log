@@ -815,3 +815,45 @@ KeyError: <module 'rest_framework.status' from '/root/.local/lib/python3.8/site-
 [2025-03-24 08:13:44,558] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
 [2025-03-24 08:17:30,293] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
 [2025-03-24 08:17:31,687] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-24 08:26:59,131] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-24 08:27:37,204] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/user-login/ HTTP/1.1" 200 36
+[2025-03-24 08:27:37,766] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 728
+[2025-03-24 08:27:38,259] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 728
+[2025-03-24 08:27:38,912] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 728
+[2025-03-24 08:27:38,989] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 4502
+[2025-03-24 08:27:39,189] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1921
+[2025-03-24 08:27:39,390] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 728
+[2025-03-24 08:27:39,430] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 4888
+[2025-03-24 08:27:40,001] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1921
+[2025-03-24 08:27:40,442] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 4888
+[2025-03-24 08:27:55,932] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Select_Information/views.py changed, reloading.
+[2025-03-24 08:27:56,430] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-24 08:28:01,809] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Select_Information/submit-pdf-review/
+[2025-03-24 08:28:01,816] [basehttp.py:161] [basehttp:log_message] [ERROR]- "POST /Select_Information/submit-pdf-review/ HTTP/1.1" 500 75
+[2025-03-24 08:28:33,401] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 734
+[2025-03-24 08:28:34,709] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 5036
+[2025-03-24 08:28:37,990] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Select_Information/reviewer/review_record/47/ HTTP/1.1" 200 26
+[2025-03-24 08:28:39,709] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 5065
+[2025-03-24 08:29:19,820] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-24 08:29:22,272] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 734
+[2025-03-24 08:29:22,581] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1927
+[2025-03-24 08:29:22,845] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 4888
+[2025-03-24 08:29:24,833] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Select_Information/submit-pdf-review/
+[2025-03-24 08:29:24,834] [basehttp.py:161] [basehttp:log_message] [ERROR]- "POST /Select_Information/submit-pdf-review/ HTTP/1.1" 500 75
+[2025-03-24 08:30:11,933] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-24 08:30:31,135] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-24 08:30:34,173] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-24 08:30:37,329] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 740
+[2025-03-24 08:30:38,720] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 5599
+[2025-03-24 08:30:42,444] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Select_Information/reviewer/review_record/48/ HTTP/1.1" 200 26
+[2025-03-24 08:30:44,372] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 5628
+[2025-03-24 08:30:45,729] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 740
+[2025-03-24 08:30:46,017] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1933
+[2025-03-24 08:30:46,257] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 4888
+[2025-03-24 08:30:48,447] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 740
+[2025-03-24 08:30:49,815] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 5628
+[2025-03-24 08:31:07,932] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 740
+[2025-03-24 08:31:08,335] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1933
+[2025-03-24 08:31:08,466] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 4888
+[2025-03-24 08:31:10,561] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Select_Information/submit-pdf-review/ HTTP/1.1" 200 50
+[2025-03-24 08:31:34,224] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader

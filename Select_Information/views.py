@@ -568,6 +568,10 @@ class SubmitSignatureFileView(APIView):
         try:
             professor_wechat_account = WeChatAccount.objects.get(user=review_professor.user_name)
             professor_openid = professor_wechat_account.openid
+
+            professor_name = professor.name
+            # print(professor_name)
+            # print("professor_openid: ", professor_openid)
             # access_token = cache.get('access_token')
             if professor_openid:
                 # 微信小程序发送订阅消息的API endpoint
@@ -581,10 +585,11 @@ class SubmitSignatureFileView(APIView):
                     "page": "pages/profile/profile",  # 用户点击消息后跳转的小程序页面
                     "data": {
                         "short_thing23": {"value": "导师意向表审核申请"},
-                        "name1": {"value": professor.user_name},
+                        "name1": {"value": professor_name},
                         "time19": {"value": timezone.now().strftime("%Y-%m-%d")}
                     }
                 }
+            # print("data: ", data)
 
             # 发送POST请求
             response = requests.post(url, json=data)

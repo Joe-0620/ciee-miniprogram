@@ -33,3 +33,267 @@
 [2025-03-24 02:57:59,686] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 87414
 [2025-03-24 02:58:03,841] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 87414
 [2025-03-24 02:58:06,428] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 87414
+[2025-03-24 03:40:40,695] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /admin/Enrollment_Manage/subject/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/sessions/backends/base.py", line 233, in _get_session
+    return self._session_cache
+AttributeError: 'SessionStore' object has no attribute '_session_cache'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/utils.py", line 82, in _execute
+    return self.cursor.execute(sql)
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/mysql/base.py", line 73, in execute
+    return self.cursor.execute(query, args)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/cursors.py", line 148, in execute
+    result = self._query(query)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/cursors.py", line 310, in _query
+    conn.query(q)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 548, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 775, in _read_query_result
+    result.read()
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 1156, in read
+    first_packet = self.connection._read_packet()
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 692, in _read_packet
+    packet_header = self._read_bytes(4)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 748, in _read_bytes
+    raise err.OperationalError(
+pymysql.err.OperationalError: (2013, 'Lost connection to MySQL server during query')
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/admin/options.py", line 616, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/utils/decorators.py", line 130, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/cache.py", line 44, in _wrapped_view_func
+    response = view_func(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/admin/sites.py", line 221, in inner
+    if not self.has_permission(request):
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/admin/sites.py", line 195, in has_permission
+    return request.user.is_active and request.user.is_staff
+  File "/root/.local/lib/python3.8/site-packages/django/utils/functional.py", line 246, in inner
+    self._setup()
+  File "/root/.local/lib/python3.8/site-packages/django/utils/functional.py", line 382, in _setup
+    self._wrapped = self._setupfunc()
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/auth/middleware.py", line 23, in <lambda>
+    request.user = SimpleLazyObject(lambda: get_user(request))
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/auth/middleware.py", line 11, in get_user
+    request._cached_user = auth.get_user(request)
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/auth/__init__.py", line 177, in get_user
+    user_id = _get_user_session_key(request)
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/auth/__init__.py", line 60, in _get_user_session_key
+    return get_user_model()._meta.pk.to_python(request.session[SESSION_KEY])
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/sessions/backends/base.py", line 65, in __getitem__
+    return self._session[key]
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/sessions/backends/base.py", line 238, in _get_session
+    self._session_cache = self.load()
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/sessions/backends/db.py", line 43, in load
+    s = self._get_session_from_db()
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/sessions/backends/db.py", line 32, in _get_session_from_db
+    return self.model.objects.get(
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/manager.py", line 85, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/query.py", line 431, in get
+    num = len(clone)
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/query.py", line 262, in __len__
+    self._fetch_all()
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/query.py", line 1324, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/query.py", line 51, in __iter__
+    results = compiler.execute_sql(chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size)
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/sql/compiler.py", line 1173, in execute_sql
+    cursor = self.connection.cursor()
+  File "/root/.local/lib/python3.8/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/base/base.py", line 259, in cursor
+    return self._cursor()
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/base/base.py", line 235, in _cursor
+    self.ensure_connection()
+  File "/root/.local/lib/python3.8/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/base/base.py", line 219, in ensure_connection
+    self.connect()
+  File "/root/.local/lib/python3.8/site-packages/django/utils/asyncio.py", line 26, in inner
+    return func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/base/base.py", line 202, in connect
+    self.init_connection_state()
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/mysql/base.py", line 245, in init_connection_state
+    if self.features.is_sql_auto_is_null_enabled:
+  File "/root/.local/lib/python3.8/site-packages/django/utils/functional.py", line 48, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/mysql/features.py", line 150, in is_sql_auto_is_null_enabled
+    return self.connection.mysql_server_data['sql_auto_is_null']
+  File "/root/.local/lib/python3.8/site-packages/django/utils/functional.py", line 48, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/mysql/base.py", line 370, in mysql_server_data
+    cursor.execute("""
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/utils.py", line 98, in execute
+    return super().execute(sql, params)
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/utils.py", line 66, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/utils.py", line 75, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "/root/.local/lib/python3.8/site-packages/django/db/utils.py", line 90, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/utils.py", line 82, in _execute
+    return self.cursor.execute(sql)
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/mysql/base.py", line 73, in execute
+    return self.cursor.execute(query, args)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/cursors.py", line 148, in execute
+    result = self._query(query)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/cursors.py", line 310, in _query
+    conn.query(q)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 548, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 775, in _read_query_result
+    result.read()
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 1156, in read
+    first_packet = self.connection._read_packet()
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 692, in _read_packet
+    packet_header = self._read_bytes(4)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 748, in _read_bytes
+    raise err.OperationalError(
+django.db.utils.OperationalError: (2013, 'Lost connection to MySQL server during query')
+[2025-03-24 03:40:40,699] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /admin/Enrollment_Manage/subject/ HTTP/1.1" 500 302708
+[2025-03-24 03:40:56,069] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 66539
+[2025-03-24 03:40:56,914] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-24 03:40:59,891] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Enrollment_Manage/subject/ HTTP/1.1" 200 12522
+[2025-03-24 03:41:00,576] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-24 03:41:03,477] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Enrollment_Manage/department/ HTTP/1.1" 200 14941
+[2025-03-24 03:41:04,207] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-24 03:41:10,581] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 26243
+[2025-03-24 03:41:11,421] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-24 04:03:42,424] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Enrollment_Manage/department/ HTTP/1.1" 200 14941
+[2025-03-24 04:03:42,461] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/base.css HTTP/1.1" 304 0
+[2025-03-24 04:03:42,467] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 304 0
+[2025-03-24 04:03:42,469] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/changelists.css HTTP/1.1" 304 0
+[2025-03-24 04:03:42,470] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+[2025-03-24 04:03:42,471] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 304 0
+[2025-03-24 04:03:42,473] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/jquery.init.js HTTP/1.1" 304 0
+[2025-03-24 04:03:42,474] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+[2025-03-24 04:03:42,475] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/core.js HTTP/1.1" 304 0
+[2025-03-24 04:03:42,475] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/actions.js HTTP/1.1" 304 0
+[2025-03-24 04:03:42,477] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/urlify.js HTTP/1.1" 304 0
+[2025-03-24 04:03:42,478] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 304 0
+[2025-03-24 04:03:42,480] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/prepopulate.js HTTP/1.1" 304 0
+[2025-03-24 04:03:42,481] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+[2025-03-24 04:03:42,482] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/fonts.css HTTP/1.1" 304 0
+[2025-03-24 04:03:42,699] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-24 04:03:42,732] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/tooltag-add.svg HTTP/1.1" 304 0
+[2025-03-24 04:03:42,733] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Regular-webfont.woff HTTP/1.1" 304 0
+[2025-03-24 04:03:42,734] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 304 0
+[2025-03-24 04:03:42,735] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Light-webfont.woff HTTP/1.1" 304 0
+[2025-03-24 04:03:42,735] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Bold-webfont.woff HTTP/1.1" 304 0
+[2025-03-24 04:03:44,261] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Enrollment_Manage/subject/ HTTP/1.1" 200 12522
+[2025-03-24 04:03:44,555] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-24 04:47:37,586] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/user-login/ HTTP/1.1" 200 36
+[2025-03-24 04:47:38,137] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 2
+[2025-03-24 04:47:38,149] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 549
+[2025-03-24 04:47:38,561] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 549
+[2025-03-24 04:47:39,861] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 549
+[2025-03-24 04:47:40,152] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1742
+[2025-03-24 04:47:40,199] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 3545
+[2025-03-24 04:47:40,277] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 549
+[2025-03-24 04:47:40,910] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1742
+[2025-03-24 04:47:41,030] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 3545
+[2025-03-24 04:47:44,489] [log.py:224] [log:log_response] [WARNING]- Bad Request: /Select_Information/submit-pdf-review/
+[2025-03-24 04:47:44,490] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /Select_Information/submit-pdf-review/ HTTP/1.1" 400 44
+[2025-03-24 04:58:50,856] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 549
+[2025-03-24 04:58:51,222] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1742
+[2025-03-24 04:58:51,279] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 3545
+[2025-03-24 04:58:51,332] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 549
+[2025-03-24 04:58:51,985] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1742
+[2025-03-24 04:58:52,135] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 3545
+[2025-03-24 05:03:39,739] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-24 05:03:44,768] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Select_Information/get-select-info/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Select_Information/views.py", line 67, in get
+    'student_choices': serializer.data,
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 768, in data
+    ret = super().data
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 253, in data
+    self._data = self.to_representation(self.instance)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 686, in to_representation
+    return [
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 687, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 507, in to_representation
+    for field in fields:
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 368, in _readable_fields
+    for field in self.fields.values():
+  File "/root/.local/lib/python3.8/site-packages/django/utils/functional.py", line 48, in __get__
+    res = instance.__dict__[self.name] = self.func(instance)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 356, in fields
+    for key, value in self.get_fields().items():
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 1052, in get_fields
+    field_names = self.get_field_names(declared_fields, info)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 1148, in get_field_names
+    assert field_name in fields, (
+AssertionError: The field 'student_signature_table_student_signature_status' was declared on serializer StudentProfessorChoiceSerializer, but has not been included in the 'fields' option.
+[2025-03-24 05:03:44,772] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 500 148042
+[2025-03-24 05:04:28,629] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-24 05:04:33,069] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 3899
+[2025-03-24 05:05:23,048] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-24 05:05:28,592] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 3887
+[2025-03-24 05:08:56,267] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-03-24 05:08:56,541] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-03-24 05:09:06,184] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 549
+[2025-03-24 05:09:06,476] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1742
+[2025-03-24 05:09:06,540] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 3887
+[2025-03-24 05:09:07,237] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-03-24 05:09:08,936] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 87443
+[2025-03-24 05:09:10,618] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-03-24 05:09:21,722] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 87443
+[2025-03-24 05:09:33,282] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 87443
+[2025-03-24 05:09:37,911] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 549
+[2025-03-24 05:09:38,257] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1742
+[2025-03-24 05:09:38,323] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 3887
+[2025-03-24 05:09:42,630] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 87443
+[2025-03-24 05:15:26,794] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 549
+[2025-03-24 05:15:27,096] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 3887
+[2025-03-24 05:15:27,112] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1742
+[2025-03-24 05:15:27,229] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 549
+[2025-03-24 05:15:27,869] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1742
+[2025-03-24 05:15:27,943] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 3887
+[2025-03-24 05:15:30,167] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 2
+[2025-03-24 05:15:30,261] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 549
+[2025-03-24 05:15:30,658] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 549
+[2025-03-24 05:15:31,158] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 549
+[2025-03-24 05:15:31,505] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1742
+[2025-03-24 05:15:31,576] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 3887
+[2025-03-24 05:17:18,644] [log.py:224] [log:log_response] [WARNING]- Bad Request: /Select_Information/submit-pdf-review/
+[2025-03-24 05:17:18,645] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /Select_Information/submit-pdf-review/ HTTP/1.1" 400 44
+[2025-03-24 05:17:25,445] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 3887
+[2025-03-24 05:17:33,445] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Professor_Student_Manage/update-professor/
+[2025-03-24 05:17:33,446] [basehttp.py:161] [basehttp:log_message] [ERROR]- "PATCH /Professor_Student_Manage/update-professor/ HTTP/1.1" 500 50
+[2025-03-24 05:17:33,910] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 549
+[2025-03-24 05:17:34,274] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 3887
+[2025-03-24 05:17:34,279] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1742
+[2025-03-24 05:17:38,345] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 3887
+[2025-03-24 05:18:16,216] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader

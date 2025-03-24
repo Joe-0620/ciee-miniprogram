@@ -31,6 +31,10 @@ class StudentProfessorChoiceSerializer(serializers.ModelSerializer):
     student_final_rank = serializers.CharField(source='student.final_rank')
     student_pdf_file_id = serializers.CharField(source='student.signature_table')
     student_signature_table_review_status = serializers.CharField(source='student.signature_table_review_status')
+
+    student_signature_table_student_signature_status = serializers.BooleanField(source='student.signature_table_student_signatured')
+    student_signature_table_student_professor_status = serializers.BooleanField(source='student.signature_table_professor_signatured')
+
     # student_final_rank = serializers.CharField(source='student.final_rank')
     signature_table_review_status = serializers.SerializerMethodField()
 
@@ -41,7 +45,8 @@ class StudentProfessorChoiceSerializer(serializers.ModelSerializer):
                   'professor', 'professor_id', 'professor_department', 'status', 'chosen_by_professor', 'submit_date', 
                   'finish_time', 'student_phone', 'student_avatar', 'student_initial_exam_score', 'student_secondary_exam_score',
                   'student_initial_rank', 'student_secondary_rank', 'student_final_rank', 'professor_contact_details', 'student_pdf_file_id',
-                  'signature_table_review_status', 'student_signature_table_review_status']
+                  'signature_table_review_status', 'student_signature_table_review_status', 'student_signature_table_student_signature_status',
+                  'student_signature_table_student_professor_status']
 
     def get_signature_table_review_status(self, obj):
         REVIEW_STATUS = [

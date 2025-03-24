@@ -23,7 +23,7 @@ def reset_quota(modeladmin, request, queryset):
         queryset.update(academic_quota=0)
     elif quota_type == 'professional':
         queryset.update(professional_quota=0)
-    elif quota_type == 'professional_yt':
+    elif quota_type == 'professionalyt':
         queryset.update(professional_yt_quota=0)
     elif quota_type == 'doctor':
         queryset.update(doctor_quota=0)
@@ -72,9 +72,9 @@ class ProfessorAdmin(admin.ModelAdmin):
             'reset_professional_quota',
             '重置北京专硕名额为 0'
         )
-        actions['reset_professional_yt_quota'] = (
+        actions['reset_professionalyt_quota'] = (
             reset_quota,
-            'reset_professional_yt_quota',
+            'reset_professionalyt_quota',
             '重置烟台专硕名额为 0'
         )
         actions['reset_doctor_quota'] = (
@@ -92,9 +92,11 @@ class ProfessorAdmin(admin.ModelAdmin):
     def response_action(self, request, queryset):
         # 获取用户选择的动作
         action = request.POST.get('action')
-        if action in ['reset_academic_quota', 'reset_professional_quota', 'reset_professional_yt_quota', 'reset_doctor_quota']:
+        if action in ['reset_academic_quota', 'reset_professional_quota', 'reset_professionalyt_quota', 'reset_doctor_quota']:
             # 设置 quota_type
+            print("action: ", action)
             quota_type = action.split('_')[1]  # 从动作名称中提取类型
+            print("quota_type: ", quota_type)
             request.POST = request.POST.copy()  # 使 POST 数据可变
             request.POST['quota_type'] = quota_type
         return super().response_action(request, queryset)

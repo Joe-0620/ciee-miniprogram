@@ -1182,3 +1182,61 @@ django.db.utils.IntegrityError: (1062, "Duplicate entry '438' for key 'user_id'"
 [2025-03-24 09:37:57,985] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Regular-webfont.woff HTTP/1.1" 200 85876
 [2025-03-24 09:37:57,987] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Light-webfont.woff HTTP/1.1" 200 85692
 [2025-03-24 09:38:59,205] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-24 09:39:36,916] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 66539
+[2025-03-24 09:39:36,937] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 200 2271
+[2025-03-24 09:39:36,941] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/jquery.init.js HTTP/1.1" 200 347
+[2025-03-24 09:39:36,941] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 200 1360
+[2025-03-24 09:39:36,941] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/changelists.css HTTP/1.1" 200 6874
+[2025-03-24 09:39:36,941] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/base.css HTTP/1.1" 200 19513
+[2025-03-24 09:39:36,947] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/actions.js HTTP/1.1" 200 7867
+[2025-03-24 09:39:36,948] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/urlify.js HTTP/1.1" 200 7902
+[2025-03-24 09:39:36,951] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 200 5984
+[2025-03-24 09:39:36,951] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/core.js HTTP/1.1" 200 5698
+[2025-03-24 09:39:36,952] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 287630
+[2025-03-24 09:39:36,953] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/prepopulate.js HTTP/1.1" 200 1531
+[2025-03-24 09:39:36,955] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 200 232381
+[2025-03-24 09:39:36,956] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-no.svg HTTP/1.1" 200 560
+[2025-03-24 09:39:36,956] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/responsive.css HTTP/1.1" 200 18545
+[2025-03-24 09:39:36,956] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/search.svg HTTP/1.1" 200 458
+[2025-03-24 09:39:36,958] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/fonts.css HTTP/1.1" 200 423
+[2025-03-24 09:39:36,959] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-yes.svg HTTP/1.1" 200 436
+[2025-03-24 09:39:37,174] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-24 09:39:37,209] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 200 331
+[2025-03-24 09:39:37,209] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/tooltag-add.svg HTTP/1.1" 200 331
+[2025-03-24 09:39:37,212] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Light-webfont.woff HTTP/1.1" 200 85692
+[2025-03-24 09:39:37,214] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Regular-webfont.woff HTTP/1.1" 200 85876
+[2025-03-24 09:39:37,214] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Bold-webfont.woff HTTP/1.1" 200 86184
+[2025-03-24 09:39:41,648] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 66539
+[2025-03-24 09:39:41,663] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 304 0
+[2025-03-24 09:39:41,663] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+[2025-03-24 09:39:41,663] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+[2025-03-24 09:39:41,664] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/changelists.css HTTP/1.1" 304 0
+[2025-03-24 09:39:41,665] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/base.css HTTP/1.1" 304 0
+[2025-03-24 09:39:41,666] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 304 0
+[2025-03-24 09:39:41,666] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/core.js HTTP/1.1" 304 0
+[2025-03-24 09:39:41,669] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/jquery.init.js HTTP/1.1" 304 0
+[2025-03-24 09:39:41,669] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/urlify.js HTTP/1.1" 304 0
+[2025-03-24 09:39:41,671] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/actions.js HTTP/1.1" 304 0
+[2025-03-24 09:39:41,672] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/prepopulate.js HTTP/1.1" 304 0
+[2025-03-24 09:39:41,673] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 304 0
+[2025-03-24 09:39:41,674] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+[2025-03-24 09:39:41,675] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/search.svg HTTP/1.1" 304 0
+[2025-03-24 09:39:41,677] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-yes.svg HTTP/1.1" 304 0
+[2025-03-24 09:39:41,677] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-no.svg HTTP/1.1" 304 0
+[2025-03-24 09:39:41,678] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/fonts.css HTTP/1.1" 304 0
+[2025-03-24 09:39:41,930] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-24 09:39:41,963] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Bold-webfont.woff HTTP/1.1" 304 0
+[2025-03-24 09:39:41,963] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 304 0
+[2025-03-24 09:39:41,963] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Regular-webfont.woff HTTP/1.1" 304 0
+[2025-03-24 09:39:41,966] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/tooltag-add.svg HTTP/1.1" 304 0
+[2025-03-24 09:39:41,966] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Light-webfont.woff HTTP/1.1" 304 0
+[2025-03-24 09:44:25,529] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-24 09:46:41,009] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-24 09:46:56,771] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-24 09:47:07,665] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-24 09:52:28,328] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-24 09:53:01,767] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-24 09:55:31,920] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-24 09:55:45,215] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-24 09:56:55,368] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-24 09:56:59,495] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader

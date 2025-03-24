@@ -624,6 +624,7 @@ class ReviewRecordUpdateView(APIView):
             review_record = ReviewRecord.objects.get(pk=pk, reviewer=request.user.professor)
             # print("request.data: ", request.data)
             review_status = request.data['status']
+            professor = review_record.professor
             # print("review_status: ", review_status)
         except ReviewRecord.DoesNotExist:
             return Response({'message': '审核记录不存在或您无权审核此记录'}, status=status.HTTP_404_NOT_FOUND)
@@ -636,11 +637,64 @@ class ReviewRecordUpdateView(APIView):
                 student = review_record.student
                 student.signature_table_review_status = 1
                 student.save()
+
+                # 通知导师审核完成
+                self.notify_department_reviewer(professor, 1)
                 return Response({'message': '审核成功'}, status=status.HTTP_200_OK)
             else:
                 serializer.save(review_time=timezone.now())
                 student = review_record.student
                 student.signature_table_review_status = 2
                 student.save()
+
+                # 通知导师审核完成
+                self.notify_department_reviewer(professor, 2)
                 return Response({'message': '审核成功'}, status=status.HTTP_200_OK)
+
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def notify_department_reviewer(self, professor, status):
+        try:
+            professor_wechat_account = WeChatAccount.objects.get(user=professor.user_name)
+            professor_openid = professor_wechat_account.openid
+
+            if status == 1:
+                status_str = "通过"
+            else:
+                status_str = "拒绝"
+            # professor_name = professor.name
+            # translation_table = str.maketrans('', '', '0123456789')
+            # cleaned_name = professor_name.translate(translation_table)
+            # print(type(professor_name))
+            # print("professor_openid: ", professor_openid)
+            # access_token = cache.get('access_token')
+            if professor_openid:
+                # 微信小程序发送订阅消息的API endpoint
+                url = f'https://api.weixin.qq.com/cgi-bin/message/subscribe/send'
+
+                # 构造消息数据
+                # 注意：这里的key（如phrase1, time11等）和template_id需要根据你在微信后台配置的模板来确定
+                data = {
+                    "touser": professor_openid,
+                    "template_id": "S1D5wX7_WY5BIfZqw0dEn4MTL-FPvlNBKiHPAAQngx0",  # 你在微信小程序后台设置的模板ID
+                    "page": "pages/profile/profile",  # 用户点击消息后跳转的小程序页面
+                    "data": {
+                        "thing23": {"value": "意向表审核"},
+                        "phrase5": {"value": status_str},
+                        "date7": {"value": timezone.now().strftime('%Y年%m月%d日 %H:%M')}
+                    }
+                }
+            # print("data: ", data)
+
+            # 发送POST请求
+            response = requests.post(url, json=data)
+            response_data = response.json()
+
+            # 检查请求是否成功
+            if response_data.get("errcode") == 0:
+                print("通知发送成功")
+            else:
+                print(f"通知发送失败: {response_data.get('errmsg')}")
+        except WeChatAccount.DoesNotExist:
+            # 如果学生没有绑定微信账号信息，则不发送通知
+            print("导师微信账号不存在，无法发送通知。")

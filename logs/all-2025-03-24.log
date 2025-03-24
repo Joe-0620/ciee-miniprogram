@@ -1076,3 +1076,45 @@ django.db.utils.IntegrityError: (1062, "Duplicate entry '438' for key 'user_id'"
 [2025-03-24 08:39:29,921] [basehttp.py:161] [basehttp:log_message] [ERROR]- "POST /userlogin/ HTTP/1.1" 500 257116
 [2025-03-24 08:56:33,136] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Select_Information/views.py changed, reloading.
 [2025-03-24 08:56:33,711] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-24 09:03:17,015] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-24 09:04:21,157] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-24 09:04:25,962] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/user-login/ HTTP/1.1" 200 36
+[2025-03-24 09:04:26,550] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 782
+[2025-03-24 09:04:27,007] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 782
+[2025-03-24 09:04:28,733] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 782
+[2025-03-24 09:04:28,942] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 9540
+[2025-03-24 09:04:29,052] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1975
+[2025-03-24 09:04:29,201] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 782
+[2025-03-24 09:04:29,220] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 4888
+[2025-03-24 09:04:29,806] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1975
+[2025-03-24 09:04:29,888] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 782
+[2025-03-24 09:04:30,223] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 4888
+[2025-03-24 09:04:31,972] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 9540
+[2025-03-24 09:04:32,631] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Select_Information/reviewer/review_record/55/ HTTP/1.1" 200 26
+[2025-03-24 09:04:33,618] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 782
+[2025-03-24 09:04:33,925] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1975
+[2025-03-24 09:04:34,134] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 4888
+[2025-03-24 09:04:35,400] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 9569
+[2025-03-24 09:04:37,793] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Select_Information/submit-pdf-review/ HTTP/1.1" 200 50
+[2025-03-24 09:05:14,137] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-24 09:05:16,117] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 788
+[2025-03-24 09:05:18,415] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 10103
+[2025-03-24 09:05:21,980] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Select_Information/reviewer/review_record/56/ HTTP/1.1" 200 26
+[2025-03-24 09:05:22,868] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 788
+[2025-03-24 09:05:23,193] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1981
+[2025-03-24 09:05:23,372] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 4888
+[2025-03-24 09:05:24,987] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 10132
+[2025-03-24 09:05:25,633] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Select_Information/submit-pdf-review/ HTTP/1.1" 200 50
+[2025-03-24 09:05:37,324] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-24 09:06:41,418] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-24 09:06:42,842] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 794
+[2025-03-24 09:06:45,515] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 10666
+[2025-03-24 09:06:48,709] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Select_Information/reviewer/review_record/57/ HTTP/1.1" 200 26
+[2025-03-24 09:06:49,843] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 794
+[2025-03-24 09:06:50,108] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 1987
+[2025-03-24 09:06:50,232] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 4888
+[2025-03-24 09:06:51,899] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 10695
+[2025-03-24 09:06:52,462] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Select_Information/submit-pdf-review/ HTTP/1.1" 200 50
+[2025-03-24 09:07:51,184] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-24 09:18:09,914] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-24 09:18:13,807] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader

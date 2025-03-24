@@ -570,7 +570,9 @@ class SubmitSignatureFileView(APIView):
             professor_openid = professor_wechat_account.openid
 
             professor_name = professor.name
-            # print(professor_name)
+            translation_table = str.maketrans('', '', '0123456789')
+            cleaned_name = professor_name.translate(translation_table)
+            # print(type(professor_name))
             # print("professor_openid: ", professor_openid)
             # access_token = cache.get('access_token')
             if professor_openid:
@@ -585,11 +587,11 @@ class SubmitSignatureFileView(APIView):
                     "page": "pages/profile/profile",  # 用户点击消息后跳转的小程序页面
                     "data": {
                         "short_thing23": {"value": "意向表审核"},
-                        "name1": {"value": professor_name},
-                        "time19": {"value": timezone.now().strftime("%Y-%m-%d")}
+                        "name1": {"value": cleaned_name},
+                        "time19": {"value": timezone.now().strftime('%Y年%m月%d日 %H:%M')}
                     }
                 }
-            # print("data: ", data)
+            print("data: ", data)
 
             # 发送POST请求
             response = requests.post(url, json=data)

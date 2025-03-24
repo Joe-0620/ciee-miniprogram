@@ -67,6 +67,7 @@ class StudentProfessorChoiceSerializer(serializers.ModelSerializer):
 class ReviewRecordSerializer(serializers.ModelSerializer):
     student_name = serializers.CharField(source='student.name', read_only=True)
     professor_name = serializers.CharField(source='professor.name', read_only=True)
+    professor_department = serializers.CharField(source='professor.department', read_only=True)
     reviewer_name = serializers.CharField(source='reviewer.name', read_only=True)
     reviewer_name = serializers.CharField(source='reviewer.name', read_only=True)
     student_subject = serializers.CharField(source='student.subject', read_only=True)
@@ -77,7 +78,7 @@ class ReviewRecordSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ReviewRecord
-        fields = ['id', 'student_name', 'professor_name', 'file_id', 'status', 'review_status', 'review_time', 
+        fields = ['id', 'student_name', 'professor_name', 'professor_department', 'file_id', 'status', 'review_status', 'review_time', 
                   'reviewer_name', 'student_subject', 'student_type', 'student_postgraduate_type', 
                   'student_postgraduate_type_display', 'student_type_display', 'submit_time']
         

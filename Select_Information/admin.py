@@ -24,7 +24,7 @@ class ReviewRecordAdmin(admin.ModelAdmin):
     fieldsets = [
         ("审核信息", {"fields": ["student", "professor", "file_id", "review_status", "review_time", "reviewer"]}),
     ]
-    list_display = ["student", "professor", "file_id", "review_status", "review_time", "reviewer"]
+    list_display = ["student", "professor", "file_id", "status", "review_status", "review_time", "reviewer"]
     search_fields = ["student__name_fk_search", "professor__name_fk_search"]
 
 admin.site.register(ReviewRecord, ReviewRecordAdmin)

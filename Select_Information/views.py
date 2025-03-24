@@ -513,6 +513,10 @@ class SubmitSignatureFileView(APIView):
             if student.signature_table_professor_signatured == False and student.signature_table_student_signatured == False:
                 return Response({'message': '互选表双方未完成签署'}, status=status.HTTP_400_BAD_REQUEST)
 
+            # 已同意不能提交
+            if student.signature_table_review_status == True:
+                return Response({'message': '互选表已通过审核，请勿重复提交'}, status=status.HTTP_400_BAD_REQUEST)
+
             choice = StudentProfessorChoice.objects.filter(student=student, professor=professor, status=1).first()
 
             if not choice:
@@ -578,14 +582,25 @@ class ReviewRecordUpdateView(APIView):
     def post(self, request, pk):
         try:
             review_record = ReviewRecord.objects.get(pk=pk, reviewer=request.user.professor)
+            # print("request.data: ", request.data)
+            review_status = request.data['status']
+            # print("review_status: ", review_status)
         except ReviewRecord.DoesNotExist:
             return Response({'message': '审核记录不存在或您无权审核此记录'}, status=status.HTTP_404_NOT_FOUND)
 
         serializer = ReviewRecordUpdateSerializer(review_record, data=request.data, partial=True)
         if serializer.is_valid():
-            serializer.save(review_time=timezone.now())
-            student = review_record.student
-            student.signature_table_review_status = 1
-            student.save()
-            return Response({'message': '审核成功'}, status=status.HTTP_200_OK)
+            # print(request.data['status'])
+            if review_status == 1:
+                serializer.save(review_time=timezone.now())
+                student = review_record.student
+                student.signature_table_review_status = 1
+                student.save()
+                return Response({'message': '审核成功'}, status=status.HTTP_200_OK)
+            else:
+                serializer.save(review_time=timezone.now())
+                student = review_record.student
+                student.signature_table_review_status = 2
+                student.save()
+                return Response({'message': '审核成功'}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

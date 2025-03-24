@@ -584,7 +584,7 @@ class SubmitSignatureFileView(APIView):
                     "template_id": "viilL7yUx1leDVAsGCsrBEkQS9v7A9NT6yH90MFP3jg",  # 你在微信小程序后台设置的模板ID
                     "page": "pages/profile/profile",  # 用户点击消息后跳转的小程序页面
                     "data": {
-                        "short_thing23": {"value": "导师意向表审核申请"},
+                        "short_thing23": {"value": "意向表审核"},
                         "name1": {"value": professor_name},
                         "time19": {"value": timezone.now().strftime("%Y-%m-%d")}
                     }

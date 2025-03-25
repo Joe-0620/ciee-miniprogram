@@ -511,11 +511,11 @@ class SubmitSignatureFileView(APIView):
 
             # 未签署不能提交
             if student.signature_table_professor_signatured == False or student.signature_table_student_signatured == False:
-                return Response({'message': '互选表双方未完成签署'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'message': '双方未完成签署'}, status=status.HTTP_400_BAD_REQUEST)
 
             # 已同意不能提交
             if student.signature_table_review_status == True:
-                return Response({'message': '互选表已通过审核，请勿重复提交'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({'message': '已通过审核！'}, status=status.HTTP_400_BAD_REQUEST)
 
 
             choice = StudentProfessorChoice.objects.filter(student=student, professor=professor, status=1).first()
@@ -531,9 +531,9 @@ class SubmitSignatureFileView(APIView):
             if existing_record:
                 # print("existing_record: ", existing_record.status)
                 if existing_record.status == 1:
-                    return Response({'message': '审核已通过，无需提交'}, status=status.HTTP_400_BAD_REQUEST)
+                    return Response({'message': '已通过审核！'}, status=status.HTTP_400_BAD_REQUEST)
                 else:
-                    return Response({'message': '待审核中，请勿重复提交'}, status=status.HTTP_400_BAD_REQUEST)
+                    return Response({'message': '请勿重复提交'}, status=status.HTTP_400_BAD_REQUEST)
 
             # 更新学生信息  
             review_professor = Professor.objects.get(teacher_identity_id=review_professor_id)
@@ -557,7 +557,7 @@ class SubmitSignatureFileView(APIView):
             # 发送通知给方向审核人（假设方向审核人是一个特定的用户）
             self.notify_department_reviewer(professor, review_professor)
 
-            return Response({'message': '签名表提交成功，等待审核'}, status=status.HTTP_200_OK)
+            return Response({'message': '提交审核成功'}, status=status.HTTP_200_OK)
         except Student.DoesNotExist:
             return Response({'message': '学生不存在'}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:

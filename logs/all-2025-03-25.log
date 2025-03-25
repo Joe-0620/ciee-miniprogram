@@ -5,3 +5,10 @@
 [2025-03-25 05:43:06,500] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/admin.py changed, reloading.
 [2025-03-25 05:43:07,137] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
 [2025-03-25 05:43:26,781] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-25 06:17:17,079] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-25 06:17:38,658] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-25 06:17:43,906] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-25 06:18:00,033] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-25 06:18:06,411] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-25 06:18:08,612] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-25 06:18:10,872] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader

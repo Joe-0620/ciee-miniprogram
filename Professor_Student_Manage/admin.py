@@ -48,7 +48,7 @@ class ImportQuotaForm(forms.Form):
 
 class ProfessorAdmin(admin.ModelAdmin):
     fieldsets = [
-        ("导师信息更改", {"fields": ["name", "teacher_identity_id", "email", "department", "enroll_subject",
+        ("导师信息更改", {"fields": ["name", "teacher_identity_id", "professor_title", "email", "department", "enroll_subject",
                                      "academic_quota", "professional_quota", "professional_yt_quota", "doctor_quota", "proposed_quota_approved",
                                      "have_qualification", "remaining_quota", "personal_page", "research_areas",
                                      "avatar", "contact_details", "department_position"]}),

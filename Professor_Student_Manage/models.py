@@ -17,6 +17,7 @@ class WeChatAccount(models.Model):
 class Professor(models.Model):
     user_name = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=100, verbose_name="导师姓名")
+    professor_title = models.CharField(max_length=10, default="副教授", null=False, verbose_name="导师职称")
     name_fk_search = models.CharField(max_length=100, verbose_name="导师(搜索专用)", null=True)
     teacher_identity_id = models.CharField(max_length=20, null=False, verbose_name="导师工号")
     email = models.EmailField(null=True, blank=True, verbose_name="导师邮箱")

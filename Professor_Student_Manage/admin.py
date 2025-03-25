@@ -55,9 +55,24 @@ class ProfessorAdmin(admin.ModelAdmin):
     ]
     list_display = ["teacher_identity_id", "name", "department", "have_qualification", "proposed_quota_approved"]
     readonly_fields = ["remaining_quota"]
-    actions = [reset_quota, reset_proposed_quota_approved]
+    actions = [reset_quota, reset_proposed_quota_approved, 'reset_password_to_teacher_id']
     change_list_template = 'admin/professor_change_list.html'  # 自定义列表页面模板
 
+    def reset_password_to_teacher_id(self, request, queryset):
+        """
+        将选中导师的密码重置为工号（teacher_identity_id）
+        """
+        for professor in queryset:
+            if professor.user_name:  # 确保关联的 User 对象存在
+                teacher_id = professor.teacher_identity_id
+                professor.user_name.set_password(teacher_id)  # 重置密码
+                professor.user_name.save()
+                self.message_user(
+                    request,
+                    f"已重置导师 {professor.name} 的密码为工号: {teacher_id}",
+                    level='success'
+                )
+    reset_password_to_teacher_id.short_description = "重置密码为工号"  # 动作显示名称
 
     def get_actions(self, request):
         actions = super().get_actions(request)
@@ -183,6 +198,24 @@ class StudentAdmin(admin.ModelAdmin):
     list_display = ["candidate_number", "name", "subject", "study_mode", "student_type", "postgraduate_type", "is_selected", "is_giveup", "download_hx_file", "download_fq_file"]
     list_filter = ["subject"]
     search_fields = ["name"]
+    actions = ['reset_password_to_exam_id']  # 添加自定义动作
+
+    def reset_password_to_exam_id(self, request, queryset):
+        """
+        将选中学生的密码重置为准考证号（exam_id）
+        """
+        for student in queryset:
+            if student.user_name:  # 确保关联的 User 对象存在
+                candidate_number = student.candidate_number
+                student.user_name.set_password(candidate_number)  # 重置密码
+                student.user_name.save()
+                self.message_user(
+                    request,
+                    f"已重置学生 {student.name} 的密码为准考证号: {candidate_number}",
+                    level='success'
+                )
+
+    reset_password_to_exam_id.short_description = "重置密码为准考证号"  # 动作显示名称
 
     def download_fq_file(self, obj):
         """

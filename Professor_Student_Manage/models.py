@@ -35,6 +35,7 @@ class Professor(models.Model):
     avatar = models.CharField(max_length=500, null=True, blank=True, verbose_name="照片下载地址")
     contact_details = models.CharField(max_length=100, null=True, blank=True, verbose_name="联系方式")
     signature_temp = models.CharField(max_length=500, null=True, blank=True, verbose_name="签名临时下载地址")
+    website_order = models.IntegerField(default=0, verbose_name="官网排序号")
 
     Department_Position = [
         [0, "非审核人"],

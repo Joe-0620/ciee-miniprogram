@@ -1,0 +1,19 @@
+{% extends "admin/base_site.html" %}
+{% block content %}
+<div id="content-main">
+  <h1>{{ title }}</h1>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">上传并导入</button>
+  </form>
+  <p>请确保 CSV 文件包含以下列：准考证号、姓名、学生类型、研究生类型、学习方式</p>
+  <p>示例：
+    <pre>
+准考证号,姓名,学生类型,研究生类型,学习方式
+1234567890,张三,1,2,全日制
+0987654321,李四,2,1,非全日制
+    </pre>
+  </p>
+</div>
+{% endblock %}

@@ -62,6 +62,7 @@ class ProfessorEnrollInfoView(generics.ListAPIView):
 class ProfessorAndDepartmentListView(APIView):
     def get(self, request):
         departments = Department.objects.all()
+        # professors = Professor.objects.all().order_by('website_order')
         professors = Professor.objects.all()
         
         department_serializer = DepartmentSerializer(departments, many=True)
@@ -71,6 +72,26 @@ class ProfessorAndDepartmentListView(APIView):
             'departments': department_serializer.data,
             'professors': professor_serializer.data
         })
+
+        # 修改 professional_quota 的显示值
+        # modified_professors = []
+        # for prof in professor_serializer.data:
+        #     modified_prof = dict(prof)
+        #     modified_prof['professional_quota'] = "有" if prof['professional_quota'] != 0 else "无"
+        #     modified_professors.append(modified_prof)
+        #     modified_prof['academic_quota'] = "有" if prof['academic_quota'] != 0 else "无"
+        #     modified_professors.append(modified_prof)
+        #     modified_prof['professional_yt_quota'] = "有" if prof['professional_yt_quota'] != 0 else "无"
+        #     modified_professors.append(modified_prof)
+        #     modified_prof['doctor_quota'] = "有" if prof['doctor_quota'] != 0 else "无"
+        #     modified_professors.append(modified_prof)
+        
+        # print("modified_professors: ", len(modified_professors))
+
+        # return Response({
+        #     'departments': department_serializer.data,
+        #     'professors': modified_professors  # 使用修改后的数据
+        # })
     
 
 class GetStudentResumeListView(APIView):

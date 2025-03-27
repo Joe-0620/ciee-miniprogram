@@ -56,6 +56,18 @@ class ProfessorSerializer(serializers.ModelSerializer):
         # print()
         fields = [f.name for f in Professor._meta.get_fields() if f.name != 'enroll_subject' and f.name != 'studentprofessorchoice'] + ['enroll_subject']
 
+    def to_representation(self, instance):
+        """
+        重写序列化输出，将 professional_quota 转换为"有"/"无"
+        """
+        data = super().to_representation(instance)
+        data['professional_quota'] = "有" if instance.professional_quota != 0 else "无"
+        data['academic_quota'] = "有" if instance.professional_quota != 0 else "无"
+        data['professional_yt_quota'] = "有" if instance.professional_quota != 0 else "无"
+        data['doctor_quota'] = "有" if instance.professional_quota != 0 else "无"
+        
+        return data
+
 class ProfessorEnrollInfoSerializer(serializers.ModelSerializer):
     # department = serializers.StringRelatedField()
     # enroll_subject = serializers.StringRelatedField(many=True)

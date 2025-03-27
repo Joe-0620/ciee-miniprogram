@@ -1,0 +1,13 @@
+<!-- templates/admin/student_change_list.html -->
+{% extends "admin/change_list.html" %}
+{% block content_title %}
+    <h1>学生管理</h1>
+    <div style="margin-bottom: 20px;">
+        <a href="{% url 'admin:import_students' %}" class="addlink">
+            一键导入学生账号
+        </a>
+    </div>
+{% endblock %}
+{% block object-tools %}
+    {{ block.super }}
+{% endblock %}

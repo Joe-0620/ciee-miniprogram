@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate
-from .serializers import UserLoginSerializer, StudentSerializer, ProfessorSerializer, StudentPartialUpdateSerializer, ProfessorEnrollInfoSerializer
+from .serializers import UserLoginSerializer, StudentSerializer, ProfessorSerializer, ProfessorListSerializer, StudentPartialUpdateSerializer, ProfessorEnrollInfoSerializer
 from .serializers import DepartmentSerializer, ProfessorPartialUpdateSerializer, ChangePasswordSerializer, StudentResumeSerializer
 from .serializers import DepartmentReviewerSerializer
 from Professor_Student_Manage.models import Student, Professor, Department, WeChatAccount
@@ -66,7 +66,7 @@ class ProfessorAndDepartmentListView(APIView):
         professors = Professor.objects.all()
         
         department_serializer = DepartmentSerializer(departments, many=True)
-        professor_serializer = ProfessorSerializer(professors, many=True)
+        professor_serializer = ProfessorListSerializer(professors, many=True)
         
         return Response({
             'departments': department_serializer.data,

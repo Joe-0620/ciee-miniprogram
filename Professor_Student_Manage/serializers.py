@@ -72,9 +72,9 @@ class ProfessorListSerializer(serializers.ModelSerializer):
         """
         data = super().to_representation(instance)
         data['professional_quota'] = "有" if instance.professional_quota != 0 else "无"
-        data['academic_quota'] = "有" if instance.professional_quota != 0 else "无"
-        data['professional_yt_quota'] = "有" if instance.professional_quota != 0 else "无"
-        data['doctor_quota'] = "有" if instance.professional_quota != 0 else "无"
+        data['academic_quota'] = "有" if instance.academic_quota != 0 else "无"
+        data['professional_yt_quota'] = "有" if instance.professional_yt_quota != 0 else "无"
+        data['doctor_quota'] = "有" if instance.doctor_quota != 0 else "无"
 
         return data
 

@@ -144,7 +144,9 @@ class ProfessorAdmin(admin.ModelAdmin):
                     # 更新导师名额
                     success_count = 0
                     for row in reader:
+                        print(row)
                         teacher_identity_id = row["工号"]
+                        teacher_identity_id = str(teacher_identity_id).zfill(5)
                         try:
                             professor = Professor.objects.get(teacher_identity_id=teacher_identity_id)
                             professor.academic_quota = int(row["学术学位硕士"])

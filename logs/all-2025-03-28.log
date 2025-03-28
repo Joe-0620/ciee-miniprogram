@@ -1,0 +1,25 @@
+[2025-03-28 05:27:46,792] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-28 05:28:20,884] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-28 05:28:29,898] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/import-quota/ HTTP/1.1" 200 1878
+[2025-03-28 05:28:52,448] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Professor_Student_Manage/professor/import-quota/ HTTP/1.1" 302 0
+[2025-03-28 05:28:53,047] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 66793
+[2025-03-28 05:28:53,305] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-28 05:29:00,286] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/86/change/ HTTP/1.1" 200 20539
+[2025-03-28 05:29:00,301] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/change_form.js HTTP/1.1" 304 0
+[2025-03-28 05:29:00,301] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/forms.css HTTP/1.1" 304 0
+[2025-03-28 05:29:00,302] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/prepopulate_init.js HTTP/1.1" 304 0
+[2025-03-28 05:29:00,311] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/widgets.css HTTP/1.1" 304 0
+[2025-03-28 05:29:00,545] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-28 05:29:03,966] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 66649
+[2025-03-28 05:29:04,219] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-28 05:29:27,326] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/?q=%E5%8F%B6%E6%9E%97 HTTP/1.1" 200 14160
+[2025-03-28 05:29:27,593] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-28 05:29:29,602] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/45/change/?_changelist_filters=q%3D%25E5%258F%25B6%25E6%259E%2597 HTTP/1.1" 200 20162
+[2025-03-28 05:29:29,942] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-28 05:31:53,249] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 66649
+[2025-03-28 05:31:53,544] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-28 05:32:00,291] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/?q=%E6%9D%8E%E9%81%93 HTTP/1.1" 200 14163
+[2025-03-28 05:32:00,625] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-28 05:32:02,172] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/19/change/?_changelist_filters=q%3D%25E6%259D%258E%25E9%2581%2593 HTTP/1.1" 200 20292
+[2025-03-28 05:32:02,428] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-28 05:33:01,003] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader

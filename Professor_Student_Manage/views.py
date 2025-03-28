@@ -923,9 +923,9 @@ class SubmitQuotaView(APIView):
             professor.enroll_subject.clear()
 
             # 根据ID列表添加新的专业
-            for subject_id in academic_select_list + professional_select_list:
-                subject = Subject.objects.get(id=subject_id)
-                professor.enroll_subject.add(subject)
+            # for subject_id in academic_select_list + professional_select_list:
+            #     subject = Subject.objects.get(id=subject_id)
+            #     professor.enroll_subject.add(subject)
 
             # 保存导师的更改
             professor.save()

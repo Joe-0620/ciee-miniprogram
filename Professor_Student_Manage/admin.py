@@ -180,8 +180,9 @@ class ProfessorAdmin(admin.ModelAdmin):
     def get_readonly_fields(self, request, obj=None):
         readonly_fields = self.readonly_fields
         if obj and obj.proposed_quota_approved == True:  # 根据字段值来判断是否设置为只读
-            readonly_fields = ["academic_quota", "professional_quota", "professional_yt_quota", "doctor_quota",
-                               "have_qualification", "remaining_quota"]
+            # readonly_fields = ["academic_quota", "professional_quota", "professional_yt_quota", "doctor_quota",
+            #                    "have_qualification", "remaining_quota"]
+            readonly_fields = ["have_qualification", "remaining_quota"]
         return readonly_fields
 
     list_filter = ["department_id", "proposed_quota_approved", "have_qualification"]

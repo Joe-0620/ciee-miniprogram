@@ -1,0 +1,398 @@
+[2025-03-29 05:16:07,566] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-03-29 05:16:20,691] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET / HTTP/1.1" 200 10330
+[2025-03-29 05:16:20,718] [log.py:224] [log:log_response] [WARNING]- Not Found: /api/count
+[2025-03-29 05:16:20,718] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /api/count HTTP/1.1" 404 3142
+[2025-03-29 05:16:26,356] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/ HTTP/1.1" 200 11888
+[2025-03-29 05:16:26,363] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/dashboard.css HTTP/1.1" 304 0
+[2025-03-29 05:16:26,365] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 304 0
+[2025-03-29 05:16:26,373] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-deletelink.svg HTTP/1.1" 200 392
+[2025-03-29 05:16:56,392] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 66651
+[2025-03-29 05:16:56,400] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/jquery.init.js HTTP/1.1" 200 347
+[2025-03-29 05:16:58,008] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 05:16:58,045] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/tooltag-add.svg HTTP/1.1" 200 331
+[2025-03-29 05:17:05,621] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 90345
+[2025-03-29 05:18:21,917] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 90345
+[2025-03-29 05:18:22,278] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 90345
+[2025-03-29 05:18:22,856] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 05:19:46,876] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /admin/Professor_Student_Manage/student/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/options.py", line 608, in get_field
+    return self.fields_map[field_name]
+KeyError: 'download_hx_file'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/admin/utils.py", line 265, in lookup_field
+    f = _get_non_gfk_field(opts, name)
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/admin/utils.py", line 296, in _get_non_gfk_field
+    field = opts.get_field(name)
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/options.py", line 610, in get_field
+    raise FieldDoesNotExist("%s has no field named '%s'" % (self.object_name, field_name))
+django.core.exceptions.FieldDoesNotExist: Student has no field named 'download_hx_file'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.8/site-packages/urllib3/connectionpool.py", line 699, in urlopen
+    httplib_response = self._make_request(
+  File "/usr/lib/python3.8/site-packages/urllib3/connectionpool.py", line 382, in _make_request
+    self._validate_conn(conn)
+  File "/usr/lib/python3.8/site-packages/urllib3/connectionpool.py", line 1010, in _validate_conn
+    conn.connect()
+  File "/usr/lib/python3.8/site-packages/urllib3/connection.py", line 411, in connect
+    self.sock = ssl_wrap_socket(
+  File "/usr/lib/python3.8/site-packages/urllib3/util/ssl_.py", line 428, in ssl_wrap_socket
+    ssl_sock = _ssl_wrap_socket_impl(
+  File "/usr/lib/python3.8/site-packages/urllib3/util/ssl_.py", line 472, in _ssl_wrap_socket_impl
+    return ssl_context.wrap_socket(sock, server_hostname=server_hostname)
+  File "/usr/lib/python3.8/ssl.py", line 500, in wrap_socket
+    return self.sslsocket_class._create(
+  File "/usr/lib/python3.8/ssl.py", line 1040, in _create
+    self.do_handshake()
+  File "/usr/lib/python3.8/ssl.py", line 1309, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLEOFError: EOF occurred in violation of protocol (_ssl.c:1131)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3.8/site-packages/requests/adapters.py", line 439, in send
+    resp = conn.urlopen(
+  File "/usr/lib/python3.8/site-packages/urllib3/connectionpool.py", line 755, in urlopen
+    retries = retries.increment(
+  File "/usr/lib/python3.8/site-packages/urllib3/util/retry.py", line 573, in increment
+    raise MaxRetryError(_pool, url, error or ResponseError(cause))
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='api.weixin.qq.com', port=443): Max retries exceeded with url: /tcb/batchdownloadfile (Caused by SSLError(SSLEOFError(8, 'EOF occurred in violation of protocol (_ssl.c:1131)')))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 204, in _get_response
+    response = response.render()
+  File "/root/.local/lib/python3.8/site-packages/django/template/response.py", line 105, in render
+    self.content = self.rendered_content
+  File "/root/.local/lib/python3.8/site-packages/django/template/response.py", line 83, in rendered_content
+    return template.render(context, self._request)
+  File "/root/.local/lib/python3.8/site-packages/django/template/backends/django.py", line 61, in render
+    return self.template.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 170, in render
+    return self._render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 162, in _render
+    return self.nodelist.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/loader_tags.py", line 150, in render
+    return compiled_parent._render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 162, in _render
+    return self.nodelist.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/loader_tags.py", line 150, in render
+    return compiled_parent._render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 162, in _render
+    return self.nodelist.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/loader_tags.py", line 150, in render
+    return compiled_parent._render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 162, in _render
+    return self.nodelist.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/loader_tags.py", line 62, in render
+    result = block.nodelist.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/loader_tags.py", line 62, in render
+    result = block.nodelist.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 938, in render
+    bit = node.render_annotated(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/base.py", line 905, in render_annotated
+    return self.render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/admin/templatetags/base.py", line 33, in render
+    return super().render(context)
+  File "/root/.local/lib/python3.8/site-packages/django/template/library.py", line 214, in render
+    _dict = self.func(*resolved_args, **resolved_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/admin/templatetags/admin_list.py", line 308, in result_list
+    'results': list(results(cl)),
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/admin/templatetags/admin_list.py", line 284, in results
+    yield ResultList(None, items_for_result(cl, res, None))
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/admin/templatetags/admin_list.py", line 275, in __init__
+    super().__init__(*items)
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/admin/templatetags/admin_list.py", line 200, in items_for_result
+    f, attr, value = lookup_field(field_name, result, cl.model_admin)
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/admin/utils.py", line 274, in lookup_field
+    value = attr(obj)
+  File "/app/Professor_Student_Manage/admin.py", line 365, in download_hx_file
+    response_data_signature = self.get_fileid_download_url(obj.signature_table)
+  File "/app/Professor_Student_Manage/admin.py", line 393, in get_fileid_download_url
+    response = requests.post(url, json=data)
+  File "/usr/lib/python3.8/site-packages/requests/api.py", line 119, in post
+    return request('post', url, data=data, json=json, **kwargs)
+  File "/usr/lib/python3.8/site-packages/requests/api.py", line 61, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "/usr/lib/python3.8/site-packages/requests/sessions.py", line 542, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/lib/python3.8/site-packages/requests/sessions.py", line 655, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/lib/python3.8/site-packages/requests/adapters.py", line 514, in send
+    raise SSLError(e, request=request)
+requests.exceptions.SSLError: HTTPSConnectionPool(host='api.weixin.qq.com', port=443): Max retries exceeded with url: /tcb/batchdownloadfile (Caused by SSLError(SSLEOFError(8, 'EOF occurred in violation of protocol (_ssl.c:1131)')))
+[2025-03-29 05:19:46,883] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 500 524095
+[2025-03-29 05:20:18,454] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/?q=%E7%8E%8B%E5%BE%AE%E8%8A%B3 HTTP/1.1" 200 14500
+[2025-03-29 05:20:18,886] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 05:20:21,674] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/610/change/?_changelist_filters=q%3D%25E7%258E%258B%25E5%25BE%25AE%25E8%258A%25B3 HTTP/1.1" 200 20742
+[2025-03-29 05:20:21,699] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/forms.css HTTP/1.1" 304 0
+[2025-03-29 05:20:21,699] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/prepopulate_init.js HTTP/1.1" 200 492
+[2025-03-29 05:20:21,700] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/change_form.js HTTP/1.1" 200 606
+[2025-03-29 05:20:21,702] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/widgets.css HTTP/1.1" 304 0
+[2025-03-29 05:20:22,073] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 05:20:45,433] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 90345
+[2025-03-29 05:20:45,794] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/?q=%E5%BC%A0%E5%A5%A5 HTTP/1.1" 200 14306
+[2025-03-29 05:20:46,285] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 05:20:48,586] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/552/change/?_changelist_filters=q%3D%25E5%25BC%25A0%25E5%25A5%25A5 HTTP/1.1" 200 20701
+[2025-03-29 05:20:49,071] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 05:20:54,361] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Professor_Student_Manage/student/552/change/?_changelist_filters=q%3D%25E5%25BC%25A0%25E5%25A5%25A5 HTTP/1.1" 302 0
+[2025-03-29 05:20:55,119] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/?q=%E5%BC%A0%E5%A5%A5 HTTP/1.1" 200 14515
+[2025-03-29 05:20:55,518] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 05:21:03,166] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/552/change/?_changelist_filters=q%3D%25E5%25BC%25A0%25E5%25A5%25A5 HTTP/1.1" 200 20685
+[2025-03-29 05:21:03,564] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 05:25:33,497] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/552/change/?_changelist_filters=q%3D%25E5%25BC%25A0%25E5%25A5%25A5 HTTP/1.1" 200 20693
+[2025-03-29 05:25:33,988] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 05:25:35,018] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 90345
+[2025-03-29 05:30:33,821] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Select_Information/studentprofessorchoice/ HTTP/1.1" 200 66625
+[2025-03-29 05:30:34,217] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 05:30:36,331] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Select_Information/studentprofessorchoice/?q=%E4%BE%AF%E7%91%9E%E5%A9%B7 HTTP/1.1" 200 11858
+[2025-03-29 05:30:36,724] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 05:31:04,762] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Select_Information/studentprofessorchoice/466/change/?_changelist_filters=q%3D%25E4%25BE%25AF%25E7%2591%259E%25E5%25A9%25B7 HTTP/1.1" 200 27193
+[2025-03-29 05:31:04,779] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/calendar.js HTTP/1.1" 304 0
+[2025-03-29 05:31:04,779] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/admin/DateTimeShortcuts.js HTTP/1.1" 304 0
+[2025-03-29 05:31:05,168] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 05:31:05,214] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-clock.svg HTTP/1.1" 304 0
+[2025-03-29 05:31:05,214] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-calendar.svg HTTP/1.1" 304 0
+[2025-03-29 05:31:12,351] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Select_Information/studentprofessorchoice/466/change/?_changelist_filters=q%3D%25E4%25BE%25AF%25E7%2591%259E%25E5%25A9%25B7 HTTP/1.1" 200 27193
+[2025-03-29 05:31:12,947] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 05:31:26,089] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 90345
+[2025-03-29 05:31:26,529] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 05:31:29,857] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/?q=%E4%BE%AF%E7%91%9E%E5%A9%B7 HTTP/1.1" 200 14511
+[2025-03-29 05:31:30,386] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 05:31:32,025] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/583/change/?_changelist_filters=q%3D%25E4%25BE%25AF%25E7%2591%259E%25E5%25A9%25B7 HTTP/1.1" 200 20757
+[2025-03-29 05:31:32,423] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 05:32:28,908] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Select_Information/studentprofessorchoice/ HTTP/1.1" 200 66667
+[2025-03-29 05:32:29,347] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 05:33:48,688] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Select_Information/studentprofessorchoice/?q=%E7%8E%8B HTTP/1.1" 200 40113
+[2025-03-29 05:33:49,096] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 05:33:58,443] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 90467
+[2025-03-29 05:33:58,922] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 05:34:29,191] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/?q=%E7%8E%8B HTTP/1.1" 200 30288
+[2025-03-29 05:34:29,618] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 05:34:32,131] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/610/change/?_changelist_filters=q%3D%25E7%258E%258B HTTP/1.1" 200 20660
+[2025-03-29 05:34:32,535] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 05:35:38,545] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Professor_Student_Manage/student/610/change/?_changelist_filters=q%3D%25E7%258E%258B HTTP/1.1" 302 0
+[2025-03-29 05:35:40,963] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/?q=%E7%8E%8B HTTP/1.1" 200 30500
+[2025-03-29 05:35:41,396] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 05:36:08,439] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/?q=%E8%81%82%E6%9C%B5 HTTP/1.1" 200 14306
+[2025-03-29 05:36:08,840] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 05:36:11,083] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/528/change/?_changelist_filters=q%3D%25E8%2581%2582%25E6%259C%25B5 HTTP/1.1" 200 20815
+[2025-03-29 05:36:11,510] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 05:36:49,284] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Professor_Student_Manage/student/528/change/?_changelist_filters=q%3D%25E8%2581%2582%25E6%259C%25B5 HTTP/1.1" 302 0
+[2025-03-29 05:36:50,010] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/?q=%E8%81%82%E6%9C%B5 HTTP/1.1" 200 14515
+[2025-03-29 05:36:50,483] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 05:37:41,653] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 66651
+[2025-03-29 05:37:42,247] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 05:37:45,216] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Select_Information/studentprofessorchoice/ HTTP/1.1" 200 66733
+[2025-03-29 05:37:45,722] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 05:37:48,327] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Select_Information/studentprofessorchoice/?q=%E5%8F%B6 HTTP/1.1" 200 13430
+[2025-03-29 05:37:48,880] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 05:37:51,427] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Select_Information/reviewrecord/ HTTP/1.1" 200 74284
+[2025-03-29 05:39:52,754] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Select_Information/studentprofessorchoice/?q=%E5%8F%B6 HTTP/1.1" 200 13430
+[2025-03-29 05:39:53,234] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 05:40:08,211] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Select_Information/reviewrecord/ HTTP/1.1" 200 76375
+[2025-03-29 05:40:08,692] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 05:41:08,103] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 66651
+[2025-03-29 05:41:08,640] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 05:41:24,017] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 90467
+[2025-03-29 05:41:24,479] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 05:41:32,287] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/?q=%E6%9D%A8%E9%87%91%E6%98%8E HTTP/1.1" 200 14500
+[2025-03-29 05:41:32,719] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 05:41:34,904] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/619/change/?_changelist_filters=q%3D%25E6%259D%25A8%25E9%2587%2591%25E6%2598%258E HTTP/1.1" 200 20871
+[2025-03-29 05:41:35,336] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 05:41:40,071] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 66651
+[2025-03-29 05:41:40,665] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 05:41:44,287] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/?q=%E6%9D%A8%E9%87%91%E6%98%8E HTTP/1.1" 200 12488
+[2025-03-29 05:41:44,774] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 05:42:00,420] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 90467
+[2025-03-29 05:42:00,902] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 05:42:11,322] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/?q=%E6%9D%A8%E9%87%91%E6%98%8E HTTP/1.1" 200 14500
+[2025-03-29 05:42:12,387] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 05:44:34,085] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 90467
+[2025-03-29 05:44:34,627] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 06:17:12,285] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/?subject__id__exact=2 HTTP/1.1" 200 42107
+[2025-03-29 06:17:12,783] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 06:17:15,962] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/?o=7 HTTP/1.1" 200 93644
+[2025-03-29 06:17:22,378] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/?o=7&subject__id__exact=2 HTTP/1.1" 200 42811
+[2025-03-29 06:17:22,853] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 06:17:22,880] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/sorting-icons.svg HTTP/1.1" 304 0
+[2025-03-29 06:18:03,542] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Select_Information/studentprofessorchoice/ HTTP/1.1" 200 66794
+[2025-03-29 06:18:03,961] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 06:18:06,375] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Select_Information/studentprofessorchoice/?q=%E7%8E%8B%E6%B7%91%E5%BD%AC HTTP/1.1" 200 12479
+[2025-03-29 06:18:06,782] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 06:18:29,439] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Select_Information/studentprofessorchoice/ HTTP/1.1" 200 66794
+[2025-03-29 06:18:29,905] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 06:18:31,473] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Select_Information/studentprofessorchoice/?q=%E6%9D%9F%E5%BD%A6%E9%BE%99 HTTP/1.1" 200 11861
+[2025-03-29 06:18:31,953] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 06:18:48,019] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Select_Information/studentprofessorchoice/ HTTP/1.1" 200 66794
+[2025-03-29 06:18:48,464] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 06:18:50,756] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Select_Information/studentprofessorchoice/?q=%E5%88%98%E6%9E%97%E7%90%B3 HTTP/1.1" 200 12467
+[2025-03-29 06:18:51,317] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 06:19:09,189] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 90833
+[2025-03-29 06:19:10,780] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/?q=%E8%B5%B5%E6%98%95%E8%95%B4&o=7&subject__id__exact=2 HTTP/1.1" 200 15464
+[2025-03-29 06:19:11,229] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 06:19:14,877] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Select_Information/studentprofessorchoice/ HTTP/1.1" 200 66794
+[2025-03-29 06:19:15,391] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 06:19:17,444] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Select_Information/studentprofessorchoice/?q=%E8%B5%B5%E6%98%95%E8%95%B4 HTTP/1.1" 200 9789
+[2025-03-29 06:19:17,845] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 06:19:30,168] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Select_Information/studentprofessorchoice/ HTTP/1.1" 200 66794
+[2025-03-29 06:19:30,686] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 06:19:32,799] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Select_Information/studentprofessorchoice/?q=%E9%82%B5%E6%B3%BD%E5%8F%8B HTTP/1.1" 200 9789
+[2025-03-29 06:19:33,291] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 06:20:08,479] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Select_Information/studentprofessorchoice/ HTTP/1.1" 200 66794
+[2025-03-29 06:20:08,914] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 06:20:11,443] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Select_Information/studentprofessorchoice/?q=%E5%BC%A0%E6%B5%A9 HTTP/1.1" 200 9771
+[2025-03-29 06:20:11,838] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 06:20:25,104] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 90833
+[2025-03-29 06:20:25,562] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 06:20:42,039] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Select_Information/studentprofessorchoice/ HTTP/1.1" 200 66794
+[2025-03-29 06:20:42,481] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 06:20:44,444] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Select_Information/studentprofessorchoice/?q=%E7%8E%8B%E6%81%A9%E6%B3%BD HTTP/1.1" 200 12464
+[2025-03-29 06:20:44,830] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 06:21:47,545] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 90894
+[2025-03-29 06:21:48,002] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 06:25:19,781] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Select_Information/studentprofessorchoice/ HTTP/1.1" 200 66857
+[2025-03-29 06:25:20,237] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 06:28:41,825] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Select_Information/studentprofessorchoice/ HTTP/1.1" 200 66839
+[2025-03-29 06:28:42,305] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 06:28:58,694] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 66651
+[2025-03-29 06:28:59,181] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 06:29:02,130] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/?q=%E9%83%AD HTTP/1.1" 200 13973
+[2025-03-29 06:29:02,540] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 06:29:05,728] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/73/change/?_changelist_filters=q%3D%25E9%2583%25AD HTTP/1.1" 200 20568
+[2025-03-29 06:29:06,177] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 06:31:37,539] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Select_Information/studentprofessorchoice/ HTTP/1.1" 200 66839
+[2025-03-29 06:31:38,009] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 06:31:56,955] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Select_Information/studentprofessorchoice/ HTTP/1.1" 200 66839
+[2025-03-29 06:31:57,714] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 06:32:05,917] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Select_Information/studentprofessorchoice/ HTTP/1.1" 200 66839
+[2025-03-29 06:32:06,395] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 06:32:10,458] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Select_Information/studentprofessorchoice/?q=%E5%90%95%E6%98%A5%E5%88%A9 HTTP/1.1" 200 13748
+[2025-03-29 06:32:10,895] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 06:32:13,362] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 90894
+[2025-03-29 06:32:37,082] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 90894
+[2025-03-29 06:32:37,519] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 06:32:40,496] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/?q=%E4%B8%87%E9%98%B3 HTTP/1.1" 200 14301
+[2025-03-29 06:32:40,959] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 06:33:15,060] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Select_Information/studentprofessorchoice/ HTTP/1.1" 200 66839
+[2025-03-29 06:33:15,544] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 06:33:21,168] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 90894
+[2025-03-29 06:33:29,443] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Select_Information/reviewrecord/ HTTP/1.1" 200 78744
+[2025-03-29 06:33:29,877] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 08:24:28,146] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 91626
+[2025-03-29 08:24:28,686] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 08:24:42,473] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/?q=%E9%98%AE%E9%AA%81%E6%97%B8 HTTP/1.1" 200 14499
+[2025-03-29 08:24:42,978] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 08:24:48,117] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/492/change/?_changelist_filters=q%3D%25E9%2598%25AE%25E9%25AA%2581%25E6%2597%25B8 HTTP/1.1" 200 20987
+[2025-03-29 08:24:48,566] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 08:25:00,514] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Professor_Student_Manage/student/492/change/?_changelist_filters=q%3D%25E9%2598%25AE%25E9%25AA%2581%25E6%2597%25B8 HTTP/1.1" 302 0
+[2025-03-29 08:25:01,239] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/?q=%E9%98%AE%E9%AA%81%E6%97%B8 HTTP/1.1" 200 14711
+[2025-03-29 08:25:01,661] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 08:26:18,400] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 91626
+[2025-03-29 08:26:18,883] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 08:27:04,808] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/?p=2 HTTP/1.1" 200 94187
+[2025-03-29 08:27:05,252] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-29 08:27:32,780] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/?p=3 HTTP/1.1" 200 18291
+[2025-03-29 08:27:33,229] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-31 07:37:58,073] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET / HTTP/1.1" 200 10330
+[2025-03-31 07:37:58,106] [log.py:224] [log:log_response] [WARNING]- Not Found: /api/count
+[2025-03-31 07:37:58,107] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /api/count HTTP/1.1" 404 3142
+[2025-03-31 07:37:58,359] [log.py:224] [log:log_response] [WARNING]- Not Found: /apple-touch-icon-precomposed.png
+[2025-03-31 07:37:58,359] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /apple-touch-icon-precomposed.png HTTP/1.1" 404 3211
+[2025-03-31 07:37:58,366] [log.py:224] [log:log_response] [WARNING]- Not Found: /apple-touch-icon.png
+[2025-03-31 07:37:58,366] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /apple-touch-icon.png HTTP/1.1" 404 3175
+[2025-03-31 07:38:04,528] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin HTTP/1.1" 301 0
+[2025-03-31 07:38:05,191] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/ HTTP/1.1" 200 11886
+[2025-03-31 07:38:05,206] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/dashboard.css HTTP/1.1" 200 380
+[2025-03-31 07:38:05,207] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 200 1360
+[2025-03-31 07:38:05,207] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 200 2271
+[2025-03-31 07:38:05,220] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/base.css HTTP/1.1" 200 19513
+[2025-03-31 07:38:05,221] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/responsive.css HTTP/1.1" 200 18545
+[2025-03-31 07:38:05,223] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/fonts.css HTTP/1.1" 200 423
+[2025-03-31 07:38:05,233] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 200 331
+[2025-03-31 07:38:05,235] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Regular-webfont.woff HTTP/1.1" 200 85876
+[2025-03-31 07:38:05,235] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Bold-webfont.woff HTTP/1.1" 200 86184
+[2025-03-31 07:38:05,237] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 200 380
+[2025-03-31 07:38:05,248] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Light-webfont.woff HTTP/1.1" 200 85692
+[2025-03-31 07:38:05,269] [log.py:224] [log:log_response] [WARNING]- Not Found: /favicon.ico
+[2025-03-31 07:38:05,272] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /favicon.ico HTTP/1.1" 404 3148
+[2025-03-31 07:38:24,965] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 95110
+[2025-03-31 07:38:25,004] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/jquery.init.js HTTP/1.1" 200 347
+[2025-03-31 07:38:25,004] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/changelists.css HTTP/1.1" 200 6874
+[2025-03-31 07:38:25,006] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 200 5984
+[2025-03-31 07:38:25,008] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/urlify.js HTTP/1.1" 200 7902
+[2025-03-31 07:38:25,009] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/prepopulate.js HTTP/1.1" 200 1531
+[2025-03-31 07:38:25,016] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-yes.svg HTTP/1.1" 200 436
+[2025-03-31 07:38:25,016] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/actions.js HTTP/1.1" 200 7867
+[2025-03-31 07:38:25,017] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/core.js HTTP/1.1" 200 5698
+[2025-03-31 07:38:25,020] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 287630
+[2025-03-31 07:38:25,027] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 200 232381
+[2025-03-31 07:38:25,030] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/search.svg HTTP/1.1" 200 458
+[2025-03-31 07:38:25,032] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-no.svg HTTP/1.1" 200 560
+[2025-03-31 07:38:25,298] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-31 07:38:25,329] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/tooltag-add.svg HTTP/1.1" 200 331
+[2025-03-31 07:38:41,987] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/?q=%E9%BB%84%E5%88%A9 HTTP/1.1" 200 14306
+[2025-03-31 07:38:42,250] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-31 07:38:43,650] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/540/change/?_changelist_filters=q%3D%25E9%25BB%2584%25E5%2588%25A9 HTTP/1.1" 200 20694
+[2025-03-31 07:38:43,662] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/change_form.js HTTP/1.1" 200 606
+[2025-03-31 07:38:43,663] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/prepopulate_init.js HTTP/1.1" 200 492
+[2025-03-31 07:38:43,663] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/forms.css HTTP/1.1" 200 8804
+[2025-03-31 07:38:43,672] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-deletelink.svg HTTP/1.1" 200 392
+[2025-03-31 07:38:43,672] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/widgets.css HTTP/1.1" 200 11097
+[2025-03-31 07:38:43,979] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-31 07:39:14,283] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/?q=%E5%B7%AB%E7%A5%96%E6%B6%B5 HTTP/1.1" 200 14504
+[2025-03-31 07:39:14,553] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-31 07:39:16,083] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/541/change/?_changelist_filters=q%3D%25E5%25B7%25AB%25E7%25A5%2596%25E6%25B6%25B5 HTTP/1.1" 200 20865
+[2025-03-31 07:39:16,533] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-31 07:42:31,157] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET / HTTP/1.1" 200 10330
+[2025-03-31 07:42:31,191] [log.py:224] [log:log_response] [WARNING]- Not Found: /api/count
+[2025-03-31 07:42:31,192] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /api/count HTTP/1.1" 404 3142
+[2025-03-31 08:00:17,089] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/?q=%E5%B7%AB%E7%A5%96%E6%B6%B5 HTTP/1.1" 200 14504
+[2025-03-31 08:00:19,879] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/?q=%E5%8F%B6 HTTP/1.1" 200 14109
+[2025-03-31 08:00:20,184] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-31 08:00:25,485] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/475/change/?_changelist_filters=q%3D%25E5%258F%25B6 HTTP/1.1" 200 20897
+[2025-03-31 08:00:25,797] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-31 08:01:44,703] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/?q=%E9%98%AE%E9%AA%81%E6%97%B8 HTTP/1.1" 200 14560
+[2025-03-31 08:01:45,040] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-31 08:01:48,971] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/492/change/?_changelist_filters=q%3D%25E9%2598%25AE%25E9%25AA%2581%25E6%2597%25B8 HTTP/1.1" 200 20987
+[2025-03-31 08:01:49,270] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-31 08:03:07,153] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Professor_Student_Manage/student/492/change/?_changelist_filters=q%3D%25E9%2598%25AE%25E9%25AA%2581%25E6%2597%25B8 HTTP/1.1" 302 0
+[2025-03-31 08:03:07,823] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/?q=%E9%98%AE%E9%AA%81%E6%97%B8 HTTP/1.1" 200 14772
+[2025-03-31 08:03:08,131] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-31 08:03:10,410] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/492/change/?_changelist_filters=q%3D%25E9%2598%25AE%25E9%25AA%2581%25E6%2597%25B8 HTTP/1.1" 200 20971
+[2025-03-31 08:03:10,690] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-31 08:07:00,696] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Professor_Student_Manage/student/492/change/?_changelist_filters=q%3D%25E9%2598%25AE%25E9%25AA%2581%25E6%2597%25B8 HTTP/1.1" 302 0
+[2025-03-31 08:07:01,388] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/?q=%E9%98%AE%E9%AA%81%E6%97%B8 HTTP/1.1" 200 14772
+[2025-03-31 08:07:01,677] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-03-31 08:07:04,023] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/492/change/?_changelist_filters=q%3D%25E9%2598%25AE%25E9%25AA%2581%25E6%2597%25B8 HTTP/1.1" 200 20971
+[2025-03-31 08:07:04,310] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398

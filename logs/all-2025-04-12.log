@@ -1,0 +1,16 @@
+[2025-04-12 01:47:24,064] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-04-12 01:47:39,627] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-04-12 01:48:23,165] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /userlogin/ HTTP/1.1" 200 751
+[2025-04-12 01:48:23,684] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 664
+[2025-04-12 01:48:24,150] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 664
+[2025-04-12 01:48:26,021] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-04-12 01:48:26,290] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-04-12 01:48:42,127] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 113735
+[2025-04-12 01:48:53,106] [log.py:224] [log:log_response] [WARNING]- Not Found: /Select_Information/select-professor/
+[2025-04-12 01:48:53,109] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /Select_Information/select-professor/ HTTP/1.1" 404 41
+[2025-04-12 01:49:13,011] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-04-12 01:49:17,762] [log.py:224] [log:log_response] [WARNING]- Not Found: /Select_Information/select-professor/
+[2025-04-12 01:49:17,763] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /Select_Information/select-professor/ HTTP/1.1" 404 41
+[2025-04-12 01:49:29,910] [log.py:224] [log:log_response] [WARNING]- Not Found: /Select_Information/select-professor/
+[2025-04-12 01:49:29,911] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /Select_Information/select-professor/ HTTP/1.1" 404 41
+[2025-04-12 01:49:34,370] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader

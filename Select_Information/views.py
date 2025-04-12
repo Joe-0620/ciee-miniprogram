@@ -76,6 +76,8 @@ class SelectInformationView(APIView):
 class StudentChooseProfessorView(APIView):
     permission_classes = [IsAuthenticated]
 
+    # print("test")
+
     def post(self, request):
         # 检查互选是否开放
         now = timezone.now()

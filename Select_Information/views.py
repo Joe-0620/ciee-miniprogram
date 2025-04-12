@@ -74,6 +74,7 @@ class SelectInformationView(APIView):
     
 
 class StudentChooseProfessorView(APIView):
+    # print("test")
     permission_classes = [IsAuthenticated]
 
     # print("test")
@@ -82,10 +83,11 @@ class StudentChooseProfessorView(APIView):
         # 检查互选是否开放
         now = timezone.now()
         try:
-            selection_time = SelectionTime.objects.get(id=1)  # 假设只有一个SelectionTime对象
+            selection_time = SelectionTime.objects.get(id=2)  # 假设只有一个SelectionTime对象
             if not (selection_time.open_time <= now <= selection_time.close_time):
                 return Response({"message": "不在互选开放时间内"}, status=status.HTTP_400_BAD_REQUEST)
         except SelectionTime.DoesNotExist:
+            # print("test")
             return Response({"message": "互选时间设置不存在"}, status=status.HTTP_404_NOT_FOUND)
 
         student = request.user.student  # 假设你的 User 模型有一个名为 student 的 OneToOneField
@@ -93,6 +95,7 @@ class StudentChooseProfessorView(APIView):
         professor_id = request.data.get('professor_id')
 
         try:
+            # print("test")
             # 使用select_related减少数据库查询
             professor = Professor.objects.select_related('user_name').get(id=professor_id)
             print(professor)
@@ -127,6 +130,7 @@ class StudentChooseProfessorView(APIView):
             else:
                 return Response({'message': '请选择在你的专业下招生的导师'}, status=status.HTTP_400_BAD_REQUEST)
         except Professor.DoesNotExist:
+            # print("test")
             return Response({'message': '导师不存在'}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             # 更通用的异常处理

@@ -14,3 +14,44 @@
 [2025-04-12 01:49:29,910] [log.py:224] [log:log_response] [WARNING]- Not Found: /Select_Information/select-professor/
 [2025-04-12 01:49:29,911] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /Select_Information/select-professor/ HTTP/1.1" 404 41
 [2025-04-12 01:49:34,370] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-04-12 01:51:33,334] [log.py:224] [log:log_response] [WARNING]- Not Found: /Select_Information/select-professor/
+[2025-04-12 01:51:33,337] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /Select_Information/select-professor/ HTTP/1.1" 404 41
+[2025-04-12 01:52:12,362] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-04-12 01:52:16,792] [log.py:224] [log:log_response] [WARNING]- Not Found: /Select_Information/select-professor/
+[2025-04-12 01:52:16,793] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /Select_Information/select-professor/ HTTP/1.1" 404 41
+[2025-04-12 01:52:28,038] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-04-12 01:52:56,467] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-04-12 01:53:02,832] [log.py:224] [log:log_response] [WARNING]- Not Found: /Select_Information/select-professor/
+[2025-04-12 01:53:02,835] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /Select_Information/select-professor/ HTTP/1.1" 404 41
+[2025-04-12 01:53:08,887] [log.py:224] [log:log_response] [WARNING]- Not Found: /Select_Information/select-professor/
+[2025-04-12 01:53:08,891] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /Select_Information/select-professor/ HTTP/1.1" 404 41
+[2025-04-12 01:53:14,243] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-04-12 01:53:20,593] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-04-12 01:53:24,954] [log.py:224] [log:log_response] [WARNING]- Not Found: /Select_Information/select-professor/
+[2025-04-12 01:53:24,954] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /Select_Information/select-professor/ HTTP/1.1" 404 41
+[2025-04-12 01:53:29,863] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-04-12 01:53:39,902] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-04-12 01:53:57,993] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-04-12 01:54:21,908] [log.py:224] [log:log_response] [WARNING]- Not Found: /Select_Information/select-professor/
+[2025-04-12 01:54:21,909] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /Select_Information/select-professor/ HTTP/1.1" 404 41
+[2025-04-12 01:54:27,291] [log.py:224] [log:log_response] [WARNING]- Not Found: /Select_Information/select-professor/
+[2025-04-12 01:54:27,292] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /Select_Information/select-professor/ HTTP/1.1" 404 41
+[2025-04-12 01:54:31,830] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=student HTTP/1.1" 200 22
+[2025-04-12 01:54:31,898] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 664
+[2025-04-12 01:54:32,175] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=student HTTP/1.1" 200 22
+[2025-04-12 01:54:32,217] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 664
+[2025-04-12 01:54:33,112] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-04-12 01:54:49,167] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 113735
+[2025-04-12 01:55:14,164] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-04-12 01:55:19,723] [log.py:224] [log:log_response] [WARNING]- Not Found: /Select_Information/select-professor/
+[2025-04-12 01:55:19,724] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /Select_Information/select-professor/ HTTP/1.1" 404 4614
+[2025-04-12 01:55:26,523] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-04-12 01:56:35,970] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-04-12 01:56:48,054] [log.py:224] [log:log_response] [WARNING]- Not Found: /Select_Information/select-professor/
+[2025-04-12 01:56:48,056] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /Select_Information/select-professor/ HTTP/1.1" 404 41
+[2025-04-12 01:56:54,667] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-04-12 01:57:01,813] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-04-12 01:57:03,583] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-04-12 01:57:07,390] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-04-12 01:57:09,197] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-04-12 01:57:35,847] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader

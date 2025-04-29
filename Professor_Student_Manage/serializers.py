@@ -92,7 +92,7 @@ class ProfessorListSerializer(serializers.ModelSerializer):
 
     def get_doctor_subjects(self, instance):
         # 获取导师在博士专业中 total_quota > 0 的专业名称
-        doctor_quotas = instance.doctor_quotas.filter(total_quota__gt=0, subject__subject_type=2)
+        doctor_quotas = instance.doctor_quotas.filter(remaining_quota__gt=0, subject__subject_type=2)
         return [quota.subject.subject_name for quota in doctor_quotas]
 
     def to_representation(self, instance):

@@ -9,6 +9,8 @@ from django.urls import path
 import csv
 from io import TextIOWrapper
 from django.contrib.auth.models import User
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAdminUser
 
 # Register your models here.
 from .models import Student, Professor, WeChatAccount, ProfessorDoctorQuota
@@ -221,7 +223,8 @@ class StudentAdmin(admin.ModelAdmin):
                                "initial_exam_score", "initial_rank", "secondary_exam_score",
                                "secondary_rank", "final_rank", "signature_table_student_signatured", "signature_table_professor_signatured", "signature_table_review_status", "is_selected", "is_giveup"]}),
     ]
-    list_display = ["candidate_number", "name", "subject", "study_mode", "student_type", "postgraduate_type", "is_selected", "is_giveup", "download_hx_file", "download_fq_file"]
+    list_display = ["candidate_number", "name", "subject", "study_mode", "student_type", "postgraduate_type", "is_selected", 
+                    "is_giveup", "render_hx_download_link", "render_fq_download_link"]
     list_filter = ["subject"]
     search_fields = ["name"]
     actions = ['reset_password_to_exam_id']  # 添加自定义动作
@@ -239,6 +242,7 @@ class StudentAdmin(admin.ModelAdmin):
         urls = super().get_urls()
         custom_urls = [
             path('import-students/', self.admin_site.admin_view(self.import_students_view), name='import_students'),
+            path('download-file/', self.admin_site.admin_view(DownloadFileView.as_view()), name='download_file'),
         ]
         return custom_urls + urls
 
@@ -420,8 +424,57 @@ class StudentAdmin(admin.ModelAdmin):
         response = requests.post(url, json=data)
         return response.json()
 
-    download_hx_file.short_description = "互选表下载"
-    download_fq_file.short_description = "弃选表下载"
+    def render_hx_download_link(self, obj):
+        if obj.is_selected and obj.signature_table_review_status == 1 and obj.signature_table:
+            return format_html(
+                '<a href="#" class="download-btn" data-file-id="{}">下载</a>',
+                obj.signature_table
+            )
+        return '未完成'
+
+    def render_fq_download_link(self, obj):
+        if obj.is_giveup and obj.giveup_signature_table:
+            return format_html(
+                '<a href="#" class="download-btn" data-file-id="{}">下载</a>',
+                obj.giveup_signature_table
+            )
+        return '未完成'
+
+    # download_hx_file.short_description = "互选表下载"
+    # download_fq_file.short_description = "弃选表下载"
+    render_hx_download_link.short_description = "互选表下载"
+    render_fq_download_link.short_description = "弃选表下载"
+
+class DownloadFileView(APIView):
+    permission_classes = [IsAdminUser]
+
+    def post(self, request):
+        file_id = request.data.get('file_id')
+        if not file_id:
+            return Response({'message': '缺少 file_id 参数'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # 获取下载地址
+        url = 'https://api.weixin.qq.com/tcb/batchdownloadfile'
+        data = {
+            "env": 'prod-2g1jrmkk21c1d283',
+            "file_list": [
+                {
+                    "fileid": file_id,
+                    "max_age": 7200
+                }
+            ]
+        }
+
+        try:
+            response = requests.post(url, json=data)
+            response_data = response.json()
+            if response_data.get("errcode") == 0:
+                download_url = response_data['file_list'][0]['download_url']
+                return Response({'download_url': download_url}, status=status.HTTP_200_OK)
+            else:
+                return Response({'message': '获取下载地址失败'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except Exception as e:
+            return Response({'message': f'服务器错误: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class WeChatAccountAdmin(admin.ModelAdmin):

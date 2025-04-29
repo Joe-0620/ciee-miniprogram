@@ -28,6 +28,8 @@ import logging
 from .models import ReviewRecord
 from .serializers import ReviewRecordSerializer, ReviewRecordUpdateSerializer
 
+
+
 class GetSelectionTimeView(generics.ListAPIView):
     queryset = SelectionTime.objects.all()
     serializer_class = SelectionTimeSerializer

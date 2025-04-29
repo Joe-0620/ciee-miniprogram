@@ -1,6 +1,7 @@
 from rest_framework import serializers
-from Professor_Student_Manage.models import Professor, Student, Department
+from Professor_Student_Manage.models import Professor, Student, Department, ProfessorDoctorQuota
 from django.contrib.auth.models import User
+from Enrollment_Manage.models import Subject
 
 
 class StudentSerializer(serializers.ModelSerializer):
@@ -47,24 +48,52 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ('id', 'username')
 
+class ProfessorDoctorQuotaSerializer(serializers.ModelSerializer):
+    subject = serializers.PrimaryKeyRelatedField(queryset=Subject.objects.filter(subject_type=2))
+
+    class Meta:
+        model = ProfessorDoctorQuota
+        fields = ['subject', 'total_quota', 'used_quota', 'remaining_quota']
+        read_only_fields = ['used_quota', 'remaining_quota']
+
 
 class ProfessorSerializer(serializers.ModelSerializer):
     enroll_subject = serializers.StringRelatedField(many=True)
+    doctor_quotas = ProfessorDoctorQuotaSerializer(many=True, required=False)
     
     class Meta:
         model = Professor
         # print()
         fields = [f.name for f in Professor._meta.get_fields() if f.name != 'enroll_subject' and f.name != 'studentprofessorchoice'] + ['enroll_subject']
 
+    def update(self, instance, validated_data):
+        # 处理博士专业名额的批量更新
+        doctor_quotas_data = validated_data.pop('doctor_quotas', None)
+        if doctor_quotas_data:
+            for quota_data in doctor_quotas_data:
+                subject_id = quota_data.get('subject').id
+                total_quota = quota_data.get('total_quota', 0)
+                ProfessorDoctorQuota.objects.update_or_create(
+                    professor=instance,
+                    subject_id=subject_id,
+                    defaults={'total_quota': total_quota}
+                )
+        return super().update(instance, validated_data)
 
 
 class ProfessorListSerializer(serializers.ModelSerializer):
     enroll_subject = serializers.StringRelatedField(many=True)
+    doctor_subjects = serializers.SerializerMethodField()  # 新增字段：博士招生专业
     
     class Meta:
         model = Professor
         # print()
-        fields = [f.name for f in Professor._meta.get_fields() if f.name != 'enroll_subject' and f.name != 'studentprofessorchoice'] + ['enroll_subject']
+        fields = [f.name for f in Professor._meta.get_fields() if f.name != 'enroll_subject' and f.name != 'studentprofessorchoice'] + ['enroll_subject', 'doctor_subjects']
+
+    def get_doctor_subjects(self, instance):
+        # 获取导师在博士专业中 total_quota > 0 的专业名称
+        doctor_quotas = instance.doctor_quotas.filter(total_quota__gt=0, subject__subject_type=2)
+        return [quota.subject.subject_name for quota in doctor_quotas]
 
     def to_representation(self, instance):
         """
@@ -119,3 +148,5 @@ class DepartmentReviewerSerializer(serializers.ModelSerializer):
     def get_reviewers(self, obj):
         reviewers = Professor.objects.filter(department=obj, department_position__in=[1, 2])
         return ProfessorSerializer(reviewers, many=True).data
+
+

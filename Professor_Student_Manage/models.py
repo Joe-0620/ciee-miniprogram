@@ -2,7 +2,9 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 from Enrollment_Manage.models import Department, Subject
-
+from django.core.exceptions import ValidationError
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 class WeChatAccount(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -53,6 +55,11 @@ class Professor(models.Model):
         # print("获取之前的导师信息")
         original_instance = self.__class__.objects.filter(pk=self.pk).first()
         self.name_fk_search = self.name
+        # 计算总剩余名额，包括博士专业名额
+        doctor_quota_sum = sum(
+            quota.remaining_quota for quota in self.doctor_quotas.filter(subject__subject_type=2)
+        )
+        self.doctor_quota = doctor_quota_sum
         self.remaining_quota = self.academic_quota + self.professional_quota + self.professional_yt_quota + self.doctor_quota
         super().save(*args, **kwargs)
         # print("触发super.save()")
@@ -63,6 +70,66 @@ class Professor(models.Model):
 
     def __str__(self):
         return self.name
+
+class ProfessorDoctorQuota(models.Model):
+    professor = models.ForeignKey(Professor, on_delete=models.CASCADE, related_name='doctor_quotas', verbose_name="导师")
+    subject = models.ForeignKey(
+        Subject, 
+        on_delete=models.CASCADE, 
+        verbose_name="博士专业",
+        limit_choices_to={'subject_type': 2}  # 限制为博士专业
+    )
+    total_quota = models.IntegerField(default=0, verbose_name="总招生名额")
+    used_quota = models.IntegerField(default=0, verbose_name="已用名额")
+    remaining_quota = models.IntegerField(default=0, verbose_name="剩余名额")
+
+    def clean(self):
+        # 确保已用名额不超过总名额
+        if self.used_quota > self.total_quota:
+            raise ValidationError("已用名额不能超过总名额")
+        # 确保专业是博士类型
+        if self.subject.subject_type != 2:
+            raise ValidationError("只能选择博士专业")
+        # 更新剩余名额
+        self.remaining_quota = self.total_quota - self.used_quota
+
+    def save(self, *args, **kwargs):
+        self.clean()
+        super().save(*args, **kwargs)
+        # 更新导师的 doctor_quota 和 remaining_quota
+        self.professor.save()
+
+    class Meta:
+        verbose_name = "导师博士专业名额"
+        verbose_name_plural = "导师博士专业名额"
+        unique_together = [['professor', 'subject']]  # 确保每个导师在每个博士专业只有一个名额记录
+
+    def __str__(self):
+        return f"{self.professor.name} - {self.subject.subject_name} - 剩余: {self.remaining_quota}"
+
+
+# 信号：当创建导师或博士专业时，初始化所有博士专业名额记录
+@receiver(post_save, sender=Professor)
+@receiver(post_save, sender=Subject)
+def initialize_doctor_quotas(sender, instance, created, **kwargs):
+    if sender == Professor and created:
+        # 新建导师时，为所有博士专业创建名额记录
+        doctor_subjects = Subject.objects.filter(subject_type=2)
+        for subject in doctor_subjects:
+            ProfessorDoctorQuota.objects.get_or_create(
+                professor=instance,
+                subject=subject,
+                defaults={'total_quota': 0, 'used_quota': 0, 'remaining_quota': 0}
+            )
+    elif sender == Subject and created and instance.subject_type == 2:
+        # 新建博士专业时，为所有导师创建名额记录
+        professors = Professor.objects.all()
+        for professor in professors:
+            ProfessorDoctorQuota.objects.get_or_create(
+                professor=professor,
+                subject=instance,
+                defaults={'total_quota': 0, 'used_quota': 0, 'remaining_quota': 0}
+            )
 
 
 class Student(models.Model):

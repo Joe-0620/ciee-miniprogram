@@ -11,8 +11,21 @@ from io import TextIOWrapper
 from django.contrib.auth.models import User
 
 # Register your models here.
-from .models import Student, Professor, WeChatAccount
+from .models import Student, Professor, WeChatAccount, ProfessorDoctorQuota
 from Enrollment_Manage.models import Subject
+
+class ProfessorDoctorQuotaInline(admin.TabularInline):
+    model = ProfessorDoctorQuota
+    extra = 0  # 不显示额外的空行
+    fields = ['subject', 'total_quota', 'used_quota', 'remaining_quota']
+    readonly_fields = ['used_quota', 'remaining_quota']  # 已用和剩余名额只读
+    can_delete = False  # 禁止删除，确保每个博士专业都有记录
+
+@admin.register(ProfessorDoctorQuota)
+class ProfessorDoctorQuotaAdmin(admin.ModelAdmin):
+    list_display = ['professor', 'subject', 'total_quota', 'used_quota', 'remaining_quota']
+    list_filter = ['professor', 'subject']
+    search_fields = ['professor__name', 'subject__subject_name']
 
 
 @admin.action(description="重置导师指定类型的名额")
@@ -59,6 +72,7 @@ class ProfessorAdmin(admin.ModelAdmin):
     readonly_fields = ["remaining_quota"]
     actions = [reset_quota, reset_proposed_quota_approved, 'reset_password_to_teacher_id']
     change_list_template = 'admin/professor_change_list.html'  # 自定义列表页面模板
+    inlines = [ProfessorDoctorQuotaInline]  # 内联显示博士专业名额
 
     def reset_password_to_teacher_id(self, request, queryset):
         """
@@ -193,6 +207,12 @@ class ImportStudentForm(forms.Form):
     csv_file = forms.FileField(label="选择 CSV 文件")
 
 
+class CustomModelChoiceField(forms.ModelChoiceField):
+    def label_from_instance(self, obj):
+        # 自定义下拉菜单选项显示为：专业名称 (专业类别)
+        return f"{obj.subject_name} ({obj.get_subject_type_display()})"
+
+
 class StudentAdmin(admin.ModelAdmin):
     # fieldsets 元组中的第一个元素是字段集的标题
     fieldsets = [
@@ -206,6 +226,13 @@ class StudentAdmin(admin.ModelAdmin):
     search_fields = ["name"]
     actions = ['reset_password_to_exam_id']  # 添加自定义动作
     change_list_template = 'admin/student_change_list.html'
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "subject":
+            # 使用自定义 ModelChoiceField 显示 subject_name (subject_type_display)
+            kwargs["form_class"] = CustomModelChoiceField
+            kwargs["queryset"] = Subject.objects.all()
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
     # 添加自定义URL
     def get_urls(self):

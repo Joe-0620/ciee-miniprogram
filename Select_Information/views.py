@@ -6,7 +6,7 @@ from django.utils import timezone
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate
 from .serializers import StudentProfessorChoiceSerializer, SelectionTimeSerializer
-from Professor_Student_Manage.models import Student, Professor, WeChatAccount
+from Professor_Student_Manage.models import Student, Professor, WeChatAccount, ProfessorDoctorQuota
 from Select_Information.models import StudentProfessorChoice, SelectionTime, ReviewRecord
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
@@ -100,7 +100,7 @@ class StudentChooseProfessorView(APIView):
             # print("test")
             # 使用select_related减少数据库查询
             professor = Professor.objects.select_related('user_name').get(id=professor_id)
-            print(professor)
+            # print(professor)
 
             if student.is_selected:
                 return Response({'message': '您已完成导师选择'}, 
@@ -113,24 +113,50 @@ class StudentChooseProfessorView(APIView):
             if not self.has_quota(professor, student):
                 return Response({'message': '导师已没有名额'}, status=status.HTTP_400_BAD_REQUEST)
 
-            if student.subject in professor.enroll_subject.all():
-                StudentProfessorChoice.objects.create(
-                    student=student, 
-                    professor=professor, 
-                    status=3)
-                # 考虑使用Django信号发送通知
-                # 查询导师的openid
-                # 尝试查询导师的微信账号，如果存在则发送通知
+            if student.postgraduate_type == 3:  # 博士
+                # 检查博士招生专业 (ProfessorDoctorQuota.total_quota > 0)
                 try:
-                    professor_wechat_account = WeChatAccount.objects.get(user=professor.user_name)
-                    professor_openid = professor_wechat_account.openid
-                    self.send_notification(professor_openid)  # 发送通知
-                except WeChatAccount.DoesNotExist:
-                    # 如果导师的微信账号不存在，则不发送通知，但选择仍然成功
-                    pass
-                return Response({'message': '选择成功，请等待回复'}, status=status.HTTP_201_CREATED)
+                    quota = ProfessorDoctorQuota.objects.get(
+                        professor=professor,
+                        subject=student.subject,
+                        remaining_quota__gt=0
+                    )
+                    StudentProfessorChoice.objects.create(
+                        student=student, 
+                        professor=professor, 
+                        status=3)
+                    # 考虑使用Django信号发送通知
+                    # 查询导师的openid
+                    # 尝试查询导师的微信账号，如果存在则发送通知
+                    try:
+                        professor_wechat_account = WeChatAccount.objects.get(user=professor.user_name)
+                        professor_openid = professor_wechat_account.openid
+                        self.send_notification(professor_openid)  # 发送通知
+                    except WeChatAccount.DoesNotExist:
+                        # 如果导师的微信账号不存在，则不发送通知，但选择仍然成功
+                        pass
+                    return Response({'message': '选择成功，请等待回复'}, status=status.HTTP_201_CREATED)
+                except ProfessorDoctorQuota.DoesNotExist:
+                    return Response({'message': '导师在您的专业下无招生名额'}, status=status.HTTP_401_UNAUTHORIZED)
             else:
-                return Response({'message': '请选择在你的专业下招生的导师'}, status=status.HTTP_400_BAD_REQUEST)
+                if student.subject in professor.enroll_subject.all():
+                    StudentProfessorChoice.objects.create(
+                        student=student, 
+                        professor=professor, 
+                        status=3)
+                    # 考虑使用Django信号发送通知
+                    # 查询导师的openid
+                    # 尝试查询导师的微信账号，如果存在则发送通知
+                    try:
+                        professor_wechat_account = WeChatAccount.objects.get(user=professor.user_name)
+                        professor_openid = professor_wechat_account.openid
+                        self.send_notification(professor_openid)  # 发送通知
+                    except WeChatAccount.DoesNotExist:
+                        # 如果导师的微信账号不存在，则不发送通知，但选择仍然成功
+                        pass
+                    return Response({'message': '选择成功，请等待回复'}, status=status.HTTP_201_CREATED)
+                else:
+                    return Response({'message': '请选择在你的专业下招生的导师'}, status=status.HTTP_400_BAD_REQUEST)
         except Professor.DoesNotExist:
             # print("test")
             return Response({'message': '导师不存在'}, status=status.HTTP_404_NOT_FOUND)
@@ -207,9 +233,31 @@ class ProfessorChooseStudentView(APIView):
                 return Response({'message': '该学生已完成导师选择'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
             
             latest_choice = StudentProfessorChoice.objects.filter(student=student, professor=professor).latest('submit_date')
+
             # print(latest_choice)
             if latest_choice.status != 3:  # 状态不是"请等待"
                 return Response({'message': '不存在等待审核的记录'}, status=status.HTTP_409_CONFLICT)
+            
+            # 验证专业匹配
+            if student.postgraduate_type == 3:  # 博士
+                try:
+                    quota = ProfessorDoctorQuota.objects.get(
+                        professor=professor,
+                        subject=student.subject,
+                        remaining_quota__gt=0
+                    )
+                except ProfessorDoctorQuota.DoesNotExist:
+                    return Response(
+                        {'message': '学生报考专业不在您的博士招生专业中'},
+                        status=status.HTTP_400_BAD_REQUEST
+                    )
+            else:  # 硕士
+                if student.subject not in professor.enroll_subject.all():
+                    return Response(
+                        {'message': '学生报考专业不在您的硕士招生专业中'},
+                        status=status.HTTP_400_BAD_REQUEST
+                    )
+
             if operation == '1':  # 同意请求
                 if self.has_quota(professor, student):
                     # 更新选择状态
@@ -222,7 +270,7 @@ class ProfessorChooseStudentView(APIView):
                     student.save()
                     self.update_quota(professor, student)
 
-                    # print("done!")
+                    print("done!")
                     # 生成 PDF 并上传
                     self.generate_and_upload_pdf(student, professor)
 
@@ -423,17 +471,27 @@ class ProfessorChooseStudentView(APIView):
         #     professor.doctor_quota -= 1
         # professor.save()
 
-        # 更新名额
-        quota_fields = {
-            1: 'professional_quota',
-            4: 'professional_yt_quota',
-            2: 'academic_quota',
-            3: 'doctor_quota'
-        }
-        quota_field = quota_fields.get(student.postgraduate_type)
-        if quota_field:
-            setattr(professor, quota_field, getattr(professor, quota_field) - 1)
-            professor.save()
+        
+        if student.postgraduate_type == 3:  # 博士
+            try:
+                quota = ProfessorDoctorQuota.objects.get(
+                    professor=professor,
+                    subject=student.subject
+                )
+                quota.used_quota += 1
+                quota.save()  # 触发 Professor.save() 更新 doctor_quota
+            except ProfessorDoctorQuota.DoesNotExist:
+                raise ValueError(f"No ProfessorDoctorQuota found for professor {professor.name} and subject {student.subject.subject_name}")
+        else:  # 硕士
+            quota_fields = {
+                1: 'professional_quota',
+                4: 'professional_yt_quota',
+                2: 'academic_quota'
+            }
+            quota_field = quota_fields.get(student.postgraduate_type)
+            if quota_field:
+                setattr(professor, quota_field, getattr(professor, quota_field) - 1)
+                professor.save()
 
     def send_notification(self, student, action):
         # 学生的openid和小程序的access_token

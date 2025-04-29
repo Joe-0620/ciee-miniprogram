@@ -521,3 +521,13 @@ AssertionError: Expected a `Response`, `HttpResponse` or `HttpStreamingResponse`
 [2025-04-29 10:26:33,744] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 109424
 [2025-04-29 10:26:34,245] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
 [2025-04-29 10:27:09,123] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 109424
+[2025-04-29 10:28:01,698] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 109424
+[2025-04-29 10:40:29,556] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-04-29 10:40:32,189] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-04-29 10:40:43,426] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 113125
+[2025-04-29 10:40:43,831] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-04-29 10:40:47,505] [log.py:224] [log:log_response] [WARNING]- Not Found: /admin/professor_student_manage/download-file/
+[2025-04-29 10:40:47,505] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /admin/professor_student_manage/download-file/ HTTP/1.1" 404 6470
+[2025-04-29 10:40:52,615] [log.py:224] [log:log_response] [WARNING]- Not Found: /admin/professor_student_manage/download-file/
+[2025-04-29 10:40:52,617] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /admin/professor_student_manage/download-file/ HTTP/1.1" 404 6470
+[2025-04-29 10:40:55,142] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/import-students/ HTTP/1.1" 200 2063

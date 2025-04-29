@@ -270,7 +270,7 @@ class ProfessorChooseStudentView(APIView):
                     student.save()
                     self.update_quota(professor, student)
 
-                    print("done!")
+                    # print("done!")
                     # 生成 PDF 并上传
                     self.generate_and_upload_pdf(student, professor)
 
@@ -326,7 +326,7 @@ class ProfessorChooseStudentView(APIView):
         print("sava_path: ", save_path)
 
         # 将图层与现有的 PDF 模板合并
-        self.merge_pdfs(save_path, packet)
+        self.merge_pdfs(student, save_path, packet)
 
         print("sava file")
 
@@ -334,9 +334,12 @@ class ProfessorChooseStudentView(APIView):
         cloud_path = f"signature/student/{student.user_name.username}_{timestamp_str}_agreement.pdf"
         self.upload_to_wechat_cloud(save_path, cloud_path, student)
 
-    def merge_pdfs(self, save_path, overlay_pdf):
+    def merge_pdfs(self, student, save_path, overlay_pdf):
         """将生成的 PDF 图层与模板合并"""
-        template_pdf_path = r'/app/Select_Information/pdfTemplate/template.pdf'
+        if student.postgraduate_type == 3:
+            template_pdf_path = r'/app/Select_Information/pdfTemplate/template-phd.pdf'
+        else:
+            template_pdf_path = r'/app/Select_Information/pdfTemplate/template.pdf'
         
         # 读取现有的 PDF 模板
         template_pdf = PdfReader(template_pdf_path)

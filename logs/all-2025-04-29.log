@@ -510,3 +510,7 @@ AssertionError: Expected a `Response`, `HttpResponse` or `HttpStreamingResponse`
 [2025-04-29 08:57:55,397] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/serializers.py changed, reloading.
 [2025-04-29 08:57:55,976] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
 [2025-04-29 08:58:08,167] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-04-29 09:36:01,453] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-04-29 09:36:47,384] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-04-29 09:36:48,529] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-04-29 09:36:49,882] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader

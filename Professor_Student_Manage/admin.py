@@ -240,6 +240,7 @@ class StudentAdmin(admin.ModelAdmin):
         urls = super().get_urls()
         custom_urls = [
             path('import-students/', self.admin_site.admin_view(self.import_students_view), name='import_students'),
+            path('get-download-url/', self.admin_site.admin_view(self.get_download_url_view), name='get_download_url'),
         ]
         return custom_urls + urls
 
@@ -269,7 +270,7 @@ class StudentAdmin(admin.ModelAdmin):
                         subject_number = str(subject_number).zfill(6)
                         subject_name = row["专业"]
 
-                        
+                        subject = Subject.objects.filter(subject_code=subject_number).first()
                         # print(subject)
 
                         candidate_number = str(row["考生编号"]).strip()
@@ -280,11 +281,6 @@ class StudentAdmin(admin.ModelAdmin):
                         final_rank = row["综合排名"]
 
                         postgraduate_type = int(row["研究生类型"])  # 需转换为整数
-
-                        if postgraduate_type == 3:
-                            subject = Subject.objects.filter(subject_code=subject_number, subject_type=2).first()
-                        else:
-                            subject = Subject.objects.filter(subject_code=subject_number).first()
 
                         student_type = int(row["学生类型"])  # 需转换为整数
 
@@ -407,21 +403,43 @@ class StudentAdmin(admin.ModelAdmin):
     #         )
     #     return '未完成'
 
-    def download_fq_file(self, obj):
-        if obj.is_giveup and obj.giveup_signature_table:
+    def get_download_url_view(self, request):
+        """
+        AJAX 视图，用于根据文件 ID 获取下载 URL
+        """
+        if request.method == 'POST':
+            file_id = request.POST.get('file_id')
+            if not file_id:
+                return JsonResponse({'error': '未提供文件 ID'}, status=400)
+
+            response_data = self.get_fileid_download_url(file_id)
+            if response_data.get("errcode") == 0:
+                download_url = response_data['file_list'][0]['download_url']
+                return JsonResponse({'download_url': download_url})
+            else:
+                return JsonResponse({'error': '获取下载 URL 失败'}, status=500)
+
+        return JsonResponse({'error': '无效的请求方法'}, status=405)
+
+    def download_hx_file(self, obj):
+        """
+        如果满足条件，显示下载互选表的按钮
+        """
+        if obj.is_selected and obj.signature_table_review_status == 1 and obj.signature_table:
             return format_html(
-                '<button class="download-btn" data-file-id="{}" data-type="fq">下载弃选表</button>'
-                '<span class="download-status" style="display:none;"></span>',
-                obj.giveup_signature_table
+                '<button class="download-btn" data-file-id="{}" data-type="hx">下载</button>',
+                obj.signature_table
             )
         return '未完成'
 
-    def download_hx_file(self, obj):
-        if obj.is_selected and obj.signature_table_review_status == 1 and obj.signature_table:
+    def download_fq_file(self, obj):
+        """
+        如果满足条件，显示下载弃选表的按钮
+        """
+        if obj.is_giveup and obj.giveup_signature_table:
             return format_html(
-                '<button class="download-btn" data-file-id="{}" data-type="hx">下载互选表</button>'
-                '<span class="download-status" style="display:none;"></span>',
-                obj.signature_table
+                '<button class="download-btn" data-file-id="{}" data-type="fq">下载</button>',
+                obj.giveup_signature_table
             )
         return '未完成'
 
@@ -443,6 +461,8 @@ class StudentAdmin(admin.ModelAdmin):
         # 发送POST请求
         response = requests.post(url, json=data)
         return response.json()
+
+    # change_list_template = 'admin/student_change_list.html'  # 自定义列表页面模板
 
     download_hx_file.short_description = "互选表下载"
     download_fq_file.short_description = "弃选表下载"

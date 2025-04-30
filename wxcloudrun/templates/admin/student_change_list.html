@@ -2,82 +2,66 @@
 {% extends "admin/change_list.html" %}
 
 {% block extrahead %}
-{{ block.super }}
-<script>
-// 这里直接放置你的student_download.js代码
-document.addEventListener('DOMContentLoaded', function() {
-    // 为所有下载按钮添加点击事件
-    document.querySelectorAll('.download-btn').forEach(button => {
-        button.addEventListener('click', function() {
-            const fileId = this.getAttribute('data-file-id');
-            const type = this.getAttribute('data-type');
-            const statusSpan = this.nextElementSibling;
-            
-            // 显示加载状态
-            this.disabled = true;
-            statusSpan.style.display = 'inline';
-            statusSpan.textContent = '获取下载链接中...';
-            
-            // 调用Django后台API获取下载地址
-            fetch('/admin/get-download-url/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': getCookie('csrftoken')
-                },
-                body: JSON.stringify({
-                    file_id: fileId
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.download_url) {
-                    statusSpan.textContent = '开始下载...';
-                    // 创建隐藏的iframe触发下载
-                    const iframe = document.createElement('iframe');
-                    iframe.style.display = 'none';
-                    iframe.src = data.download_url;
-                    document.body.appendChild(iframe);
-                    
-                    // 下载完成后移除iframe
-                    setTimeout(() => {
-                        document.body.removeChild(iframe);
-                        statusSpan.textContent = '下载完成';
-                        setTimeout(() => {
-                            statusSpan.style.display = 'none';
-                            button.disabled = false;
-                        }, 2000);
-                    }, 1000);
-                } else {
-                    statusSpan.textContent = '获取下载链接失败';
-                    button.disabled = false;
-                }
-            })
-            .catch(error => {
-                statusSpan.textContent = '请求失败';
-                button.disabled = false;
-                console.error('Error:', error);
+    {{ block.super }}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('.download-btn').on('click', function() {
+                var button = $(this);
+                var fileId = button.data('file-id');
+                var fileType = button.data('type');
+                
+                // 禁用按钮防止多次点击
+                button.prop('disabled', true).text('获取中...');
+
+                $.ajax({
+                    url: '/admin/Professor_Student_Manage/student/get-download-url/',  <!-- 硬编码 URL -->
+                    type: 'POST',
+                    data: {
+                        'file_id': fileId,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                    },
+                    success: function(response) {
+                        if (response.download_url) {
+                            // 创建临时链接触发下载
+                            var link = document.createElement('a');
+                            link.href = response.download_url;
+                            link.download = fileType === 'hx' ? 'mutual_selection.pdf' : 'giveup_form.pdf';
+                            document.body.appendChild(link);
+                            link.click();
+                            document.body.removeChild(link);
+                        } else {
+                            alert('无法获取下载链接: ' + response.error);
+                        }
+                    },
+                    error: function() {
+                        alert('获取下载链接失败，请稍后重试。');
+                    },
+                    complete: function() {
+                        // 恢复按钮
+                        button.prop('disabled', false).text('下载');
+                    }
+                });
             });
         });
-    });
-});
-
-// 辅助函数获取CSRF token
-function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-        const cookies = document.cookie.split(';');
-        for (let i = 0; i < cookies.length; i++) {
-            const cookie = cookies[i].trim();
-            if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                break;
-            }
+    </script>
+    <style>
+        .download-btn {
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
         }
-    }
-    return cookieValue;
-}
-</script>
+        .download-btn:hover {
+            background-color: #0056b3;
+        }
+        .download-btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+    </style>
 {% endblock %}
 
 {% block content_title %}

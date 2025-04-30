@@ -364,41 +364,59 @@ class StudentAdmin(admin.ModelAdmin):
 
     reset_password_to_exam_id.short_description = "重置密码为准考证号"  # 动作显示名称
 
+    # def download_fq_file(self, obj):
+    #     """
+    #     若学生已放弃拟录取并且 hx_file 有文件，则显示下载链接；否则显示 '-'
+    #     """
+    #     if obj.is_giveup == True:
+
+    #         # 获取下载地址
+    #         response_data_signature = self.get_fileid_download_url(obj.giveup_signature_table)
+    #         if response_data_signature.get("errcode") == 0:
+    #             signature_download_url = response_data_signature['file_list'][0]['download_url']
+    #             print(f"放弃说明表下载地址: {signature_download_url}")
+    #         else:
+    #             return Response({'message': '获取放弃说明表下载地址失败'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    #         return format_html(
+    #             "<a href='{}' download>下载</a>", signature_download_url
+    #         )
+    #     return '未完成'
+
+    # def download_hx_file(self, obj):
+    #     """
+    #     若学生已放弃拟录取并且 hx_file 有文件，则显示下载链接；否则显示 '-'
+    #     """
+    #     if obj.is_selected == True and obj.signature_table_review_status == 1:
+
+    #         # 获取下载地址
+    #         response_data_signature = self.get_fileid_download_url(obj.signature_table)
+    #         if response_data_signature.get("errcode") == 0:
+    #             signature_download_url = response_data_signature['file_list'][0]['download_url']
+    #             print(f"签名图片下载地址: {signature_download_url}")
+    #         else:
+    #             return Response({'message': '获取签名图片下载地址失败'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    #         return format_html(
+    #             "<a href='{}' download>下载</a>", signature_download_url
+    #         )
+    #     return '未完成'
+
     def download_fq_file(self, obj):
-        """
-        若学生已放弃拟录取并且 hx_file 有文件，则显示下载链接；否则显示 '-'
-        """
-        if obj.is_giveup == True:
-
-            # 获取下载地址
-            response_data_signature = self.get_fileid_download_url(obj.giveup_signature_table)
-            if response_data_signature.get("errcode") == 0:
-                signature_download_url = response_data_signature['file_list'][0]['download_url']
-                print(f"放弃说明表下载地址: {signature_download_url}")
-            else:
-                return Response({'message': '获取放弃说明表下载地址失败'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
+        if obj.is_giveup and obj.giveup_signature_table:
             return format_html(
-                "<a href='{}' download>下载</a>", signature_download_url
+                '<button class="download-btn" data-file-id="{}" data-type="fq">下载弃选表</button>'
+                '<span class="download-status" style="display:none;"></span>',
+                obj.giveup_signature_table
             )
         return '未完成'
 
     def download_hx_file(self, obj):
-        """
-        若学生已放弃拟录取并且 hx_file 有文件，则显示下载链接；否则显示 '-'
-        """
-        if obj.is_selected == True and obj.signature_table_review_status == 1:
-
-            # 获取下载地址
-            response_data_signature = self.get_fileid_download_url(obj.signature_table)
-            if response_data_signature.get("errcode") == 0:
-                signature_download_url = response_data_signature['file_list'][0]['download_url']
-                print(f"签名图片下载地址: {signature_download_url}")
-            else:
-                return Response({'message': '获取签名图片下载地址失败'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
+        if obj.is_selected and obj.signature_table_review_status == 1 and obj.signature_table:
             return format_html(
-                "<a href='{}' download>下载</a>", signature_download_url
+                '<button class="download-btn" data-file-id="{}" data-type="hx">下载互选表</button>'
+                '<span class="download-status" style="display:none;"></span>',
+                obj.signature_table
             )
         return '未完成'
 

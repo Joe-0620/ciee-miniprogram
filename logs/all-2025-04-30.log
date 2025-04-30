@@ -1,2 +1,62 @@
 [2025-04-30 01:23:45,734] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
 [2025-04-30 01:23:46,446] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-04-30 01:53:08,278] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-04-30 01:53:17,099] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-04-30 01:57:25,986] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-04-30 01:57:33,168] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-04-30 01:57:49,682] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-04-30 01:58:09,406] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 67050
+[2025-04-30 01:58:09,706] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-04-30 01:58:21,581] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 96424
+[2025-04-30 01:58:32,306] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 96424
+[2025-04-30 01:58:32,595] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-04-30 01:59:51,785] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-04-30 02:00:18,010] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-04-30 02:01:46,181] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-04-30 02:01:51,544] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-04-30 02:02:19,051] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-04-30 02:02:22,367] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 67050
+[2025-04-30 02:02:22,656] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-04-30 02:02:28,072] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 116051
+[2025-04-30 02:02:28,091] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /static/admin/js/student_download.js HTTP/1.1" 404 1844
+[2025-04-30 02:02:28,336] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-04-30 02:02:37,472] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 116051
+[2025-04-30 02:02:37,492] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /static/admin/js/student_download.js HTTP/1.1" 404 1844
+[2025-04-30 02:02:37,741] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-04-30 02:02:47,210] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 116051
+[2025-04-30 02:02:47,235] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /static/admin/js/student_download.js HTTP/1.1" 404 1844
+[2025-04-30 02:02:47,505] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-04-30 02:03:39,243] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 116051
+[2025-04-30 02:03:39,264] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /static/admin/js/student_download.js HTTP/1.1" 404 1844
+[2025-04-30 02:03:39,511] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-04-30 02:05:27,065] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 67050
+[2025-04-30 02:05:27,370] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-04-30 02:05:32,589] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 118980
+[2025-04-30 02:05:32,608] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /static/admin/js/student_download.js HTTP/1.1" 404 1844
+[2025-04-30 02:05:32,860] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-04-30 02:05:37,935] [log.py:224] [log:log_response] [WARNING]- Not Found: /admin/get-download-url/
+[2025-04-30 02:05:37,936] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /admin/get-download-url/ HTTP/1.1" 404 6404
+[2025-04-30 02:05:40,775] [log.py:224] [log:log_response] [WARNING]- Not Found: /admin/get-download-url/
+[2025-04-30 02:05:40,776] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /admin/get-download-url/ HTTP/1.1" 404 6404
+[2025-04-30 02:08:16,033] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 118980
+[2025-04-30 02:08:16,057] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /static/admin/js/student_download.js HTTP/1.1" 404 1844
+[2025-04-30 02:08:16,307] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-04-30 02:08:18,489] [log.py:224] [log:log_response] [WARNING]- Not Found: /admin/get-download-url/
+[2025-04-30 02:08:18,490] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /admin/get-download-url/ HTTP/1.1" 404 6404
+[2025-04-30 02:08:19,630] [log.py:224] [log:log_response] [WARNING]- Not Found: /admin/get-download-url/
+[2025-04-30 02:08:19,631] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /admin/get-download-url/ HTTP/1.1" 404 6404
+[2025-04-30 02:08:23,101] [log.py:224] [log:log_response] [WARNING]- Not Found: /admin/get-download-url/
+[2025-04-30 02:08:23,102] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /admin/get-download-url/ HTTP/1.1" 404 6404
+[2025-04-30 02:08:24,234] [log.py:224] [log:log_response] [WARNING]- Not Found: /admin/get-download-url/
+[2025-04-30 02:08:24,235] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /admin/get-download-url/ HTTP/1.1" 404 6404
+[2025-04-30 02:10:03,395] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-04-30 02:10:11,437] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 118919
+[2025-04-30 02:10:11,722] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-04-30 02:10:15,310] [log.py:224] [log:log_response] [WARNING]- Not Found: /admin/get-download-url/
+[2025-04-30 02:10:15,310] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /admin/get-download-url/ HTTP/1.1" 404 6404
+[2025-04-30 02:10:17,431] [log.py:224] [log:log_response] [WARNING]- Not Found: /admin/get-download-url/
+[2025-04-30 02:10:17,432] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /admin/get-download-url/ HTTP/1.1" 404 6404
+[2025-04-30 02:10:18,897] [log.py:224] [log:log_response] [WARNING]- Not Found: /admin/get-download-url/
+[2025-04-30 02:10:18,897] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /admin/get-download-url/ HTTP/1.1" 404 6404
+[2025-04-30 02:10:19,869] [log.py:224] [log:log_response] [WARNING]- Not Found: /admin/get-download-url/
+[2025-04-30 02:10:19,869] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /admin/get-download-url/ HTTP/1.1" 404 6404

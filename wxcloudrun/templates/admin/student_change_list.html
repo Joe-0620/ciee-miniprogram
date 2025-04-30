@@ -1,5 +1,85 @@
 <!-- templates/admin/student_change_list.html -->
 {% extends "admin/change_list.html" %}
+
+{% block extrahead %}
+{{ block.super }}
+<script>
+// 这里直接放置你的student_download.js代码
+document.addEventListener('DOMContentLoaded', function() {
+    // 为所有下载按钮添加点击事件
+    document.querySelectorAll('.download-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const fileId = this.getAttribute('data-file-id');
+            const type = this.getAttribute('data-type');
+            const statusSpan = this.nextElementSibling;
+            
+            // 显示加载状态
+            this.disabled = true;
+            statusSpan.style.display = 'inline';
+            statusSpan.textContent = '获取下载链接中...';
+            
+            // 调用Django后台API获取下载地址
+            fetch('/admin/get-download-url/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: JSON.stringify({
+                    file_id: fileId
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.download_url) {
+                    statusSpan.textContent = '开始下载...';
+                    // 创建隐藏的iframe触发下载
+                    const iframe = document.createElement('iframe');
+                    iframe.style.display = 'none';
+                    iframe.src = data.download_url;
+                    document.body.appendChild(iframe);
+                    
+                    // 下载完成后移除iframe
+                    setTimeout(() => {
+                        document.body.removeChild(iframe);
+                        statusSpan.textContent = '下载完成';
+                        setTimeout(() => {
+                            statusSpan.style.display = 'none';
+                            button.disabled = false;
+                        }, 2000);
+                    }, 1000);
+                } else {
+                    statusSpan.textContent = '获取下载链接失败';
+                    button.disabled = false;
+                }
+            })
+            .catch(error => {
+                statusSpan.textContent = '请求失败';
+                button.disabled = false;
+                console.error('Error:', error);
+            });
+        });
+    });
+});
+
+// 辅助函数获取CSRF token
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+</script>
+{% endblock %}
+
 {% block content_title %}
     <h1>学生管理</h1>
     <div style="margin-bottom: 20px;">

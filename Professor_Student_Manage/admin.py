@@ -269,7 +269,7 @@ class StudentAdmin(admin.ModelAdmin):
                         subject_number = str(subject_number).zfill(6)
                         subject_name = row["专业"]
 
-                        subject = Subject.objects.filter(subject_code=subject_number).first()
+                        
                         # print(subject)
 
                         candidate_number = str(row["考生编号"]).strip()
@@ -280,6 +280,11 @@ class StudentAdmin(admin.ModelAdmin):
                         final_rank = row["综合排名"]
 
                         postgraduate_type = int(row["研究生类型"])  # 需转换为整数
+
+                        if postgraduate_type == 3:
+                            subject = Subject.objects.filter(subject_code=subject_number, subject_type=2).first()
+                        else:
+                            subject = Subject.objects.filter(subject_code=subject_number).first()
 
                         student_type = int(row["学生类型"])  # 需转换为整数
 

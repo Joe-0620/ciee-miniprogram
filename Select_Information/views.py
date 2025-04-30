@@ -7,6 +7,7 @@ from rest_framework.authtoken.models import Token
 from django.contrib.auth import authenticate
 from .serializers import StudentProfessorChoiceSerializer, SelectionTimeSerializer
 from Professor_Student_Manage.models import Student, Professor, WeChatAccount, ProfessorDoctorQuota
+from Enrollment_Manage.models import Subject
 from Select_Information.models import StudentProfessorChoice, SelectionTime, ReviewRecord
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
@@ -28,6 +29,7 @@ import logging
 from .models import ReviewRecord
 from .serializers import ReviewRecordSerializer, ReviewRecordUpdateSerializer
 
+logger = logging.getLogger(__name__)
 
 
 class GetSelectionTimeView(generics.ListAPIView):
@@ -57,7 +59,40 @@ class SelectInformationView(APIView):
         elif usertype == 'professor':
             try:
                 professor = user.professor
-                enroll_subjects = professor.enroll_subject.all()
+                # master_subjects = professor.enroll_subject.all()
+
+                # print(master_subjects)
+
+                # # 获取博士招生专业（从 ProfessorDoctorQuota）
+                # doctor_subjects = Subject.objects.filter(
+                #     professordoctorquota__professor=professor
+                # ).distinct()
+
+                # print(doctor_subjects)
+
+                # # 合并硕士和博士专业，去重
+                # enroll_subjects = master_subjects | doctor_subjects
+                # enroll_subjects = enroll_subjects.distinct()
+
+                # print(enroll_subjects)
+
+                # 获取硕士专业 ID（允许重复）
+                master_subject_ids = list(professor.enroll_subject.all().values_list('id', flat=True))
+                logger.debug(f"Master subject IDs: {master_subject_ids}")
+
+                # 获取博士专业 ID（允许重复）
+                doctor_subject_ids = list(ProfessorDoctorQuota.objects.filter(
+                    professor=professor
+                ).values_list('subject_id', flat=True))
+                logger.debug(f"Doctor subject IDs: {doctor_subject_ids}")
+
+                # 合并 ID 列表，保留重复
+                all_subject_ids = master_subject_ids + doctor_subject_ids
+                logger.debug(f"All subject IDs (with duplicates): {all_subject_ids}")
+
+                # 查询所有专业（去重，仅为 subject__in 查询）
+                enroll_subjects = Subject.objects.filter(id__in=all_subject_ids)
+                logger.debug(f"Enroll subjects: {list(enroll_subjects.values('id', 'subject_name'))}")
 
                 # Get all students who haven't chosen a professor yet and are in the subjects the professor enrolls
                 students_without_professor = Student.objects.filter(is_selected=False, subject__in=enroll_subjects)

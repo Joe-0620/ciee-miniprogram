@@ -773,3 +773,23 @@ Traceback (most recent call last):
     return JsonResponse({'error': '获取下载 URL 失败'}, status=500)
 NameError: name 'JsonResponse' is not defined
 [2025-04-30 03:41:28,932] [basehttp.py:161] [basehttp:log_message] [ERROR]- "POST /admin/Professor_Student_Manage/student/get-download-url/ HTTP/1.1" 500 76479
+[2025-04-30 03:48:44,651] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-04-30 03:48:49,590] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /admin/Professor_Student_Manage/student/get-download-url/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/utils/decorators.py", line 130, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/cache.py", line 44, in _wrapped_view_func
+    response = view_func(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/admin/sites.py", line 232, in inner
+    return view(request, *args, **kwargs)
+  File "/app/Professor_Student_Manage/admin.py", line 424, in get_download_url_view
+    return JsonResponse({'error': '获取下载 URL 失败'}, status=500)
+NameError: name 'JsonResponse' is not defined
+[2025-04-30 03:48:49,591] [basehttp.py:161] [basehttp:log_message] [ERROR]- "POST /admin/Professor_Student_Manage/student/get-download-url/ HTTP/1.1" 500 76479
+[2025-04-30 03:49:27,361] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-04-30 03:49:32,930] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /admin/Professor_Student_Manage/student/get-download-url/
+[2025-04-30 03:49:32,931] [basehttp.py:161] [basehttp:log_message] [ERROR]- "POST /admin/Professor_Student_Manage/student/get-download-url/ HTTP/1.1" 500 54

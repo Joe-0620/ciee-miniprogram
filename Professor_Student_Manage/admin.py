@@ -13,6 +13,7 @@ from django.contrib.auth.models import User
 # Register your models here.
 from .models import Student, Professor, WeChatAccount, ProfessorDoctorQuota
 from Enrollment_Manage.models import Subject
+from django.http import JsonResponse
 
 class ProfessorDoctorQuotaInline(admin.TabularInline):
     model = ProfessorDoctorQuota
@@ -242,6 +243,10 @@ class StudentAdmin(admin.ModelAdmin):
             path('import-students/', self.admin_site.admin_view(self.import_students_view), name='import_students'),
             path('get-download-url/', self.admin_site.admin_view(self.get_download_url_view), name='get_download_url'),
         ]
+
+        # 调试：打印所有 URL 模式
+        print("Custom URLs:", custom_urls)
+        print("All URLs:", urls)
         return custom_urls + urls
 
     # 处理CSV文件上传和学生创建的视图

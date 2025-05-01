@@ -793,3 +793,29 @@ NameError: name 'JsonResponse' is not defined
 [2025-04-30 03:49:27,361] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
 [2025-04-30 03:49:32,930] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /admin/Professor_Student_Manage/student/get-download-url/
 [2025-04-30 03:49:32,931] [basehttp.py:161] [basehttp:log_message] [ERROR]- "POST /admin/Professor_Student_Manage/student/get-download-url/ HTTP/1.1" 500 54
+[2025-04-30 03:54:01,503] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-04-30 03:55:14,402] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-04-30 03:55:22,072] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 99482
+[2025-04-30 03:55:22,428] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-04-30 03:55:26,667] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /admin/Professor_Student_Manage/student/get-download-url/
+[2025-04-30 03:55:26,668] [basehttp.py:161] [basehttp:log_message] [ERROR]- "POST /admin/Professor_Student_Manage/student/get-download-url/ HTTP/1.1" 500 54
+[2025-04-30 03:57:01,963] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 67039
+[2025-04-30 03:57:02,262] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-04-30 03:57:04,480] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professordoctorquota/ HTTP/1.1" 200 24498
+[2025-04-30 03:57:04,736] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-04-30 03:57:09,445] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 67039
+[2025-04-30 03:57:09,750] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-04-30 03:57:14,472] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professordoctorquota/ HTTP/1.1" 200 24498
+[2025-04-30 03:57:14,758] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-04-30 03:58:12,959] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Select_Information/selectiontime/ HTTP/1.1" 200 10620
+[2025-04-30 03:58:13,235] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-04-30 03:58:14,848] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Select_Information/selectiontime/2/change/ HTTP/1.1" 200 11335
+[2025-04-30 03:58:14,863] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/admin/DateTimeShortcuts.js HTTP/1.1" 200 19634
+[2025-04-30 03:58:14,865] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/calendar.js HTTP/1.1" 200 8466
+[2025-04-30 03:58:15,124] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-04-30 03:58:15,155] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-calendar.svg HTTP/1.1" 200 1086
+[2025-04-30 03:58:15,155] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-clock.svg HTTP/1.1" 200 677
+[2025-04-30 03:58:35,482] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 67039
+[2025-04-30 03:58:35,775] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-04-30 03:59:03,677] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 99482
+[2025-04-30 03:59:03,941] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398

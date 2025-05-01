@@ -245,8 +245,8 @@ class StudentAdmin(admin.ModelAdmin):
         ]
 
         # 调试：打印所有 URL 模式
-        print("Custom URLs:", custom_urls)
-        print("All URLs:", urls)
+        # print("Custom URLs:", custom_urls)
+        # print("All URLs:", urls)
         return custom_urls + urls
 
     # 处理CSV文件上传和学生创建的视图
@@ -412,6 +412,7 @@ class StudentAdmin(admin.ModelAdmin):
         """
         AJAX 视图，用于根据文件 ID 获取下载 URL
         """
+        print("url访问成功")
         if request.method == 'POST':
             file_id = request.POST.get('file_id')
             if not file_id:

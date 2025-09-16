@@ -1,3 +1,4 @@
+# Professor_Student_Manage.models
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
@@ -190,6 +191,8 @@ class Student(models.Model):
     secondary_rank = models.PositiveIntegerField(null=True, blank=True)
     # 总排名
     final_rank = models.PositiveIntegerField(null=True, blank=True)
+    # 新增：候补状态
+    is_alternate = models.BooleanField(default=False, verbose_name="是否候补")
 
     class Meta:
         verbose_name = "学生"  # 设置模型的显示名称

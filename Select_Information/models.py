@@ -1,3 +1,4 @@
+# Select_Information.models
 from django.db import models
 from Professor_Student_Manage.models import Student, Professor
 from django.utils import timezone

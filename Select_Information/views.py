@@ -281,6 +281,7 @@ class ProfessorChooseStudentView(APIView):
                         subject=student.subject,
                         remaining_quota__gt=0
                     )
+                    # 需要修改逻辑
                 except ProfessorDoctorQuota.DoesNotExist:
                     return Response(
                         {'message': '学生报考专业不在您的博士招生专业中'},

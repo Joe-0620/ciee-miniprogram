@@ -182,15 +182,15 @@ class Student(models.Model):
     resume = models.CharField(max_length=200, null=True, blank=True, verbose_name="简历")
     phone_number = models.CharField(max_length=20, null=True, blank=True, verbose_name="手机号")
     # 初试成绩
-    initial_exam_score = models.FloatField(null=True, blank=True)
+    initial_exam_score = models.FloatField(null=True, blank=True, verbose_name="初试成绩")
     # 复试成绩
-    secondary_exam_score = models.FloatField(null=True, blank=True)
+    secondary_exam_score = models.FloatField(null=True, blank=True, verbose_name="复试成绩")
     # 初试排名
-    initial_rank = models.PositiveIntegerField(null=True, blank=True)
+    initial_rank = models.PositiveIntegerField(null=True, blank=True, verbose_name="初试排名")
     # 复试排名
-    secondary_rank = models.PositiveIntegerField(null=True, blank=True)
+    secondary_rank = models.PositiveIntegerField(null=True, blank=True, verbose_name="复试排名")
     # 总排名
-    final_rank = models.PositiveIntegerField(null=True, blank=True)
+    final_rank = models.PositiveIntegerField(null=True, blank=True, verbose_name="总排名")
     # 新增：候补状态
     is_alternate = models.BooleanField(default=False, verbose_name="是否候补")
 

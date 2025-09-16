@@ -220,10 +220,12 @@ class StudentAdmin(admin.ModelAdmin):
         ("学生信息更改", {"fields": ["name", "candidate_number", "student_type", "subject", 
                                "postgraduate_type", "study_mode", "resume", "avatar", "phone_number",
                                "initial_exam_score", "initial_rank", "secondary_exam_score",
-                               "secondary_rank", "final_rank", "signature_table_student_signatured", "signature_table_professor_signatured", "signature_table_review_status", "is_selected", "is_giveup"]}),
+                               "secondary_rank", "final_rank", "signature_table_student_signatured", 
+                               "signature_table_professor_signatured", "signature_table_review_status", 
+                               "is_selected", "is_giveup", "is_alternate"]}),
     ]
     list_display = ["candidate_number", "name", "subject", "study_mode", "student_type", "postgraduate_type", "is_selected", 
-                    "is_giveup", "download_hx_file", "download_fq_file"]
+                    "is_giveup", "is_alternate", "download_hx_file", "download_fq_file"]
     list_filter = ["subject"]
     search_fields = ["name"]
     actions = ['reset_password_to_exam_id']  # 添加自定义动作

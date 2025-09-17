@@ -108,7 +108,6 @@ class ProfessorDoctorQuota(models.Model):
     def __str__(self):
         return f"{self.professor.name} - {self.subject.subject_name} - 剩余: {self.remaining_quota}"
 
-
 # 信号：当创建导师或博士专业时，初始化所有博士专业名额记录
 @receiver(post_save, sender=Professor)
 @receiver(post_save, sender=Subject)
@@ -130,6 +129,87 @@ def initialize_doctor_quotas(sender, instance, created, **kwargs):
                 professor=professor,
                 subject=instance,
                 defaults={'total_quota': 0, 'used_quota': 0, 'remaining_quota': 0}
+            )
+
+class ProfessorMasterQuota(models.Model):
+    """
+    导师硕士专业名额（按地区拆分）
+    """
+    professor = models.ForeignKey(
+        Professor,
+        on_delete=models.CASCADE,
+        related_name='master_quotas',
+        verbose_name="导师"
+    )
+    subject = models.ForeignKey(
+        Subject,
+        on_delete=models.CASCADE,
+        limit_choices_to={'subject_type__in': [0, 1]},  # 限制为硕士专业
+        verbose_name="硕士专业"
+    )
+
+    # 分配名额
+    beijing_quota = models.IntegerField(default=0, verbose_name="北京可用名额")
+    yantai_quota = models.IntegerField(default=0, verbose_name="烟台可用名额")
+
+    # 剩余名额（只读，系统计算）
+    beijing_remaining_quota = models.IntegerField(default=0, verbose_name="北京剩余名额")
+    yantai_remaining_quota = models.IntegerField(default=0, verbose_name="烟台剩余名额")
+
+    # 总招生名额（只读，系统计算）
+    total_quota = models.IntegerField(default=0, verbose_name="硕士总招生名额")
+
+    def save(self, *args, **kwargs):
+        # 自动计算总数
+        self.total_quota = self.beijing_quota + self.yantai_quota
+
+        # 初始化时：剩余名额 = 可用名额
+        if not self.pk:  # 新建对象
+            self.beijing_remaining_quota = self.beijing_quota
+            self.yantai_remaining_quota = self.yantai_quota
+        else:
+            # 如果剩余名额大于可用名额，自动修正
+            if self.beijing_remaining_quota > self.beijing_quota:
+                self.beijing_remaining_quota = self.beijing_quota
+            if self.yantai_remaining_quota > self.yantai_quota:
+                self.yantai_remaining_quota = self.yantai_quota
+
+        super().save(*args, **kwargs)
+
+    class Meta:
+        verbose_name = "导师硕士专业名额"
+        verbose_name_plural = "导师硕士专业名额"
+        unique_together = [['professor', 'subject']]
+
+    def __str__(self):
+        return f"{self.professor.name} - {self.subject.subject_name} (总={self.total_quota}, 北京剩余={self.beijing_remaining_quota}, 烟台剩余={self.yantai_remaining_quota})"
+
+
+# ========== 信号：新增导师或硕士专业时，自动初始化配额 ==========
+@receiver(post_save, sender=Professor)
+@receiver(post_save, sender=Subject)
+def initialize_master_quotas(sender, instance, created, **kwargs):
+    """
+    当新增导师或硕士专业时，自动初始化对应的名额记录
+    """
+    if sender == Professor and created:
+        # 新建导师时，为所有硕士专业创建配额记录
+        master_subjects = Subject.objects.filter(subject_type__in=[0, 1])
+        for subject in master_subjects:
+            ProfessorMasterQuota.objects.get_or_create(
+                professor=instance,
+                subject=subject,
+                defaults={'total_quota': 0}
+            )
+
+    elif sender == Subject and created and instance.subject_type in [0, 1]:
+        # 新建硕士专业时，为所有导师创建配额记录
+        professors = Professor.objects.all()
+        for professor in professors:
+            ProfessorMasterQuota.objects.get_or_create(
+                professor=professor,
+                subject=instance,
+                defaults={'total_quota': 0}
             )
 
 

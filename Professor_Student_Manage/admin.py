@@ -1,3 +1,4 @@
+# Professor_Student_Manage/admin.py
 from django.contrib import admin
 from django import forms
 from django.utils.html import format_html
@@ -11,7 +12,7 @@ from io import TextIOWrapper
 from django.contrib.auth.models import User
 
 # Register your models here.
-from .models import Student, Professor, WeChatAccount, ProfessorDoctorQuota
+from .models import Student, Professor, WeChatAccount, ProfessorDoctorQuota, ProfessorMasterQuota
 from Enrollment_Manage.models import Subject
 from django.http import JsonResponse
 
@@ -27,6 +28,23 @@ class ProfessorDoctorQuotaAdmin(admin.ModelAdmin):
     list_display = ['professor', 'subject', 'total_quota', 'used_quota', 'remaining_quota']
     list_filter = ['professor', 'subject']
     search_fields = ['professor__name', 'subject__subject_name']
+
+# ========= 新增硕士专业内联 =========
+class ProfessorMasterQuotaInline(admin.TabularInline):
+    model = ProfessorMasterQuota
+    extra = 0
+    fields = ['subject', 'beijing_quota', 'beijing_remaining_quota',
+              'yantai_quota', 'yantai_remaining_quota', 'total_quota']
+    readonly_fields = ['beijing_remaining_quota', 'yantai_remaining_quota', 'total_quota']
+    can_delete = False
+
+@admin.register(ProfessorMasterQuota)
+class ProfessorMasterQuotaAdmin(admin.ModelAdmin):
+    list_display = ['professor', 'subject', 'beijing_quota', 'beijing_remaining_quota',
+                    'yantai_quota', 'yantai_remaining_quota', 'total_quota']
+    list_filter = ['professor', 'subject']
+    search_fields = ['professor__name', 'subject__subject_name']
+    readonly_fields = ['beijing_remaining_quota', 'yantai_remaining_quota', 'total_quota']
 
 
 @admin.action(description="重置导师指定类型的名额")
@@ -73,7 +91,7 @@ class ProfessorAdmin(admin.ModelAdmin):
     readonly_fields = ["remaining_quota"]
     actions = [reset_quota, reset_proposed_quota_approved, 'reset_password_to_teacher_id']
     change_list_template = 'admin/professor_change_list.html'  # 自定义列表页面模板
-    inlines = [ProfessorDoctorQuotaInline]  # 内联显示博士专业名额
+    inlines = [ProfessorMasterQuotaInline, ProfessorDoctorQuotaInline]  # 内联显示硕士、博士专业名额
 
     def reset_password_to_teacher_id(self, request, queryset):
         """

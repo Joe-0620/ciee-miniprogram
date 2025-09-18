@@ -40,9 +40,9 @@ class ProfessorMasterQuotaInline(admin.TabularInline):
 
 @admin.register(ProfessorMasterQuota)
 class ProfessorMasterQuotaAdmin(admin.ModelAdmin):
-    list_display = ['professor', 'subject', 'beijing_quota', 'beijing_remaining_quota',
-                    'yantai_quota', 'yantai_remaining_quota', 'total_quota']
-    list_filter = ['professor', 'subject']
+    list_display = ['professor', 'subject', 'total_quota', 'beijing_quota', 'beijing_remaining_quota',
+                    'yantai_quota', 'yantai_remaining_quota']
+    list_filter = ['subject']
     search_fields = ['professor__name', 'subject__subject_name']
     readonly_fields = ['beijing_remaining_quota', 'yantai_remaining_quota', 'total_quota']
 
@@ -167,36 +167,83 @@ class ProfessorAdmin(admin.ModelAdmin):
                     # 读取 CSV 文件
                     csv_file_wrapper = TextIOWrapper(csv_file, encoding='utf-8-sig')
                     reader = csv.DictReader(csv_file_wrapper)
-                    # print("reader.fieldnames: ", reader.fieldnames)
-                    # 检查列名是否正确
-                    required_columns = ["工号", "姓名", "学术学位硕士", "专硕北京", "专硕烟台", "博士"]
-                    if not all(column in reader.fieldnames for column in required_columns):
-                        self.message_user(request, "CSV 文件列名不正确，请确保包含：工号、姓名、学术学位硕士、专硕北京、专硕烟台、博士", level='error')
-                        return redirect('admin:Professor_Student_Manage_professor_changelist')
 
-                    # 更新导师名额
                     success_count = 0
                     for row in reader:
-                        print(row)
-                        teacher_identity_id = row["工号"]
-                        teacher_identity_id = str(teacher_identity_id).zfill(5)
+                        # print(row)
+                        teacher_identity_id = str(row["工号"]).zfill(5)  # 工号补齐 5 位
                         try:
                             professor = Professor.objects.get(teacher_identity_id=teacher_identity_id)
-                            professor.academic_quota = int(row["学术学位硕士"])
-                            professor.professional_quota = int(row["专硕北京"])
-                            professor.professional_yt_quota = int(row["专硕烟台"])
-                            professor.doctor_quota = int(row["博士"])
-                            professor.save()
-                            success_count += 1
                         except Professor.DoesNotExist:
                             self.message_user(request, f"工号 {teacher_identity_id} 对应的导师不存在", level='warning')
                             continue
-                        except ValueError:
-                            self.message_user(request, f"工号 {teacher_identity_id} 的名额数据格式不正确", level='warning')
-                            continue
 
-                    self.message_user(request, f"成功更新 {success_count} 位导师的名额信息")
+                        # 循环读取 5 个招生学科
+                        for i in range(1, 6):
+                            subject_name = row.get(f"招生学科{i}", "").strip()
+                            subject_code = str(row.get(f"学科{i}代码", "")).strip()
+                            subject_type = row.get(f"专业类型{i}", "").strip()
+                            bj_quota = row.get(f"北京招生名额{i}", "").strip()
+                            yt_quota = row.get(f"烟台招生名额{i}", "").strip()
+                            # print(bj_quota)
+                            # print(yt_quota)
+
+
+                            # 跳过空或无效学科
+                            if not subject_name or subject_name == "无":
+                                continue
+
+                            # 学科代码补齐为 6 位
+                            if subject_code and len(subject_code) == 5:
+                                subject_code = subject_code.zfill(6)
+
+                            subject = Subject.objects.filter(subject_code=subject_code).first()
+                            if not subject:
+                                self.message_user(request, f"学科代码 {subject_code} 不存在，跳过", level='warning')
+                                continue
+
+                            # 转换为整数，避免空值报错
+                            try:
+                                bj_quota = int(bj_quota) if bj_quota else 0
+                                yt_quota = int(yt_quota) if yt_quota else 0
+                                # print(subject)
+                                # print(bj_quota)
+                                # print(yt_quota)
+                            except ValueError:
+                                self.message_user(request, f"导师 {professor.name} 的学科 {subject_code} 名额数据格式不正确", level='warning')
+                                continue
+
+                            # # 处理学硕（只能北京招生）
+                            # if subject_type == "学硕":
+                            #     yt_quota = 0
+
+                            # 获取或创建配额
+                            quota_obj, created = ProfessorMasterQuota.objects.get_or_create(
+                                professor=professor,
+                                subject=subject,
+                                defaults={
+                                    'beijing_quota': bj_quota,
+                                    'yantai_quota': yt_quota,
+                                    'beijing_remaining_quota': bj_quota,
+                                    'yantai_remaining_quota': yt_quota,
+                                    'total_quota': bj_quota + yt_quota,
+                                }
+                            )
+
+                            if not created:
+                                # 更新数据
+                                quota_obj.beijing_quota = bj_quota
+                                quota_obj.yantai_quota = yt_quota
+                                quota_obj.beijing_remaining_quota = bj_quota
+                                quota_obj.yantai_remaining_quota = yt_quota
+                                quota_obj.total_quota = bj_quota + yt_quota
+                                quota_obj.save()
+
+                        success_count += 1
+
+                    self.message_user(request, f"成功更新 {success_count} 位导师的硕士招生名额")
                     return redirect('admin:Professor_Student_Manage_professor_changelist')
+
                 except Exception as e:
                     self.message_user(request, f"解析 CSV 文件时出错: {str(e)}", level='error')
                     return redirect('admin:Professor_Student_Manage_professor_changelist')
@@ -206,7 +253,7 @@ class ProfessorAdmin(admin.ModelAdmin):
         context = {
             'form': form,
             'opts': self.model._meta,
-            'title': '一键导入导师名额',
+            'title': '一键导入导师硕士名额',
         }
         return render(request, 'admin/import_quota.html', context)
 
@@ -501,5 +548,3 @@ class WeChatAccountAdmin(admin.ModelAdmin):
 admin.site.register(Student, StudentAdmin)
 admin.site.register(Professor, ProfessorAdmin)
 admin.site.register(WeChatAccount, WeChatAccountAdmin)
-
-

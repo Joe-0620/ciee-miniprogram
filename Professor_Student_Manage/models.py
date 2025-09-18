@@ -109,26 +109,23 @@ class ProfessorDoctorQuota(models.Model):
         return f"{self.professor.name} - {self.subject.subject_name} - 剩余: {self.remaining_quota}"
 
 # 信号：当创建导师或博士专业时，初始化所有博士专业名额记录
-@receiver(post_save, sender=Professor)
+# @receiver(post_save, sender=Professor)
 @receiver(post_save, sender=Subject)
 def initialize_doctor_quotas(sender, instance, created, **kwargs):
-    if sender == Professor and created:
-        # 新建导师时，为所有博士专业创建名额记录
-        doctor_subjects = Subject.objects.filter(subject_type=2)
-        for subject in doctor_subjects:
-            ProfessorDoctorQuota.objects.get_or_create(
-                professor=instance,
-                subject=subject,
-                defaults={'total_quota': 0, 'used_quota': 0, 'remaining_quota': 0}
-            )
-    elif sender == Subject and created and instance.subject_type == 2:
-        # 新建博士专业时，为所有导师创建名额记录
+    """
+    当新增博士专业时，自动为所有导师创建对应的博士配额记录
+    """
+    if created and instance.subject_type == 2:  # 限制为博士专业
         professors = Professor.objects.all()
         for professor in professors:
             ProfessorDoctorQuota.objects.get_or_create(
                 professor=professor,
                 subject=instance,
-                defaults={'total_quota': 0, 'used_quota': 0, 'remaining_quota': 0}
+                defaults={
+                    'total_quota': 0,
+                    'used_quota': 0,
+                    'remaining_quota': 0
+                }
             )
 
 class ProfessorMasterQuota(models.Model):
@@ -186,30 +183,26 @@ class ProfessorMasterQuota(models.Model):
 
 
 # ========== 信号：新增导师或硕士专业时，自动初始化配额 ==========
-@receiver(post_save, sender=Professor)
+# @receiver(post_save, sender=Professor)
 @receiver(post_save, sender=Subject)
 def initialize_master_quotas(sender, instance, created, **kwargs):
     """
-    当新增导师或硕士专业时，自动初始化对应的名额记录
+    当新增硕士专业时，自动为所有导师创建对应的硕士配额记录
+    剩余名额 = 可用名额
     """
-    if sender == Professor and created:
-        # 新建导师时，为所有硕士专业创建配额记录
-        master_subjects = Subject.objects.filter(subject_type__in=[0, 1])
-        for subject in master_subjects:
-            ProfessorMasterQuota.objects.get_or_create(
-                professor=instance,
-                subject=subject,
-                defaults={'total_quota': 0}
-            )
-
-    elif sender == Subject and created and instance.subject_type in [0, 1]:
-        # 新建硕士专业时，为所有导师创建配额记录
+    if created and instance.subject_type in [0, 1]:  # 限制为硕士专业
         professors = Professor.objects.all()
         for professor in professors:
             ProfessorMasterQuota.objects.get_or_create(
                 professor=professor,
                 subject=instance,
-                defaults={'total_quota': 0}
+                defaults={
+                    'beijing_quota': 0,
+                    'yantai_quota': 0,
+                    'beijing_remaining_quota': 0,
+                    'yantai_remaining_quota': 0,
+                    'total_quota': 0
+                }
             )
 
 

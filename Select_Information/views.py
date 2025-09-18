@@ -409,6 +409,327 @@ class StudentChooseProfessorView(APIView):
         if response_data.get("errcode") != 0:
             print(f"通知发送失败: {response_data.get('errmsg')}") 
 
+# class ProfessorChooseStudentView(APIView):
+#     permission_classes = [IsAuthenticated]
+
+#     def post(self, request):
+#         professor = request.user.professor
+#         student_id = request.data.get('student_id')
+#         operation = request.data.get('operation')
+        
+#         try:
+#             # 查询学生是否存在
+#             student = Student.objects.get(id=student_id)
+
+#             # 若学生已经完成导师选择
+#             if student.is_selected:
+#                 return Response({'message': '该学生已完成导师选择'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+            
+#             latest_choice = StudentProfessorChoice.objects.filter(student=student, professor=professor).latest('submit_date')
+
+#             # print(latest_choice)
+#             if latest_choice.status != 3:  # 状态不是"请等待"
+#                 return Response({'message': '不存在等待审核的记录'}, status=status.HTTP_409_CONFLICT)
+            
+#             # 验证专业匹配
+#             if student.postgraduate_type == 3:  # 博士
+#                 try:
+#                     quota = ProfessorDoctorQuota.objects.get(
+#                         professor=professor,
+#                         subject=student.subject,
+#                         remaining_quota__gt=0
+#                     )
+#                     # 需要修改逻辑
+#                 except ProfessorDoctorQuota.DoesNotExist:
+#                     return Response(
+#                         {'message': '学生报考专业不在您的博士招生专业中'},
+#                         status=status.HTTP_400_BAD_REQUEST
+#                     )
+#             else:  # 硕士
+#                 if student.subject not in professor.enroll_subject.all():
+#                     return Response(
+#                         {'message': '学生报考专业不在您的硕士招生专业中'},
+#                         status=status.HTTP_400_BAD_REQUEST
+#                     )
+
+#             if operation == '1':  # 同意请求
+#                 if self.has_quota(professor, student):
+#                     # 更新选择状态
+#                     latest_choice.status = 1  # 同意请求
+#                     latest_choice.chosen_by_professor = True
+#                     latest_choice.finish_time = timezone.now()
+#                     latest_choice.save()
+
+#                     student.is_selected = True
+#                     student.save()
+#                     self.update_quota(professor, student)
+
+#                     # print("done!")
+#                     # 生成 PDF 并上传
+#                     self.generate_and_upload_pdf(student, professor)
+
+#                     self.send_notification(student, 'accepted')
+#                     return Response({'message': '操作成功'}, status=status.HTTP_202_ACCEPTED)
+#                 else:
+#                     return Response({'message': '名额已满，无法选择更多学生'}, status=status.HTTP_403_FORBIDDEN)
+
+#             elif operation == '2':  # 拒绝请求
+#                 latest_choice.status = 2  # 拒绝请求
+#                 latest_choice.finish_time = timezone.now()
+#                 latest_choice.save()
+
+#                 self.send_notification(student, 'rejected')
+#                 return Response({'message': '操作成功'}, status=status.HTTP_200_OK)
+#             else:
+#                 return Response({'message': '操作不存在'}, status=status.HTTP_400_BAD_REQUEST)
+#         except Student.DoesNotExist:
+#             return Response({'message': '学生不存在'}, status=status.HTTP_404_NOT_FOUND)
+#         except Exception as e:
+#             return Response({'message': '服务器错，请稍后再试'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+#     def generate_and_upload_pdf(self, student, professor):
+#         """生成包含学生和导师信息的PDF，并上传到微信云托管"""
+#         # 获取当前时间
+#         date = timezone.now().strftime("%Y 年 %m 月 %d 日")
+#         student_name = student.name
+#         student_major = student.subject.subject_name
+#         professor_name = professor.name
+
+#         # 获取当前时间
+#         now = datetime.now()
+
+#         # 将当前时间转换为时间戳
+#         timestamp = int(now.timestamp())
+
+#         # 将时间戳转换为字符串
+#         timestamp_str = str(timestamp)
+
+#         # print(date)
+#         # print(student_name)
+#         # print(student_major)
+#         # print(professor_name)
+
+#         # 生成 PDF
+#         packet = self.create_overlay(student_name, student_major, professor_name, date)
+
+#         save_dir = '/app/Select_Information/tempFile/'
+#         if not os.path.exists(save_dir):
+#             os.makedirs(save_dir)
+#         save_path = os.path.join(save_dir, f'{student.user_name.username}_{timestamp_str}_agreement.pdf')
+
+#         print("sava_path: ", save_path)
+
+#         # 将图层与现有的 PDF 模板合并
+#         self.merge_pdfs(student, save_path, packet)
+
+#         print("sava file")
+
+#         # 上传到微信云托管
+#         cloud_path = f"signature/student/{student.user_name.username}_{timestamp_str}_agreement.pdf"
+#         self.upload_to_wechat_cloud(save_path, cloud_path, student)
+
+#     def merge_pdfs(self, student, save_path, overlay_pdf):
+#         """将生成的 PDF 图层与模板合并"""
+#         if student.postgraduate_type == 3:
+#             template_pdf_path = r'/app/Select_Information/pdfTemplate/template-phd.pdf'
+#         else:
+#             template_pdf_path = r'/app/Select_Information/pdfTemplate/template.pdf'
+        
+#         # 读取现有的 PDF 模板
+#         template_pdf = PdfReader(template_pdf_path)
+#         output = PdfWriter()
+
+#         # 读取插入内容的 PDF
+#         overlay_pdf = PdfReader(overlay_pdf)
+
+#         # 合并两个 PDF
+#         for i in range(len(template_pdf.pages)):
+#             template_page = template_pdf.pages[i]
+#             overlay_page = overlay_pdf.pages[i]
+
+#             # 将插入内容叠加到模板上
+#             template_page.merge_page(overlay_page)
+#             output.add_page(template_page)
+
+#         # 保存合并后的 PDF
+#         with open(save_path, "wb") as output_stream:
+#             output.write(output_stream)
+
+#     def create_overlay(self, name, major, professor_name, date):
+#         """生成 PDF 文件的动态内容"""
+#         packet = io.BytesIO()
+#         # print("done!")
+#         can = canvas.Canvas(packet, pagesize=letter)
+
+#         try:
+#             # 注册支持中文的字体
+#             pdfmetrics.registerFont(TTFont('simsun', r'/app/Select_Information/pdfTemplate/simsun.ttc'))
+#             can.setFont('simsun', 12)
+#         except Exception as e:
+#             # 打印异常堆栈信息
+#             print("Error occurred while registering the font:")
+#             traceback.print_exc()
+
+#         can.drawString(150, 683.5, name)
+#         can.drawString(345, 683.5, major)
+#         can.drawString(490, 638, professor_name)
+#         # can.drawString(324, 497, date)
+
+#         can.save()
+#         packet.seek(0)
+#         # print("done4")
+#         return packet
+
+#     def upload_to_wechat_cloud(self, save_path, cloud_path, student):
+#         # 正常情况日志级别使用 INFO，需要定位时可以修改为 DEBUG，此时 SDK 会打印和服务端的通信信息
+#         logging.basicConfig(level=logging.INFO, stream=sys.stdout)
+
+
+#         # 1. 设置用户属性, 包括 secret_id, secret_key, region 等。Appid 已在CosConfig中移除，请在参数 Bucket 中带上 Appid。Bucket 由 BucketName-Appid 组成
+#         secret_id = os.environ.get("COS_SECRET_ID")    # 用户的 SecretId，建议使用子账号密钥，授权遵循最小权限指引，降低使用风险。子账号密钥获取可参见 https://cloud.tencent.com/document/product/598/37140
+#         secret_key = os.environ.get("COS_SECRET_KEY")   # 用户的 SecretKey，建议使用子账号密钥，授权遵循最小权限指引，降低使用风险。子账号密钥获取可参见 https://cloud.tencent.com/document/product/598/37140
+#         region = 'ap-shanghai'      # 替换为用户的 region，已创建桶归属的region可以在控制台查看，https://console.cloud.tencent.com/cos5/bucket
+#                                 # COS 支持的所有 region 列表参见 https://cloud.tencent.com/document/product/436/6224
+#         token = None               # 如果使用永久密钥不需要填入 token，如果使用临时密钥需要填入，临时密钥生成和使用指引参见 https://cloud.tencent.com/document/product/436/14048
+#         scheme = 'https'           # 指定使用 http/https 协议来访问 COS，默认为 https，可不填
+
+
+#         config = CosConfig(Region=region, SecretId=secret_id, SecretKey=secret_key, Token=token, Scheme=scheme)
+#         client = CosS3Client(config)
+
+#         print("upload file")
+
+#         try:
+#             url = f'https://api.weixin.qq.com/tcb/uploadfile'
+
+#             data = {
+#                 "env": 'prod-2g1jrmkk21c1d283',
+#                 "path": cloud_path,
+#             }
+
+#             # 发送POST请求
+#             response = requests.post(url, json=data)
+#             response_data = response.json()
+#             print(response_data)
+#             # 自定义 metadata，包括 `x-cos-meta-fileid`
+#             # metadata = {
+#             #     "x-cos-meta-fileid": cloud_path
+#             # }
+#             # 根据文件大小自动选择简单上传或分块上传，分块上传具备断点续传功能。
+#             response = client.upload_file(
+#                 Bucket=os.environ.get("COS_BUCKET"),
+#                 LocalFilePath=save_path,
+#                 Key=cloud_path,
+#                 PartSize=1,
+#                 MAXThread=10,
+#                 EnableMD5=False,
+#                 Metadata={
+#                     'x-cos-meta-fileid': response_data['cos_file_id']  # 自定义元数据
+#                 }
+#             )
+#             print(f"文件上传成功: {response['ETag']}")
+#             # print(f"文件上传成功: {response}")
+#             # 上传成功后删除本地的临时文件
+#             if os.path.exists(save_path):
+#                 os.remove(save_path)
+#                 print(f"本地临时文件已删除: {save_path}")
+#             else:
+#                 print(f"本地文件不存在: {save_path}")
+
+#             # 上传成功后将路径保存到学生模型的 signature_table 字段
+#             student.signature_table = response_data['file_id']
+#             student.save()  # 保存更新后的学生信息
+#             print(f"文件路径已保存到学生的 signature_table: {cloud_path}")
+
+#         except Exception as e:
+#             print(f"文件上传失败: {str(e)}")
+
+
+#     def has_quota(self, professor, student):
+#         # 封装可扩展的名额检查逻辑
+#         quota_mapping = {
+#             1: professor.professional_quota,
+#             4: professor.professional_yt_quota,
+#             2: professor.academic_quota,
+#             3: professor.doctor_quota
+#         }
+#         return quota_mapping.get(student.postgraduate_type, 0) > 0
+
+#     def update_quota(self, professor, student):
+#         # # 这里需要实现逻辑来更新名额
+#         # # 示例逻辑，实际应用中可能会更复杂
+#         # if student.postgraduate_type == 1:  # 专业型(北京)
+#         #     professor.professional_quota -= 1
+#         # elif student.postgraduate_type == 4:  # 专业型(烟台)
+#         #     professor.professional_yt_quota -= 1
+#         # elif student.postgraduate_type == 2:  # "学术型"
+#         #     professor.academic_quota -= 1
+#         # elif student.postgraduate_type == 3:  # 博士
+#         #     professor.doctor_quota -= 1
+#         # professor.save()
+
+        
+#         if student.postgraduate_type == 3:  # 博士
+#             try:
+#                 quota = ProfessorDoctorQuota.objects.get(
+#                     professor=professor,
+#                     subject=student.subject
+#                 )
+#                 quota.used_quota += 1
+#                 quota.save()  # 触发 Professor.save() 更新 doctor_quota
+#             except ProfessorDoctorQuota.DoesNotExist:
+#                 raise ValueError(f"No ProfessorDoctorQuota found for professor {professor.name} and subject {student.subject.subject_name}")
+#         else:  # 硕士
+#             quota_fields = {
+#                 1: 'professional_quota',
+#                 4: 'professional_yt_quota',
+#                 2: 'academic_quota'
+#             }
+#             quota_field = quota_fields.get(student.postgraduate_type)
+#             if quota_field:
+#                 setattr(professor, quota_field, getattr(professor, quota_field) - 1)
+#                 professor.save()
+
+#     def send_notification(self, student, action):
+#         # 学生的openid和小程序的access_token
+#         try:
+#             student_wechat_account = WeChatAccount.objects.get(user=student.user_name)
+#             student_openid = student_wechat_account.openid
+#             # access_token = cache.get('access_token')
+#             if student_openid:
+#                 # 微信小程序发送订阅消息的API endpoint
+#                 url = f'https://api.weixin.qq.com/cgi-bin/message/subscribe/send'
+
+#                 # 构造消息数据
+#                 # 注意：这里的key（如phrase1, time11等）和template_id需要根据你在微信后台配置的模板来确定
+#                 data = {
+#                     "touser": student_openid,
+#                     "template_id": "S1D5wX7_WY5BIfZqw0dEnyoYjjAtNPmz9QlfApZ9uOs",  # 你在微信小程序后台设置的模板ID
+#                     "page": "index/selectinformation",  # 用户点击消息后跳转的小程序页面
+#                     "data": {
+#                         "phrase5": {"value": "审核结果"},
+#                         "date7": {"value": timezone.now().strftime("%Y-%m-%d")}
+#                     }
+#                 }
+#                 # 对于不同的操作，发送不同的消息
+#                 if action == "accepted":
+#                     data["data"]["phrase5"]["value"] = "接受"
+#                 elif action == "rejected":
+#                     data["data"]["phrase5"]["value"] = "拒绝"
+
+#             # 发送POST请求
+#             response = requests.post(url, json=data)
+#             response_data = response.json()
+
+#             # 检查请求是否成功
+#             if response_data.get("errcode") == 0:
+#                 print("通知发送成功")
+#             else:
+#                 print(f"通知发送失败: {response_data.get('errmsg')}")
+#         except WeChatAccount.DoesNotExist:
+#             # 如果学生没有绑定微信账号信息，则不发送通知
+#             print("学生微信账号不存在，无法发送通知。")
+
 class ProfessorChooseStudentView(APIView):
     permission_classes = [IsAuthenticated]
 
@@ -416,100 +737,113 @@ class ProfessorChooseStudentView(APIView):
         professor = request.user.professor
         student_id = request.data.get('student_id')
         operation = request.data.get('operation')
-        
+
         try:
-            # 查询学生是否存在
             student = Student.objects.get(id=student_id)
 
-            # 若学生已经完成导师选择
+            # 学生已完成选择
             if student.is_selected:
                 return Response({'message': '该学生已完成导师选择'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
-            
-            latest_choice = StudentProfessorChoice.objects.filter(student=student, professor=professor).latest('submit_date')
 
-            # print(latest_choice)
-            if latest_choice.status != 3:  # 状态不是"请等待"
+            latest_choice = StudentProfessorChoice.objects.filter(
+                student=student, professor=professor
+            ).latest('submit_date')
+
+            if latest_choice.status != 3:  # 3 = 等待导师确认
                 return Response({'message': '不存在等待审核的记录'}, status=status.HTTP_409_CONFLICT)
-            
-            # 验证专业匹配
-            if student.postgraduate_type == 3:  # 博士
-                try:
-                    quota = ProfessorDoctorQuota.objects.get(
-                        professor=professor,
-                        subject=student.subject,
-                        remaining_quota__gt=0
-                    )
-                    # 需要修改逻辑
-                except ProfessorDoctorQuota.DoesNotExist:
-                    return Response(
-                        {'message': '学生报考专业不在您的博士招生专业中'},
-                        status=status.HTTP_400_BAD_REQUEST
-                    )
-            else:  # 硕士
-                if student.subject not in professor.enroll_subject.all():
-                    return Response(
-                        {'message': '学生报考专业不在您的硕士招生专业中'},
-                        status=status.HTTP_400_BAD_REQUEST
-                    )
 
-            if operation == '1':  # 同意请求
+            # 验证学生报考专业是否在导师招生范围
+            if student.postgraduate_type == 3:  # 博士
+                if not ProfessorDoctorQuota.objects.filter(professor=professor, subject=student.subject).exists():
+                    return Response({'message': '学生报考专业不在您的博士招生专业中'}, status=status.HTTP_400_BAD_REQUEST)
+            else:  # 硕士
+                if not ProfessorMasterQuota.objects.filter(professor=professor, subject=student.subject).exists():
+                    return Response({'message': '学生报考专业不在您的硕士招生专业中'}, status=status.HTTP_400_BAD_REQUEST)
+
+            # 处理操作
+            if operation == '1':  # ✅ 接受
                 if self.has_quota(professor, student):
-                    # 更新选择状态
-                    latest_choice.status = 1  # 同意请求
+                    # 更新选择记录
+                    latest_choice.status = 1
                     latest_choice.chosen_by_professor = True
                     latest_choice.finish_time = timezone.now()
                     latest_choice.save()
 
+                    # 学生标记为已选择
                     student.is_selected = True
                     student.save()
+
+                    # 扣减名额
                     self.update_quota(professor, student)
 
-                    # print("done!")
                     # 生成 PDF 并上传
                     self.generate_and_upload_pdf(student, professor)
 
+                    # 通知学生
                     self.send_notification(student, 'accepted')
                     return Response({'message': '操作成功'}, status=status.HTTP_202_ACCEPTED)
                 else:
                     return Response({'message': '名额已满，无法选择更多学生'}, status=status.HTTP_403_FORBIDDEN)
 
-            elif operation == '2':  # 拒绝请求
-                latest_choice.status = 2  # 拒绝请求
+            elif operation == '2':  # ❌ 拒绝
+                latest_choice.status = 2
                 latest_choice.finish_time = timezone.now()
                 latest_choice.save()
 
                 self.send_notification(student, 'rejected')
                 return Response({'message': '操作成功'}, status=status.HTTP_200_OK)
+
             else:
                 return Response({'message': '操作不存在'}, status=status.HTTP_400_BAD_REQUEST)
+
         except Student.DoesNotExist:
             return Response({'message': '学生不存在'}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
-            return Response({'message': '服务器错，请稍后再试'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+            return Response({'message': f'服务器错误: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+    # ================= 名额检查 =================
+    def has_quota(self, professor, student):
+        if student.postgraduate_type == 3:  # 博士
+            return ProfessorDoctorQuota.objects.filter(
+                professor=professor,
+                subject=student.subject,
+                remaining_quota__gt=0
+            ).exists()
+        else:  # 硕士
+            try:
+                master_quota = ProfessorMasterQuota.objects.get(professor=professor, subject=student.subject)
+                if student.postgraduate_type in [1, 2]:  # 北京专硕 / 学硕
+                    return master_quota.beijing_remaining_quota > 0
+                elif student.postgraduate_type == 4:  # 烟台专硕
+                    return master_quota.yantai_remaining_quota > 0
+            except ProfessorMasterQuota.DoesNotExist:
+                return False
+        return False
+
+    # ================= 扣减名额 =================
+    def update_quota(self, professor, student):
+        if student.postgraduate_type == 3:  # 博士
+            quota = ProfessorDoctorQuota.objects.get(professor=professor, subject=student.subject)
+            quota.remaining_quota -= 1
+            quota.save()
+        else:  # 硕士
+            master_quota = ProfessorMasterQuota.objects.get(professor=professor, subject=student.subject)
+            if student.postgraduate_type in [1, 2]:  # 北京专硕 / 学硕
+                master_quota.beijing_remaining_quota -= 1
+            elif student.postgraduate_type == 4:  # 烟台专硕
+                master_quota.yantai_remaining_quota -= 1
+            master_quota.save()
+
+    # ================= PDF 生成 & 上传 =================
     def generate_and_upload_pdf(self, student, professor):
-        """生成包含学生和导师信息的PDF，并上传到微信云托管"""
-        # 获取当前时间
         date = timezone.now().strftime("%Y 年 %m 月 %d 日")
         student_name = student.name
         student_major = student.subject.subject_name
         professor_name = professor.name
 
-        # 获取当前时间
         now = datetime.now()
+        timestamp_str = str(int(now.timestamp()))
 
-        # 将当前时间转换为时间戳
-        timestamp = int(now.timestamp())
-
-        # 将时间戳转换为字符串
-        timestamp_str = str(timestamp)
-
-        # print(date)
-        # print(student_name)
-        # print(student_major)
-        # print(professor_name)
-
-        # 生成 PDF
         packet = self.create_overlay(student_name, student_major, professor_name, date)
 
         save_dir = '/app/Select_Information/tempFile/'
@@ -517,219 +851,103 @@ class ProfessorChooseStudentView(APIView):
             os.makedirs(save_dir)
         save_path = os.path.join(save_dir, f'{student.user_name.username}_{timestamp_str}_agreement.pdf')
 
-        print("sava_path: ", save_path)
-
-        # 将图层与现有的 PDF 模板合并
         self.merge_pdfs(student, save_path, packet)
 
-        print("sava file")
-
-        # 上传到微信云托管
         cloud_path = f"signature/student/{student.user_name.username}_{timestamp_str}_agreement.pdf"
         self.upload_to_wechat_cloud(save_path, cloud_path, student)
 
     def merge_pdfs(self, student, save_path, overlay_pdf):
-        """将生成的 PDF 图层与模板合并"""
-        if student.postgraduate_type == 3:
-            template_pdf_path = r'/app/Select_Information/pdfTemplate/template-phd.pdf'
-        else:
-            template_pdf_path = r'/app/Select_Information/pdfTemplate/template.pdf'
-        
-        # 读取现有的 PDF 模板
+        template_pdf_path = (
+            r'/app/Select_Information/pdfTemplate/template-phd.pdf'
+            if student.postgraduate_type == 3
+            else r'/app/Select_Information/pdfTemplate/template.pdf'
+        )
         template_pdf = PdfReader(template_pdf_path)
         output = PdfWriter()
-
-        # 读取插入内容的 PDF
         overlay_pdf = PdfReader(overlay_pdf)
 
-        # 合并两个 PDF
         for i in range(len(template_pdf.pages)):
             template_page = template_pdf.pages[i]
             overlay_page = overlay_pdf.pages[i]
-
-            # 将插入内容叠加到模板上
             template_page.merge_page(overlay_page)
             output.add_page(template_page)
 
-        # 保存合并后的 PDF
         with open(save_path, "wb") as output_stream:
             output.write(output_stream)
 
     def create_overlay(self, name, major, professor_name, date):
-        """生成 PDF 文件的动态内容"""
         packet = io.BytesIO()
-        # print("done!")
         can = canvas.Canvas(packet, pagesize=letter)
-
         try:
-            # 注册支持中文的字体
             pdfmetrics.registerFont(TTFont('simsun', r'/app/Select_Information/pdfTemplate/simsun.ttc'))
             can.setFont('simsun', 12)
-        except Exception as e:
-            # 打印异常堆栈信息
-            print("Error occurred while registering the font:")
+        except Exception:
             traceback.print_exc()
 
         can.drawString(150, 683.5, name)
         can.drawString(345, 683.5, major)
         can.drawString(490, 638, professor_name)
-        # can.drawString(324, 497, date)
-
         can.save()
         packet.seek(0)
-        # print("done4")
         return packet
 
     def upload_to_wechat_cloud(self, save_path, cloud_path, student):
-        # 正常情况日志级别使用 INFO，需要定位时可以修改为 DEBUG，此时 SDK 会打印和服务端的通信信息
         logging.basicConfig(level=logging.INFO, stream=sys.stdout)
-
-
-        # 1. 设置用户属性, 包括 secret_id, secret_key, region 等。Appid 已在CosConfig中移除，请在参数 Bucket 中带上 Appid。Bucket 由 BucketName-Appid 组成
-        secret_id = os.environ.get("COS_SECRET_ID")    # 用户的 SecretId，建议使用子账号密钥，授权遵循最小权限指引，降低使用风险。子账号密钥获取可参见 https://cloud.tencent.com/document/product/598/37140
-        secret_key = os.environ.get("COS_SECRET_KEY")   # 用户的 SecretKey，建议使用子账号密钥，授权遵循最小权限指引，降低使用风险。子账号密钥获取可参见 https://cloud.tencent.com/document/product/598/37140
-        region = 'ap-shanghai'      # 替换为用户的 region，已创建桶归属的region可以在控制台查看，https://console.cloud.tencent.com/cos5/bucket
-                                # COS 支持的所有 region 列表参见 https://cloud.tencent.com/document/product/436/6224
-        token = None               # 如果使用永久密钥不需要填入 token，如果使用临时密钥需要填入，临时密钥生成和使用指引参见 https://cloud.tencent.com/document/product/436/14048
-        scheme = 'https'           # 指定使用 http/https 协议来访问 COS，默认为 https，可不填
-
-
-        config = CosConfig(Region=region, SecretId=secret_id, SecretKey=secret_key, Token=token, Scheme=scheme)
+        secret_id = os.environ.get("COS_SECRET_ID")
+        secret_key = os.environ.get("COS_SECRET_KEY")
+        region = 'ap-shanghai'
+        config = CosConfig(Region=region, SecretId=secret_id, SecretKey=secret_key)
         client = CosS3Client(config)
-
-        print("upload file")
 
         try:
             url = f'https://api.weixin.qq.com/tcb/uploadfile'
-
-            data = {
-                "env": 'prod-2g1jrmkk21c1d283',
-                "path": cloud_path,
-            }
-
-            # 发送POST请求
+            data = {"env": 'prod-2g1jrmkk21c1d283', "path": cloud_path}
             response = requests.post(url, json=data)
             response_data = response.json()
-            print(response_data)
-            # 自定义 metadata，包括 `x-cos-meta-fileid`
-            # metadata = {
-            #     "x-cos-meta-fileid": cloud_path
-            # }
-            # 根据文件大小自动选择简单上传或分块上传，分块上传具备断点续传功能。
-            response = client.upload_file(
+
+            client.upload_file(
                 Bucket=os.environ.get("COS_BUCKET"),
                 LocalFilePath=save_path,
                 Key=cloud_path,
                 PartSize=1,
                 MAXThread=10,
                 EnableMD5=False,
-                Metadata={
-                    'x-cos-meta-fileid': response_data['cos_file_id']  # 自定义元数据
-                }
+                Metadata={'x-cos-meta-fileid': response_data.get('cos_file_id', '')}
             )
-            print(f"文件上传成功: {response['ETag']}")
-            # print(f"文件上传成功: {response}")
-            # 上传成功后删除本地的临时文件
             if os.path.exists(save_path):
                 os.remove(save_path)
-                print(f"本地临时文件已删除: {save_path}")
-            else:
-                print(f"本地文件不存在: {save_path}")
 
-            # 上传成功后将路径保存到学生模型的 signature_table 字段
-            student.signature_table = response_data['file_id']
-            student.save()  # 保存更新后的学生信息
-            print(f"文件路径已保存到学生的 signature_table: {cloud_path}")
-
+            student.signature_table = response_data.get('file_id', cloud_path)
+            student.save()
         except Exception as e:
             print(f"文件上传失败: {str(e)}")
 
-
-    def has_quota(self, professor, student):
-        # 封装可扩展的名额检查逻辑
-        quota_mapping = {
-            1: professor.professional_quota,
-            4: professor.professional_yt_quota,
-            2: professor.academic_quota,
-            3: professor.doctor_quota
-        }
-        return quota_mapping.get(student.postgraduate_type, 0) > 0
-
-    def update_quota(self, professor, student):
-        # # 这里需要实现逻辑来更新名额
-        # # 示例逻辑，实际应用中可能会更复杂
-        # if student.postgraduate_type == 1:  # 专业型(北京)
-        #     professor.professional_quota -= 1
-        # elif student.postgraduate_type == 4:  # 专业型(烟台)
-        #     professor.professional_yt_quota -= 1
-        # elif student.postgraduate_type == 2:  # "学术型"
-        #     professor.academic_quota -= 1
-        # elif student.postgraduate_type == 3:  # 博士
-        #     professor.doctor_quota -= 1
-        # professor.save()
-
-        
-        if student.postgraduate_type == 3:  # 博士
-            try:
-                quota = ProfessorDoctorQuota.objects.get(
-                    professor=professor,
-                    subject=student.subject
-                )
-                quota.used_quota += 1
-                quota.save()  # 触发 Professor.save() 更新 doctor_quota
-            except ProfessorDoctorQuota.DoesNotExist:
-                raise ValueError(f"No ProfessorDoctorQuota found for professor {professor.name} and subject {student.subject.subject_name}")
-        else:  # 硕士
-            quota_fields = {
-                1: 'professional_quota',
-                4: 'professional_yt_quota',
-                2: 'academic_quota'
-            }
-            quota_field = quota_fields.get(student.postgraduate_type)
-            if quota_field:
-                setattr(professor, quota_field, getattr(professor, quota_field) - 1)
-                professor.save()
-
+    # ================= 通知学生 =================
     def send_notification(self, student, action):
-        # 学生的openid和小程序的access_token
         try:
             student_wechat_account = WeChatAccount.objects.get(user=student.user_name)
             student_openid = student_wechat_account.openid
-            # access_token = cache.get('access_token')
-            if student_openid:
-                # 微信小程序发送订阅消息的API endpoint
-                url = f'https://api.weixin.qq.com/cgi-bin/message/subscribe/send'
+            if not student_openid:
+                return
 
-                # 构造消息数据
-                # 注意：这里的key（如phrase1, time11等）和template_id需要根据你在微信后台配置的模板来确定
-                data = {
-                    "touser": student_openid,
-                    "template_id": "S1D5wX7_WY5BIfZqw0dEnyoYjjAtNPmz9QlfApZ9uOs",  # 你在微信小程序后台设置的模板ID
-                    "page": "index/selectinformation",  # 用户点击消息后跳转的小程序页面
-                    "data": {
-                        "phrase5": {"value": "审核结果"},
-                        "date7": {"value": timezone.now().strftime("%Y-%m-%d")}
-                    }
+            url = f'https://api.weixin.qq.com/cgi-bin/message/subscribe/send'
+            data = {
+                "touser": student_openid,
+                "template_id": "S1D5wX7_WY5BIfZqw0dEnyoYjjAtNPmz9QlfApZ9uOs",
+                "page": "index/selectinformation",
+                "data": {
+                    "phrase5": {"value": "接受" if action == "accepted" else "拒绝"},
+                    "date7": {"value": timezone.now().strftime("%Y-%m-%d")}
                 }
-                # 对于不同的操作，发送不同的消息
-                if action == "accepted":
-                    data["data"]["phrase5"]["value"] = "接受"
-                elif action == "rejected":
-                    data["data"]["phrase5"]["value"] = "拒绝"
-
-            # 发送POST请求
+            }
             response = requests.post(url, json=data)
             response_data = response.json()
-
-            # 检查请求是否成功
-            if response_data.get("errcode") == 0:
-                print("通知发送成功")
-            else:
+            if response_data.get("errcode") != 0:
                 print(f"通知发送失败: {response_data.get('errmsg')}")
         except WeChatAccount.DoesNotExist:
-            # 如果学生没有绑定微信账号信息，则不发送通知
             print("学生微信账号不存在，无法发送通知。")
-        
+
+
 class StudentCancelView(APIView):
     permission_classes = [IsAuthenticated]
     

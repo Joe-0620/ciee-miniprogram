@@ -60,6 +60,8 @@ class ProfessorEnrollInfoView(generics.ListAPIView):
 
 
 class ProfessorAndDepartmentListView(APIView):
+    # permission_classes = [IsAuthenticated]  # 需要登录才能修改密码
+
     def get(self, request):
         departments = Department.objects.all()
         # professors = Professor.objects.all().order_by('website_order')

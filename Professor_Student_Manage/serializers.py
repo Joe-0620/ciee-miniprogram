@@ -2,6 +2,8 @@ from rest_framework import serializers
 from Professor_Student_Manage.models import Professor, Student, Department, ProfessorDoctorQuota
 from django.contrib.auth.models import User
 from Enrollment_Manage.models import Subject
+from django.db import models
+
 
 
 class StudentSerializer(serializers.ModelSerializer):
@@ -82,18 +84,32 @@ class ProfessorSerializer(serializers.ModelSerializer):
 
 
 class ProfessorListSerializer(serializers.ModelSerializer):
+    # 硕士招生专业
     enroll_subject = serializers.StringRelatedField(many=True)
-    doctor_subjects = serializers.SerializerMethodField()  # 新增字段：博士招生专业
+    master_subjects = serializers.SerializerMethodField()
+    # 博士招生专业
+    doctor_subjects = serializers.SerializerMethodField()
     
     class Meta:
         model = Professor
         # print()
-        fields = [f.name for f in Professor._meta.get_fields() if f.name != 'enroll_subject' and f.name != 'studentprofessorchoice'] + ['enroll_subject', 'doctor_subjects']
+        fields = [f.name for f in Professor._meta.get_fields() if f.name != 'enroll_subject' and f.name != 'studentprofessorchoice'] + ['enroll_subject', 'master_subjects', 'doctor_subjects']
 
     def get_doctor_subjects(self, instance):
         # 获取导师在博士专业中 total_quota > 0 的专业名称
         doctor_quotas = instance.doctor_quotas.filter(remaining_quota__gt=0, subject__subject_type=2)
         return [quota.subject.subject_name for quota in doctor_quotas]
+
+    def get_master_subjects(self, instance):
+        """
+        获取导师在硕士专业（学硕/专硕）中有剩余招生名额的专业名称
+        """
+        master_quotas = instance.master_quotas.filter(
+            subject__subject_type__in=[0, 1]  # 0=专硕, 1=学硕
+        ).filter(
+            models.Q(beijing_remaining_quota__gt=0) | models.Q(yantai_remaining_quota__gt=0)
+        )
+        return [quota.subject.subject_name for quota in master_quotas]
 
     def to_representation(self, instance):
         """
@@ -104,6 +120,7 @@ class ProfessorListSerializer(serializers.ModelSerializer):
         data['academic_quota'] = "有" if instance.academic_quota != 0 else "无"
         data['professional_yt_quota'] = "有" if instance.professional_yt_quota != 0 else "无"
         data['doctor_quota'] = "有" if instance.doctor_quota != 0 else "无"
+        # data['doctor_quota'] = "有" if instance.doctor_quota != 0 else "无"
 
         return data
 

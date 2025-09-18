@@ -4,8 +4,12 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from Enrollment_Manage.models import Department, Subject
 from django.core.exceptions import ValidationError
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, post_delete, pre_save
 from django.dispatch import receiver
+from django.db.models import Sum, Q, F
+from django.db.models.functions import Coalesce
+from django.db import transaction
+
 
 class WeChatAccount(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -149,27 +153,30 @@ class ProfessorMasterQuota(models.Model):
     beijing_quota = models.IntegerField(default=0, verbose_name="北京可用名额")
     yantai_quota = models.IntegerField(default=0, verbose_name="烟台可用名额")
 
-    # 剩余名额（只读，系统计算）
+    # 剩余名额
     beijing_remaining_quota = models.IntegerField(default=0, verbose_name="北京剩余名额")
     yantai_remaining_quota = models.IntegerField(default=0, verbose_name="烟台剩余名额")
 
-    # 总招生名额（只读，系统计算）
+    # 总招生名额
     total_quota = models.IntegerField(default=0, verbose_name="硕士总招生名额")
 
     def save(self, *args, **kwargs):
+        """保存时自动计算总数 & 修正剩余名额"""
         # 自动计算总数
-        self.total_quota = self.beijing_quota + self.yantai_quota
+        self.total_quota = (self.beijing_quota or 0) + (self.yantai_quota or 0)
 
-        # 初始化时：剩余名额 = 可用名额
-        if not self.pk:  # 新建对象
+        if not self.pk:  # 新建时
+            # 初始化时，剩余 = 可用
             self.beijing_remaining_quota = self.beijing_quota
             self.yantai_remaining_quota = self.yantai_quota
         else:
-            # 如果剩余名额大于可用名额，自动修正
-            if self.beijing_remaining_quota > self.beijing_quota:
-                self.beijing_remaining_quota = self.beijing_quota
-            if self.yantai_remaining_quota > self.yantai_quota:
-                self.yantai_remaining_quota = self.yantai_quota
+            # 修改时：确保剩余不超过可用 & 不为负数
+            self.beijing_remaining_quota = max(
+                0, min(self.beijing_remaining_quota, self.beijing_quota)
+            )
+            self.yantai_remaining_quota = max(
+                0, min(self.yantai_remaining_quota, self.yantai_quota)
+            )
 
         super().save(*args, **kwargs)
 
@@ -179,7 +186,9 @@ class ProfessorMasterQuota(models.Model):
         unique_together = [['professor', 'subject']]
 
     def __str__(self):
-        return f"{self.professor.name} - {self.subject.subject_name} (总={self.total_quota}, 北京剩余={self.beijing_remaining_quota}, 烟台剩余={self.yantai_remaining_quota})"
+        prof_name = self.professor.name if self.professor_id else "未绑定导师"
+        subj_name = self.subject.subject_name if self.subject_id else "未绑定专业"
+        return f"{prof_name} - {subj_name} (总={self.total_quota}, 北京剩余={self.beijing_remaining_quota}, 烟台剩余={self.yantai_remaining_quota})"
 
 
 # ========== 信号：新增导师或硕士专业时，自动初始化配额 ==========
@@ -205,28 +214,60 @@ def initialize_master_quotas(sender, instance, created, **kwargs):
                 }
             )
 
+# -------- 1) 修复：硕士总指标（按方向）自动汇总 --------
 @receiver(post_save, sender=ProfessorMasterQuota)
+@receiver(post_delete, sender=ProfessorMasterQuota)
 def update_department_master_totals(sender, instance, **kwargs):
-    dept = instance.professor.department
-    dept.total_academic_quota = sum(
-        q.beijing_quota + q.yantai_quota
-        for q in dept.professor_set.values_list('master_quotas', flat=True)
-    )
-    dept.total_professional_quota = sum(
-        q.beijing_quota for q in dept.professor_set.values_list('master_quotas', flat=True)
-    )
-    dept.total_professional_yt_quota = sum(
-        q.yantai_quota for q in dept.professor_set.values_list('master_quotas', flat=True)
-    )
-    dept.save()
+    """
+    当任意一条硕士配额新增/更新/删除后，安全地汇总所在学系（方向）的总指标。
+    学硕：只看北京名额；专硕：北京/烟台各自统计。
+    """
+    dept = getattr(instance.professor, "department", None)
+    if not dept:
+        return
 
+    qs = ProfessorMasterQuota.objects.filter(professor__department=dept)
+
+    # 学硕=subject_type=1（只统计北京）
+    academic_bj = qs.filter(subject__subject_type=1).aggregate(
+        s=Coalesce(Sum('beijing_quota'), 0)
+    )['s']
+
+    # 专硕=subject_type=0（北京、烟台分开统计）
+    prof_bj = qs.filter(subject__subject_type=0).aggregate(
+        s=Coalesce(Sum('beijing_quota'), 0)
+    )['s']
+    prof_yt = qs.filter(subject__subject_type=0).aggregate(
+        s=Coalesce(Sum('yantai_quota'), 0)
+    )['s']
+
+    dept.total_academic_quota = academic_bj
+    dept.total_professional_quota = prof_bj
+    dept.total_professional_yt_quota = prof_yt
+    dept.save(update_fields=[
+        'total_academic_quota',
+        'total_professional_quota',
+        'total_professional_yt_quota'
+    ])
+
+
+# -------- 2) 修复：博士总指标自动汇总 --------
 @receiver(post_save, sender=ProfessorDoctorQuota)
+@receiver(post_delete, sender=ProfessorDoctorQuota)
 def update_department_doctor_totals(sender, instance, **kwargs):
-    dept = instance.professor.department
-    dept.total_doctor_quota = sum(
-        q.total_quota for q in dept.professor_set.values_list('doctor_quotas', flat=True)
-    )
-    dept.save()
+    """
+    任意博士配额变动后，汇总方向的博士总指标
+    """
+    dept = getattr(instance.professor, "department", None)
+    if not dept:
+        return
+
+    total_doc = ProfessorDoctorQuota.objects.filter(
+        professor__department=dept
+    ).aggregate(s=Coalesce(Sum('total_quota'), 0))['s']
+
+    dept.total_doctor_quota = total_doc
+    dept.save(update_fields=['total_doctor_quota'])
 
 
 class Student(models.Model):

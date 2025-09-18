@@ -179,6 +179,7 @@ class ProfessorAdmin(admin.ModelAdmin):
                             continue
 
                         # 循环读取 5 个招生学科
+                        has_valid_quota = False  # 标记该导师是否有成功导入的学科
                         for i in range(1, 6):
                             subject_name = row.get(f"招生学科{i}", "").strip()
                             subject_code = str(row.get(f"学科{i}代码", "")).strip()
@@ -213,22 +214,32 @@ class ProfessorAdmin(admin.ModelAdmin):
                                 self.message_user(request, f"导师 {professor.name} 的学科 {subject_code} 名额数据格式不正确", level='warning')
                                 continue
 
+                            # print("测试")
+
                             # # 处理学硕（只能北京招生）
                             # if subject_type == "学硕":
                             #     yt_quota = 0
 
                             # 获取或创建配额
-                            quota_obj, created = ProfessorMasterQuota.objects.get_or_create(
-                                professor=professor,
-                                subject=subject,
-                                defaults={
-                                    'beijing_quota': bj_quota,
-                                    'yantai_quota': yt_quota,
-                                    'beijing_remaining_quota': bj_quota,
-                                    'yantai_remaining_quota': yt_quota,
-                                    'total_quota': bj_quota + yt_quota,
-                                }
-                            )
+                            try:
+                                quota_obj, created = ProfessorMasterQuota.objects.get_or_create(
+                                    professor=professor,
+                                    subject=subject,
+                                    defaults={
+                                        'beijing_quota': bj_quota,
+                                        'yantai_quota': yt_quota,
+                                        'beijing_remaining_quota': bj_quota,
+                                        'yantai_remaining_quota': yt_quota,
+                                    }
+                                )
+                                print(f"[OK] 导入成功: 教师={professor.name}, 学科={subject.subject_name}, created={created}, bj={bj_quota}, yt={yt_quota}")
+                            except Exception as e:
+                                import traceback
+                                traceback.print_exc()
+                                print(f"[ERROR] get_or_create 出错: 教师={professor}, 学科={subject}, 错误={e}")
+                                continue
+
+                            # print("测试")
 
                             if not created:
                                 # 更新数据
@@ -236,10 +247,13 @@ class ProfessorAdmin(admin.ModelAdmin):
                                 quota_obj.yantai_quota = yt_quota
                                 quota_obj.beijing_remaining_quota = bj_quota
                                 quota_obj.yantai_remaining_quota = yt_quota
-                                quota_obj.total_quota = bj_quota + yt_quota
+                                # quota_obj.total_quota = bj_quota + yt_quota
                                 quota_obj.save()
 
-                        success_count += 1
+                            has_valid_quota = True  # 至少有一个学科导入成功
+
+                        if has_valid_quota:
+                            success_count += 1
 
                     self.message_user(request, f"成功更新 {success_count} 位导师的硕士招生名额")
                     return redirect('admin:Professor_Student_Manage_professor_changelist')

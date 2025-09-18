@@ -29,7 +29,7 @@ class SubjectAdmin(admin.ModelAdmin):
 class DepartmentAdmin(admin.ModelAdmin):
     actions = [check_department_head_or_deputy]
     list_display = ["department_name", "total_academic_quota", "used_academic_quota", "total_professional_quota", 
-                    "used_professional_quota", "total_doctor_quota", "used_doctor_quota", 
+                    "used_professional_quota", "total_professional_yt_quota", "used_professional_yt_quota", 
                     "has_department_head_or_deputy"]
     readonly_fields = ["used_academic_quota", "used_professional_quota", "used_doctor_quota"]
 

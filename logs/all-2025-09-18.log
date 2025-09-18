@@ -232,3 +232,141 @@ NameError: name 'models' is not defined
 [2025-09-18 15:41:08,232] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
 [2025-09-18 15:44:58,721] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
 [2025-09-18 15:45:43,721] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 15:57:16,424] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 15:57:16,765] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 15:59:58,569] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 15:59:58,571] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/admin.py changed, reloading.
+[2025-09-18 16:00:16,530] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET / HTTP/1.1" 200 10330
+[2025-09-18 16:00:16,559] [log.py:224] [log:log_response] [WARNING]- Not Found: /api/count
+[2025-09-18 16:00:16,559] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /api/count HTTP/1.1" 404 3142
+[2025-09-18 16:00:16,576] [log.py:224] [log:log_response] [WARNING]- Not Found: /apple-touch-icon.png
+[2025-09-18 16:00:16,577] [log.py:224] [log:log_response] [WARNING]- Not Found: /apple-touch-icon-precomposed.png
+[2025-09-18 16:00:16,579] [log.py:224] [log:log_response] [WARNING]- Not Found: /favicon.ico
+[2025-09-18 16:00:16,580] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /apple-touch-icon.png HTTP/1.1" 404 3175
+[2025-09-18 16:00:16,580] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /apple-touch-icon-precomposed.png HTTP/1.1" 404 3211
+[2025-09-18 16:00:16,582] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /favicon.ico HTTP/1.1" 404 3148
+[2025-09-18 16:00:21,134] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/ HTTP/1.1" 200 13138
+[2025-09-18 16:00:21,137] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-deletelink.svg HTTP/1.1" 304 0
+[2025-09-18 16:00:21,138] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 304 0
+[2025-09-18 16:00:21,139] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/dashboard.css HTTP/1.1" 304 0
+[2025-09-18 16:00:21,142] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 200 1360
+[2025-09-18 16:00:21,145] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+[2025-09-18 16:00:21,146] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/base.css HTTP/1.1" 304 0
+[2025-09-18 16:00:21,147] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+[2025-09-18 16:00:21,150] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/fonts.css HTTP/1.1" 304 0
+[2025-09-18 16:00:21,158] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Bold-webfont.woff HTTP/1.1" 304 0
+[2025-09-18 16:00:21,158] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Regular-webfont.woff HTTP/1.1" 304 0
+[2025-09-18 16:00:21,160] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 200 331
+[2025-09-18 16:00:21,168] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Light-webfont.woff HTTP/1.1" 304 0
+[2025-09-18 16:00:21,479] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/ HTTP/1.1" 200 13138
+[2025-09-18 16:00:23,416] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 67439
+[2025-09-18 16:00:23,425] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/changelists.css HTTP/1.1" 200 6874
+[2025-09-18 16:00:23,428] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/urlify.js HTTP/1.1" 200 7902
+[2025-09-18 16:00:23,429] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/jquery.init.js HTTP/1.1" 304 0
+[2025-09-18 16:00:23,436] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/actions.js HTTP/1.1" 304 0
+[2025-09-18 16:00:23,437] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 304 0
+[2025-09-18 16:00:23,439] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 304 0
+[2025-09-18 16:00:23,440] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/prepopulate.js HTTP/1.1" 304 0
+[2025-09-18 16:00:23,441] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/core.js HTTP/1.1" 304 0
+[2025-09-18 16:00:23,441] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 304 0
+[2025-09-18 16:00:23,444] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-yes.svg HTTP/1.1" 304 0
+[2025-09-18 16:00:23,447] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-no.svg HTTP/1.1" 304 0
+[2025-09-18 16:00:23,451] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/search.svg HTTP/1.1" 200 458
+[2025-09-18 16:00:23,690] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-09-18 16:00:23,725] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/tooltag-add.svg HTTP/1.1" 304 0
+[2025-09-18 16:00:25,214] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/import-quota/ HTTP/1.1" 200 1896
+[2025-09-18 16:00:30,198] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Professor_Student_Manage/professor/import-quota/ HTTP/1.1" 302 0
+[2025-09-18 16:00:30,759] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 67641
+[2025-09-18 16:00:31,014] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-09-18 16:06:25,387] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 16:06:28,224] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/import-quota/ HTTP/1.1" 200 1896
+[2025-09-18 16:06:34,073] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Professor_Student_Manage/professor/import-quota/ HTTP/1.1" 302 0
+[2025-09-18 16:06:34,631] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 67641
+[2025-09-18 16:06:34,886] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-09-18 16:07:51,960] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/import-quota/ HTTP/1.1" 200 1896
+[2025-09-18 16:07:57,117] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Professor_Student_Manage/professor/import-quota/ HTTP/1.1" 302 0
+[2025-09-18 16:07:57,611] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 67641
+[2025-09-18 16:07:57,865] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-09-18 16:09:48,313] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 16:09:51,051] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/import-quota/ HTTP/1.1" 200 1896
+[2025-09-18 16:09:54,970] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Professor_Student_Manage/professor/import-quota/ HTTP/1.1" 302 0
+[2025-09-18 16:09:55,506] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 67641
+[2025-09-18 16:09:55,721] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-09-18 16:10:21,286] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 16:10:24,445] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/import-quota/ HTTP/1.1" 200 1896
+[2025-09-18 16:10:28,805] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Professor_Student_Manage/professor/import-quota/ HTTP/1.1" 302 0
+[2025-09-18 16:10:29,390] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 67641
+[2025-09-18 16:10:29,661] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-09-18 16:13:49,436] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 16:13:52,537] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/import-quota/ HTTP/1.1" 200 1896
+[2025-09-18 16:13:56,535] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Professor_Student_Manage/professor/import-quota/ HTTP/1.1" 302 0
+[2025-09-18 16:13:57,050] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 67641
+[2025-09-18 16:13:57,290] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-09-18 16:15:44,996] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 16:15:48,618] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/import-quota/ HTTP/1.1" 200 1896
+[2025-09-18 16:15:48,894] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-09-18 16:15:52,914] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Professor_Student_Manage/professor/import-quota/ HTTP/1.1" 302 0
+[2025-09-18 16:15:53,531] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 67587
+[2025-09-18 16:18:01,055] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 16:18:07,406] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professormasterquota/ HTTP/1.1" 200 10982
+[2025-09-18 16:18:07,689] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-09-18 16:18:09,519] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 67439
+[2025-09-18 16:18:09,730] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-09-18 16:18:10,667] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/import-quota/ HTTP/1.1" 200 1896
+[2025-09-18 16:18:10,887] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-09-18 16:18:17,060] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Professor_Student_Manage/professor/import-quota/ HTTP/1.1" 302 0
+[2025-09-18 16:18:17,555] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 67587
+[2025-09-18 16:22:26,243] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 16:22:31,650] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/import-quota/ HTTP/1.1" 200 1896
+[2025-09-18 16:22:36,337] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Professor_Student_Manage/professor/import-quota/ HTTP/1.1" 302 0
+[2025-09-18 16:22:36,887] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 67587
+[2025-09-18 16:22:37,138] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-09-18 16:22:54,525] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 16:23:11,587] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 16:23:14,654] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/import-quota/ HTTP/1.1" 200 1896
+[2025-09-18 16:23:18,476] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Professor_Student_Manage/professor/import-quota/ HTTP/1.1" 302 0
+[2025-09-18 16:23:19,023] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 67587
+[2025-09-18 16:23:19,288] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-09-18 16:24:15,358] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 16:24:21,427] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 67439
+[2025-09-18 16:24:21,651] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-09-18 16:25:52,357] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 16:25:54,746] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/import-quota/ HTTP/1.1" 200 1896
+[2025-09-18 16:25:55,017] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-09-18 16:25:58,877] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Professor_Student_Manage/professor/import-quota/ HTTP/1.1" 302 0
+[2025-09-18 16:25:59,461] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 67587
+[2025-09-18 16:29:05,281] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 16:30:04,302] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 16:30:08,472] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/import-quota/ HTTP/1.1" 200 1896
+[2025-09-18 16:30:13,175] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Professor_Student_Manage/professor/import-quota/ HTTP/1.1" 302 0
+[2025-09-18 16:30:13,758] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 67587
+[2025-09-18 16:30:14,036] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-09-18 16:31:09,207] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 16:31:12,657] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/import-quota/ HTTP/1.1" 200 1896
+[2025-09-18 16:31:18,729] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Professor_Student_Manage/professor/import-quota/ HTTP/1.1" 302 0
+[2025-09-18 16:31:19,238] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 67587
+[2025-09-18 16:31:19,485] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-09-18 16:31:25,057] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 16:37:23,449] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 16:38:19,677] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 16:38:25,032] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/import-quota/ HTTP/1.1" 200 1896
+[2025-09-18 16:38:29,961] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Professor_Student_Manage/professor/import-quota/ HTTP/1.1" 302 0
+[2025-09-18 16:38:30,539] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 67587
+[2025-09-18 16:38:30,792] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-09-18 16:38:54,416] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 16:38:57,471] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professormasterquota/ HTTP/1.1" 200 14557
+[2025-09-18 16:38:57,715] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-09-18 16:39:18,212] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Enrollment_Manage/department/ HTTP/1.1" 200 15808
+[2025-09-18 16:39:18,469] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-09-18 16:39:59,059] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Enrollment_Manage/department/3/change/ HTTP/1.1" 200 14544
+[2025-09-18 16:39:59,071] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/prepopulate_init.js HTTP/1.1" 200 492
+[2025-09-18 16:39:59,074] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/forms.css HTTP/1.1" 304 0
+[2025-09-18 16:39:59,076] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/change_form.js HTTP/1.1" 304 0
+[2025-09-18 16:39:59,079] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/widgets.css HTTP/1.1" 304 0
+[2025-09-18 16:39:59,356] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-09-18 16:40:10,352] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 16:42:18,613] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 16:42:26,802] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Enrollment_Manage/department/ HTTP/1.1" 200 15964
+[2025-09-18 16:42:27,107] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-09-18 16:42:46,373] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 114425
+[2025-09-18 16:42:46,625] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398

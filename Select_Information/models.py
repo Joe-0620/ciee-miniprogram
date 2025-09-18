@@ -1,7 +1,10 @@
 # Select_Information.models
 from django.db import models
-from Professor_Student_Manage.models import Student, Professor
+from Professor_Student_Manage.models import Student, Professor, ProfessorMasterQuota, ProfessorDoctorQuota
 from django.utils import timezone
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from Enrollment_Manage.models import Department
 
 class SelectionTime(models.Model):
     open_time = models.DateTimeField(verbose_name="开放时间")
@@ -39,6 +42,53 @@ class StudentProfessorChoice(models.Model):
 
     def __str__(self):
         return f"{self.student} - {self.professor}"
+
+@receiver(post_save, sender=StudentProfessorChoice)
+def update_used_quota(sender, instance, **kwargs):
+    if instance.status != 1:  # 只有导师同意才更新
+        return
+
+    student = instance.student
+    professor = instance.professor
+    dept = professor.department
+
+    if student.postgraduate_type == 2:  # 学硕
+        quota = ProfessorMasterQuota.objects.filter(
+            professor=professor, subject=student.subject
+        ).first()
+        if quota:
+            # quota.beijing_remaining_quota -= 1  # 默认学硕算北京
+            # quota.save()
+            dept.used_academic_quota += 1
+
+    elif student.postgraduate_type == 1:  # 北京专硕
+        quota = ProfessorMasterQuota.objects.filter(
+            professor=professor, subject=student.subject
+        ).first()
+        if quota and quota.beijing_remaining_quota > 0:
+            # quota.beijing_remaining_quota -= 1
+            # quota.save()
+            dept.used_professional_quota += 1
+
+    elif student.postgraduate_type == 4:  # 烟台专硕
+        quota = ProfessorMasterQuota.objects.filter(
+            professor=professor, subject=student.subject
+        ).first()
+        if quota and quota.yantai_remaining_quota > 0:
+            # quota.yantai_remaining_quota -= 1
+            # quota.save()
+            dept.used_professional_yt_quota += 1
+
+    elif student.postgraduate_type == 3:  # 博士
+        quota = ProfessorDoctorQuota.objects.filter(
+            professor=professor, subject=student.subject
+        ).first()
+        if quota and quota.remaining_quota > 0:
+            # quota.used_quota += 1
+            # quota.save()
+            dept.used_doctor_quota += 1
+
+    dept.save()
 
 class ReviewRecord(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE, verbose_name="学生")

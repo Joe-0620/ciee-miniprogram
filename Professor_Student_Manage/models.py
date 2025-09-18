@@ -205,6 +205,29 @@ def initialize_master_quotas(sender, instance, created, **kwargs):
                 }
             )
 
+@receiver(post_save, sender=ProfessorMasterQuota)
+def update_department_master_totals(sender, instance, **kwargs):
+    dept = instance.professor.department
+    dept.total_academic_quota = sum(
+        q.beijing_quota + q.yantai_quota
+        for q in dept.professor_set.values_list('master_quotas', flat=True)
+    )
+    dept.total_professional_quota = sum(
+        q.beijing_quota for q in dept.professor_set.values_list('master_quotas', flat=True)
+    )
+    dept.total_professional_yt_quota = sum(
+        q.yantai_quota for q in dept.professor_set.values_list('master_quotas', flat=True)
+    )
+    dept.save()
+
+@receiver(post_save, sender=ProfessorDoctorQuota)
+def update_department_doctor_totals(sender, instance, **kwargs):
+    dept = instance.professor.department
+    dept.total_doctor_quota = sum(
+        q.total_quota for q in dept.professor_set.values_list('doctor_quotas', flat=True)
+    )
+    dept.save()
+
 
 class Student(models.Model):
     # 用户名

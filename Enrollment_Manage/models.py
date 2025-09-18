@@ -38,6 +38,9 @@ class Subject(models.Model):
         [2, "博士"],
     ]
     subject_type = models.IntegerField(choices=SubjectType, verbose_name="专业所属类别")
+
+    total_admission_quota = models.PositiveIntegerField(default=0, verbose_name="总招生人数")
+
     subject_department = models.ManyToManyField(Department, related_name='subjects', verbose_name="可选该专业的方向")
 
     class Meta:

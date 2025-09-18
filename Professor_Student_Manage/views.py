@@ -815,6 +815,7 @@ class UpdateStudentView(APIView):
 
             # 上传成功后将路径保存到学生模型的 signature_table 字段
             student.giveup_signature_table = response_data['file_id']
+            student.is_signate_giveup_table = True # 放弃说明表签名成功
             student.save()
             print(f"文件路径已保存到学生的 giveup_signature_table: {cloud_path}")
 
@@ -1118,15 +1119,54 @@ class SubmitGiveupSignatureView(APIView):
         student_id = request.data.get('student_id')
 
         # 查询学生是否存在
-        student = Student.objects.get(id=student_id)
+        try:
+            student = Student.objects.get(id=student_id)
+        except Student.DoesNotExist:
+            return Response({'message': '学生不存在'}, status=status.HTTP_404_NOT_FOUND)
 
         print(student)
 
-        # 生成放弃说明表
-        if student.giveup_signature_table != None:
+        # 1. 如果学生已完成导师互选，不允许放弃
+        if student.is_selected:
+            return Response(
+                {'message': '您已完成师生互选，如需放弃请联系招生老师'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # 2. 检查是否上传了放弃签署表
+        if not getattr(student, "is_signate_giveup_table", False):
+            return Response({'message': '请先上传放弃拟录取说明表'}, status=status.HTTP_400_BAD_REQUEST)
+
+        # 3. 确认有签署表才允许放弃
+        if student.giveup_signature_table:
             student.is_giveup = True
             student.save()
-            
-            return Response({'message': '放弃拟录取成功'}, status=status.HTTP_200_OK)
+
+            # 4. 候补补录逻辑
+            subject = student.subject
+            alternate_student = (
+                Student.objects.filter(
+                    subject=subject,
+                    is_alternate=True,
+                    is_giveup=False
+                )
+                .order_by("alternate_rank")
+                .first()
+            )
+
+            if alternate_student:
+                alternate_student.is_alternate = False
+                alternate_student.alternate_rank = None
+                alternate_student.save()
+
+                return Response(
+                    {
+                        'message': f'放弃拟录取成功，已补录候补学生 {alternate_student.name}'
+                    },
+                    status=status.HTTP_200_OK
+                )
+
+            return Response({'message': '放弃拟录取成功，但该专业没有候补学生'}, status=status.HTTP_200_OK)
+
         else:
             return Response({'message': '放弃拟录取失败，请重试'}, status=status.HTTP_400_BAD_REQUEST)

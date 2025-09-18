@@ -23,7 +23,7 @@ def check_department_head_or_deputy(modeladmin, request, queryset):
 check_department_head_or_deputy.short_description = "检查有没有方向负责人"
 
 class SubjectAdmin(admin.ModelAdmin):
-    list_display = ["subject_name", "subject_code", "subject_type"]
+    list_display = ["subject_name", "subject_code", "subject_type", "total_admission_quota"]
 
 
 class DepartmentAdmin(admin.ModelAdmin):

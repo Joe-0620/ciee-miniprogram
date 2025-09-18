@@ -370,3 +370,49 @@ NameError: name 'models' is not defined
 [2025-09-18 16:42:27,107] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
 [2025-09-18 16:42:46,373] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 114425
 [2025-09-18 16:42:46,625] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-09-18 17:41:50,246] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professordoctorquota/ HTTP/1.1" 200 55591
+[2025-09-18 17:50:15,618] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 17:50:29,956] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 17:51:08,801] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 17:51:57,868] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 17:52:04,383] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 17:52:19,087] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET / HTTP/1.1" 200 10330
+[2025-09-18 17:52:19,113] [log.py:224] [log:log_response] [WARNING]- Not Found: /api/count
+[2025-09-18 17:52:19,116] [log.py:224] [log:log_response] [WARNING]- Not Found: /apple-touch-icon-precomposed.png
+[2025-09-18 17:52:19,117] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /api/count HTTP/1.1" 404 3142
+[2025-09-18 17:52:19,117] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /apple-touch-icon-precomposed.png HTTP/1.1" 404 3211
+[2025-09-18 17:52:19,126] [log.py:224] [log:log_response] [WARNING]- Not Found: /favicon.ico
+[2025-09-18 17:52:19,127] [log.py:224] [log:log_response] [WARNING]- Not Found: /apple-touch-icon.png
+[2025-09-18 17:52:19,127] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /favicon.ico HTTP/1.1" 404 3148
+[2025-09-18 17:52:19,129] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /apple-touch-icon.png HTTP/1.1" 404 3175
+[2025-09-18 17:52:21,299] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET / HTTP/1.1" 200 10330
+[2025-09-18 17:52:21,314] [log.py:224] [log:log_response] [WARNING]- Not Found: /api/count
+[2025-09-18 17:52:21,315] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /api/count HTTP/1.1" 404 3142
+[2025-09-18 17:52:22,494] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/ HTTP/1.1" 200 13138
+[2025-09-18 17:52:22,597] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/ HTTP/1.1" 200 13138
+[2025-09-18 17:52:33,531] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Enrollment_Manage/subject/ HTTP/1.1" 200 14912
+[2025-09-18 17:52:33,783] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-09-18 17:52:56,029] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 17:52:57,656] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Enrollment_Manage/subject/ HTTP/1.1" 200 15684
+[2025-09-18 17:52:57,910] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-09-18 17:53:04,799] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Enrollment_Manage/subject/14/change/ HTTP/1.1" 200 13495
+[2025-09-18 17:53:05,066] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-09-18 17:53:13,746] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 17:53:37,839] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 114425
+[2025-09-18 17:53:38,132] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-09-18 17:55:45,116] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 17:55:56,962] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 17:57:21,135] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 114425
+[2025-09-18 17:57:21,419] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-09-18 18:00:46,882] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 18:00:51,721] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 18:11:53,538] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 18:12:24,408] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/views.py changed, reloading.
+[2025-09-18 18:12:24,735] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 18:12:31,592] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 18:16:06,933] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 18:16:51,444] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 18:18:54,245] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 18:18:55,637] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 18:23:57,982] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 18:24:47,179] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader

@@ -304,6 +304,7 @@ class Student(models.Model):
     signature_temp = models.CharField(max_length=500, null=True, blank=True, verbose_name="签名临时下载地址")
     signature_table = models.CharField(max_length=500, null=True, blank=True, verbose_name="导师意向表下载地址")
     giveup_signature_table = models.CharField(max_length=500, null=True, blank=True, verbose_name="放弃说明表下载地址")
+    is_signate_giveup_table = models.BooleanField(default=False, verbose_name="是否签名放弃说明表")
     is_giveup = models.BooleanField(default=False, verbose_name="是否放弃拟录取")
     
     REVIEW_STATUS = [
@@ -330,6 +331,7 @@ class Student(models.Model):
     final_rank = models.PositiveIntegerField(null=True, blank=True, verbose_name="总排名")
     # 新增：候补状态
     is_alternate = models.BooleanField(default=False, verbose_name="是否候补")
+    alternate_rank = models.PositiveIntegerField(null=True, blank=True, verbose_name="候补顺序")
 
     class Meta:
         verbose_name = "学生"  # 设置模型的显示名称

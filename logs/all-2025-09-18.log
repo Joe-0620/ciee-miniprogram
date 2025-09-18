@@ -104,3 +104,94 @@ NameError: name 'models' is not defined
 [2025-09-18 03:31:03,992] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 125631
 [2025-09-18 03:31:10,880] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 125631
 [2025-09-18 03:31:35,516] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 125631
+[2025-09-18 07:50:01,146] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 07:56:35,206] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 08:01:14,336] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 08:06:23,671] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 972
+[2025-09-18 08:06:23,875] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 1195
+[2025-09-18 08:06:33,649] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /userlogin/ HTTP/1.1" 200 769
+[2025-09-18 08:06:48,999] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 682
+[2025-09-18 08:06:49,313] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 682
+[2025-09-18 08:06:53,729] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=student HTTP/1.1" 200 22
+[2025-09-18 08:06:53,768] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 682
+[2025-09-18 08:06:54,069] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=student HTTP/1.1" 200 22
+[2025-09-18 08:06:54,083] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 682
+[2025-09-18 08:09:17,477] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 08:09:46,998] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/user-login/ HTTP/1.1" 200 36
+[2025-09-18 08:09:47,571] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 682
+[2025-09-18 08:09:47,912] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 682
+[2025-09-18 08:09:50,652] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=student HTTP/1.1" 200 22
+[2025-09-18 08:09:50,695] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 682
+[2025-09-18 08:09:50,927] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=student HTTP/1.1" 200 22
+[2025-09-18 08:09:51,009] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 682
+[2025-09-18 08:09:53,013] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-09-18 08:09:53,217] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-09-18 08:10:16,649] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 125631
+[2025-09-18 08:10:24,767] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Select_Information/select-professor/
+[2025-09-18 08:10:24,768] [basehttp.py:161] [basehttp:log_message] [ERROR]- "POST /Select_Information/select-professor/ HTTP/1.1" 500 91
+[2025-09-18 08:10:39,383] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 125631
+[2025-09-18 08:11:14,463] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 08:11:19,934] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Select_Information/select-professor/
+[2025-09-18 08:11:19,935] [basehttp.py:161] [basehttp:log_message] [ERROR]- "POST /Select_Information/select-professor/ HTTP/1.1" 500 91
+[2025-09-18 08:11:25,008] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 08:11:40,603] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 08:11:46,310] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Select_Information/select-professor/
+[2025-09-18 08:11:46,312] [basehttp.py:161] [basehttp:log_message] [ERROR]- "POST /Select_Information/select-professor/ HTTP/1.1" 500 91
+[2025-09-18 08:11:51,430] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 08:12:19,567] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 08:12:24,616] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Select_Information/select-professor/
+[2025-09-18 08:12:24,617] [basehttp.py:161] [basehttp:log_message] [ERROR]- "POST /Select_Information/select-professor/ HTTP/1.1" 500 91
+[2025-09-18 08:12:38,878] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 08:12:43,974] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Select_Information/select-professor/
+[2025-09-18 08:12:43,976] [basehttp.py:161] [basehttp:log_message] [ERROR]- "POST /Select_Information/select-professor/ HTTP/1.1" 500 91
+[2025-09-18 08:13:08,821] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 08:13:13,662] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Select_Information/select-professor/
+[2025-09-18 08:13:13,663] [basehttp.py:161] [basehttp:log_message] [ERROR]- "POST /Select_Information/select-professor/ HTTP/1.1" 500 91
+[2025-09-18 08:14:17,009] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 08:14:26,039] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 08:14:31,230] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Select_Information/select-professor/ HTTP/1.1" 201 44
+[2025-09-18 08:15:11,054] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-18 08:18:20,892] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-09-18 08:18:21,146] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-09-18 08:18:46,986] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 125631
+[2025-09-18 08:19:04,343] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 125631
+[2025-09-18 08:19:05,057] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-09-18 08:19:05,304] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-09-18 08:19:28,865] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 125631
+[2025-09-18 08:19:43,488] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/user-login/ HTTP/1.1" 200 36
+[2025-09-18 08:19:44,065] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 682
+[2025-09-18 08:19:44,343] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 682
+[2025-09-18 08:19:50,333] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 125631
+[2025-09-18 08:19:51,278] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 682
+[2025-09-18 08:19:51,377] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=student HTTP/1.1" 200 945
+[2025-09-18 08:19:51,576] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 682
+[2025-09-18 08:19:51,730] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=student HTTP/1.1" 200 945
+[2025-09-18 08:19:52,146] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-09-18 08:19:52,338] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-09-18 08:20:20,576] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 125631
+[2025-09-18 08:20:40,335] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 125631
+[2025-09-18 08:20:40,876] [log.py:224] [log:log_response] [WARNING]- Conflict: /Select_Information/select-professor/
+[2025-09-18 08:20:40,877] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /Select_Information/select-professor/ HTTP/1.1" 409 50
+[2025-09-18 08:21:30,211] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-09-18 08:21:30,445] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-09-18 08:21:31,812] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/user-login/ HTTP/1.1" 200 36
+[2025-09-18 08:21:32,355] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 682
+[2025-09-18 08:21:32,689] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 682
+[2025-09-18 08:21:33,958] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-09-18 08:21:34,174] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-09-18 08:21:55,805] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 125631
+[2025-09-18 08:21:56,240] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 125631
+[2025-09-18 08:21:59,009] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 125631
+[2025-09-18 08:22:02,358] [log.py:224] [log:log_response] [WARNING]- Conflict: /Select_Information/select-professor/
+[2025-09-18 08:22:02,361] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /Select_Information/select-professor/ HTTP/1.1" 409 50
+[2025-09-18 08:22:19,414] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 125631
+[2025-09-18 08:23:13,410] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-09-18 08:23:13,637] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-09-18 08:23:15,958] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/user-login/ HTTP/1.1" 200 36
+[2025-09-18 08:23:16,477] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 682
+[2025-09-18 08:23:16,830] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=student HTTP/1.1" 200 682
+[2025-09-18 08:23:31,758] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-09-18 08:23:31,974] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-09-18 08:23:42,349] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 125631
+[2025-09-18 08:23:55,523] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 125631
+[2025-09-18 08:24:15,948] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 125631

@@ -1,4 +1,4 @@
-# Select_Information.models
+# Select_Information/models
 from django.db import models
 from Professor_Student_Manage.models import Student, Professor, ProfessorMasterQuota, ProfessorDoctorQuota
 from django.utils import timezone

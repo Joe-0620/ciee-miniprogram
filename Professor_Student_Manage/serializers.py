@@ -105,6 +105,42 @@ class ProfessorSerializer(serializers.ModelSerializer):
                 )
         return super().update(instance, validated_data)
 
+    def to_representation(self, instance):
+        """
+        输出时增加“有/无”+数量的招生名额统计字段
+        """
+        data = super().to_representation(instance)
+
+        # 学硕（subject_type=1，北京招生）
+        academic_quota_qs = instance.master_quotas.filter(subject__subject_type=1)
+        academic_quota_count = sum(q.beijing_remaining_quota for q in academic_quota_qs)
+
+        # 北京专硕（subject_type=0，北京招生）
+        professional_bj_qs = instance.master_quotas.filter(subject__subject_type=0)
+        professional_quota_count = sum(q.beijing_remaining_quota for q in professional_bj_qs)
+
+        # 烟台专硕（subject_type=0，烟台招生）
+        professional_yt_quota_count = sum(q.yantai_remaining_quota for q in professional_bj_qs)
+
+        # 博士（subject_type=2）
+        doctor_qs = instance.doctor_quotas.filter(subject__subject_type=2)
+        doctor_quota_count = sum(q.remaining_quota for q in doctor_qs)
+
+        # 有/无 + 数量
+        data['academic_quota'] = "有" if academic_quota_count > 0 else "无"
+        data['academic_quota_count'] = academic_quota_count
+
+        data['professional_quota'] = "有" if professional_quota_count > 0 else "无"
+        data['professional_quota_count'] = professional_quota_count
+
+        data['professional_yt_quota'] = "有" if professional_yt_quota_count > 0 else "无"
+        data['professional_yt_quota_count'] = professional_yt_quota_count
+
+        data['doctor_quota'] = "有" if doctor_quota_count > 0 else "无"
+        data['doctor_quota_count'] = doctor_quota_count
+
+        return data
+
 
 class ProfessorListSerializer(serializers.ModelSerializer):
     # 硕士招生专业

@@ -33,3 +33,33 @@
 [2025-09-20 07:44:14,656] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 67440
 [2025-09-20 07:59:56,781] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
 [2025-09-20 09:02:34,073] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-20 09:12:15,072] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-20 09:12:23,843] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-09-20 09:12:23,869] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 2
+[2025-09-20 09:12:24,398] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-09-20 09:12:24,578] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 954
+[2025-09-20 09:12:25,025] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 3742
+[2025-09-20 09:12:25,567] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 954
+[2025-09-20 09:12:26,254] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 3742
+[2025-09-20 09:12:26,494] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 954
+[2025-09-20 09:12:27,485] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 954
+[2025-09-20 09:12:30,632] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 14505
+[2025-09-20 09:12:38,611] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 14505
+[2025-09-20 09:13:19,241] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /userlogin/ HTTP/1.1" 200 1041
+[2025-09-20 09:13:20,107] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 2
+[2025-09-20 09:13:20,578] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 954
+[2025-09-20 09:13:21,615] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 954
+[2025-09-20 09:13:26,899] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 954
+[2025-09-20 09:13:27,406] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 3742
+[2025-09-20 09:13:28,242] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 954
+[2025-09-20 09:13:28,979] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 3742
+[2025-09-20 09:13:32,429] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 2
+[2025-09-20 09:13:33,041] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 954
+[2025-09-20 09:13:33,454] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 14505
+[2025-09-20 09:13:40,815] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 14505
+[2025-09-20 09:13:41,288] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 2
+[2025-09-20 09:13:41,896] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 954
+[2025-09-20 09:13:43,001] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 954
+[2025-09-20 09:13:45,129] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 139532
+[2025-09-20 09:13:49,332] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/user-logout/ HTTP/1.1" 200 50
+[2025-09-20 09:14:06,280] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 139532

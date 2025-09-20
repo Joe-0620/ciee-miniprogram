@@ -140,31 +140,62 @@ class ProfessorListSerializer(serializers.ModelSerializer):
         """
         data = super().to_representation(instance)
 
+        # # 学硕（北京）：subject_type=1
+        # has_academic_quota = instance.master_quotas.filter(
+        #     subject__subject_type=1, beijing_remaining_quota__gt=0
+        # ).exists()
+
+        # # 北京专硕：subject_type=0 & 北京名额
+        # has_professional_bj_quota = instance.master_quotas.filter(
+        #     subject__subject_type=0, beijing_remaining_quota__gt=0
+        # ).exists()
+
+        # # 烟台专硕：subject_type=0 & 烟台名额
+        # has_professional_yt_quota = instance.master_quotas.filter(
+        #     subject__subject_type=0, yantai_remaining_quota__gt=0
+        # ).exists()
+
+        # # 博士：保持不变
+        # has_doctor_quota = instance.doctor_quotas.filter(
+        #     subject__subject_type=2, remaining_quota__gt=0
+        # ).exists()
+
         # 学硕（北京）：subject_type=1
-        has_academic_quota = instance.master_quotas.filter(
-            subject__subject_type=1, beijing_remaining_quota__gt=0
-        ).exists()
+        academic_quota_qs = instance.master_quotas.filter(subject__subject_type=1)
+        academic_quota_count = sum(q.beijing_remaining_quota for q in academic_quota_qs)
+        has_academic_quota = academic_quota_count > 0
 
         # 北京专硕：subject_type=0 & 北京名额
-        has_professional_bj_quota = instance.master_quotas.filter(
-            subject__subject_type=0, beijing_remaining_quota__gt=0
-        ).exists()
+        professional_bj_qs = instance.master_quotas.filter(subject__subject_type=0)
+        professional_quota_count = sum(q.beijing_remaining_quota for q in professional_bj_qs)
+        has_professional_bj_quota = professional_quota_count > 0
 
         # 烟台专硕：subject_type=0 & 烟台名额
-        has_professional_yt_quota = instance.master_quotas.filter(
-            subject__subject_type=0, yantai_remaining_quota__gt=0
-        ).exists()
+        professional_yt_quota_count = sum(q.yantai_remaining_quota for q in professional_bj_qs)
+        has_professional_yt_quota = professional_yt_quota_count > 0
 
-        # 博士：保持不变
-        has_doctor_quota = instance.doctor_quotas.filter(
-            subject__subject_type=2, remaining_quota__gt=0
-        ).exists()
+        # 博士：subject_type=2
+        doctor_qs = instance.doctor_quotas.filter(subject__subject_type=2)
+        doctor_quota_count = sum(q.remaining_quota for q in doctor_qs)
+        has_doctor_quota = doctor_quota_count > 0
 
+        # data['academic_quota'] = "有" if has_academic_quota else "无"
+        # data['professional_quota'] = "有" if has_professional_bj_quota else "无"
+        # data['professional_yt_quota'] = "有" if has_professional_yt_quota else "无"
+        # data['doctor_quota'] = "有" if has_doctor_quota else "无"
+        # # data['doctor_quota'] = "有" if instance.doctor_quota != 0 else "无"
+
+        # 覆盖输出 “有/无”
         data['academic_quota'] = "有" if has_academic_quota else "无"
         data['professional_quota'] = "有" if has_professional_bj_quota else "无"
         data['professional_yt_quota'] = "有" if has_professional_yt_quota else "无"
         data['doctor_quota'] = "有" if has_doctor_quota else "无"
-        # data['doctor_quota'] = "有" if instance.doctor_quota != 0 else "无"
+
+        # 新增具体数量字段
+        data['academic_quota_count'] = academic_quota_count
+        data['professional_quota_count'] = professional_quota_count
+        data['professional_yt_quota_count'] = professional_yt_quota_count
+        data['doctor_quota_count'] = doctor_quota_count
 
         return data
 

@@ -13,9 +13,13 @@ class StudentSerializer(serializers.ModelSerializer):
         slug_field='subject_name'
      )
 
+     # 新增字段
+    current_alternate_rank = serializers.SerializerMethodField()
+
     class Meta:
         model = Student
         fields = '__all__'  # 或者指定您想要序列化的字段
+        extra_fields = ['current_alternate_rank']   
 
     def to_representation(self, instance):
         rep = super().to_representation(instance)
@@ -32,6 +36,25 @@ class StudentSerializer(serializers.ModelSerializer):
     
     def _get_study_mode_display(self, instance):
         return instance.get_study_mode_display()
+
+    def get_current_alternate_rank(self, obj):
+        """
+        计算当前候补次序（动态排名）
+        """
+        if not obj.alternate_rank:  
+            return None  # 没有候补顺序的直接返回 None
+
+        # 找出同一专业下所有候补生
+        same_subject_students = Student.objects.filter(
+            subject=obj.subject,
+            alternate_rank__isnull=False,
+            is_giveup=False  # 可选：排除放弃的
+        ).order_by("alternate_rank")
+
+        # 遍历排名，找到当前学生的位置
+        for idx, student in enumerate(same_subject_students, start=1):
+            if student.id == obj.id:
+                return idx
 
 
 class StudentResumeSerializer(serializers.ModelSerializer):

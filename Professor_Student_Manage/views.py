@@ -1126,10 +1126,17 @@ class SubmitGiveupSignatureView(APIView):
 
         print(student)
 
-        # 1. 如果学生已完成导师互选，不允许放弃
+        # 1.1 如果学生已完成导师互选，不允许放弃
         if student.is_selected:
             return Response(
                 {'message': '您已完成师生互选，如需放弃请联系招生老师'},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        # 1.2 如果学生是候补状态，不允许放弃
+        if student.is_alternate:
+            return Response(
+                {'message': '您处于候补状态，无法提交'},
                 status=status.HTTP_400_BAD_REQUEST
             )
 

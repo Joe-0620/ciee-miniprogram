@@ -1166,6 +1166,8 @@ class SubmitGiveupSignatureView(APIView):
                 alternate_student.alternate_rank = None
                 alternate_student.save()
 
+                self.send_notification(alternate_student)
+
                 return Response(
                     {
                         'message': f'放弃拟录取成功，已补录候补学生 {alternate_student.name}'
@@ -1177,3 +1179,28 @@ class SubmitGiveupSignatureView(APIView):
 
         else:
             return Response({'message': '放弃拟录取失败，请重试'}, status=status.HTTP_400_BAD_REQUEST)
+
+    # ================= 通知候补成功学生 =================
+    def send_notification(self, student):
+        try:
+            student_wechat_account = WeChatAccount.objects.get(user=student.user_name)
+            student_openid = student_wechat_account.openid
+            if not student_openid:
+                return
+
+            url = f'https://api.weixin.qq.com/cgi-bin/message/subscribe/send'
+            data = {
+                "touser": student_openid,
+                "template_id": "sB5ExrEe33Z6tRR5Gj_Qp6-F1TfnWhqHY_ZRQI-ZpKw",
+                "page": "pages/profile/profile",
+                "data": {
+                    "phrase1": {"value": "候补成功"},
+                    "thing6": {"value": student.name}
+                }
+            }
+            response = requests.post(url, json=data)
+            response_data = response.json()
+            if response_data.get("errcode") != 0:
+                print(f"通知发送失败: {response_data.get('errmsg')}")
+        except WeChatAccount.DoesNotExist:
+            print("学生微信账号不存在，无法发送通知。")

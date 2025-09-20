@@ -139,10 +139,31 @@ class ProfessorListSerializer(serializers.ModelSerializer):
         重写序列化输出，将 professional_quota 转换为"有"/"无"
         """
         data = super().to_representation(instance)
-        data['professional_quota'] = "有" if instance.professional_quota != 0 else "无"
-        data['academic_quota'] = "有" if instance.academic_quota != 0 else "无"
-        data['professional_yt_quota'] = "有" if instance.professional_yt_quota != 0 else "无"
-        data['doctor_quota'] = "有" if instance.doctor_quota != 0 else "无"
+
+        # 学硕（北京）：subject_type=1
+        has_academic_quota = instance.master_quotas.filter(
+            subject__subject_type=1, beijing_remaining_quota__gt=0
+        ).exists()
+
+        # 北京专硕：subject_type=0 & 北京名额
+        has_professional_bj_quota = instance.master_quotas.filter(
+            subject__subject_type=0, beijing_remaining_quota__gt=0
+        ).exists()
+
+        # 烟台专硕：subject_type=0 & 烟台名额
+        has_professional_yt_quota = instance.master_quotas.filter(
+            subject__subject_type=0, yantai_remaining_quota__gt=0
+        ).exists()
+
+        # 博士：保持不变
+        has_doctor_quota = instance.doctor_quotas.filter(
+            subject__subject_type=2, remaining_quota__gt=0
+        ).exists()
+
+        data['academic_quota'] = "有" if has_academic_quota else "无"
+        data['professional_quota'] = "有" if has_professional_bj_quota else "无"
+        data['professional_yt_quota'] = "有" if has_professional_yt_quota else "无"
+        data['doctor_quota'] = "有" if has_doctor_quota else "无"
         # data['doctor_quota'] = "有" if instance.doctor_quota != 0 else "无"
 
         return data

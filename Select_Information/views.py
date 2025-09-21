@@ -76,26 +76,35 @@ class SelectInformationView(APIView):
 
                 # print(enroll_subjects)
 
-                # 获取硕士专业 ID（允许重复）
-                master_subject_ids = list(professor.enroll_subject.all().values_list('id', flat=True))
-                logger.debug(f"Master subject IDs: {master_subject_ids}")
+                # # 获取硕士专业 ID（允许重复）
+                # master_subject_ids = list(professor.enroll_subject.all().values_list('id', flat=True))
+                # logger.debug(f"Master subject IDs: {master_subject_ids}")
+
+                # === 获取硕士招生专业（从 ProfessorMasterQuota 里取） ===
+                master_subject_ids = list(
+                    ProfessorMasterQuota.objects.filter(professor=professor)
+                    .values_list('subject_id', flat=True)
+                )
 
                 # 获取博士专业 ID（允许重复）
                 doctor_subject_ids = list(ProfessorDoctorQuota.objects.filter(
                     professor=professor
                 ).values_list('subject_id', flat=True))
-                logger.debug(f"Doctor subject IDs: {doctor_subject_ids}")
+                # logger.debug(f"Doctor subject IDs: {doctor_subject_ids}")
 
                 # 合并 ID 列表，保留重复
                 all_subject_ids = master_subject_ids + doctor_subject_ids
-                logger.debug(f"All subject IDs (with duplicates): {all_subject_ids}")
+                # logger.debug(f"All subject IDs (with duplicates): {all_subject_ids}")
 
                 # 查询所有专业（去重，仅为 subject__in 查询）
                 enroll_subjects = Subject.objects.filter(id__in=all_subject_ids)
-                logger.debug(f"Enroll subjects: {list(enroll_subjects.values('id', 'subject_name'))}")
+                # logger.debug(f"Enroll subjects: {list(enroll_subjects.values('id', 'subject_name'))}")
 
                 # Get all students who haven't chosen a professor yet and are in the subjects the professor enrolls
-                students_without_professor = Student.objects.filter(is_selected=False, subject__in=enroll_subjects)
+                students_without_professor = Student.objects.filter(
+                    is_selected=False,
+                    is_alternate=False,
+                    subject__in=enroll_subjects)
                 student_serializer = StudentSerializer(students_without_professor, many=True)
 
                 student_choices = StudentProfessorChoice.objects.filter(professor=professor)
@@ -303,6 +312,14 @@ class StudentChooseProfessorView(APIView):
             return Response({"message": "互选时间设置不存在"}, status=status.HTTP_404_NOT_FOUND)
 
         student = request.user.student  # 假设 User 与 Student 是一对一关系
+
+        # 🚫 新增逻辑：候补学生不能选导师
+        if student.is_alternate:
+            return Response(
+                {"message": "您当前为候补状态，请等待系统补录"},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
         # print(student)
         professor_id = request.data.get('professor_id')
 

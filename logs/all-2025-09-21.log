@@ -120,3 +120,31 @@ NameError: name 'os' is not defined
 [2025-09-21 07:38:06,324] [log.py:224] [log:log_response] [WARNING]- Not Found: /apple-touch-icon.png
 [2025-09-21 07:38:06,325] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /apple-touch-icon.png HTTP/1.1" 404 3175
 [2025-09-21 07:45:11,277] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-21 08:04:01,860] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 101898
+[2025-09-21 08:04:02,220] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-09-21 08:04:04,022] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/import-students/ HTTP/1.1" 200 2063
+[2025-09-21 08:05:48,960] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/import-students/ HTTP/1.1" 200 2063
+[2025-09-21 08:06:23,629] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Professor_Student_Manage/student/import-students/ HTTP/1.1" 302 0
+[2025-09-21 08:06:28,200] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 102365
+[2025-09-21 08:06:28,454] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-09-21 08:38:34,887] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-21 08:38:38,755] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Enrollment_Manage/department/ HTTP/1.1" 200 15972
+[2025-09-21 08:38:39,171] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-09-21 08:38:41,792] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Enrollment_Manage/department/3/change/ HTTP/1.1" 200 14952
+[2025-09-21 08:38:41,797] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/change_form.js HTTP/1.1" 200 606
+[2025-09-21 08:38:41,797] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/forms.css HTTP/1.1" 200 8804
+[2025-09-21 08:38:41,804] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/prepopulate_init.js HTTP/1.1" 200 492
+[2025-09-21 08:38:41,805] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/widgets.css HTTP/1.1" 200 11097
+[2025-09-21 08:38:42,080] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-09-21 08:38:46,297] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Enrollment_Manage/department/3/change/ HTTP/1.1" 302 0
+[2025-09-21 08:38:46,965] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Enrollment_Manage/department/ HTTP/1.1" 200 16193
+[2025-09-21 08:38:47,209] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-09-21 08:38:52,185] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Enrollment_Manage/department/1/change/ HTTP/1.1" 200 14940
+[2025-09-21 08:38:52,450] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-09-21 08:38:57,008] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Enrollment_Manage/department/1/change/ HTTP/1.1" 302 0
+[2025-09-21 08:38:57,818] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Enrollment_Manage/department/ HTTP/1.1" 200 16190
+[2025-09-21 08:38:58,047] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-09-21 08:39:08,933] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-21 17:08:37,125] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-21 17:21:05,352] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-21 17:21:07,511] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader

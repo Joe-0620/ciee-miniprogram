@@ -337,17 +337,20 @@ class StudentAdmin(admin.ModelAdmin):
         with zipfile.ZipFile(zip_filename, 'w') as zipf:
             for student in signed_students:
                 try:
+                    # 找到该学生已同意的导师
+                    choice = StudentProfessorChoice.objects.filter(
+                        student=student, status=1
+                    ).first()
+                    professor_name = choice.professor.name if choice else "无导师"
+
                     # 获取文件下载地址
                     response_data = self.get_fileid_download_url(student.signature_table)
-                    print(response_data)
                     if response_data.get("errcode") == 0:
                         download_url = response_data['file_list'][0]['download_url']
                         file_content = requests.get(download_url).content
 
                         # 文件命名: 准考证号-学生姓名-导师姓名.pdf
-                        professor_name = student.professor.name if student.professor else "无导师"
                         filename = f"{student.candidate_number}-{student.name}-{professor_name}.pdf"
-                        print(filename)
 
                         # 写入zip
                         file_path = os.path.join(temp_dir, filename)
@@ -358,7 +361,6 @@ class StudentAdmin(admin.ModelAdmin):
                     print(f"下载学生 {student.name} 的互选表失败: {e}")
                     continue
 
-        # 读取zip并返回下载
         with open(zip_filename, 'rb') as f:
             response = HttpResponse(f.read(), content_type="application/zip")
             response['Content-Disposition'] = 'attachment; filename="互选表打包下载.zip"'

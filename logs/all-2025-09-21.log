@@ -1,0 +1,112 @@
+[2025-09-21 07:19:05,525] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-21 07:19:26,888] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-21 07:21:33,665] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET / HTTP/1.1" 200 10330
+[2025-09-21 07:21:33,697] [log.py:224] [log:log_response] [WARNING]- Not Found: /api/count
+[2025-09-21 07:21:33,698] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /api/count HTTP/1.1" 404 3142
+[2025-09-21 07:21:33,701] [log.py:224] [log:log_response] [WARNING]- Not Found: /favicon.ico
+[2025-09-21 07:21:33,704] [log.py:224] [log:log_response] [WARNING]- Not Found: /apple-touch-icon-precomposed.png
+[2025-09-21 07:21:33,707] [log.py:224] [log:log_response] [WARNING]- Not Found: /apple-touch-icon.png
+[2025-09-21 07:21:33,707] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /favicon.ico HTTP/1.1" 404 3148
+[2025-09-21 07:21:33,708] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /apple-touch-icon-precomposed.png HTTP/1.1" 404 3211
+[2025-09-21 07:21:33,708] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /apple-touch-icon.png HTTP/1.1" 404 3175
+[2025-09-21 07:21:39,996] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET / HTTP/1.1" 200 10330
+[2025-09-21 07:21:40,011] [log.py:224] [log:log_response] [WARNING]- Not Found: /api/count
+[2025-09-21 07:21:40,012] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /api/count HTTP/1.1" 404 3142
+[2025-09-21 07:21:41,231] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 67445
+[2025-09-21 07:21:41,243] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/base.css HTTP/1.1" 304 0
+[2025-09-21 07:21:41,244] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+[2025-09-21 07:21:41,245] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 304 0
+[2025-09-21 07:21:41,245] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+[2025-09-21 07:21:41,246] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 304 0
+[2025-09-21 07:21:41,246] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/changelists.css HTTP/1.1" 304 0
+[2025-09-21 07:21:41,248] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/actions.js HTTP/1.1" 304 0
+[2025-09-21 07:21:41,248] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/jquery.init.js HTTP/1.1" 304 0
+[2025-09-21 07:21:41,248] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/core.js HTTP/1.1" 304 0
+[2025-09-21 07:21:41,249] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 304 0
+[2025-09-21 07:21:41,249] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/urlify.js HTTP/1.1" 304 0
+[2025-09-21 07:21:41,250] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+[2025-09-21 07:21:41,251] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/prepopulate.js HTTP/1.1" 304 0
+[2025-09-21 07:21:41,251] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/search.svg HTTP/1.1" 304 0
+[2025-09-21 07:21:41,252] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-no.svg HTTP/1.1" 304 0
+[2025-09-21 07:21:41,253] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/fonts.css HTTP/1.1" 304 0
+[2025-09-21 07:21:41,253] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-yes.svg HTTP/1.1" 304 0
+[2025-09-21 07:21:41,478] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-09-21 07:21:41,715] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/ HTTP/1.1" 200 13106
+[2025-09-21 07:21:41,718] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Regular-webfont.woff HTTP/1.1" 304 0
+[2025-09-21 07:21:41,718] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-deletelink.svg HTTP/1.1" 304 0
+[2025-09-21 07:21:41,719] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/dashboard.css HTTP/1.1" 304 0
+[2025-09-21 07:21:41,720] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 304 0
+[2025-09-21 07:21:41,721] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 304 0
+[2025-09-21 07:21:41,723] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Bold-webfont.woff HTTP/1.1" 304 0
+[2025-09-21 07:21:41,723] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/fonts/Roboto-Light-webfont.woff HTTP/1.1" 304 0
+[2025-09-21 07:21:49,249] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 101898
+[2025-09-21 07:21:49,511] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-09-21 07:21:49,553] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/img/tooltag-add.svg HTTP/1.1" 304 0
+[2025-09-21 07:21:57,180] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /admin/Professor_Student_Manage/student/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/admin/options.py", line 616, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/utils/decorators.py", line 130, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/cache.py", line 44, in _wrapped_view_func
+    response = view_func(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/admin/sites.py", line 232, in inner
+    return view(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/utils/decorators.py", line 43, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/utils/decorators.py", line 130, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/admin/options.py", line 1723, in changelist_view
+    response = self.response_action(request, queryset=cl.get_queryset(request))
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/admin/options.py", line 1408, in response_action
+    response = func(self, request, queryset)
+  File "/app/Professor_Student_Manage/admin.py", line 330, in download_all_signature_tables
+    temp_dir = tempfile.mkdtemp()
+NameError: name 'tempfile' is not defined
+[2025-09-21 07:21:57,182] [basehttp.py:161] [basehttp:log_message] [ERROR]- "POST /admin/Professor_Student_Manage/student/ HTTP/1.1" 500 108626
+[2025-09-21 07:22:50,164] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-21 07:22:57,358] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /admin/Professor_Student_Manage/student/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/admin/options.py", line 616, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/utils/decorators.py", line 130, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/cache.py", line 44, in _wrapped_view_func
+    response = view_func(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/admin/sites.py", line 232, in inner
+    return view(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/utils/decorators.py", line 43, in _wrapper
+    return bound_method(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/utils/decorators.py", line 130, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/admin/options.py", line 1723, in changelist_view
+    response = self.response_action(request, queryset=cl.get_queryset(request))
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/admin/options.py", line 1408, in response_action
+    response = func(self, request, queryset)
+  File "/app/Professor_Student_Manage/admin.py", line 333, in download_all_signature_tables
+    zip_filename = os.path.join(temp_dir, "互选表打包下载.zip")
+NameError: name 'os' is not defined
+[2025-09-21 07:22:57,360] [basehttp.py:161] [basehttp:log_message] [ERROR]- "POST /admin/Professor_Student_Manage/student/ HTTP/1.1" 500 108913
+[2025-09-21 07:23:05,743] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-21 07:23:58,433] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 22
+[2025-09-21 07:24:23,466] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-21 07:24:30,206] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 101898
+[2025-09-21 07:24:30,462] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-09-21 07:25:29,131] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 22
+[2025-09-21 07:26:01,645] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-21 07:26:10,519] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 101898
+[2025-09-21 07:26:10,868] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-09-21 07:26:23,434] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/?p=3 HTTP/1.1" 200 124555
+[2025-09-21 07:26:23,691] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2025-09-21 07:26:35,025] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Professor_Student_Manage/student/?p=3 HTTP/1.1" 200 22
+[2025-09-21 07:26:59,625] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-21 07:27:03,352] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-21 07:27:07,427] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Professor_Student_Manage/student/?p=3 HTTP/1.1" 200 22

@@ -14,7 +14,10 @@ from django.contrib.auth.models import User
 # Register your models here.
 from .models import Student, Professor, WeChatAccount, ProfessorDoctorQuota, ProfessorMasterQuota
 from Enrollment_Manage.models import Subject
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
+import zipfile
+import tempfile
+import os
 
 class ProfessorDoctorQuotaInline(admin.TabularInline):
     model = ProfessorDoctorQuota
@@ -307,8 +310,59 @@ class StudentAdmin(admin.ModelAdmin):
                     "is_giveup", "is_alternate", "download_hx_file", "download_fq_file"]
     list_filter = ["subject"]
     search_fields = ["name"]
-    actions = ['reset_password_to_exam_id']  # 添加自定义动作
+    actions = ['reset_password_to_exam_id', 'download_all_signature_tables']  # 添加自定义动作
     change_list_template = 'admin/student_change_list.html'
+
+    @admin.action(description="批量下载所有已签名互选表")
+    def download_all_signature_tables(self, request, queryset):
+        """
+        批量下载所有学生和导师均已签名的互选表，打包成zip
+        """
+        # 过滤出所有已签名的学生
+        signed_students = queryset.filter(
+            signature_table_student_signatured=True,
+            signature_table_professor_signatured=True,
+            signature_table__isnull=False
+        )
+        # print(signed_students)
+
+        if not signed_students.exists():
+            self.message_user(request, "没有符合条件的已签名互选表", level='warning')
+            return
+
+        # 临时文件夹
+        temp_dir = tempfile.mkdtemp()
+        zip_filename = os.path.join(temp_dir, "互选表打包下载.zip")
+
+        with zipfile.ZipFile(zip_filename, 'w') as zipf:
+            for student in signed_students:
+                try:
+                    # 获取文件下载地址
+                    response_data = self.get_fileid_download_url(student.signature_table)
+                    print(response_data)
+                    if response_data.get("errcode") == 0:
+                        download_url = response_data['file_list'][0]['download_url']
+                        file_content = requests.get(download_url).content
+
+                        # 文件命名: 准考证号-学生姓名-导师姓名.pdf
+                        professor_name = student.professor.name if student.professor else "无导师"
+                        filename = f"{student.candidate_number}-{student.name}-{professor_name}.pdf"
+                        print(filename)
+
+                        # 写入zip
+                        file_path = os.path.join(temp_dir, filename)
+                        with open(file_path, 'wb') as f:
+                            f.write(file_content)
+                        zipf.write(file_path, arcname=filename)
+                except Exception as e:
+                    print(f"下载学生 {student.name} 的互选表失败: {e}")
+                    continue
+
+        # 读取zip并返回下载
+        with open(zip_filename, 'rb') as f:
+            response = HttpResponse(f.read(), content_type="application/zip")
+            response['Content-Disposition'] = 'attachment; filename="互选表打包下载.zip"'
+            return response
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "subject":
@@ -445,17 +499,18 @@ class StudentAdmin(admin.ModelAdmin):
 
                     # 检查列名是否正确
                     required_columns = ["专业代码", "专业", "考生编号", "姓名", "初试成绩", "复试成绩",
-                                        "综合成绩", "综合排名", "研究生类型", "学生类型", "手机号"]
+                                        "综合成绩", "综合排名", "研究生类型", "学生类型", "手机号", "身份证号"]
                     if not all(column in reader.fieldnames for column in required_columns):
                         self.message_user(
                             request,
-                            "CSV 文件列名不正确，请确保包含：专业代码、专业、考生编号、姓名、初试成绩、复试成绩、综合成绩、综合排名、研究生类型、学生类型、手机号",
+                            "CSV 文件列名不正确，请确保包含：专业代码、专业、考生编号、姓名、初试成绩、复试成绩、综合成绩、综合排名、研究生类型、学生类型、手机号、身份证号",
                             level='error'
                         )
                         return redirect('admin:Professor_Student_Manage_student_changelist')
 
                     success_count = 0
                     for row in reader:
+                        print(row)
                         subject_number = str(row["专业代码"]).zfill(6)
                         subject = Subject.objects.filter(subject_code=subject_number).first()
                         if not subject:
@@ -464,12 +519,13 @@ class StudentAdmin(admin.ModelAdmin):
 
                         candidate_number = str(row["考生编号"]).strip()
                         name = row["姓名"].strip()
-                        initial_exam_score = float(row["初试成绩"])
-                        secondary_exam_score = float(row["复试成绩"])
+                        # initial_exam_score = float(row["初试成绩"])
+                        secondary_exam_score = float(row["综合成绩"])
                         final_rank = int(row["综合排名"])  # 综合排名需要转 int
                         postgraduate_type = int(row["研究生类型"])
                         student_type = int(row["学生类型"])
                         phone_number = str(row["手机号"]).strip()
+                        identity_number = str(row["身份证号"]).strip()
 
                         try:
                             # 检查准考证号是否已存在
@@ -502,10 +558,11 @@ class StudentAdmin(admin.ModelAdmin):
                                 name=name,
                                 candidate_number=candidate_number,
                                 subject=subject,
+                                identify_number=identity_number,
                                 student_type=student_type,
                                 postgraduate_type=postgraduate_type,
                                 phone_number=phone_number,
-                                initial_exam_score=initial_exam_score,
+                                # initial_exam_score=initial_exam_score,
                                 secondary_exam_score=secondary_exam_score,
                                 final_rank=final_rank,
                                 is_alternate=is_alternate,

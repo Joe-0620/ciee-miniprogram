@@ -351,6 +351,7 @@ class StudentAdmin(admin.ModelAdmin):
 
                         # 文件命名: 准考证号-学生姓名-导师姓名.pdf
                         filename = f"{student.candidate_number}-{student.name}-{professor_name}.pdf"
+                        print(filename)
 
                         # 写入zip
                         file_path = os.path.join(temp_dir, filename)

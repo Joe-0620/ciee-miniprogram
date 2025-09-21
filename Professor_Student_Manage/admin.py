@@ -12,6 +12,7 @@ from io import TextIOWrapper
 from django.contrib.auth.models import User
 
 # Register your models here.
+from Select_Information.models import StudentProfessorChoice
 from .models import Student, Professor, WeChatAccount, ProfessorDoctorQuota, ProfessorMasterQuota
 from Enrollment_Manage.models import Subject
 from django.http import JsonResponse, HttpResponse

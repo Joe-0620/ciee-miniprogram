@@ -130,6 +130,14 @@ class UserLoginView(APIView):
             user = authenticate(username=username, password=password)
 
             if user:
+                # 如果是学生并且已放弃拟录取 → 禁止登录
+                if usertype == 'student' and hasattr(user, 'student'):
+                    if user.student.is_giveup:
+                        return Response(
+                            {"error": "您已放弃拟录取，无法再次登录，请联系招生老师"},
+                            status=status.HTTP_403_FORBIDDEN
+                        )
+
                 # 删除该用户的所有旧 Token
                 Token.objects.filter(user=user).delete()
 

@@ -152,3 +152,12 @@ NameError: name 'os' is not defined
 [2025-09-21 17:46:10,888] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
 [2025-09-21 17:46:14,817] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
 [2025-09-21 17:47:28,125] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-21 17:57:43,191] [log.py:224] [log:log_response] [WARNING]- Unauthorized: /userlogin/
+[2025-09-21 17:57:43,193] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /userlogin/ HTTP/1.1" 401 31
+[2025-09-21 18:01:23,978] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-09-21 18:01:32,287] [log.py:224] [log:log_response] [WARNING]- Unauthorized: /userlogin/
+[2025-09-21 18:01:32,288] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /userlogin/ HTTP/1.1" 401 31
+[2025-09-21 18:02:15,728] [log.py:224] [log:log_response] [WARNING]- Forbidden: /userlogin/
+[2025-09-21 18:02:15,730] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /userlogin/ HTTP/1.1" 403 78
+[2025-09-21 18:02:19,045] [log.py:224] [log:log_response] [WARNING]- Forbidden: /userlogin/
+[2025-09-21 18:02:19,045] [basehttp.py:161] [basehttp:log_message] [WARNING]- "POST /userlogin/ HTTP/1.1" 403 78

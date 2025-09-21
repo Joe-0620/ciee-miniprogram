@@ -865,6 +865,16 @@ class LoginView(APIView):
     permission_classes = [IsAuthenticated]  # 确保用户已经登录
 
     def post(self, request):
+        user = request.user
+
+        # 如果是学生用户
+        if hasattr(user, 'student'):
+            student = user.student
+            if student.is_giveup:  # 已经放弃拟录取
+                return Response(
+                    {"detail": "您已放弃拟录取，无法再次登录，请联系招生老师"},
+                    status=status.HTTP_403_FORBIDDEN
+                )
         
         return Response({"detail": "Successfully logged in."}, status=status.HTTP_200_OK)
 
@@ -877,6 +887,13 @@ class UserLoginInfoView(APIView):
 
         if usertype == 'student':
             student = request.user.student
+
+            if student.is_giveup:  # 这里也加一层保护
+                return Response(
+                    {"detail": "您已放弃拟录取，无法获取登录信息，请联系招生老师"},
+                    status=status.HTTP_403_FORBIDDEN
+                )
+
             user_information = Student.objects.get(id=student.id)
             return Response(StudentSerializer(user_information).data, status=status.HTTP_200_OK)
         elif usertype == 'professor':

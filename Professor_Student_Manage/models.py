@@ -162,16 +162,17 @@ class ProfessorMasterQuota(models.Model):
 
     def save(self, *args, **kwargs):
         """保存时自动计算总数 & 动态调整剩余名额"""
-        # 查询数据库中的旧值
         if self.pk:
             old = ProfessorMasterQuota.objects.get(pk=self.pk)
-            # 计算差额
-            bj_diff = (self.beijing_quota or 0) - (old.beijing_quota or 0)
-            yt_diff = (self.yantai_quota or 0) - (old.yantai_quota or 0)
 
-            # 更新剩余名额（增加/减少差额），保证不为负数
-            self.beijing_remaining_quota = max(0, (old.beijing_remaining_quota or 0) + bj_diff)
-            self.yantai_remaining_quota = max(0, (old.yantai_remaining_quota or 0) + yt_diff)
+            # 如果用户没有手动修改剩余名额，则自动调整
+            if self.beijing_remaining_quota == old.beijing_remaining_quota:
+                bj_diff = (self.beijing_quota or 0) - (old.beijing_quota or 0)
+                self.beijing_remaining_quota = max(0, (old.beijing_remaining_quota or 0) + bj_diff)
+
+            if self.yantai_remaining_quota == old.yantai_remaining_quota:
+                yt_diff = (self.yantai_quota or 0) - (old.yantai_quota or 0)
+                self.yantai_remaining_quota = max(0, (old.yantai_remaining_quota or 0) + yt_diff)
         else:
             # 新建时：剩余 = 可用
             self.beijing_remaining_quota = self.beijing_quota

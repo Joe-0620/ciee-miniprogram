@@ -876,15 +876,20 @@ class ProfessorChooseStudentView(APIView):
     def update_quota(self, professor, student):
         if student.postgraduate_type == 3:  # 博士
             quota = ProfessorDoctorQuota.objects.get(professor=professor, subject=student.subject)
-            quota.remaining_quota -= 1
-            quota.save()
+            if quota.remaining_quota > 0:
+                quota.remaining_quota -= 1
+                quota.used_quota += 1
+                quota.save(update_fields=["remaining_quota", "used_quota"])
         else:  # 硕士
             master_quota = ProfessorMasterQuota.objects.get(professor=professor, subject=student.subject)
             if student.postgraduate_type in [1, 2]:  # 北京专硕 / 学硕
-                master_quota.beijing_remaining_quota -= 1
+                if master_quota.beijing_remaining_quota > 0:
+                    master_quota.beijing_remaining_quota -= 1
             elif student.postgraduate_type == 4:  # 烟台专硕
-                master_quota.yantai_remaining_quota -= 1
-            master_quota.save()
+                if master_quota.yantai_remaining_quota > 0:
+                    master_quota.yantai_remaining_quota -= 1
+
+            master_quota.save(update_fields=["beijing_remaining_quota", "yantai_remaining_quota"])
 
     # ================= PDF 生成 & 上传 =================
     def generate_and_upload_pdf(self, student, professor):

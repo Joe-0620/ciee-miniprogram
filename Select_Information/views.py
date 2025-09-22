@@ -793,6 +793,9 @@ class ProfessorChooseStudentView(APIView):
                     # 扣减名额
                     self.update_quota(professor, student)
 
+                    # 🔑 检查名额是否为 0，如果为 0，则拒绝所有等待中的申请
+                    self.reject_waiting_choices_if_quota_full(professor, student)
+
                     # 生成 PDF 并上传
                     self.generate_and_upload_pdf(student, professor)
 
@@ -817,6 +820,38 @@ class ProfessorChooseStudentView(APIView):
             return Response({'message': '学生不存在'}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
             return Response({'message': f'服务器错误: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    def reject_waiting_choices_if_quota_full(self, professor, student):
+        """
+        如果该专业名额为 0，则自动拒绝该导师在该专业下所有等待处理的申请
+        """
+        if student.postgraduate_type == 3:  # 博士
+            quota = ProfessorDoctorQuota.objects.filter(professor=professor, subject=student.subject).first()
+            if quota and quota.remaining_quota <= 0:
+                waiting_choices = StudentProfessorChoice.objects.filter(
+                    professor=professor, student__subject=student.subject, status=3
+                )
+                for choice in waiting_choices:
+                    choice.status = 2  # 拒绝
+                    choice.finish_time = timezone.now()
+                    choice.save()
+                    self.send_notification(choice.student, 'rejected')
+
+        else:  # 硕士
+            quota = ProfessorMasterQuota.objects.filter(professor=professor, subject=student.subject).first()
+            if quota:
+                # 判断名额是否为 0
+                if (student.postgraduate_type in [1, 2] and quota.beijing_remaining_quota <= 0) or \
+                   (student.postgraduate_type == 4 and quota.yantai_remaining_quota <= 0):
+
+                    waiting_choices = StudentProfessorChoice.objects.filter(
+                        professor=professor, student__subject=student.subject, status=3
+                    )
+                    for choice in waiting_choices:
+                        choice.status = 2  # 拒绝
+                        choice.finish_time = timezone.now()
+                        choice.save()
+                        self.send_notification(choice.student, 'rejected')
 
     # ================= 名额检查 =================
     def has_quota(self, professor, student):

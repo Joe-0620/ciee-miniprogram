@@ -44,7 +44,7 @@ class StudentProfessorChoiceApprovalAdmin(admin.ModelAdmin):
 
     search_fields = ["student__name_fk_search", "professor__name_fk_search"]
 
-    actions = ["export_selected_choices"]
+    actions = ["export_selected_choices", "reject_waiting_if_no_quota"]
 
     # def export_selected_choices(self, request, queryset):
     #     """导出状态=已同意 且 是否选中=True 的师生互选记录"""
@@ -113,6 +113,77 @@ class StudentProfessorChoiceApprovalAdmin(admin.ModelAdmin):
     #     return response
 
     # export_selected_choices.short_description = "导出已同意且选中的师生互选记录"
+
+    # ========= 新增 Action =========
+    def reject_waiting_if_no_quota(self, request, queryset=None):
+        """
+        遍历所有“请等待”记录，若导师在该专业没有剩余名额，则拒绝并通知学生
+        """
+        waiting_choices = StudentProfessorChoice.objects.filter(status=3)  # 3=请等待
+        rejected_count = 0
+
+        for choice in waiting_choices:
+            student = choice.student
+            professor = choice.professor
+            reject_flag = False
+
+            # 判断博士
+            if student.postgraduate_type == 3:
+                quota = ProfessorDoctorQuota.objects.filter(professor=professor, subject=student.subject).first()
+                if not quota or quota.remaining_quota <= 0:
+                    reject_flag = True
+
+            # 判断硕士
+            else:
+                quota = ProfessorMasterQuota.objects.filter(professor=professor, subject=student.subject).first()
+                if quota:
+                    if student.postgraduate_type in [1, 2]:  # 北京专硕 / 学硕
+                        if quota.beijing_remaining_quota <= 0:
+                            reject_flag = True
+                    elif student.postgraduate_type == 4:  # 烟台专硕
+                        if quota.yantai_remaining_quota <= 0:
+                            reject_flag = True
+                else:
+                    reject_flag = True
+
+            # 如果没有名额，修改状态并发通知
+            if reject_flag:
+                choice.status = 2  # 已拒绝
+                choice.finish_time = timezone.now()
+                choice.save()
+                rejected_count += 1
+
+                # 发通知
+                self.send_reject_notification(student)
+
+        self.message_user(request, f"已拒绝 {rejected_count} 条等待中的申请（因导师名额不足）")
+
+    reject_waiting_if_no_quota.short_description = "批量处理等待中的申请（无名额自动拒绝）"
+
+    # ========= 发通知方法 =========
+    def send_reject_notification(self, student):
+        try:
+            wechat_account = student.user_name.wechataccount
+            openid = wechat_account.openid
+            if not openid:
+                return
+
+            url = "https://api.weixin.qq.com/cgi-bin/message/subscribe/send"
+            data = {
+                "touser": openid,
+                "template_id": "S1D5wX7_WY5BIfZqw0dEnyoYjjAtNPmz9QlfApZ9uOs",  # 替换为你的模板ID
+                "page": "index/selectinformation",
+                "data": {
+                    "phrase5": {"value": "拒绝"},
+                    "date7": {"value": timezone.now().strftime("%Y-%m-%d")}
+                }
+            }
+            response = requests.post(url, json=data)
+            resp_data = response.json()
+            if resp_data.get("errcode") != 0:
+                print(f"通知发送失败: {resp_data.get('errmsg')}")
+        except Exception as e:
+            print(f"发送通知失败: {str(e)}")
 
     def export_selected_choices(self, request, queryset):
         """导出状态=已同意 且 是否选中=True 的师生互选记录 (Excel)"""

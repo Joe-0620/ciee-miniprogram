@@ -876,12 +876,14 @@ class ProfessorChooseStudentView(APIView):
     def update_quota(self, professor, student):
         if student.postgraduate_type == 3:  # 博士
             quota = ProfessorDoctorQuota.objects.get(professor=professor, subject=student.subject)
+            
             if quota.remaining_quota > 0:
                 quota.remaining_quota -= 1
                 quota.used_quota += 1
                 quota.save(update_fields=["remaining_quota", "used_quota"])
         else:  # 硕士
             master_quota = ProfessorMasterQuota.objects.get(professor=professor, subject=student.subject)
+
             if student.postgraduate_type in [1, 2]:  # 北京专硕 / 学硕
                 if master_quota.beijing_remaining_quota > 0:
                     master_quota.beijing_remaining_quota -= 1

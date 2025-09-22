@@ -161,22 +161,24 @@ class ProfessorMasterQuota(models.Model):
     total_quota = models.IntegerField(default=0, verbose_name="硕士总招生名额")
 
     def save(self, *args, **kwargs):
-        """保存时自动计算总数 & 修正剩余名额"""
-        # 自动计算总数
-        self.total_quota = (self.beijing_quota or 0) + (self.yantai_quota or 0)
+        """保存时自动计算总数 & 动态调整剩余名额"""
+        # 查询数据库中的旧值
+        if self.pk:
+            old = ProfessorMasterQuota.objects.get(pk=self.pk)
+            # 计算差额
+            bj_diff = (self.beijing_quota or 0) - (old.beijing_quota or 0)
+            yt_diff = (self.yantai_quota or 0) - (old.yantai_quota or 0)
 
-        if not self.pk:  # 新建时
-            # 初始化时，剩余 = 可用
+            # 更新剩余名额（增加/减少差额），保证不为负数
+            self.beijing_remaining_quota = max(0, (old.beijing_remaining_quota or 0) + bj_diff)
+            self.yantai_remaining_quota = max(0, (old.yantai_remaining_quota or 0) + yt_diff)
+        else:
+            # 新建时：剩余 = 可用
             self.beijing_remaining_quota = self.beijing_quota
             self.yantai_remaining_quota = self.yantai_quota
-        else:
-            # 修改时：确保剩余不超过可用 & 不为负数
-            self.beijing_remaining_quota = max(
-                0, min(self.beijing_remaining_quota, self.beijing_quota)
-            )
-            self.yantai_remaining_quota = max(
-                0, min(self.yantai_remaining_quota, self.yantai_quota)
-            )
+
+        # 自动计算总数
+        self.total_quota = (self.beijing_quota or 0) + (self.yantai_quota or 0)
 
         super().save(*args, **kwargs)
 

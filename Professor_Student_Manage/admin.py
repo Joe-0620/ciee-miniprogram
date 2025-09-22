@@ -40,6 +40,7 @@ class ProfessorMasterQuotaInline(admin.TabularInline):
     fields = ['subject', 'beijing_quota', 'beijing_remaining_quota',
               'yantai_quota', 'yantai_remaining_quota', 'total_quota']
     readonly_fields = ['beijing_remaining_quota', 'yantai_remaining_quota', 'total_quota']
+    # readonly_fields = ['total_quota']
     can_delete = False
 
 @admin.register(ProfessorMasterQuota)

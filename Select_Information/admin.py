@@ -5,6 +5,9 @@ import csv
 import codecs
 from django.utils import timezone
 from openpyxl import Workbook
+from Professor_Student_Manage.models import ProfessorMasterQuota, ProfessorDoctorQuota, Student
+from django.db import transaction
+import requests
 
 # Register your models here.
 from .models import StudentProfessorChoice, SelectionTime, ReviewRecord

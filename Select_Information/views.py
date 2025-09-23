@@ -104,6 +104,7 @@ class SelectInformationView(APIView):
                 students_without_professor = Student.objects.filter(
                     is_selected=False,
                     is_alternate=False,
+                    is_giveup=False,
                     subject__in=enroll_subjects)
                 student_serializer = StudentSerializer(students_without_professor, many=True)
 
@@ -876,7 +877,7 @@ class ProfessorChooseStudentView(APIView):
     def update_quota(self, professor, student):
         if student.postgraduate_type == 3:  # 博士
             quota = ProfessorDoctorQuota.objects.get(professor=professor, subject=student.subject)
-            
+
             if quota.remaining_quota > 0:
                 quota.remaining_quota -= 1
                 quota.used_quota += 1

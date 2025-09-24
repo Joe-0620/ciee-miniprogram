@@ -47,7 +47,8 @@ class StudentProfessorChoiceApprovalAdmin(admin.ModelAdmin):
 
     search_fields = ["student__name_fk_search", "professor__name_fk_search"]
 
-    actions = ["export_selected_choices", "reject_waiting_if_no_quota"]
+    actions = ["export_selected_choices", "reject_waiting_if_no_quota", 
+               "cancel_waiting_if_student_gave_up"]
 
     # def export_selected_choices(self, request, queryset):
     #     """导出状态=已同意 且 是否选中=True 的师生互选记录"""
@@ -116,6 +117,25 @@ class StudentProfessorChoiceApprovalAdmin(admin.ModelAdmin):
     #     return response
 
     # export_selected_choices.short_description = "导出已同意且选中的师生互选记录"
+
+    # ========= 新增 Action =========
+    def cancel_waiting_if_student_gave_up(self, request, queryset=None):
+        """
+        对状态为“请等待”的记录，如果学生已放弃拟录取，则标记为“已取消”
+        """
+        waiting_choices = StudentProfessorChoice.objects.filter(status=3)  # 3 = 请等待
+        cancelled_count = 0
+
+        for choice in waiting_choices:
+            if getattr(choice.student, "is_giveup", False):  # 学生已放弃拟录取
+                choice.status = 4  # 已取消
+                choice.finish_time = timezone.now()
+                choice.save()
+                cancelled_count += 1
+
+        self.message_user(request, f"已取消 {cancelled_count} 条等待中的申请（因学生放弃拟录取）")
+
+    cancel_waiting_if_student_gave_up.short_description = "批量取消等待中的申请（学生放弃）"
 
     # ========= 新增 Action =========
     def reject_waiting_if_no_quota(self, request, queryset=None):

@@ -17,6 +17,7 @@ from django.core.exceptions import ObjectDoesNotExist
 import requests
 from Enrollment_Manage.models import Subject
 from Enrollment_Manage.serializers import SubjectSerializer
+from Select_Information.models import StudentProfessorChoice
 from math import isnan
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
@@ -1173,6 +1174,10 @@ class SubmitGiveupSignatureView(APIView):
         if student.giveup_signature_table:
             student.is_giveup = True
             student.save()
+
+            # 把所有“请等待”的改成“已取消”
+            waiting_choices = StudentProfessorChoice.objects.filter(student=student, status=3)
+            cancelled_count = waiting_choices.update(status=4, finish_time=timezone.now())
 
             # 4. 候补补录逻辑
             subject = student.subject

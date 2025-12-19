@@ -1,0 +1,163 @@
+<!--pages/showProfessor/showProfessor.wxml-->
+<page-meta page-style="{{ (show || show1) ? 'overflow: hidden;' : '' }}" />
+<view class="mask" wx:if="{{isPopupOpen}}"></view>
+<view class="con">
+  <van-notice-bar
+      scrollable
+      text="互选开放时间: {{ open_time }}，互选关闭时间: {{ close_time }}"
+    />
+  <view class="scroll">
+    <view wx:if="{{isTriggered}}" class="refresh-text-container">
+      <!-- 下拉刷新的视图内容 -->
+      <text class="refresh-text">{{refreshText}}</text>
+    </view>
+    <scroll-view 
+      class="center" 
+      scroll-y="true" 
+      refresher-enabled="{{!disablePullDownRefresh}}"
+      bindrefresherrefresh="onPullDownRefresh"
+      refresher-triggered="{{isTriggered}}"
+      bindscrolltolower="loadMoreProfessors"
+      lower-threshold="100"
+    >
+      <van-tabs
+        swipeable 
+        animated 
+        sticky 
+        ellipsis="{{false}}"
+        active="{{ active }}" 
+        bind:change="onChange" 
+      >
+        <block wx:for="{{departmentList}}" wx:key="id"  wx:for-item="ditem">
+          <van-tab title="{{ditem.department_name}}">
+            <view wx:for="{{professorList}}" wx:key="id"  wx:for-item="pitem">
+              <block wx:if="{{ditem.id === pitem.department}}">
+                <view class="van-card-container">
+                  <van-card>
+                    <view slot="thumb" class="professor-photo-container">
+                        <image src="{{ pitem.avatar ? pitem.avatar : 'https://faculty.cau.edu.cn/_res/articleType/teacher_CN.jpg' }}"  mode="aspectFill" class="professor-photo"></image>
+                    </view>
+                    <!-- src="https://img.yzcdn.cn/vant/cat.jpeg" -->
+                    <view slot="desc">
+                      <view class="name-container">
+                        <view class="name">{{ pitem.name }}</view>
+                        <!-- <view class="title">{{ pitem.professor_title }}</view> -->
+                        <!-- <van-tag class="title" type="primary" size="large">{{ pitem.professor_title }}</van-tag> -->
+                      </view>
+                      <view class="research-areas">研究方向：{{ pitem.research_areas }}</view>
+                      <view class="enrollment-areas">硕士招生专业：</view>
+                      <!-- <view  class="choose">
+                        <van-grid column-num="2">
+                          <van-grid-item use-slot wx:for="{{ pitem.enroll_subject }}" wx:for-item="citem">
+                           <van-checkbox value="{{ checked }}"  icon-size="10px" >{{citem}}</van-checkbox>
+                          </van-grid-item>
+                        </van-grid>
+                      </view> -->
+                      <view class="choose">
+                        <van-grid column-num="2">
+                          <block wx:if="{{ pitem.master_subjects && pitem.master_subjects.length > 0 }}">
+                            <van-grid-item use-slot wx:for="{{ pitem.master_subjects }}" wx:for-item="citem">
+                              <van-checkbox value="{{ checked }}" icon-size="10px">{{citem}}</van-checkbox>
+                            </van-grid-item>
+                          </block>
+                          <block wx:else>
+                            <view class="no-data">暂无</view>
+                          </block>
+                        </van-grid>
+                      </view>
+                      <view class="enrollment-areas">博士招生专业：</view>
+                      <!-- <view  class="choose">
+                        <van-grid column-num="2">
+                          <van-grid-item use-slot wx:for="{{ pitem.doctor_subjects }}" wx:for-item="citem">
+                           <van-checkbox value="{{ checked }}"  icon-size="10px" >{{citem}}</van-checkbox>
+                          </van-grid-item>
+                        </van-grid>
+                      </view> -->
+                      <view class="choose">
+                        <van-grid column-num="2">
+                          <block wx:if="{{ pitem.doctor_subjects && pitem.doctor_subjects.length > 0 }}">
+                            <van-grid-item use-slot wx:for="{{ pitem.doctor_subjects }}" wx:for-item="citem">
+                              <van-checkbox value="{{ checked }}" icon-size="10px">{{citem}}</van-checkbox>
+                            </van-grid-item>
+                          </block>
+                          <block wx:else>
+                            <view class="no-data">暂无</view>
+                          </block>
+                        </van-grid>
+                      </view>
+                      <view class="quotaremaing">剩余名额：</view>
+                      <view class="quota-container">
+                        <view class="master-container">
+                          <view class="academic_quota">学硕剩余名额：{{ pitem.academic_quota }}</view>
+                          <view class="professional_quota">博士剩余名额：{{ pitem.doctor_quota }}</view>
+                        </view>
+                        <view class="professional-container">
+                          <view class="doctor_quota">北京专硕剩余名额：{{ pitem.professional_quota }}</view>
+                          <view class="doctor_quota">烟台专硕剩余名额：{{ pitem.professional_yt_quota }}</view>
+                        </view>
+                      </view>
+                      <view class="research-areas">联系方式：{{ pitem.contact_details ? pitem.contact_details : "未设置" }}</view>
+                    </view>
+                    <view slot="footer">
+                      <van-button  round size="small" bind:click="showPopup" data-pid="{{pitem.id}}">查看简介</van-button>
+                      <block wx:if="{{pitem.proposed_quota_approved}}">
+                        <van-button round size="small" bindtap="showAlertDialog"
+                        data-pid="{{pitem.id}}" data-pname="{{ pitem.name }}"
+                        wx:if="{{ usertype === 'student' }}"
+                        >选择Ta</van-button>
+                      </block>
+                      <block wx:else>
+                        <van-button round size="small" disabled
+                        >等待开放</van-button>
+                      </block>
+                    </view>
+                  </van-card>
+                </view>
+              </block>
+            </view>
+
+            <!-- 加载提示 -->
+            <view class="loading-container" wx:if="{{isLoadingMore}}">
+              <van-loading type="spinner" size="24px">加载中...</van-loading>
+            </view>
+            
+            <!-- 没有更多数据提示 -->
+            <view class="no-more" wx:if="{{!hasNextPage && professorList.length > 0}}">
+              <text>没有更多导师了</text>
+            </view>
+            
+          </van-tab>
+        </block>
+      </van-tabs>
+    </scroll-view>
+  </view>
+  <!-- 弹框 -->
+  <van-popup 
+  show="{{ show }}" bind:close="onClose" position="bottom" round
+  custom-style="height: 65%" closeable close-icon-position="top-left"
+  safe-area-tab-bar="{{true}}"
+  >
+    <view style="padding-top: 83rpx;">
+      <block wx:for="{{ professorList }}" wx:key="id">
+        <block wx:if="{{ item.id === selectedTeacherId }}">
+          <van-cell-group>
+            <!-- <van-cell/> -->
+            <van-cell class="left-align-cell" size="large"  center title="姓名：" value="{{ item.name }}" />
+            <van-cell class="left-align-cell-left" size="large" center title="研究方向：" value="{{ item.research_areas }}"  border="{{ false }}" />
+            <van-cell class="left-align-cell" size="large"center  title="学硕名额：" value="{{ item.academic_quota }}"  border="{{ false }}" />
+            <van-cell class="left-align-cell" size="large" center title="北京专硕名额：" value="{{ item.professional_quota }}"  border="{{ false }}" />
+            
+            <van-cell class="left-align-cell" size="large" center title="烟台专硕名额：" value="{{ item.professional_yt_quota }}"  border="{{ false }}" />
+            <van-cell class="left-align-cell" size="large" center title="博士名额：" value="{{ item.doctor_quota }}"  border="{{ false }}" />
+            <van-cell class="left-align-cell" size="large" center title="邮箱：" value="{{ item.email }}"  border="{{ false }}" />
+            <!-- <van-cell class="left-align-cell" size="large"center  title="电话：" value="{{ item.phone_number }}"  border="{{ false }}" /> -->
+            <van-cell class="left-align-cell-left" size="large" center title="个人说明：" value="{{ item.personal_page }}"  border="{{ false }}" />
+          </van-cell-group>
+        </block>
+      </block>
+    </view>
+  </van-popup>
+  <van-dialog id="van-dialog" show="{{ show2 }}" />
+  <view style="padding-bottom: 20%;"></view>
+  <!-- <view class="bottom">下</view> -->
+</view>

@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "导师信息",
+  "usingComponents": {
+    "privacy-popup": "../../component/privacyPopup/privacyPopup"
+  },
+  "backgroundColor":"#f6f6f6"
+}

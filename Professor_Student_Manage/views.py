@@ -34,6 +34,7 @@ import sys
 import logging
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
+from django.db.models import Q
 
 
 # 类继承自类generics.ListAPIView，这个类是Django REST Framework提供的一个基于类的视图，
@@ -70,6 +71,7 @@ class ProfessorAndDepartmentListView(APIView):
         page = int(request.query_params.get('page', 1))
         page_size = int(request.query_params.get('page_size', 10))
         department_id = request.query_params.get('department_id', None)
+        search_keyword = request.query_params.get('search', None)
         
         # 获取所有方向
         departments = Department.objects.all()
@@ -79,6 +81,15 @@ class ProfessorAndDepartmentListView(APIView):
         professors_query = Professor.objects.all().order_by('website_order', 'id')
         if department_id:
             professors_query = professors_query.filter(department_id=department_id)
+        
+        # 搜索功能：根据导师姓名、研究方向、职称等进行模糊搜索
+        if search_keyword:
+            professors_query = professors_query.filter(
+                Q(name__icontains=search_keyword) |
+                Q(research_areas__icontains=search_keyword) |
+                Q(professor_title__icontains=search_keyword) |
+                Q(contact_details__icontains=search_keyword)
+            )
         
         # 分页处理
         paginator = Paginator(professors_query, page_size)

@@ -1,0 +1,174 @@
+/* pages/showProfessor/showProfessor.wxss */
+page {
+  height: 100%;
+}
+
+.mask {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+.con {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: rgb(237, 237, 237);
+}
+
+.top {
+  height: 200rpx;
+  line-height: 200rpx;
+  text-align: center;
+  font-size: 32rpx;
+  color: #ffffff;
+  background-color: lightgreen;
+}
+
+.refresh-text-container {
+  text-align: center;
+}
+
+.refresh-text {
+  font-size: 35rpx;
+  color: rgb(117, 112, 112);
+}
+
+.scroll {
+  flex: 1;
+  overflow: scroll;
+  position: relative;
+}
+
+.center {
+  /* text-align: center; */
+  height: 100%;
+}
+
+.bottom {
+  height: 0%;
+  line-height: 200rpx;
+  text-align: center;
+  font-size: 32rpx;
+  color: white;
+  background-color: rgb(237, 237, 237);
+}
+
+.professor-photo {
+  width: 80px; /* 调整照片宽度 */
+  height: 100px; /* 调整照片高度 */
+  margin-top: 13px;
+  overflow: hidden;
+  /* flex-shrink: 0; 防止照片缩小 */
+  margin-right: 10px; /* 调整照片与姓名之间的间距 */
+}
+
+.name-container {
+  /* flex: 1; */
+  display: flex;
+  font-size: 35rpx; /* 调整姓名字体大小 */
+  /* font-weight: bold; */
+}
+
+.name {
+  flex: 0.35;
+  font-size: 35rpx; /* 调整姓名字体大小 */
+  font-weight: bold;
+}
+
+.title {
+  flex: 0.35;
+  font-size: 30rpx; /* 调整姓名字体大小 */
+  /* font-weight: bold; */
+  /* border: 1rpx solid #4a9970; 2rpx宽的实线边框，颜色为绿色 */
+}
+
+.research-areas {
+  font-size: 30rpx; /* 调整研究方向字体大小 */
+  color:#1d9b6d; /* 添加颜色 */
+  margin-bottom: 3px;
+}
+.enrollment-areas {
+  display: flex;
+  font-size: 30rpx; /* 调整研究方向字体大小 */
+  color:#1d9b6d;
+  margin-bottom: 3px;
+  flex-direction: row;
+}
+
+.quota-container {
+  
+  display: flex;
+  flex-direction: row;
+}
+.quotaremaing{
+  font-size: 30rpx; 
+  color:#1d9b6d;
+}
+
+.master-container {
+  
+  display: flex;
+  flex-direction: column;
+  margin-right: 20px;
+}
+
+.professional-container{
+  display: flex;
+  flex-direction: column;
+}
+
+.professional_quota{
+  font-size: 25rpx;
+  color: rgb(97, 97, 97); 
+  
+}
+
+.academic_quota{
+  font-size: 25rpx;
+  color: rgb(97, 97, 97); 
+ 
+}
+
+.doctor_quota{
+  font-size: 25rpx;
+  color: rgb(97, 97, 97); 
+  
+  /* padding-left: 60rpx; */
+}
+
+.popup-content {
+  margin-top: 0;
+}
+
+.van-card-container {
+  padding-bottom: 10rpx;
+}
+
+
+.left-align-cell .van-cell__value {
+  text-align:center;
+  flex:2
+}
+.left-align-cell-left .van-cell__value {
+  text-align:left;
+  flex:2
+}
+
+/* 加载中容器 */
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 30rpx;
+}
+
+/* 没有更多数据提示 */
+.no-more {
+  text-align: center;
+  padding: 30rpx;
+  color: #999;
+  font-size: 28rpx;
+}

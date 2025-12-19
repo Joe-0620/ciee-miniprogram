@@ -33,6 +33,7 @@ from qcloud_cos import CosS3Client
 import sys
 import logging
 from django.contrib.auth.models import User
+from django.core.paginator import Paginator
 
 
 # 类继承自类generics.ListAPIView，这个类是Django REST Framework提供的一个基于类的视图，
@@ -64,16 +65,38 @@ class ProfessorAndDepartmentListView(APIView):
     # permission_classes = [IsAuthenticated]  # 需要登录才能修改密码
 
     def get(self, request):
-        departments = Department.objects.all()
-        # professors = Professor.objects.all().order_by('website_order')
-        professors = Professor.objects.all()
         
+        # 获取分页参数
+        page = int(request.query_params.get('page', 1))
+        page_size = int(request.query_params.get('page_size', 10))
+        department_id = request.query_params.get('department_id', None)
+        
+        # 获取所有方向
+        departments = Department.objects.all()
         department_serializer = DepartmentSerializer(departments, many=True)
-        professor_serializer = ProfessorListSerializer(professors, many=True)
+        
+        # 根据方向筛选导师
+        professors_query = Professor.objects.all().order_by('website_order', 'id')
+        if department_id:
+            professors_query = professors_query.filter(department_id=department_id)
+        
+        # 分页处理
+        paginator = Paginator(professors_query, page_size)
+        try:
+            professors_page = paginator.page(page)
+        except:
+            professors_page = paginator.page(1)
+        
+        professor_serializer = ProfessorListSerializer(professors_page, many=True)
         
         return Response({
             'departments': department_serializer.data,
-            'professors': professor_serializer.data
+            'professors': professor_serializer.data,
+            'has_next': professors_page.has_next(),
+            'has_previous': professors_page.has_previous(),
+            'total_pages': paginator.num_pages,
+            'current_page': page,
+            'total_count': paginator.count
         })
 
         # 修改 professional_quota 的显示值

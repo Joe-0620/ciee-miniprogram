@@ -1,0 +1,77 @@
+[2025-12-19 06:51:35,515] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-12-19 06:51:38,038] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET / HTTP/1.1" 200 10330
+[2025-12-19 06:51:38,118] [log.py:224] [log:log_response] [WARNING]- Not Found: /api/count
+[2025-12-19 06:51:38,119] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /api/count HTTP/1.1" 404 3142
+[2025-12-19 06:51:57,605] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/user-login/ HTTP/1.1" 200 36
+[2025-12-19 06:51:59,267] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-19 06:51:59,364] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 1189
+[2025-12-19 06:51:59,831] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-19 06:52:01,087] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-12-19 06:52:01,352] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-12-19 06:53:01,644] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 147645
+[2025-12-19 06:53:06,117] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 147645
+[2025-12-19 07:06:49,852] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/views.py changed, reloading.
+[2025-12-19 07:06:50,365] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-12-19 07:09:26,678] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/views.py changed, reloading.
+[2025-12-19 07:09:27,169] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-12-19 07:09:42,690] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/views.py changed, reloading.
+[2025-12-19 07:09:43,192] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-12-19 07:11:54,665] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-12-19 07:11:54,877] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-12-19 07:11:58,344] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10 HTTP/1.1" 200 14855
+[2025-12-19 07:12:01,974] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10 HTTP/1.1" 200 14855
+[2025-12-19 07:12:14,861] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-12-19 07:12:15,060] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-12-19 07:12:19,348] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10 HTTP/1.1" 200 14855
+[2025-12-19 07:12:22,906] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10 HTTP/1.1" 200 14855
+[2025-12-19 07:16:31,398] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/user-login/ HTTP/1.1" 200 36
+[2025-12-19 07:16:32,234] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-19 07:16:32,425] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 1189
+[2025-12-19 07:16:32,671] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-19 07:16:34,143] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-19 07:16:34,488] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 13172
+[2025-12-19 07:16:34,649] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-19 07:16:35,334] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 13172
+[2025-12-19 07:16:36,823] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 15953
+[2025-12-19 07:16:36,837] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-12-19 07:16:37,038] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-12-19 07:16:39,989] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 15953
+[2025-12-19 07:16:41,439] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10 HTTP/1.1" 200 14855
+[2025-12-19 07:16:45,121] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10 HTTP/1.1" 200 14855
+[2025-12-19 07:16:48,980] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10 HTTP/1.1" 200 14855
+[2025-12-19 07:16:55,000] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=2 HTTP/1.1" 200 14853
+[2025-12-19 07:16:59,177] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 14855
+[2025-12-19 07:17:15,751] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=2 HTTP/1.1" 200 14853
+[2025-12-19 07:17:18,101] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=7 HTTP/1.1" 200 7072
+[2025-12-19 07:17:19,024] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=6 HTTP/1.1" 200 4234
+[2025-12-19 07:17:24,679] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=5 HTTP/1.1" 200 15104
+[2025-12-19 07:17:28,902] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=3 HTTP/1.1" 200 14758
+[2025-12-19 07:17:36,959] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=2 HTTP/1.1" 200 14853
+[2025-12-19 07:17:41,336] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=7 HTTP/1.1" 200 7072
+[2025-12-19 07:17:46,450] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=6 HTTP/1.1" 200 4234
+[2025-12-19 07:17:50,304] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=6 HTTP/1.1" 200 4234
+[2025-12-19 07:17:53,808] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=6 HTTP/1.1" 200 4234
+[2025-12-19 07:17:58,104] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=5 HTTP/1.1" 200 15104
+[2025-12-19 07:18:04,685] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=2&page_size=10&department_id=5 HTTP/1.1" 200 13966
+[2025-12-19 07:18:11,773] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=4 HTTP/1.1" 200 13000
+[2025-12-19 07:18:17,991] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=2&page_size=10&department_id=4 HTTP/1.1" 200 13428
+[2025-12-19 07:18:25,043] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=3 HTTP/1.1" 200 14758
+[2025-12-19 07:18:30,363] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=2&page_size=10&department_id=3 HTTP/1.1" 200 13978
+[2025-12-19 07:18:33,312] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=3&page_size=10&department_id=3 HTTP/1.1" 200 4114
+[2025-12-19 07:18:39,570] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=2 HTTP/1.1" 200 14853
+[2025-12-19 07:18:45,832] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=2&page_size=10&department_id=2 HTTP/1.1" 200 14318
+[2025-12-19 07:18:51,579] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=3&page_size=10&department_id=2 HTTP/1.1" 200 13652
+[2025-12-19 07:18:56,673] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=4&page_size=10&department_id=2 HTTP/1.1" 200 7078
+[2025-12-19 07:19:01,164] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=3 HTTP/1.1" 200 14758
+[2025-12-19 07:19:05,653] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=2 HTTP/1.1" 200 14853
+[2025-12-19 07:19:12,129] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=1 HTTP/1.1" 200 13462
+[2025-12-19 07:19:16,885] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=2&page_size=10&department_id=1 HTTP/1.1" 200 12250
+[2025-12-19 07:20:20,638] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=2 HTTP/1.1" 200 14853
+[2025-12-19 07:20:27,074] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=2&page_size=10&department_id=2 HTTP/1.1" 200 14318
+[2025-12-19 07:20:32,360] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=2 HTTP/1.1" 200 14853
+[2025-12-19 07:21:09,603] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-19 07:21:09,656] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 1189
+[2025-12-19 07:21:11,691] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/user-logout/ HTTP/1.1" 200 50
+[2025-12-19 07:28:29,006] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET / HTTP/1.1" 200 10330
+[2025-12-19 07:28:29,049] [log.py:224] [log:log_response] [WARNING]- Not Found: /api/count
+[2025-12-19 07:28:29,050] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /api/count HTTP/1.1" 404 3142

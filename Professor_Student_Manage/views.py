@@ -6,7 +6,7 @@ from django.contrib.auth import authenticate
 from .serializers import UserLoginSerializer, StudentSerializer, ProfessorSerializer, ProfessorListSerializer, StudentPartialUpdateSerializer, ProfessorEnrollInfoSerializer
 from .serializers import DepartmentSerializer, ProfessorPartialUpdateSerializer, ChangePasswordSerializer, StudentResumeSerializer
 from .serializers import DepartmentReviewerSerializer
-from Professor_Student_Manage.models import Student, Professor, Department, WeChatAccount
+from Professor_Student_Manage.models import Student, Professor, Department, WeChatAccount, ProfessorMasterQuota, ProfessorDoctorQuota
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import FileUploadParser
@@ -34,7 +34,7 @@ import sys
 import logging
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
-from django.db.models import Q
+from django.db.models import Q, Prefetch
 
 
 # 类继承自类generics.ListAPIView，这个类是Django REST Framework提供的一个基于类的视图，
@@ -66,7 +66,6 @@ class ProfessorAndDepartmentListView(APIView):
     # permission_classes = [IsAuthenticated]  # 需要登录才能修改密码
 
     def get(self, request):
-        
         # 获取分页参数
         page = int(request.query_params.get('page', 1))
         page_size = int(request.query_params.get('page_size', 10))
@@ -77,18 +76,27 @@ class ProfessorAndDepartmentListView(APIView):
         departments = Department.objects.all()
         department_serializer = DepartmentSerializer(departments, many=True)
         
-        # 根据方向筛选导师
-        professors_query = Professor.objects.all().order_by('website_order', 'id')
+        # 根据方向筛选导师，并优化查询（避免N+1查询问题）
+        professors_query = Professor.objects.select_related('department').prefetch_related(
+            'enroll_subject',  # 预加载招生专业（ManyToMany）
+            Prefetch(
+                'master_quotas',
+                queryset=ProfessorMasterQuota.objects.select_related('subject')
+            ),
+            Prefetch(
+                'doctor_quotas',
+                queryset=ProfessorDoctorQuota.objects.select_related('subject')
+            )
+        ).order_by('website_order', 'id')
+        
         if department_id:
             professors_query = professors_query.filter(department_id=department_id)
         
-        # 搜索功能：根据导师姓名、研究方向、职称等进行模糊搜索
+        # 搜索功能：根据导师姓名、研究方向等进行模糊搜索
         if search_keyword:
             professors_query = professors_query.filter(
                 Q(name__icontains=search_keyword) |
-                Q(research_areas__icontains=search_keyword) |
-                Q(professor_title__icontains=search_keyword) |
-                Q(contact_details__icontains=search_keyword)
+                Q(research_areas__icontains=search_keyword)
             )
         
         # 分页处理

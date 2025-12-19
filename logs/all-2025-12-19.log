@@ -212,3 +212,243 @@
 [2025-12-19 08:19:16,472] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=999 HTTP/1.1" 200 147723
 [2025-12-19 08:19:18,540] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=1 HTTP/1.1" 200 13462
 [2025-12-19 08:19:40,226] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=2&page_size=10&department_id=1 HTTP/1.1" 200 12250
+[2025-12-19 08:21:09,393] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=2 HTTP/1.1" 200 14853
+[2025-12-19 08:21:28,778] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&search=%E5%BC%A0%E6%BC%AB HTTP/1.1" 200 3150
+[2025-12-19 08:21:41,128] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&search=%E7%8E%8B%E9%B9%8F%E6%96%B0 HTTP/1.1" 200 3058
+[2025-12-19 08:26:01,206] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-12-19 08:26:01,413] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-12-19 08:26:50,063] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=999 HTTP/1.1" 200 147723
+[2025-12-19 08:26:53,835] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=1 HTTP/1.1" 200 13462
+[2025-12-19 08:27:10,041] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=999 HTTP/1.1" 200 147723
+[2025-12-19 08:28:36,652] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-19 08:28:36,960] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 13172
+[2025-12-19 08:28:37,256] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-12-19 08:28:39,587] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 15887
+[2025-12-19 08:29:16,570] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=999 HTTP/1.1" 200 147723
+[2025-12-19 08:29:17,116] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&search=%E7%8E%8B%E9%B9%8F%E6%96%B0 HTTP/1.1" 200 3058
+[2025-12-19 08:35:07,623] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-19 08:35:07,846] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 1189
+[2025-12-19 08:53:11,440] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/views.py changed, reloading.
+[2025-12-19 08:53:11,987] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-12-19 08:53:21,702] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/views.py changed, reloading.
+[2025-12-19 08:53:22,236] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-12-19 08:54:09,881] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/views.py changed, reloading.
+[2025-12-19 08:54:10,373] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-12-19 09:09:34,283] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/views.py changed, reloading.
+[2025-12-19 09:09:34,775] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-12-19 09:10:20,239] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/views.py changed, reloading.
+[2025-12-19 09:10:20,745] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-12-19 09:10:41,863] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/views.py changed, reloading.
+[2025-12-19 09:10:42,400] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-12-19 09:11:09,260] [log.py:224] [log:log_response] [WARNING]- Unauthorized: /Select_Information/get-select-info/
+[2025-12-19 09:11:09,260] [log.py:224] [log:log_response] [WARNING]- Unauthorized: /Professor_Student_Manage/user-info/
+[2025-12-19 09:11:09,261] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 401 34
+[2025-12-19 09:11:09,262] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 401 34
+[2025-12-19 09:11:09,268] [log.py:224] [log:log_response] [WARNING]- Unauthorized: /Select_Information/reviewer/review_records/
+[2025-12-19 09:11:09,268] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 401 34
+[2025-12-19 09:11:09,386] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-12-19 09:11:09,393] [log.py:224] [log:log_response] [WARNING]- Unauthorized: /Professor_Student_Manage/departments/reviewers/
+[2025-12-19 09:11:09,394] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 401 34
+[2025-12-19 09:11:09,451] [log.py:224] [log:log_response] [WARNING]- Unauthorized: /Professor_Student_Manage/user-info/
+[2025-12-19 09:11:09,452] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 401 34
+[2025-12-19 09:11:09,497] [log.py:224] [log:log_response] [WARNING]- Unauthorized: /Select_Information/get-select-info/
+[2025-12-19 09:11:09,500] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 401 34
+[2025-12-19 09:11:09,553] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Professor_Student_Manage/professors_and_departments/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Professor_Student_Manage/views.py", line 85, in get
+    queryset=Professor.master_quotas.related.related_model.objects.select_related('subject')
+AttributeError: 'ReverseManyToOneDescriptor' object has no attribute 'related'
+[2025-12-19 09:11:09,559] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=999 HTTP/1.1" 500 90831
+[2025-12-19 09:11:09,592] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-12-19 09:11:09,634] [log.py:224] [log:log_response] [WARNING]- Unauthorized: /Professor_Student_Manage/departments/reviewers/
+[2025-12-19 09:11:09,635] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 401 34
+[2025-12-19 09:11:09,676] [log.py:224] [log:log_response] [WARNING]- Unauthorized: /Professor_Student_Manage/user-info/
+[2025-12-19 09:11:09,677] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 401 34
+[2025-12-19 09:11:09,851] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Professor_Student_Manage/professors_and_departments/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Professor_Student_Manage/views.py", line 85, in get
+    queryset=Professor.master_quotas.related.related_model.objects.select_related('subject')
+AttributeError: 'ReverseManyToOneDescriptor' object has no attribute 'related'
+[2025-12-19 09:11:09,853] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=999 HTTP/1.1" 500 90831
+[2025-12-19 09:11:09,903] [log.py:224] [log:log_response] [WARNING]- Unauthorized: /Professor_Student_Manage/user-info/
+[2025-12-19 09:11:09,904] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 401 34
+[2025-12-19 09:11:34,163] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /userlogin/ HTTP/1.1" 200 1186
+[2025-12-19 09:11:35,138] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-19 09:11:35,250] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 1189
+[2025-12-19 09:11:35,617] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-19 09:11:38,886] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-19 09:11:39,053] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 13172
+[2025-12-19 09:11:39,343] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-19 09:11:40,067] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 13172
+[2025-12-19 09:11:42,167] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 15887
+[2025-12-19 09:11:42,520] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-12-19 09:11:42,581] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Professor_Student_Manage/professors_and_departments/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Professor_Student_Manage/views.py", line 85, in get
+    queryset=Professor.master_quotas.related.related_model.objects.select_related('subject')
+AttributeError: 'ReverseManyToOneDescriptor' object has no attribute 'related'
+[2025-12-19 09:11:42,583] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=999 HTTP/1.1" 500 90831
+[2025-12-19 09:11:42,794] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-12-19 09:11:42,814] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Professor_Student_Manage/professors_and_departments/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Professor_Student_Manage/views.py", line 85, in get
+    queryset=Professor.master_quotas.related.related_model.objects.select_related('subject')
+AttributeError: 'ReverseManyToOneDescriptor' object has no attribute 'related'
+[2025-12-19 09:11:42,816] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=999 HTTP/1.1" 500 90831
+[2025-12-19 09:11:45,236] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 15887
+[2025-12-19 09:12:17,758] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/views.py changed, reloading.
+[2025-12-19 09:12:18,961] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-12-19 09:12:38,965] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/views.py changed, reloading.
+[2025-12-19 09:12:39,468] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-12-19 09:12:50,436] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Professor_Student_Manage/professors_and_departments/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Professor_Student_Manage/views.py", line 85, in get
+    queryset=Professor.master_quotas.related.related_model.objects.select_related('subject')
+AttributeError: 'ReverseManyToOneDescriptor' object has no attribute 'related'
+[2025-12-19 09:12:50,441] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10 HTTP/1.1" 500 90817
+[2025-12-19 09:12:52,422] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Professor_Student_Manage/professors_and_departments/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Professor_Student_Manage/views.py", line 85, in get
+    queryset=Professor.master_quotas.related.related_model.objects.select_related('subject')
+AttributeError: 'ReverseManyToOneDescriptor' object has no attribute 'related'
+[2025-12-19 09:12:52,424] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10 HTTP/1.1" 500 90817
+[2025-12-19 09:13:00,383] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Professor_Student_Manage/professors_and_departments/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Professor_Student_Manage/views.py", line 85, in get
+    queryset=Professor.master_quotas.related.related_model.objects.select_related('subject')
+AttributeError: 'ReverseManyToOneDescriptor' object has no attribute 'related'
+[2025-12-19 09:13:00,385] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 500 89215
+[2025-12-19 09:13:49,547] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/views.py changed, reloading.
+[2025-12-19 09:13:50,121] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-12-19 09:14:02,311] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/views.py changed, reloading.
+[2025-12-19 09:14:02,833] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-12-19 09:14:51,592] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/views.py changed, reloading.
+[2025-12-19 09:14:52,070] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-12-19 09:14:59,627] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10 HTTP/1.1" 200 14855
+[2025-12-19 09:15:00,003] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-19 09:15:00,453] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 13172
+[2025-12-19 09:15:00,881] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-19 09:15:00,976] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 1189
+[2025-12-19 09:15:03,570] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 15887
+[2025-12-19 09:15:39,303] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-12-19 09:15:46,977] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-19 09:15:47,504] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 13172
+[2025-12-19 09:15:48,015] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-12-19 09:15:49,759] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 15887
+[2025-12-19 09:15:52,879] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=1 HTTP/1.1" 200 13462
+[2025-12-19 09:15:59,879] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=2 HTTP/1.1" 200 14853
+[2025-12-19 09:16:03,599] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=999 HTTP/1.1" 200 147723
+[2025-12-19 09:16:06,513] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=1 HTTP/1.1" 200 13462
+[2025-12-19 09:16:35,933] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=999 HTTP/1.1" 200 147723

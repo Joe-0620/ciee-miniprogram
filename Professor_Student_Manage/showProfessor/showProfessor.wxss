@@ -73,16 +73,9 @@ page {
 }
 
 .name {
-  flex: 0.35;
+  flex: 1;
   font-size: 35rpx; /* 调整姓名字体大小 */
   font-weight: bold;
-}
-
-.title {
-  flex: 0.35;
-  font-size: 30rpx; /* 调整姓名字体大小 */
-  /* font-weight: bold; */
-  /* border: 1rpx solid #4a9970; 2rpx宽的实线边框，颜色为绿色 */
 }
 
 .research-areas {
@@ -171,4 +164,219 @@ page {
   padding: 30rpx;
   color: #999;
   font-size: 28rpx;
+}
+
+/* 固定搜索框容器 */
+.search-container {
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  padding: 0;
+}
+
+/* 搜索框包装器 */
+.search-wrapper {
+  flex: 1;
+  min-width: 0; /* 允许flex子元素收缩 */
+}
+
+/* 筛选按钮 */
+.filter-button {
+  position: relative;
+  flex-shrink: 0;
+  width: 100rpx;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 20rpx;
+}
+
+/* 筛选图标容器（废弃，保留以防兼容性问题） */
+.filter-icon-container {
+  position: relative;
+  padding: 0 15rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.filter-icon {
+  color: #666;
+  transition: color 0.3s;
+  cursor: pointer;
+}
+
+.filter-icon.active {
+  color: #1989fa;
+}
+
+/* 筛选徽章 */
+.filter-badge {
+  position: absolute;
+  top: 10rpx;
+  right: 15rpx;
+  background-color: #ee0a24;
+  color: #fff;
+  font-size: 20rpx;
+  padding: 2rpx 8rpx;
+  border-radius: 20rpx;
+  min-width: 30rpx;
+  text-align: center;
+  line-height: 1;
+}
+
+/* 搜索结果提示 */
+.search-tip {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 30rpx;
+  background-color: #f7f8fa;
+  font-size: 28rpx;
+  color: #666;
+}
+
+.close-search {
+  font-size: 32rpx;
+  color: #999;
+}
+
+/* 搜索无结果提示 */
+.no-result {
+  padding: 100rpx 0;
+}
+
+/* 筛选结果提示 */
+.filter-tip {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20rpx 30rpx;
+  background-color: #fff3cd;
+  font-size: 28rpx;
+  color: #856404;
+  border-bottom: 1px solid #ffeaa7;
+}
+
+/* 筛选类型徽章 */
+.filter-type-badge {
+  display: inline-block;
+  padding: 2rpx 12rpx;
+  margin: 0 8rpx;
+  background-color: #1989fa;
+  color: #fff;
+  font-size: 24rpx;
+  border-radius: 8rpx;
+  font-weight: bold;
+}
+
+/* 筛选弹窗容器 */
+.filter-popup-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+}
+
+/* 筛选弹窗头部（固定） */
+.filter-header {
+  flex-shrink: 0;
+  padding: 30rpx 30rpx 20rpx;
+  border-bottom: 2rpx solid #eee;
+  background-color: #fff;
+}
+
+.filter-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  text-align: center;
+  color: #333;
+}
+
+/* 筛选滚动内容区 */
+.filter-scroll-content {
+  flex: 1;
+  padding: 0 30rpx;
+  overflow-y: auto;
+}
+
+.filter-section {
+  margin-bottom: 30rpx;
+}
+
+.filter-section-title {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #1989fa;
+  padding: 20rpx 0 10rpx;
+  margin-bottom: 10rpx;
+  border-bottom: 2px solid #1989fa;
+  background-color: #fff;
+}
+
+.subject-name {
+  font-size: 30rpx;
+  color: #333;
+  margin-bottom: 5rpx;
+}
+
+.subject-code {
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* 专业单元格样式 */
+.subject-cell {
+  transition: background-color 0.3s;
+}
+
+/* 选中的单元格样式 */
+.subject-cell.selected {
+  background-color: #ecf5ff !important;
+}
+
+/* 选中的单元格悬停效果 */
+.van-cell--clickable.van-cell--hover {
+  background-color: #f2f3f5;
+}
+
+/* Radio选中状态增强 */
+.van-radio__icon--checked {
+  border-color: #1989fa !important;
+  background-color: #1989fa !important;
+}
+
+/* 筛选底部按钮（固定） */
+.filter-footer {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: flex-end;
+  padding: 20rpx 30rpx;
+  border-top: 2rpx solid #eee;
+  background-color: #fff;
+  box-shadow: 0 -2rpx 10rpx rgba(0, 0, 0, 0.05);
+}
+
+.filter-buttons-right {
+  display: flex;
+  gap: 20rpx;
+}
+
+.filter-btn {
+  min-width: 160rpx !important;
+  padding: 0 30rpx !important;
+}
+
+/* 搜索模式下禁用tab的样式（可选） */
+.van-tab--disabled {
+  opacity: 0.5;
+  pointer-events: none;
 }

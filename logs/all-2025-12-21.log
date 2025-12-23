@@ -1,0 +1,842 @@
+[2025-12-21 08:54:04,859] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-12-21 08:57:01,153] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/views.py changed, reloading.
+[2025-12-21 08:57:01,672] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-12-21 08:57:56,520] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/views.py changed, reloading.
+[2025-12-21 08:57:57,037] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-12-21 11:36:23,172] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/views.py changed, reloading.
+[2025-12-21 11:36:23,643] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-12-21 11:37:06,093] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/views.py changed, reloading.
+[2025-12-21 11:37:06,584] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-12-21 11:37:09,516] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/views.py changed, reloading.
+[2025-12-21 11:37:10,026] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-12-21 11:37:16,361] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/views.py changed, reloading.
+[2025-12-21 11:37:16,833] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-12-21 11:39:31,578] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/views.py changed, reloading.
+[2025-12-21 11:39:32,045] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-12-21 11:43:52,970] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/views.py changed, reloading.
+[2025-12-21 11:43:53,450] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-12-21 11:44:00,890] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/views.py changed, reloading.
+[2025-12-21 11:44:01,358] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-12-21 11:51:11,817] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/views.py changed, reloading.
+[2025-12-21 11:51:12,265] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-12-21 11:51:27,285] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/views.py changed, reloading.
+[2025-12-21 11:51:27,743] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-12-21 11:51:35,137] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/urls.py changed, reloading.
+[2025-12-21 11:51:35,582] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-12-21 11:55:10,515] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/urls.py changed, reloading.
+[2025-12-21 11:55:11,017] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-12-21 11:56:22,444] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-12-21 11:56:22,635] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-12-21 11:56:22,636] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-21 11:56:22,670] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 1189
+[2025-12-21 11:56:23,217] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-21 11:56:23,230] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 13172
+[2025-12-21 11:56:23,746] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-21 11:56:24,279] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-21 11:56:24,284] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 13172
+[2025-12-21 11:56:25,052] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10 HTTP/1.1" 200 14859
+[2025-12-21 11:56:26,416] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 15893
+[2025-12-21 11:56:27,556] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10 HTTP/1.1" 200 14859
+[2025-12-21 11:56:27,963] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=2 HTTP/1.1" 200 14857
+[2025-12-21 11:56:30,632] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 15893
+[2025-12-21 11:56:35,339] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/user-login/ HTTP/1.1" 200 36
+[2025-12-21 11:56:36,439] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-21 11:56:36,513] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 1189
+[2025-12-21 11:56:36,905] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-21 11:56:39,270] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-21 11:56:39,388] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 13172
+[2025-12-21 11:56:39,713] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-21 11:56:40,246] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 13172
+[2025-12-21 11:56:42,630] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 15893
+[2025-12-21 11:56:46,018] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 15893
+[2025-12-21 11:56:48,769] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-12-21 11:56:49,012] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-12-21 11:56:50,728] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10 HTTP/1.1" 200 14859
+[2025-12-21 11:56:53,562] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10 HTTP/1.1" 200 14859
+[2025-12-21 11:56:53,671] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=2 HTTP/1.1" 200 14857
+[2025-12-21 11:58:27,248] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /userlogin/ HTTP/1.1" 200 1186
+[2025-12-21 11:58:28,241] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-21 11:58:28,295] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 1189
+[2025-12-21 11:58:28,834] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-21 11:58:31,336] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-12-21 11:58:31,577] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-12-21 11:58:34,113] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10 HTTP/1.1" 200 14859
+[2025-12-21 11:58:36,699] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=2 HTTP/1.1" 200 14857
+[2025-12-21 11:58:36,910] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10 HTTP/1.1" 200 14859
+[2025-12-21 12:00:02,773] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=2 HTTP/1.1" 200 14857
+[2025-12-21 12:00:03,320] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/subjects-for-filter/ HTTP/1.1" 200 1201
+[2025-12-21 12:00:24,252] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&master_subject_ids=2%2C2 HTTP/1.1" 200 14878
+[2025-12-21 12:00:40,003] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=1 HTTP/1.1" 200 13469
+[2025-12-21 12:00:56,552] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&master_subject_ids=2%2C2 HTTP/1.1" 200 14878
+[2025-12-21 12:01:10,001] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=1 HTTP/1.1" 200 13469
+[2025-12-21 12:01:17,541] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=1 HTTP/1.1" 200 13469
+[2025-12-21 12:01:28,451] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&master_subject_ids=7 HTTP/1.1" 200 13585
+[2025-12-21 12:01:49,065] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=2&page_size=10&master_subject_ids=7 HTTP/1.1" 200 15131
+[2025-12-21 12:01:51,815] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=3&page_size=10&master_subject_ids=7 HTTP/1.1" 200 3114
+[2025-12-21 12:06:19,705] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/views.py changed, reloading.
+[2025-12-21 12:06:20,224] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-12-21 12:07:29,768] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/views.py changed, reloading.
+[2025-12-21 12:07:30,223] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-12-21 12:08:34,018] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/views.py changed, reloading.
+[2025-12-21 12:08:34,489] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2025-12-21 12:08:53,580] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-12-21 12:08:53,855] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-12-21 12:08:55,619] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10 HTTP/1.1" 200 14859
+[2025-12-21 12:08:58,070] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10 HTTP/1.1" 200 14859
+[2025-12-21 12:08:58,706] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=2 HTTP/1.1" 200 14857
+[2025-12-21 12:09:01,277] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/user-login/ HTTP/1.1" 200 36
+[2025-12-21 12:09:02,137] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-21 12:09:02,219] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 1189
+[2025-12-21 12:09:02,748] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-21 12:09:05,801] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-21 12:09:06,057] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 13172
+[2025-12-21 12:09:06,300] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-21 12:09:07,092] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 13172
+[2025-12-21 12:09:07,100] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 1189
+[2025-12-21 12:09:07,159] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-21 12:09:08,457] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 15893
+[2025-12-21 12:09:11,705] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 15893
+[2025-12-21 12:09:13,632] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-12-21 12:09:13,818] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-12-21 12:09:15,685] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10 HTTP/1.1" 200 14859
+[2025-12-21 12:09:17,925] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10 HTTP/1.1" 200 14859
+[2025-12-21 12:09:18,093] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=2 HTTP/1.1" 200 14857
+[2025-12-21 12:10:03,250] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=2 HTTP/1.1" 200 14857
+[2025-12-21 12:10:05,655] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/subjects-for-filter/ HTTP/1.1" 200 1201
+[2025-12-21 12:10:11,276] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&master_subject_ids=2%2C2&department_id=2 HTTP/1.1" 200 1968
+[2025-12-21 12:10:16,359] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&master_subject_ids=2%2C2&department_id=1 HTTP/1.1" 200 1968
+[2025-12-21 12:10:19,620] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&master_subject_ids=2%2C2&department_id=3 HTTP/1.1" 200 7886
+[2025-12-21 12:10:21,788] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&master_subject_ids=2%2C2&department_id=2 HTTP/1.1" 200 1968
+[2025-12-21 12:10:22,662] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&master_subject_ids=2%2C2&department_id=1 HTTP/1.1" 200 1968
+[2025-12-21 12:10:25,612] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&master_subject_ids=2%2C2&department_id=2 HTTP/1.1" 200 1968
+[2025-12-21 12:10:27,625] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&master_subject_ids=2%2C2&department_id=3 HTTP/1.1" 200 7886
+[2025-12-21 12:10:36,826] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=3 HTTP/1.1" 200 14763
+[2025-12-21 12:10:43,958] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&master_subject_ids=2%2C2&department_id=3 HTTP/1.1" 200 7886
+[2025-12-21 12:10:48,637] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=3 HTTP/1.1" 200 14763
+[2025-12-21 12:16:48,611] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/user-login/ HTTP/1.1" 200 36
+[2025-12-21 12:16:49,442] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-21 12:16:49,522] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 1189
+[2025-12-21 12:16:49,963] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-21 12:16:52,035] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-21 12:16:52,348] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 13172
+[2025-12-21 12:16:52,540] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-21 12:16:53,367] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 13172
+[2025-12-21 12:16:54,575] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-12-21 12:16:54,757] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-12-21 12:16:54,987] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 15893
+[2025-12-21 12:16:57,192] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10 HTTP/1.1" 200 14859
+[2025-12-21 12:16:58,033] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 15893
+[2025-12-21 12:16:59,572] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=2 HTTP/1.1" 200 14857
+[2025-12-21 12:16:59,969] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10 HTTP/1.1" 200 14859
+[2025-12-21 12:17:02,808] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/subjects-for-filter/ HTTP/1.1" 200 1201
+[2025-12-21 12:17:19,368] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Professor_Student_Manage/professors_and_departments/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Professor_Student_Manage/views.py", line 127, in get
+    master_ids = [int(id.strip()) for id in master_subject_ids.split(',') if id.strip()]
+  File "/app/Professor_Student_Manage/views.py", line 127, in <listcomp>
+    master_ids = [int(id.strip()) for id in master_subject_ids.split(',') if id.strip()]
+ValueError: invalid literal for int() with base 10: '[object Object]'
+[2025-12-21 12:17:19,373] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&master_subject_ids=%5Bobject%20Object%5D&department_id=2 HTTP/1.1" 500 97092
+[2025-12-21 12:17:29,167] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Professor_Student_Manage/professors_and_departments/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Professor_Student_Manage/views.py", line 127, in get
+    master_ids = [int(id.strip()) for id in master_subject_ids.split(',') if id.strip()]
+  File "/app/Professor_Student_Manage/views.py", line 127, in <listcomp>
+    master_ids = [int(id.strip()) for id in master_subject_ids.split(',') if id.strip()]
+ValueError: invalid literal for int() with base 10: '[object Object]'
+[2025-12-21 12:17:29,169] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&master_subject_ids=%5Bobject%20Object%5D&department_id=3 HTTP/1.1" 500 97110
+[2025-12-21 12:17:34,695] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/user-login/ HTTP/1.1" 200 36
+[2025-12-21 12:17:35,582] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-21 12:17:35,614] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 1189
+[2025-12-21 12:17:36,071] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-21 12:17:37,850] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-12-21 12:17:38,088] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-12-21 12:17:41,164] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10 HTTP/1.1" 200 14859
+[2025-12-21 12:17:43,578] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=2 HTTP/1.1" 200 14857
+[2025-12-21 12:17:43,969] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10 HTTP/1.1" 200 14859
+[2025-12-21 12:17:45,691] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/subjects-for-filter/ HTTP/1.1" 200 1201
+[2025-12-21 12:17:54,687] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Professor_Student_Manage/professors_and_departments/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Professor_Student_Manage/views.py", line 127, in get
+    master_ids = [int(id.strip()) for id in master_subject_ids.split(',') if id.strip()]
+  File "/app/Professor_Student_Manage/views.py", line 127, in <listcomp>
+    master_ids = [int(id.strip()) for id in master_subject_ids.split(',') if id.strip()]
+ValueError: invalid literal for int() with base 10: '[object Object]'
+[2025-12-21 12:17:54,689] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&master_subject_ids=%5Bobject%20Object%5D&department_id=2 HTTP/1.1" 500 97092
+[2025-12-21 12:21:44,669] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/user-login/ HTTP/1.1" 200 36
+[2025-12-21 12:21:45,526] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-21 12:21:45,584] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 1189
+[2025-12-21 12:21:46,026] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-21 12:21:47,027] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-21 12:21:47,230] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 13172
+[2025-12-21 12:21:47,594] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-21 12:21:48,025] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 13172
+[2025-12-21 12:21:49,151] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-12-21 12:21:49,390] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-12-21 12:21:50,614] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 15893
+[2025-12-21 12:21:51,142] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10 HTTP/1.1" 200 14859
+[2025-12-21 12:21:53,396] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10 HTTP/1.1" 200 14859
+[2025-12-21 12:21:53,796] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 15893
+[2025-12-21 12:21:54,065] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=2 HTTP/1.1" 200 14857
+[2025-12-21 12:21:55,347] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/subjects-for-filter/ HTTP/1.1" 200 1201
+[2025-12-21 12:25:20,358] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/user-login/ HTTP/1.1" 200 36
+[2025-12-21 12:25:21,193] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-21 12:25:21,245] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 1189
+[2025-12-21 12:25:21,641] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-21 12:25:23,540] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-12-21 12:25:23,733] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-12-21 12:25:25,790] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10 HTTP/1.1" 200 14859
+[2025-12-21 12:25:28,054] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10 HTTP/1.1" 200 14859
+[2025-12-21 12:25:28,192] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=2 HTTP/1.1" 200 14857
+[2025-12-21 12:25:30,254] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/subjects-for-filter/ HTTP/1.1" 200 1201
+[2025-12-21 12:26:06,594] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=2 HTTP/1.1" 200 14857
+[2025-12-21 12:27:11,728] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/user-login/ HTTP/1.1" 200 36
+[2025-12-21 12:27:12,578] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-21 12:27:12,601] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 1189
+[2025-12-21 12:27:13,024] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-21 12:27:13,948] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-12-21 12:27:14,127] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-12-21 12:27:15,919] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10 HTTP/1.1" 200 14859
+[2025-12-21 12:27:18,942] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10 HTTP/1.1" 200 14859
+[2025-12-21 12:27:19,078] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=2 HTTP/1.1" 200 14857
+[2025-12-21 12:27:19,782] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/subjects-for-filter/ HTTP/1.1" 200 1201
+[2025-12-21 12:27:28,485] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&master_subject_ids=2&department_id=2 HTTP/1.1" 200 1968
+[2025-12-21 12:27:31,052] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&master_subject_ids=2&department_id=1 HTTP/1.1" 200 1968
+[2025-12-21 12:27:33,785] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&master_subject_ids=2&department_id=3 HTTP/1.1" 200 7886
+[2025-12-21 12:27:39,267] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&master_subject_ids=2&department_id=4 HTTP/1.1" 200 8668
+[2025-12-21 12:27:42,546] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&master_subject_ids=2&department_id=5 HTTP/1.1" 200 8662
+[2025-12-21 12:27:44,422] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&master_subject_ids=2&department_id=6 HTTP/1.1" 200 3113
+[2025-12-21 12:27:47,243] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&master_subject_ids=2&department_id=5 HTTP/1.1" 200 8662
+[2025-12-21 12:28:19,901] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&master_subject_ids=2&department_id=4 HTTP/1.1" 200 8668
+[2025-12-21 12:28:21,982] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&master_subject_ids=2&department_id=3 HTTP/1.1" 200 7886
+[2025-12-21 12:28:22,909] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&master_subject_ids=2&department_id=2 HTTP/1.1" 200 1968
+[2025-12-21 12:28:29,943] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&master_subject_ids=2&department_id=3 HTTP/1.1" 200 7886
+[2025-12-21 12:28:31,108] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&master_subject_ids=2&department_id=2 HTTP/1.1" 200 1968
+[2025-12-21 12:29:02,933] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&master_subject_ids=2&department_id=1 HTTP/1.1" 200 1968
+[2025-12-21 12:29:06,349] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&master_subject_ids=2&department_id=4 HTTP/1.1" 200 8668
+[2025-12-21 12:29:08,354] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-21 12:29:08,691] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 13172
+[2025-12-21 12:29:08,821] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-21 12:29:09,547] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 13172
+[2025-12-21 12:29:11,184] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 15893
+[2025-12-21 12:29:14,379] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 15893
+[2025-12-21 12:29:15,478] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&master_subject_ids=2&department_id=5 HTTP/1.1" 200 8662
+[2025-12-21 12:30:56,683] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&master_subject_ids=2&department_id=5 HTTP/1.1" 200 8662
+[2025-12-21 12:30:59,984] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/user-login/ HTTP/1.1" 200 36
+[2025-12-21 12:31:00,812] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-21 12:31:00,936] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 1189
+[2025-12-21 12:31:01,316] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-21 12:31:03,755] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-12-21 12:31:03,983] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-12-21 12:31:06,004] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10 HTTP/1.1" 200 14859
+[2025-12-21 12:31:08,445] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=2 HTTP/1.1" 200 14857
+[2025-12-21 12:31:09,355] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10 HTTP/1.1" 200 14859
+[2025-12-21 12:31:10,378] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/subjects-for-filter/ HTTP/1.1" 200 1201
+[2025-12-21 12:31:20,683] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&master_subject_ids=5&department_id=2 HTTP/1.1" 200 14857
+[2025-12-21 12:31:28,064] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=2&page_size=10&master_subject_ids=5&department_id=2 HTTP/1.1" 200 14323
+[2025-12-21 12:31:31,027] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=3&page_size=10&master_subject_ids=5&department_id=2 HTTP/1.1" 200 10439
+[2025-12-21 12:31:37,482] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&master_subject_ids=5&department_id=1 HTTP/1.1" 200 1968
+[2025-12-21 12:31:45,316] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&master_subject_ids=5&department_id=2 HTTP/1.1" 200 14857
+[2025-12-21 12:31:48,258] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&master_subject_ids=5&department_id=3 HTTP/1.1" 200 14909
+[2025-12-21 12:31:53,017] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=2&page_size=10&master_subject_ids=5&department_id=3 HTTP/1.1" 200 7646
+[2025-12-21 12:31:57,070] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&master_subject_ids=5&department_id=5 HTTP/1.1" 200 11245
+[2025-12-21 12:32:44,060] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&master_subject_ids=5&department_id=5 HTTP/1.1" 200 11245
+[2025-12-21 12:32:54,804] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&master_subject_ids=5&department_id=5 HTTP/1.1" 200 11245
+[2025-12-21 12:33:41,241] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=5 HTTP/1.1" 200 15108
+[2025-12-21 12:33:50,675] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=4 HTTP/1.1" 200 13005
+[2025-12-21 12:37:11,641] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/user-login/ HTTP/1.1" 200 36
+[2025-12-21 12:37:12,604] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-21 12:37:12,705] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 1189
+[2025-12-21 12:37:13,223] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-21 12:37:14,052] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-12-21 12:37:14,250] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-12-21 12:37:16,138] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10 HTTP/1.1" 200 14859
+[2025-12-21 12:37:18,905] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10 HTTP/1.1" 200 14859
+[2025-12-21 12:37:19,211] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=2 HTTP/1.1" 200 14857
+[2025-12-21 12:37:19,820] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/subjects-for-filter/ HTTP/1.1" 200 1201
+[2025-12-21 12:37:36,604] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&doctor_subject_ids=14&department_id=2 HTTP/1.1" 200 1968
+[2025-12-21 12:37:41,275] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&doctor_subject_ids=14&department_id=1 HTTP/1.1" 200 1968
+[2025-12-21 12:37:43,998] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&doctor_subject_ids=14&department_id=3 HTTP/1.1" 200 1968
+[2025-12-21 12:37:45,646] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&doctor_subject_ids=14&department_id=4 HTTP/1.1" 200 1968
+[2025-12-21 12:37:46,512] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&doctor_subject_ids=14&department_id=5 HTTP/1.1" 200 1968
+[2025-12-21 12:37:47,352] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&doctor_subject_ids=14&department_id=6 HTTP/1.1" 200 1968
+[2025-12-21 12:37:48,755] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&doctor_subject_ids=14&department_id=7 HTTP/1.1" 200 3375
+[2025-12-21 12:37:50,951] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&doctor_subject_ids=14&department_id=6 HTTP/1.1" 200 1968
+[2025-12-21 12:37:52,095] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&doctor_subject_ids=14&department_id=7 HTTP/1.1" 200 3375
+[2025-12-21 12:41:07,901] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/user-login/ HTTP/1.1" 200 36
+[2025-12-21 12:41:08,784] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-21 12:41:09,207] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 1189
+[2025-12-21 12:41:10,042] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-21 12:41:12,170] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-12-21 12:41:12,355] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-12-21 12:41:14,739] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10 HTTP/1.1" 200 14859
+[2025-12-21 12:41:17,251] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=2 HTTP/1.1" 200 14857
+[2025-12-21 12:41:17,587] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10 HTTP/1.1" 200 14859
+[2025-12-21 12:41:18,467] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/subjects-for-filter/ HTTP/1.1" 200 1201
+[2025-12-21 12:41:26,238] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&doctor_subject_ids=10&department_id=2 HTTP/1.1" 200 1968
+[2025-12-21 12:41:28,724] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&doctor_subject_ids=10&department_id=1 HTTP/1.1" 200 1968
+[2025-12-21 12:41:29,878] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&doctor_subject_ids=10&department_id=3 HTTP/1.1" 200 1968
+[2025-12-21 12:41:30,859] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&doctor_subject_ids=10&department_id=4 HTTP/1.1" 200 1968
+[2025-12-21 12:41:32,681] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&doctor_subject_ids=10&department_id=5 HTTP/1.1" 200 1968
+[2025-12-21 12:41:33,903] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&doctor_subject_ids=10&department_id=6 HTTP/1.1" 200 1968
+[2025-12-21 12:41:34,904] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&doctor_subject_ids=10&department_id=7 HTTP/1.1" 200 1968
+[2025-12-21 12:41:36,161] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&doctor_subject_ids=10&department_id=6 HTTP/1.1" 200 1968
+[2025-12-21 12:41:37,251] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&doctor_subject_ids=10&department_id=7 HTTP/1.1" 200 1968
+[2025-12-21 12:41:40,869] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&doctor_subject_ids=10&department_id=6 HTTP/1.1" 200 1968
+[2025-12-21 12:41:41,715] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&doctor_subject_ids=10&department_id=7 HTTP/1.1" 200 1968
+[2025-12-21 12:41:46,052] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=7 HTTP/1.1" 200 7061
+[2025-12-21 12:41:54,219] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&doctor_subject_ids=10&department_id=7 HTTP/1.1" 200 1968
+[2025-12-21 12:42:15,428] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&doctor_subject_ids=10&department_id=6 HTTP/1.1" 200 1969
+[2025-12-21 12:42:16,803] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&doctor_subject_ids=10&department_id=7 HTTP/1.1" 200 3389
+[2025-12-21 12:42:22,006] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=7 HTTP/1.1" 200 7075
+[2025-12-21 12:42:27,175] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&doctor_subject_ids=10&department_id=7 HTTP/1.1" 200 3389
+[2025-12-21 12:42:37,600] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=7 HTTP/1.1" 200 7075
+[2025-12-21 12:42:45,905] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&master_subject_ids=6&department_id=7 HTTP/1.1" 200 3389
+[2025-12-21 12:44:58,350] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /Professor_Student_Manage/user-login/ HTTP/1.1" 200 36
+[2025-12-21 12:44:59,326] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-21 12:44:59,394] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 1189
+[2025-12-21 12:44:59,908] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-21 12:45:00,700] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-12-21 12:45:00,895] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-12-21 12:45:03,284] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10 HTTP/1.1" 200 14860
+[2025-12-21 12:45:05,881] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=2 HTTP/1.1" 200 14858
+[2025-12-21 12:45:06,146] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10 HTTP/1.1" 200 14860
+[2025-12-21 12:45:06,868] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/subjects-for-filter/ HTTP/1.1" 200 1201
+[2025-12-21 12:45:13,253] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&master_subject_ids=5&department_id=2 HTTP/1.1" 200 14858
+[2025-12-21 12:45:18,922] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=2 HTTP/1.1" 200 14858
+[2025-12-21 12:45:23,155] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&doctor_subject_ids=11&department_id=2 HTTP/1.1" 200 1969
+[2025-12-21 12:45:25,583] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&doctor_subject_ids=11&department_id=1 HTTP/1.1" 200 1969
+[2025-12-21 12:45:27,352] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&doctor_subject_ids=11&department_id=3 HTTP/1.1" 200 1969
+[2025-12-21 12:45:28,278] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&doctor_subject_ids=11&department_id=4 HTTP/1.1" 200 1969
+[2025-12-21 12:45:29,351] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&doctor_subject_ids=11&department_id=5 HTTP/1.1" 200 1969
+[2025-12-21 12:45:30,243] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&doctor_subject_ids=11&department_id=6 HTTP/1.1" 200 1969
+[2025-12-21 12:45:32,040] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&doctor_subject_ids=11&department_id=7 HTTP/1.1" 200 4432
+[2025-12-21 12:45:37,548] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&doctor_subject_ids=11&department_id=5 HTTP/1.1" 200 1969
+[2025-12-21 12:45:38,602] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&doctor_subject_ids=11&department_id=4 HTTP/1.1" 200 1969
+[2025-12-21 12:45:42,234] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=4 HTTP/1.1" 200 13006
+[2025-12-21 12:45:45,464] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=3 HTTP/1.1" 200 14764
+[2025-12-21 12:46:14,251] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-21 12:46:14,723] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-21 12:46:15,043] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 13172
+[2025-12-21 12:46:16,051] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 13172
+[2025-12-21 12:46:18,731] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 15959
+[2025-12-21 12:46:20,447] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&doctor_subject_ids=12&department_id=3 HTTP/1.1" 200 1969
+[2025-12-21 12:46:22,109] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 15959
+[2025-12-21 12:46:22,457] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&doctor_subject_ids=12&department_id=2 HTTP/1.1" 200 1969
+[2025-12-21 12:46:23,339] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&doctor_subject_ids=12&department_id=1 HTTP/1.1" 200 1969
+[2025-12-21 12:46:25,709] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&doctor_subject_ids=12&department_id=4 HTTP/1.1" 200 1969
+[2025-12-21 12:46:26,328] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&doctor_subject_ids=12&department_id=5 HTTP/1.1" 200 1969
+[2025-12-21 12:46:27,271] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&doctor_subject_ids=12&department_id=6 HTTP/1.1" 200 1969
+[2025-12-21 12:46:28,436] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&doctor_subject_ids=12&department_id=7 HTTP/1.1" 200 3389
+[2025-12-21 12:46:30,198] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-21 12:46:30,548] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 13172
+[2025-12-21 12:46:33,025] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 15959
+[2025-12-21 12:46:33,628] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=7 HTTP/1.1" 200 7075
+[2025-12-21 12:46:38,055] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=5 HTTP/1.1" 200 15109
+[2025-12-21 12:46:41,532] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=3 HTTP/1.1" 200 14764
+[2025-12-21 12:47:03,121] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=2 HTTP/1.1" 200 14858
+[2025-12-21 12:47:14,470] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=2 HTTP/1.1" 200 14858
+[2025-12-21 12:47:23,889] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=2 HTTP/1.1" 200 14858
+[2025-12-21 12:47:34,136] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&master_subject_ids=7&department_id=2 HTTP/1.1" 200 5302
+[2025-12-21 12:47:58,866] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&master_subject_ids=7&department_id=3 HTTP/1.1" 200 5412
+[2025-12-21 12:48:01,652] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=3 HTTP/1.1" 200 14764
+[2025-12-21 12:48:10,635] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=2&page_size=10&department_id=3 HTTP/1.1" 200 13987
+[2025-12-22 18:43:36,556] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Professor_Student_Manage/professors_and_departments/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/mysql/base.py", line 73, in execute
+    return self.cursor.execute(query, args)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/cursors.py", line 148, in execute
+    result = self._query(query)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/cursors.py", line 310, in _query
+    conn.query(q)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 548, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 775, in _read_query_result
+    result.read()
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 1156, in read
+    first_packet = self.connection._read_packet()
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 692, in _read_packet
+    packet_header = self._read_bytes(4)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 748, in _read_bytes
+    raise err.OperationalError(
+pymysql.err.OperationalError: (2013, 'Lost connection to MySQL server during query')
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Professor_Student_Manage/views.py", line 155, in get
+    'professors': professor_serializer.data,
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 768, in data
+    ret = super().data
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 253, in data
+    self._data = self.to_representation(self.instance)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 686, in to_representation
+    return [
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 687, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "/app/Professor_Student_Manage/serializers.py", line 201, in to_representation
+    academic_quota_count = sum(q.beijing_remaining_quota for q in academic_quota_qs)
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/query.py", line 280, in __iter__
+    self._fetch_all()
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/query.py", line 1324, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/query.py", line 51, in __iter__
+    results = compiler.execute_sql(chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size)
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/sql/compiler.py", line 1175, in execute_sql
+    cursor.execute(sql, params)
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/utils.py", line 98, in execute
+    return super().execute(sql, params)
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/utils.py", line 66, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/utils.py", line 75, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "/root/.local/lib/python3.8/site-packages/django/db/utils.py", line 90, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/mysql/base.py", line 73, in execute
+    return self.cursor.execute(query, args)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/cursors.py", line 148, in execute
+    result = self._query(query)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/cursors.py", line 310, in _query
+    conn.query(q)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 548, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 775, in _read_query_result
+    result.read()
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 1156, in read
+    first_packet = self.connection._read_packet()
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 692, in _read_packet
+    packet_header = self._read_bytes(4)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 748, in _read_bytes
+    raise err.OperationalError(
+django.db.utils.OperationalError: (2013, 'Lost connection to MySQL server during query')
+[2025-12-22 18:43:36,562] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=2 HTTP/1.1" 500 269239
+[2025-12-22 18:43:45,664] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=2 HTTP/1.1" 200 14858
+[2025-12-22 18:43:51,907] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=3 HTTP/1.1" 200 14764
+[2025-12-22 18:44:11,184] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=4 HTTP/1.1" 200 13006
+[2025-12-22 18:44:25,205] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=5 HTTP/1.1" 200 15109
+[2025-12-22 18:44:37,967] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-22 18:44:38,583] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 13172
+[2025-12-22 18:44:40,625] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 15959
+[2025-12-22 18:44:42,695] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-22 18:44:43,279] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 13172
+[2025-12-22 18:44:45,518] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 15959
+[2025-12-22 18:44:45,645] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-22 18:44:45,982] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 13172
+[2025-12-22 18:44:47,419] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-22 18:44:47,621] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 13172
+[2025-12-22 18:44:48,504] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 1189
+[2025-12-22 18:44:48,608] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-22 18:44:48,785] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 15959
+[2025-12-22 18:44:51,463] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 1189
+[2025-12-22 18:44:51,536] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-22 18:44:52,229] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-22 18:44:52,807] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 13172
+[2025-12-22 18:44:52,882] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 15959
+[2025-12-22 18:44:53,843] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-22 18:44:54,051] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 1189
+[2025-12-22 18:44:56,208] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 15959
+[2025-12-22 18:45:34,529] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-22 18:45:35,150] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 13172
+[2025-12-22 18:45:38,350] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 15959
+[2025-12-22 18:46:20,794] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-22 18:46:21,171] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 13172
+[2025-12-22 18:46:23,712] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 15959
+[2025-12-22 18:46:40,324] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-22 18:46:40,468] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 1189
+[2025-12-22 18:46:47,967] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1100
+[2025-12-22 18:47:06,724] [basehttp.py:161] [basehttp:log_message] [INFO]- "PATCH /Professor_Student_Manage/update-professor/ HTTP/1.1" 200 336
+[2025-12-22 18:47:08,713] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1112
+[2025-12-22 18:47:08,789] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 1189
+[2025-12-22 18:47:10,521] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1112
+[2025-12-22 18:47:10,871] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 13172
+[2025-12-22 18:47:13,418] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 15971
+[2025-12-22 18:47:14,133] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=6 HTTP/1.1" 200 4236
+[2025-12-22 18:47:16,180] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=7 HTTP/1.1" 200 7087
+[2025-12-23 07:19:52,345] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Select_Information/get-select-info/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/mysql/base.py", line 73, in execute
+    return self.cursor.execute(query, args)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/cursors.py", line 148, in execute
+    result = self._query(query)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/cursors.py", line 310, in _query
+    conn.query(q)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 548, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 775, in _read_query_result
+    result.read()
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 1156, in read
+    first_packet = self.connection._read_packet()
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 692, in _read_packet
+    packet_header = self._read_bytes(4)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 748, in _read_bytes
+    raise err.OperationalError(
+pymysql.err.OperationalError: (2013, 'Lost connection to MySQL server during query')
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Select_Information/views.py", line 90, in get
+    doctor_subject_ids = list(ProfessorDoctorQuota.objects.filter(
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/query.py", line 262, in __len__
+    self._fetch_all()
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/query.py", line 1324, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/query.py", line 171, in __iter__
+    for row in compiler.results_iter(chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size):
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/sql/compiler.py", line 1130, in results_iter
+    results = self.execute_sql(MULTI, chunked_fetch=chunked_fetch, chunk_size=chunk_size)
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/sql/compiler.py", line 1175, in execute_sql
+    cursor.execute(sql, params)
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/utils.py", line 98, in execute
+    return super().execute(sql, params)
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/utils.py", line 66, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/utils.py", line 75, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "/root/.local/lib/python3.8/site-packages/django/db/utils.py", line 90, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/mysql/base.py", line 73, in execute
+    return self.cursor.execute(query, args)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/cursors.py", line 148, in execute
+    result = self._query(query)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/cursors.py", line 310, in _query
+    conn.query(q)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 548, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 775, in _read_query_result
+    result.read()
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 1156, in read
+    first_packet = self.connection._read_packet()
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 692, in _read_packet
+    packet_header = self._read_bytes(4)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 748, in _read_bytes
+    raise err.OperationalError(
+django.db.utils.OperationalError: (2013, 'Lost connection to MySQL server during query')
+[2025-12-23 07:19:52,352] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 500 209105
+[2025-12-23 07:19:52,426] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1112
+[2025-12-23 07:19:52,620] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Professor_Student_Manage/professors_and_departments/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/mysql/base.py", line 73, in execute
+    return self.cursor.execute(query, args)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/cursors.py", line 148, in execute
+    result = self._query(query)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/cursors.py", line 310, in _query
+    conn.query(q)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 548, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 775, in _read_query_result
+    result.read()
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 1156, in read
+    first_packet = self.connection._read_packet()
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 692, in _read_packet
+    packet_header = self._read_bytes(4)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 748, in _read_bytes
+    raise err.OperationalError(
+pymysql.err.OperationalError: (2013, 'Lost connection to MySQL server during query')
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Professor_Student_Manage/views.py", line 155, in get
+    'professors': professor_serializer.data,
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 768, in data
+    ret = super().data
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 253, in data
+    self._data = self.to_representation(self.instance)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 686, in to_representation
+    return [
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 686, in <listcomp>
+    return [
+  File "/usr/lib/python3.8/_collections_abc.py", line 874, in __iter__
+    v = self[i]
+  File "/root/.local/lib/python3.8/site-packages/django/core/paginator.py", line 188, in __getitem__
+    self.object_list = list(self.object_list)
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/query.py", line 262, in __len__
+    self._fetch_all()
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/query.py", line 1326, in _fetch_all
+    self._prefetch_related_objects()
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/query.py", line 813, in _prefetch_related_objects
+    prefetch_related_objects(self._result_cache, *self._prefetch_related_lookups)
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/query.py", line 1730, in prefetch_related_objects
+    obj_list, additional_lookups = prefetch_one_level(
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/query.py", line 1872, in prefetch_one_level
+    all_related_objects = list(rel_qs)
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/query.py", line 262, in __len__
+    self._fetch_all()
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/query.py", line 1324, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/query.py", line 51, in __iter__
+    results = compiler.execute_sql(chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size)
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/sql/compiler.py", line 1175, in execute_sql
+    cursor.execute(sql, params)
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/utils.py", line 98, in execute
+    return super().execute(sql, params)
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/utils.py", line 66, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/utils.py", line 75, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "/root/.local/lib/python3.8/site-packages/django/db/utils.py", line 90, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/mysql/base.py", line 73, in execute
+    return self.cursor.execute(query, args)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/cursors.py", line 148, in execute
+    result = self._query(query)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/cursors.py", line 310, in _query
+    conn.query(q)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 548, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 775, in _read_query_result
+    result.read()
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 1156, in read
+    first_packet = self.connection._read_packet()
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 692, in _read_packet
+    packet_header = self._read_bytes(4)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 748, in _read_bytes
+    raise err.OperationalError(
+django.db.utils.OperationalError: (2013, 'Lost connection to MySQL server during query')
+[2025-12-23 07:19:52,626] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=6 HTTP/1.1" 500 283099
+[2025-12-23 07:19:52,675] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /Professor_Student_Manage/departments/reviewers/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/mysql/base.py", line 73, in execute
+    return self.cursor.execute(query, args)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/cursors.py", line 148, in execute
+    result = self._query(query)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/cursors.py", line 310, in _query
+    conn.query(q)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 548, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 775, in _read_query_result
+    result.read()
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 1156, in read
+    first_packet = self.connection._read_packet()
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 692, in _read_packet
+    packet_header = self._read_bytes(4)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 748, in _read_bytes
+    raise err.OperationalError(
+pymysql.err.OperationalError: (2013, 'Lost connection to MySQL server during query')
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/csrf.py", line 54, in wrapped_view
+    return view_func(*args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/generic/base.py", line 70, in view
+    return self.dispatch(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+  File "/app/Professor_Student_Manage/views.py", line 1057, in get
+    return Response(serializer.data, status=status.HTTP_200_OK)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 768, in data
+    ret = super().data
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 253, in data
+    self._data = self.to_representation(self.instance)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 686, in to_representation
+    return [
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 687, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 522, in to_representation
+    ret[field.field_name] = field.to_representation(attribute)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/fields.py", line 1838, in to_representation
+    return method(value)
+  File "/app/Professor_Student_Manage/serializers.py", line 278, in get_reviewers
+    return ProfessorSerializer(reviewers, many=True).data
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 768, in data
+    ret = super().data
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 253, in data
+    self._data = self.to_representation(self.instance)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 686, in to_representation
+    return [
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 687, in <listcomp>
+    self.child.to_representation(item) for item in iterable
+  File "/app/Professor_Student_Manage/serializers.py", line 112, in to_representation
+    data = super().to_representation(instance)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 522, in to_representation
+    ret[field.field_name] = field.to_representation(attribute)
+  File "/root/.local/lib/python3.8/site-packages/rest_framework/serializers.py", line 686, in to_representation
+    return [
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/query.py", line 280, in __iter__
+    self._fetch_all()
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/query.py", line 1324, in _fetch_all
+    self._result_cache = list(self._iterable_class(self))
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/query.py", line 51, in __iter__
+    results = compiler.execute_sql(chunked_fetch=self.chunked_fetch, chunk_size=self.chunk_size)
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/sql/compiler.py", line 1175, in execute_sql
+    cursor.execute(sql, params)
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/utils.py", line 98, in execute
+    return super().execute(sql, params)
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/utils.py", line 66, in execute
+    return self._execute_with_wrappers(sql, params, many=False, executor=self._execute)
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/utils.py", line 75, in _execute_with_wrappers
+    return executor(sql, params, many, context)
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "/root/.local/lib/python3.8/site-packages/django/db/utils.py", line 90, in __exit__
+    raise dj_exc_value.with_traceback(traceback) from exc_value
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/utils.py", line 84, in _execute
+    return self.cursor.execute(sql, params)
+  File "/root/.local/lib/python3.8/site-packages/django/db/backends/mysql/base.py", line 73, in execute
+    return self.cursor.execute(query, args)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/cursors.py", line 148, in execute
+    result = self._query(query)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/cursors.py", line 310, in _query
+    conn.query(q)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 548, in query
+    self._affected_rows = self._read_query_result(unbuffered=unbuffered)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 775, in _read_query_result
+    result.read()
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 1156, in read
+    first_packet = self.connection._read_packet()
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 692, in _read_packet
+    packet_header = self._read_bytes(4)
+  File "/root/.local/lib/python3.8/site-packages/pymysql/connections.py", line 748, in _read_bytes
+    raise err.OperationalError(
+django.db.utils.OperationalError: (2013, 'Lost connection to MySQL server during query')
+[2025-12-23 07:19:52,678] [basehttp.py:161] [basehttp:log_message] [ERROR]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 500 271980
+[2025-12-23 07:19:57,453] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=5 HTTP/1.1" 200 15109
+[2025-12-23 07:20:00,915] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=4 HTTP/1.1" 200 13006
+[2025-12-23 07:21:12,522] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=3 HTTP/1.1" 200 14764
+[2025-12-23 07:21:18,775] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=3 HTTP/1.1" 200 14764
+[2025-12-23 07:21:23,344] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=2 HTTP/1.1" 200 14858
+[2025-12-23 07:22:05,793] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=2 HTTP/1.1" 200 14858
+[2025-12-23 07:22:06,111] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1112
+[2025-12-23 07:22:06,511] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 13172
+[2025-12-23 07:22:08,508] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1112
+[2025-12-23 07:22:08,861] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 13172
+[2025-12-23 07:22:09,698] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 15971
+[2025-12-23 07:22:10,715] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1112
+[2025-12-23 07:22:10,803] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 1189
+[2025-12-23 07:22:11,429] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1112
+[2025-12-23 07:22:11,962] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 13172
+[2025-12-23 07:22:12,342] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1112
+[2025-12-23 07:22:12,387] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 200 1189
+[2025-12-23 07:22:13,060] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 15971
+[2025-12-23 07:22:14,772] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 200 1112
+[2025-12-23 07:22:15,673] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 200 13172
+[2025-12-23 07:22:17,271] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 15971
+[2025-12-23 07:22:20,450] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 200 15971

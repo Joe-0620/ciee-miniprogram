@@ -62,6 +62,25 @@ class ProfessorEnrollInfoView(generics.ListAPIView):
         }, status=status.HTTP_200_OK)
 
 
+class GetSubjectsForFilterView(APIView):
+    """
+    获取所有硕士和博士专业列表，供前端筛选使用
+    """
+    def get(self, request):
+        # 获取硕士专业（学硕和专硕）
+        master_subjects = Subject.objects.filter(subject_type__in=[0, 1]).order_by('subject_type', 'subject_name')
+        # 获取博士专业
+        doctor_subjects = Subject.objects.filter(subject_type=2).order_by('subject_name')
+        
+        master_serializer = SubjectSerializer(master_subjects, many=True)
+        doctor_serializer = SubjectSerializer(doctor_subjects, many=True)
+        
+        return Response({
+            'master_subjects': master_serializer.data,
+            'doctor_subjects': doctor_serializer.data
+        }, status=status.HTTP_200_OK)
+
+
 class ProfessorAndDepartmentListView(APIView):
     # permission_classes = [IsAuthenticated]  # 需要登录才能修改密码
 
@@ -71,6 +90,10 @@ class ProfessorAndDepartmentListView(APIView):
         page_size = int(request.query_params.get('page_size', 10))
         department_id = request.query_params.get('department_id', None)
         search_keyword = request.query_params.get('search', None)
+        
+        # 获取专业筛选参数（逗号分隔的专业ID列表）
+        master_subject_ids = request.query_params.get('master_subject_ids', None)
+        doctor_subject_ids = request.query_params.get('doctor_subject_ids', None)
         
         # 获取所有方向
         departments = Department.objects.all()
@@ -98,6 +121,25 @@ class ProfessorAndDepartmentListView(APIView):
                 Q(name__icontains=search_keyword) |
                 Q(research_areas__icontains=search_keyword)
             )
+        
+        # 硕士专业筛选：导师的硕士专业配额中包含任一指定专业且该专业有剩余名额
+        if master_subject_ids:
+            master_ids = [int(id.strip()) for id in master_subject_ids.split(',') if id.strip()]
+            if master_ids:
+                professors_query = professors_query.filter(
+                    Q(master_quotas__subject_id__in=master_ids) &
+                    (Q(master_quotas__beijing_remaining_quota__gt=0) | 
+                     Q(master_quotas__yantai_remaining_quota__gt=0))
+                ).distinct()
+        
+        # 博士专业筛选：导师的博士专业配额中包含任一指定专业且该专业有剩余名额
+        if doctor_subject_ids:
+            doctor_ids = [int(id.strip()) for id in doctor_subject_ids.split(',') if id.strip()]
+            if doctor_ids:
+                professors_query = professors_query.filter(
+                    doctor_quotas__subject_id__in=doctor_ids,
+                    doctor_quotas__remaining_quota__gt=0
+                ).distinct()
         
         # 分页处理
         paginator = Paginator(professors_query, page_size)

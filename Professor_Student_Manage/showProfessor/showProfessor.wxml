@@ -2,10 +2,45 @@
 <page-meta page-style="{{ (show || show1) ? 'overflow: hidden;' : '' }}" />
 <view class="mask" wx:if="{{isPopupOpen}}"></view>
 <view class="con">
+  <!-- 固定搜索框 -->
+  <view class="search-container">
+    <view class="search-wrapper">
+      <van-search
+        value="{{ searchKeyword }}"
+        placeholder="搜索导师姓名、研究方向"
+        show-action="{{ isSearchMode }}"
+        bind:change="onSearchChange"
+        bind:search="onSearch"
+        bind:cancel="onSearchCancel"
+        bind:clear="onSearchClear"
+      />
+    </view>
+    <view class="filter-button" bind:tap="showFilterPopup">
+      <van-icon 
+        name="filter-o" 
+        size="22px" 
+        class="filter-icon {{ isFilterMode ? 'active' : '' }}"
+      />
+      <view class="filter-badge" wx:if="{{isFilterMode}}">1</view>
+    </view>
+  </view>
   <van-notice-bar
       scrollable
       text="互选开放时间: {{ open_time }}，互选关闭时间: {{ close_time }}"
     />
+
+  <!-- 搜索结果提示 -->
+  <view class="search-tip" wx:if="{{isSearchMode}}">
+    <text>搜索"{{searchKeyword}}"，找到 {{searchResultCount}} 位导师</text>
+    <van-icon name="cross" class="close-search" bind:tap="onSearchCancel" />
+  </view>
+
+  <!-- 筛选结果提示 -->
+  <view class="filter-tip" wx:if="{{isFilterMode}}">
+    <text>筛选专业：<text class="filter-type-badge">{{ filterType === 'master' ? '硕士' : '博士' }}</text>{{ filterSubjectName }}</text>
+    <van-button type="primary" size="mini" bind:tap="resetFilter">清除筛选</van-button>
+  </view>
+
   <view class="scroll">
     <view wx:if="{{isTriggered}}" class="refresh-text-container">
       <!-- 下拉刷新的视图内容 -->
@@ -21,17 +56,19 @@
       lower-threshold="100"
     >
       <van-tabs
-        swipeable 
+        swipeable = "{{ !isSearchMode }}"
         animated 
         sticky 
         ellipsis="{{false}}"
         active="{{ active }}" 
-        bind:change="onChange" 
+        bind:change="onChange"
+        bind:disabled="onClickDisabled"
       >
         <block wx:for="{{departmentList}}" wx:key="id"  wx:for-item="ditem">
-          <van-tab title="{{ditem.department_name}}">
+          <van-tab title="{{ditem.department_name}}" disabled="{{isSearchMode}}">
             <view wx:for="{{professorList}}" wx:key="id"  wx:for-item="pitem">
-              <block wx:if="{{ditem.id === pitem.department}}">
+              <!-- 搜索模式：显示所有匹配的导师；筛选或普通模式：只显示当前方向的导师 -->
+              <block wx:if="{{isSearchMode || ditem.id === pitem.department}}">
                 <view class="van-card-container">
                   <van-card>
                     <view slot="thumb" class="professor-photo-container">
@@ -121,11 +158,20 @@
               <van-loading type="spinner" size="24px">加载中...</van-loading>
             </view>
             
-            <!-- 没有更多数据提示 -->
-            <view class="no-more" wx:if="{{!hasNextPage && professorList.length > 0}}">
+            <!-- 没有更多数据提示（普通模式和筛选模式） -->
+            <view class="no-more" wx:if="{{!hasNextPage && professorList.length > 0 && !isLoadingMore}}">
               <text>没有更多导师了</text>
             </view>
             
+            <!-- 筛选无结果提示 -->
+            <view class="no-result" wx:if="{{isFilterMode && professorList.length === 0 && !isLoadingMore}}">
+              <van-empty description="该方向下没有符合条件的导师" />
+            </view>
+            
+            <!-- 搜索无结果提示 -->
+            <view class="no-result" wx:if="{{isSearchMode && professorList.length === 0 && !isLoadingMore}}">
+              <van-empty description="未找到匹配的导师" />
+            </view>
           </van-tab>
         </block>
       </van-tabs>
@@ -157,6 +203,83 @@
       </block>
     </view>
   </van-popup>
+  
+  <!-- 筛选弹窗 -->
+  <van-popup 
+    show="{{ showFilterPopup }}" 
+    bind:close="closeFilterPopup" 
+    position="bottom" 
+    round
+    custom-style="height: 75%;"
+    closeable 
+    close-icon-position="top-right"
+    safe-area-tab-bar="{{true}}"
+  >
+    <view class="filter-popup-container">
+      <view class="filter-header">
+        <view class="filter-title">按专业筛选导师（单选）</view>
+      </view>
+      
+      <scroll-view class="filter-scroll-content" scroll-y="true">
+        <!-- 硕士专业选择 -->
+        <view class="filter-section">
+          <view class="filter-section-title">硕士招生专业</view>
+          <van-radio-group value="{{ selectedMasterSubject }}" bind:change="onMasterSubjectChange">
+            <van-cell-group>
+              <van-cell 
+                wx:for="{{ masterSubjects }}" 
+                wx:key="id" 
+                clickable 
+                data-id="{{item.id}}"
+                data-type="master"
+                bind:click="onSubjectCellClick"
+                class="subject-cell {{ selectedMasterSubject === item.id ? 'selected' : '' }}"
+              >
+                <view slot="title">
+                  <view class="subject-name">{{ item.subject_name }}</view>
+                  <view class="subject-code">代码: {{ item.subject_code }}</view>
+                </view>
+                <van-radio slot="right-icon" name="{{ item.id }}" checked-color="#1989fa" />
+              </van-cell>
+            </van-cell-group>
+          </van-radio-group>
+        </view>
+        
+        <!-- 博士专业选择 -->
+        <view class="filter-section">
+          <view class="filter-section-title">博士招生专业</view>
+          <van-radio-group value="{{ selectedDoctorSubject }}" bind:change="onDoctorSubjectChange">
+            <van-cell-group>
+              <van-cell 
+                wx:for="{{ doctorSubjects }}" 
+                wx:key="id" 
+                clickable
+                data-id="{{item.id}}"
+                data-type="doctor"
+                bind:click="onSubjectCellClick"
+                class="subject-cell {{ selectedDoctorSubject === item.id ? 'selected' : '' }}"
+              >
+                <view slot="title">
+                  <view class="subject-name">{{ item.subject_name }}</view>
+                  <view class="subject-code">代码: {{ item.subject_code }}</view>
+                </view>
+                <van-radio slot="right-icon" name="{{ item.id }}" checked-color="#1989fa" />
+              </van-cell>
+            </van-cell-group>
+          </van-radio-group>
+        </view>
+      </scroll-view>
+      
+      <!-- 底部按钮 -->
+      <view class="filter-footer">
+        <view class="filter-buttons-right">
+          <van-button type="default" size="small" bind:tap="resetFilter" custom-class="filter-btn">重置</van-button>
+          <van-button type="primary" size="small" bind:tap="confirmFilter" custom-class="filter-btn">确定筛选</van-button>
+        </view>
+      </view>
+    </view>
+  </van-popup>
+  
   <van-dialog id="van-dialog" show="{{ show2 }}" />
   <view style="padding-bottom: 20%;"></view>
   <!-- <view class="bottom">下</view> -->

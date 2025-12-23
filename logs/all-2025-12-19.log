@@ -452,3 +452,47 @@ AttributeError: 'ReverseManyToOneDescriptor' object has no attribute 'related'
 [2025-12-19 09:16:03,599] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=999 HTTP/1.1" 200 147723
 [2025-12-19 09:16:06,513] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=1 HTTP/1.1" 200 13462
 [2025-12-19 09:16:35,933] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=999 HTTP/1.1" 200 147723
+[2025-12-19 09:16:38,810] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=1 HTTP/1.1" 200 13462
+[2025-12-19 09:40:30,727] [log.py:224] [log:log_response] [WARNING]- Unauthorized: /Professor_Student_Manage/departments/reviewers/
+[2025-12-19 09:40:30,728] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 401 34
+[2025-12-19 09:40:30,790] [log.py:224] [log:log_response] [WARNING]- Unauthorized: /Professor_Student_Manage/user-info/
+[2025-12-19 09:40:30,791] [log.py:224] [log:log_response] [WARNING]- Unauthorized: /Select_Information/get-select-info/
+[2025-12-19 09:40:30,792] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 401 34
+[2025-12-19 09:40:30,792] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 401 34
+[2025-12-19 09:40:31,838] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-12-19 09:40:35,312] [log.py:224] [log:log_response] [WARNING]- Unauthorized: /Professor_Student_Manage/departments/reviewers/
+[2025-12-19 09:40:35,313] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 401 34
+[2025-12-19 09:40:35,334] [log.py:224] [log:log_response] [WARNING]- Unauthorized: /Professor_Student_Manage/user-info/
+[2025-12-19 09:40:35,335] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 401 34
+[2025-12-19 09:40:35,354] [log.py:224] [log:log_response] [WARNING]- Unauthorized: /Select_Information/get-select-info/
+[2025-12-19 09:40:35,355] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 401 34
+[2025-12-19 09:40:36,342] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-12-19 09:40:39,113] [log.py:224] [log:log_response] [WARNING]- Unauthorized: /Select_Information/get-select-info/
+[2025-12-19 09:40:39,114] [log.py:224] [log:log_response] [WARNING]- Unauthorized: /Professor_Student_Manage/user-info/
+[2025-12-19 09:40:39,114] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /Select_Information/get-select-info/?usertype=professor HTTP/1.1" 401 34
+[2025-12-19 09:40:39,115] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 401 34
+[2025-12-19 09:40:39,116] [log.py:224] [log:log_response] [WARNING]- Unauthorized: /Professor_Student_Manage/departments/reviewers/
+[2025-12-19 09:40:39,117] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /Professor_Student_Manage/departments/reviewers/ HTTP/1.1" 401 34
+[2025-12-19 09:40:39,694] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Select_Information/get-select-time/ HTTP/1.1" 200 91
+[2025-12-19 09:40:40,935] [log.py:224] [log:log_response] [WARNING]- Unauthorized: /Select_Information/reviewer/review_records/
+[2025-12-19 09:40:40,936] [log.py:224] [log:log_response] [WARNING]- Unauthorized: /Professor_Student_Manage/user-info/
+[2025-12-19 09:40:40,937] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 401 34
+[2025-12-19 09:40:40,938] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 401 34
+[2025-12-19 09:41:02,877] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=999 HTTP/1.1" 200 147719
+[2025-12-19 09:41:05,004] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=1 HTTP/1.1" 200 13469
+[2025-12-19 09:41:23,102] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=999 HTTP/1.1" 200 147719
+[2025-12-19 09:41:25,309] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=1 HTTP/1.1" 200 13469
+[2025-12-19 09:41:26,174] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=999 HTTP/1.1" 200 147719
+[2025-12-19 09:41:28,968] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/?page=1&page_size=10&department_id=1 HTTP/1.1" 200 13469
+[2025-12-19 09:47:24,607] [log.py:224] [log:log_response] [WARNING]- Unauthorized: /Professor_Student_Manage/user-info/
+[2025-12-19 09:47:24,608] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /Professor_Student_Manage/user-info/?usertype=professor HTTP/1.1" 401 34
+[2025-12-19 09:47:24,665] [log.py:224] [log:log_response] [WARNING]- Unauthorized: /Select_Information/reviewer/review_records/
+[2025-12-19 09:47:24,665] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /Select_Information/reviewer/review_records/ HTTP/1.1" 401 34
+[2025-12-19 10:02:58,066] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /Professor_Student_Manage/professors_and_departments/ HTTP/1.1" 200 14859
+[2025-12-19 11:34:53,949] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET / HTTP/1.1" 200 10330
+[2025-12-19 11:34:53,994] [log.py:224] [log:log_response] [WARNING]- Not Found: /api/count
+[2025-12-19 11:34:53,995] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /api/count HTTP/1.1" 404 3142
+[2025-12-19 11:35:02,351] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET / HTTP/1.1" 200 10330
+[2025-12-19 11:35:02,387] [log.py:224] [log:log_response] [WARNING]- Not Found: /api/count
+[2025-12-19 11:35:02,389] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /api/count HTTP/1.1" 404 3142
+[2025-12-21 08:54:04,192] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/views.py changed, reloading.

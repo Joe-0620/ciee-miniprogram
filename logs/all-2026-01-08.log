@@ -1,0 +1,11 @@
+[2026-01-08 14:10:01,145] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2026-01-08 14:10:05,115] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET / HTTP/1.1" 200 10330
+[2026-01-08 14:10:05,166] [log.py:224] [log:log_response] [WARNING]- Not Found: /api/count
+[2026-01-08 14:10:05,167] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /api/count HTTP/1.1" 404 3142
+[2026-01-11 13:14:27,645] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET / HTTP/1.1" 200 10330
+[2026-01-11 13:14:27,681] [log.py:224] [log:log_response] [WARNING]- Not Found: /api/count
+[2026-01-11 13:14:27,681] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /api/count HTTP/1.1" 404 3142
+[2026-01-11 16:12:39,984] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET / HTTP/1.1" 200 10330
+[2026-01-11 16:12:40,016] [log.py:224] [log:log_response] [WARNING]- Not Found: /api/count
+[2026-01-11 16:12:40,017] [basehttp.py:161] [basehttp:log_message] [WARNING]- "GET /api/count HTTP/1.1" 404 3142
+[2026-01-12 07:17:46,611] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Select_Information/serializers.py changed, reloading.

@@ -1,3 +1,4 @@
+# Select_Information/urls.py
 from django.urls import path
 from .views import SelectInformationView, StudentChooseProfessorView, ProfessorChooseStudentView, StudentCancelView, GetSelectionTimeView
 from .views import SubmitSignatureFileView, ReviewerReviewRecordsView, ReviewRecordUpdateView

@@ -1,3 +1,4 @@
+# Select_Information/views.py
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -28,6 +29,8 @@ import os
 import logging
 from .models import ReviewRecord
 from .serializers import ReviewRecordSerializer, ReviewRecordUpdateSerializer
+from django.core.paginator import Paginator
+from django.db.models import Q, Prefetch
 
 logger = logging.getLogger(__name__)
 
@@ -38,6 +41,87 @@ class GetSelectionTimeView(generics.ListAPIView):
 
 
 # Create your views here.
+# class SelectInformationView(APIView):
+#     permission_classes = [IsAuthenticated]  # 保证用户已经登录
+    
+#     def get(self, request):
+#         usertype = request.query_params.get('usertype')
+#         user = request.user
+
+#         if usertype == 'student':
+#             try:
+#                 student = user.student
+#                 student_choices = StudentProfessorChoice.objects.filter(student=student)
+#                 serializer = StudentProfessorChoiceSerializer(student_choices, many=True)
+#                 return Response({
+#                     'student_choices': serializer.data
+#                 }, status=status.HTTP_200_OK)
+#             except Student.DoesNotExist:
+#                 return Response({"message": "Student object does not exist."}, status=status.HTTP_404_NOT_FOUND)
+
+#         elif usertype == 'professor':
+#             try:
+#                 professor = user.professor
+#                 # master_subjects = professor.enroll_subject.all()
+
+#                 # print(master_subjects)
+
+#                 # # 获取博士招生专业（从 ProfessorDoctorQuota）
+#                 # doctor_subjects = Subject.objects.filter(
+#                 #     professordoctorquota__professor=professor
+#                 # ).distinct()
+
+#                 # print(doctor_subjects)
+
+#                 # # 合并硕士和博士专业，去重
+#                 # enroll_subjects = master_subjects | doctor_subjects
+#                 # enroll_subjects = enroll_subjects.distinct()
+
+#                 # print(enroll_subjects)
+
+#                 # # 获取硕士专业 ID（允许重复）
+#                 # master_subject_ids = list(professor.enroll_subject.all().values_list('id', flat=True))
+#                 # logger.debug(f"Master subject IDs: {master_subject_ids}")
+
+#                 # === 获取硕士招生专业（从 ProfessorMasterQuota 里取） ===
+#                 master_subject_ids = list(
+#                     ProfessorMasterQuota.objects.filter(professor=professor)
+#                     .values_list('subject_id', flat=True)
+#                 )
+
+#                 # 获取博士专业 ID（允许重复）
+#                 doctor_subject_ids = list(ProfessorDoctorQuota.objects.filter(
+#                     professor=professor
+#                 ).values_list('subject_id', flat=True))
+#                 # logger.debug(f"Doctor subject IDs: {doctor_subject_ids}")
+
+#                 # 合并 ID 列表，保留重复
+#                 all_subject_ids = master_subject_ids + doctor_subject_ids
+#                 # logger.debug(f"All subject IDs (with duplicates): {all_subject_ids}")
+
+#                 # 查询所有专业（去重，仅为 subject__in 查询）
+#                 enroll_subjects = Subject.objects.filter(id__in=all_subject_ids)
+#                 # logger.debug(f"Enroll subjects: {list(enroll_subjects.values('id', 'subject_name'))}")
+
+#                 # Get all students who haven't chosen a professor yet and are in the subjects the professor enrolls
+#                 students_without_professor = Student.objects.filter(
+#                     is_selected=False,
+#                     is_alternate=False,
+#                     is_giveup=False,
+#                     subject__in=enroll_subjects)
+#                 student_serializer = StudentSerializer(students_without_professor, many=True)
+
+#                 student_choices = StudentProfessorChoice.objects.filter(professor=professor)
+#                 serializer = StudentProfessorChoiceSerializer(student_choices, many=True)
+#                 return Response({
+#                     'student_choices': serializer.data,
+#                     'students_without_professor': student_serializer.data
+#                 }, status=status.HTTP_200_OK)
+#             except Professor.DoesNotExist:
+#                 return Response({"message": "Professor object does not exist."}, status=status.HTTP_404_NOT_FOUND)
+            
+#         return Response({'message': 'Usertype not correct'}, status=status.HTTP_400_BAD_REQUEST)
+
 class SelectInformationView(APIView):
     permission_classes = [IsAuthenticated]  # 保证用户已经登录
     
@@ -59,27 +143,15 @@ class SelectInformationView(APIView):
         elif usertype == 'professor':
             try:
                 professor = user.professor
-                # master_subjects = professor.enroll_subject.all()
-
-                # print(master_subjects)
-
-                # # 获取博士招生专业（从 ProfessorDoctorQuota）
-                # doctor_subjects = Subject.objects.filter(
-                #     professordoctorquota__professor=professor
-                # ).distinct()
-
-                # print(doctor_subjects)
-
-                # # 合并硕士和博士专业，去重
-                # enroll_subjects = master_subjects | doctor_subjects
-                # enroll_subjects = enroll_subjects.distinct()
-
-                # print(enroll_subjects)
-
-                # # 获取硕士专业 ID（允许重复）
-                # master_subject_ids = list(professor.enroll_subject.all().values_list('id', flat=True))
-                # logger.debug(f"Master subject IDs: {master_subject_ids}")
-
+                
+                # 获取分页参数
+                page = int(request.query_params.get('page', 1))
+                page_size = int(request.query_params.get('page_size', 10))
+                
+                # 获取筛选参数
+                subject_id = request.query_params.get('subject_id', None)
+                search_keyword = request.query_params.get('search', None)
+                
                 # === 获取硕士招生专业（从 ProfessorMasterQuota 里取） ===
                 master_subject_ids = list(
                     ProfessorMasterQuota.objects.filter(professor=professor)
@@ -90,35 +162,66 @@ class SelectInformationView(APIView):
                 doctor_subject_ids = list(ProfessorDoctorQuota.objects.filter(
                     professor=professor
                 ).values_list('subject_id', flat=True))
-                # logger.debug(f"Doctor subject IDs: {doctor_subject_ids}")
 
                 # 合并 ID 列表，保留重复
                 all_subject_ids = master_subject_ids + doctor_subject_ids
-                # logger.debug(f"All subject IDs (with duplicates): {all_subject_ids}")
 
                 # 查询所有专业（去重，仅为 subject__in 查询）
                 enroll_subjects = Subject.objects.filter(id__in=all_subject_ids)
-                # logger.debug(f"Enroll subjects: {list(enroll_subjects.values('id', 'subject_name'))}")
 
-                # Get all students who haven't chosen a professor yet and are in the subjects the professor enrolls
-                students_without_professor = Student.objects.filter(
+                # 构建学生查询，使用 select_related 优化
+                students_query = Student.objects.select_related(
+                    'subject'
+                ).filter(
                     is_selected=False,
                     is_alternate=False,
                     is_giveup=False,
-                    subject__in=enroll_subjects)
-                student_serializer = StudentSerializer(students_without_professor, many=True)
+                    subject__in=enroll_subjects
+                ).order_by('final_rank', 'id')  # 按总排名和ID排序
+                
+                # 专业筛选
+                if subject_id:
+                    students_query = students_query.filter(subject_id=subject_id)
+                
+                # 搜索功能：根据学生姓名、准考证号等进行模糊搜索
+                if search_keyword:
+                    students_query = students_query.filter(
+                        Q(name__icontains=search_keyword) |
+                        Q(candidate_number__icontains=search_keyword)
+                    )
+                
+                # 分页处理
+                paginator = Paginator(students_query, page_size)
+                try:
+                    students_page = paginator.page(page)
+                except:
+                    students_page = paginator.page(1)
+                
+                student_serializer = StudentSerializer(students_page, many=True)
 
+                # 获取导师的互选记录
                 student_choices = StudentProfessorChoice.objects.filter(professor=professor)
-                serializer = StudentProfessorChoiceSerializer(student_choices, many=True)
+                choice_serializer = StudentProfessorChoiceSerializer(student_choices, many=True)
+                
+                # 获取所有招生专业信息（用于前端筛选）
+                subject_list = Subject.objects.filter(id__in=all_subject_ids).distinct()
+                subject_data = [{'id': s.id, 'subject_name': s.subject_name} for s in subject_list]
+                
                 return Response({
-                    'student_choices': serializer.data,
-                    'students_without_professor': student_serializer.data
+                    'student_choices': choice_serializer.data,
+                    'students_without_professor': student_serializer.data,
+                    'subjects': subject_data,  # 新增：专业列表供筛选
+                    'has_next': students_page.has_next(),
+                    'has_previous': students_page.has_previous(),
+                    'total_pages': paginator.num_pages,
+                    'current_page': page,
+                    'total_count': paginator.count
                 }, status=status.HTTP_200_OK)
             except Professor.DoesNotExist:
                 return Response({"message": "Professor object does not exist."}, status=status.HTTP_404_NOT_FOUND)
             
         return Response({'message': 'Usertype not correct'}, status=status.HTTP_400_BAD_REQUEST)
-    
+
 
 # class StudentChooseProfessorView(APIView):
 #     # print("test")

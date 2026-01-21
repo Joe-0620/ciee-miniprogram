@@ -119,6 +119,7 @@ class ProfessorAndDepartmentListView(APIView):
         if search_keyword:
             professors_query = professors_query.filter(
                 Q(name__icontains=search_keyword) |
+                Q(teacher_identity_id__icontains=search_keyword) |
                 Q(research_areas__icontains=search_keyword)
             )
         

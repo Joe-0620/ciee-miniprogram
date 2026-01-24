@@ -24,6 +24,34 @@ check_department_head_or_deputy.short_description = "检查有没有方向负责
 
 class SubjectAdmin(admin.ModelAdmin):
     list_display = ["subject_name", "subject_code", "subject_type", "total_admission_quota"]
+    
+    def save_model(self, request, obj, form, change):
+        """
+        保存专业时，如果总招生名额发生变化，自动同步候补状态
+        """
+        from .models import sync_student_alternate_status
+        from django.contrib import messages
+        
+        old_quota = None
+        if change and obj.pk:
+            try:
+                old_instance = Subject.objects.get(pk=obj.pk)
+                old_quota = old_instance.total_admission_quota
+            except Subject.DoesNotExist:
+                pass
+        
+        # 保存对象
+        super().save_model(request, obj, form, change)
+        
+        # 如果名额发生变化，同步候补状态
+        if old_quota is not None and old_quota != obj.total_admission_quota:
+            updated_count = sync_student_alternate_status(obj)
+            if updated_count > 0:
+                messages.success(
+                    request,
+                    f"专业 {obj.subject_name} 的总招生名额已从 {old_quota} 更新为 {obj.total_admission_quota}，"
+                    f"已自动调整 {updated_count} 名学生的候补状态。"
+                )
 
 
 class DepartmentAdmin(admin.ModelAdmin):

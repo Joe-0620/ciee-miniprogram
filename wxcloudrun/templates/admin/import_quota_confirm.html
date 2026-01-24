@@ -1,0 +1,98 @@
+{% extends "admin/base_site.html" %}
+{% block content %}
+<div id="content-main">
+  <h1>{{ title }}</h1>
+  
+  <div class="messagelist">
+    <div class="warning">
+      <strong>⚠️ 警告：以下专业的导师名额总和超过了专业总招生名额</strong>
+    </div>
+  </div>
+  
+  <table style="width: 100%; margin: 20px 0; border-collapse: collapse;">
+    <thead>
+      <tr style="background-color: #f8f8f8; border-bottom: 2px solid #ddd;">
+        <th style="padding: 10px; text-align: left;">专业名称</th>
+        <th style="padding: 10px; text-align: center;">专业代码</th>
+        <th style="padding: 10px; text-align: center;">当前总招生名额</th>
+        <th style="padding: 10px; text-align: center;">导入的导师名额总和</th>
+        <th style="padding: 10px; text-align: center;">超额人数</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for warning in warnings %}
+      <tr style="border-bottom: 1px solid #eee;">
+        <td style="padding: 10px;">{{ warning.subject_name }}</td>
+        <td style="padding: 10px; text-align: center;">{{ warning.subject_code }}</td>
+        <td style="padding: 10px; text-align: center;">{{ warning.current_total }}</td>
+        <td style="padding: 10px; text-align: center; font-weight: bold; color: #d9534f;">{{ warning.import_total }}</td>
+        <td style="padding: 10px; text-align: center; font-weight: bold; color: #d9534f;">+{{ warning.exceed }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  
+  <form method="post">
+    {% csrf_token %}
+    <input type="hidden" name="confirm_import" value="1">
+    <input type="hidden" name="import_data" value="{{ import_data_json }}">
+    <input type="hidden" name="import_mode" value="{{ import_mode }}">
+    
+    <div style="margin: 30px 0; padding: 20px; background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 4px;">
+      <h3>请选择处理方式：</h3>
+      
+      {% if import_mode == 'incremental' %}
+      <div style="margin: 15px 0;">
+        <label style="display: block; padding: 10px; cursor: pointer; background-color: #fff; border: 2px solid #5b9bd5; border-radius: 4px;">
+          <input type="radio" name="sync_quotas" value="yes" style="margin-right: 10px;" checked>
+          <strong>自动同步专业总招生名额并调整候补状态</strong>
+          <p style="margin: 5px 0 0 25px; color: #666; font-size: 14px;">
+            将专业总招生名额自动调整为导师名额总和，并自动调整候补学生状态（将部分候补学生转为正式）
+          </p>
+        </label>
+      </div>
+      
+      <div style="margin: 15px 0;">
+        <label style="display: block; padding: 10px; cursor: pointer; background-color: #fff; border: 2px solid #ddd; border-radius: 4px;">
+          <input type="radio" name="sync_quotas" value="no" style="margin-right: 10px;">
+          <strong>仅同步专业总招生名额（不调整候补）</strong>
+          <p style="margin: 5px 0 0 25px; color: #666; font-size: 14px;">
+            更新专业总招生名额，但不修改学生的候补状态
+          </p>
+        </label>
+      </div>
+      {% else %}
+      <div style="padding: 15px; background-color: #fcf8e3; border: 1px solid #faebcc; border-radius: 4px;">
+        <strong>⚠️ 全量导入模式</strong>
+        <p style="margin: 10px 0 0 0;">将更新专业总招生名额为导师名额总和，<strong>不会调整候补学生状态</strong>。</p>
+      </div>
+      <input type="hidden" name="sync_quotas" value="no">
+      {% endif %}
+    </div>
+    
+    <div style="margin-top: 20px;">
+      <button type="submit" class="button" style="background-color: #5b9bd5; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px;">
+        确认并继续导入
+      </button>
+      <a href="{% url 'admin:Professor_Student_Manage_professor_changelist' %}" class="button" style="margin-left: 10px; padding: 10px 20px; background-color: #f0f0f0; color: #333; text-decoration: none; border-radius: 4px; display: inline-block;">
+        取消导入
+      </a>
+    </div>
+  </form>
+  
+  <div style="margin-top: 30px; padding: 15px; background-color: #fcf8e3; border: 1px solid #faebcc; border-radius: 4px;">
+    <strong>💡 说明：</strong>
+    <ul style="margin: 10px 0; padding-left: 20px;">
+      {% if import_mode == 'incremental' %}
+      <li>当前为<strong>增量导入模式</strong>，可以选择是否调整候补学生状态</li>
+      <li>如果选择调整候补，系统会自动将排名靠前的候补学生转为正式录取</li>
+      <li>建议在中途增加名额时选择调整候补状态</li>
+      {% else %}
+      <li>当前为<strong>全量导入模式</strong>，不会调整候补学生状态</li>
+      <li>全量导入适合初次设置或完全重新分配名额的场景</li>
+      <li>候补学生状态由学生批量导入时自动设置</li>
+      {% endif %}
+    </ul>
+  </div>
+</div>
+{% endblock %}

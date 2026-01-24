@@ -10,6 +10,8 @@ from django.urls import path
 import csv
 from io import TextIOWrapper
 from django.contrib.auth.models import User
+from django.db.models import Sum, F
+from collections import defaultdict
 
 # Register your models here.
 from Select_Information.models import StudentProfessorChoice
@@ -164,36 +166,45 @@ class ProfessorAdmin(admin.ModelAdmin):
         return custom_urls + urls
 
     def import_quota_view(self, request):
+        # 处理确认导入请求
+        if request.method == 'POST' and 'confirm_import' in request.POST:
+            import_data_json = request.POST.get('import_data')
+            import_mode = request.POST.get('import_mode', 'full')
+            sync_quotas = request.POST.get('sync_quotas') == 'yes'
+            
+            if import_data_json:
+                import json
+                import_data = json.loads(import_data_json)
+                self._process_import_data(request, import_data, import_mode, sync_quotas)
+                return redirect('admin:Professor_Student_Manage_professor_changelist')
+        
         if request.method == 'POST':
             form = ImportQuotaForm(request.POST, request.FILES)
             if form.is_valid():
                 csv_file = request.FILES['csv_file']
+                import_mode = request.POST.get('import_mode', 'full')  # 获取导入模式
+                
                 try:
                     # 读取 CSV 文件
                     csv_file_wrapper = TextIOWrapper(csv_file, encoding='utf-8-sig')
                     reader = csv.DictReader(csv_file_wrapper)
 
-                    success_count = 0
+                    # 先收集所有导入数据
+                    import_data = []
                     for row in reader:
-                        # print(row)
-                        teacher_identity_id = str(row["工号"]).zfill(5)  # 工号补齐 5 位
+                        teacher_identity_id = str(row["工号"]).zfill(5)
                         try:
                             professor = Professor.objects.get(teacher_identity_id=teacher_identity_id)
                         except Professor.DoesNotExist:
-                            self.message_user(request, f"工号 {teacher_identity_id} 对应的导师不存在", level='warning')
                             continue
 
                         # 循环读取 5 个招生学科
-                        has_valid_quota = False  # 标记该导师是否有成功导入的学科
                         for i in range(1, 6):
                             subject_name = row.get(f"招生学科{i}", "").strip()
                             subject_code = str(row.get(f"学科{i}代码", "")).strip()
                             subject_type = row.get(f"专业类型{i}", "").strip()
                             bj_quota = row.get(f"北京招生名额{i}", "").strip()
                             yt_quota = row.get(f"烟台招生名额{i}", "").strip()
-                            # print(bj_quota)
-                            # print(yt_quota)
-
 
                             # 跳过空或无效学科
                             if not subject_name or subject_name == "无":
@@ -205,63 +216,45 @@ class ProfessorAdmin(admin.ModelAdmin):
 
                             subject = Subject.objects.filter(subject_code=subject_code).first()
                             if not subject:
-                                self.message_user(request, f"学科代码 {subject_code} 不存在，跳过", level='warning')
                                 continue
 
-                            # 转换为整数，避免空值报错
+                            # 转换为整数
                             try:
                                 bj_quota = int(bj_quota) if bj_quota else 0
                                 yt_quota = int(yt_quota) if yt_quota else 0
-                                # print(subject)
-                                # print(bj_quota)
-                                # print(yt_quota)
                             except ValueError:
-                                self.message_user(request, f"导师 {professor.name} 的学科 {subject_code} 名额数据格式不正确", level='warning')
                                 continue
 
-                            # print("测试")
+                            # 收集导入数据
+                            import_data.append({
+                                'professor_id': professor.id,
+                                'professor_name': professor.name,
+                                'subject_id': subject.id,
+                                'subject_name': subject.subject_name,
+                                'subject_code': subject.subject_code,
+                                'bj_quota': bj_quota,
+                                'yt_quota': yt_quota,
+                            })
 
-                            # # 处理学硕（只能北京招生）
-                            # if subject_type == "学硕":
-                            #     yt_quota = 0
-
-                            # 获取或创建配额
-                            try:
-                                quota_obj, created = ProfessorMasterQuota.objects.get_or_create(
-                                    professor=professor,
-                                    subject=subject,
-                                    defaults={
-                                        'beijing_quota': bj_quota,
-                                        'yantai_quota': yt_quota,
-                                        'beijing_remaining_quota': bj_quota,
-                                        'yantai_remaining_quota': yt_quota,
-                                    }
-                                )
-                                print(f"[OK] 导入成功: 教师={professor.name}, 学科={subject.subject_name}, created={created}, bj={bj_quota}, yt={yt_quota}")
-                            except Exception as e:
-                                import traceback
-                                traceback.print_exc()
-                                print(f"[ERROR] get_or_create 出错: 教师={professor}, 学科={subject}, 错误={e}")
-                                continue
-
-                            # print("测试")
-
-                            if not created:
-                                # 更新数据
-                                quota_obj.beijing_quota = bj_quota
-                                quota_obj.yantai_quota = yt_quota
-                                quota_obj.beijing_remaining_quota = bj_quota
-                                quota_obj.yantai_remaining_quota = yt_quota
-                                # quota_obj.total_quota = bj_quota + yt_quota
-                                quota_obj.save()
-
-                            has_valid_quota = True  # 至少有一个学科导入成功
-
-                        if has_valid_quota:
-                            success_count += 1
-
-                    self.message_user(request, f"成功更新 {success_count} 位导师的硕士招生名额")
-                    return redirect('admin:Professor_Student_Manage_professor_changelist')
+                    # 验证导入数据是否超过专业总招生名额
+                    warnings = self._validate_quota_import(import_data)
+                    
+                    if warnings:
+                        # 有超额情况，需要用户确认
+                        import json
+                        context = {
+                            'form': form,
+                            'opts': self.model._meta,
+                            'title': '导入确认 - 发现名额超额',
+                            'warnings': warnings,
+                            'import_data_json': json.dumps(import_data),
+                            'import_mode': import_mode,
+                        }
+                        return render(request, 'admin/import_quota_confirm.html', context)
+                    else:
+                        # 没有超额，直接导入
+                        self._process_import_data(request, import_data, import_mode, sync_quotas=False)
+                        return redirect('admin:Professor_Student_Manage_professor_changelist')
 
                 except Exception as e:
                     self.message_user(request, f"解析 CSV 文件时出错: {str(e)}", level='error')
@@ -275,6 +268,175 @@ class ProfessorAdmin(admin.ModelAdmin):
             'title': '一键导入导师硕士名额',
         }
         return render(request, 'admin/import_quota.html', context)
+    
+    def _validate_quota_import(self, import_data):
+        """
+        验证导入数据，检查是否超过专业总招生名额
+        返回超额警告列表
+        """
+        # 按学科代码汇总导入的名额
+        subject_quotas = defaultdict(lambda: {'total': 0, 'subject_obj': None})
+        for item in import_data:
+            subject_code = item['subject_code']  # 使用学科代码作为key
+            total = item['bj_quota'] + item['yt_quota']
+            subject_quotas[subject_code]['total'] += total
+            if subject_quotas[subject_code]['subject_obj'] is None:
+                subject_quotas[subject_code]['subject_obj'] = Subject.objects.get(id=item['subject_id'])
+        
+        # 检查是否超过专业总招生名额
+        warnings = []
+        for subject_code, data in subject_quotas.items():
+            subject = data['subject_obj']
+            total_quota = data['total']
+            subject_total = subject.total_admission_quota or 0
+            if total_quota > subject_total:
+                warnings.append({
+                    'subject_name': subject.subject_name,
+                    'subject_code': subject.subject_code,
+                    'current_total': subject_total,
+                    'import_total': total_quota,
+                    'exceed': total_quota - subject_total,
+                })
+        
+        return warnings
+
+    def _process_import_data(self, request, import_data, import_mode='full', sync_quotas=False):
+        """
+        处理导入数据，保存到数据库
+        import_mode: 'full' 全量导入（覆盖），'incremental' 增量导入（追加）
+        sync_quotas: 是否同步更新专业总招生名额并调整候补状态（仅在增量模式下有效）
+        """
+        from Enrollment_Manage.models import sync_student_alternate_status
+        
+        # 按专业代码（subject_code）汇总导入的名额（分北京和烟台）
+        subject_quotas = defaultdict(lambda: {
+            'bj_total': 0, 
+            'yt_total': 0, 
+            'total': 0, 
+            'subject_obj': None,
+            'subject_code': None,
+            'subject_name': None
+        })
+        for item in import_data:
+            subject_code = item['subject_code']  # 使用学科代码作为key
+            bj_quota = item['bj_quota']
+            yt_quota = item['yt_quota']
+            
+            subject_quotas[subject_code]['bj_total'] += bj_quota
+            subject_quotas[subject_code]['yt_total'] += yt_quota
+            subject_quotas[subject_code]['total'] += (bj_quota + yt_quota)
+            if subject_quotas[subject_code]['subject_obj'] is None:
+                subject_quotas[subject_code]['subject_obj'] = Subject.objects.get(id=item['subject_id'])
+                subject_quotas[subject_code]['subject_code'] = subject_code
+                subject_quotas[subject_code]['subject_name'] = item['subject_name']
+        
+        # 处理专业总招生名额的更新
+        if import_mode == 'incremental' and sync_quotas:
+            # 增量模式且选择同步：更新专业总名额并调整候补
+            for subject_code, data in subject_quotas.items():
+                subject = data['subject_obj']
+                total_quota = data['total']
+                if total_quota > subject.total_admission_quota:
+                    old_quota = subject.total_admission_quota
+                    subject.total_admission_quota = total_quota
+                    subject.save()
+                    # 同步候补状态
+                    updated = sync_student_alternate_status(subject)
+                    self.message_user(
+                        request,
+                        f"专业 {subject.subject_name} 总招生名额已从 {old_quota} 更新为 {total_quota}，"
+                        f"同步调整了 {updated} 名学生的候补状态",
+                        level='success'
+                    )
+        elif import_mode == 'incremental':
+            # 增量模式但不调整候补：只更新专业总名额
+            for subject_code, data in subject_quotas.items():
+                subject = data['subject_obj']
+                total_quota = data['total']
+                if total_quota > subject.total_admission_quota:
+                    old_quota = subject.total_admission_quota
+                    subject.total_admission_quota = total_quota
+                    subject.save()
+                    self.message_user(
+                        request,
+                        f"专业 {subject.subject_name} 总招生名额已从 {old_quota} 更新为 {total_quota}（未调整候补状态）",
+                        level='warning'
+                    )
+        else:
+            # 全量模式：只更新专业总名额，不调整候补
+            for subject_code, data in subject_quotas.items():
+                subject = data['subject_obj']
+                total_quota = data['total']
+                if total_quota != subject.total_admission_quota:
+                    old_quota = subject.total_admission_quota
+                    subject.total_admission_quota = total_quota
+                    subject.save()
+                    self.message_user(
+                        request,
+                        f"专业 {subject.subject_name} 总招生名额已更新为 {total_quota}（全量导入模式，不调整候补状态）",
+                        level='info'
+                    )
+        
+        # 保存导师名额数据
+        success_count = 0
+        for item in import_data:
+            professor = Professor.objects.get(id=item['professor_id'])
+            subject = Subject.objects.get(id=item['subject_id'])
+            bj_quota = item['bj_quota']
+            yt_quota = item['yt_quota']
+            
+            quota_obj, created = ProfessorMasterQuota.objects.get_or_create(
+                professor=professor,
+                subject=subject,
+                defaults={
+                    'beijing_quota': bj_quota,
+                    'yantai_quota': yt_quota,
+                    'beijing_remaining_quota': bj_quota,
+                    'yantai_remaining_quota': yt_quota,
+                }
+            )
+            
+            if not created:
+                if import_mode == 'incremental':
+                    # 增量模式：在原有基础上增加
+                    quota_obj.beijing_quota += bj_quota
+                    quota_obj.yantai_quota += yt_quota
+                    quota_obj.beijing_remaining_quota += bj_quota
+                    quota_obj.yantai_remaining_quota += yt_quota
+                else:
+                    # 全量模式：直接覆盖
+                    quota_obj.beijing_quota = bj_quota
+                    quota_obj.yantai_quota = yt_quota
+                    quota_obj.beijing_remaining_quota = bj_quota
+                    quota_obj.yantai_remaining_quota = yt_quota
+                quota_obj.save()
+            
+            success_count += 1
+        
+        # 显示导入模式信息
+        mode_text = "增量导入（追加）" if import_mode == 'incremental' else "全量导入（覆盖）"
+        self.message_user(request, f"[{mode_text}] 成功导入 {success_count} 条导师招生名额数据", level='success')
+        
+        # 按学科代码排序后显示，为每个专业生成详细的名额统计信息
+        for subject_code in sorted(subject_quotas.keys()):
+            data = subject_quotas[subject_code]
+            subject_name = data['subject_name']
+            bj_total = data['bj_total']
+            yt_total = data['yt_total']
+            total = data['total']
+            
+            # 构建详细信息
+            if yt_total > 0:
+                quota_detail = f"北京 {bj_total} 人，烟台 {yt_total} 人，合计 {total} 人"
+            else:
+                quota_detail = f"北京 {bj_total} 人"
+            
+            # 显示专业名额统计
+            self.message_user(
+                request,
+                f"📊 {subject_name} ({subject_code}): {quota_detail}",
+                level='success'
+            )
 
     def get_readonly_fields(self, request, obj=None):
         readonly_fields = self.readonly_fields
@@ -312,7 +474,7 @@ class StudentAdmin(admin.ModelAdmin):
                     "is_giveup", "is_alternate", "download_hx_file", "download_fq_file"]
     list_filter = ["subject"]
     search_fields = ["name"]
-    actions = ['reset_password_to_exam_id', 'download_all_signature_tables']  # 添加自定义动作
+    actions = ['reset_password_to_exam_id', 'download_all_signature_tables', 'download_all_giveup_tables']  # 添加自定义动作
     change_list_template = 'admin/student_change_list.html'
 
     @admin.action(description="批量下载所有已签名互选表")
@@ -367,6 +529,53 @@ class StudentAdmin(admin.ModelAdmin):
         with open(zip_filename, 'rb') as f:
             response = HttpResponse(f.read(), content_type="application/zip")
             response['Content-Disposition'] = 'attachment; filename="互选表打包下载.zip"'
+            return response
+
+    @admin.action(description="批量下载所有已签名弃选表")
+    def download_all_giveup_tables(self, request, queryset):
+        """
+        批量下载所有已签名弃选说明表的学生文件，打包成zip
+        """
+        # 过滤出所有已放弃且已签名弃选表的学生
+        giveup_students = queryset.filter(
+            is_giveup=True,
+            is_signate_giveup_table=True,
+            giveup_signature_table__isnull=False
+        )
+
+        if not giveup_students.exists():
+            self.message_user(request, "没有符合条件的已签名弃选表", level='warning')
+            return
+
+        # 临时文件夹
+        temp_dir = tempfile.mkdtemp()
+        zip_filename = os.path.join(temp_dir, "弃选表打包下载.zip")
+
+        with zipfile.ZipFile(zip_filename, 'w') as zipf:
+            for student in giveup_students:
+                try:
+                    # 获取文件下载地址
+                    response_data = self.get_fileid_download_url(student.giveup_signature_table)
+                    if response_data.get("errcode") == 0:
+                        download_url = response_data['file_list'][0]['download_url']
+                        file_content = requests.get(download_url).content
+
+                        # 文件命名: 准考证号-学生姓名-弃选表.pdf
+                        filename = f"{student.candidate_number}-{student.name}-弃选表.pdf"
+                        print(filename)
+
+                        # 写入zip
+                        file_path = os.path.join(temp_dir, filename)
+                        with open(file_path, 'wb') as f:
+                            f.write(file_content)
+                        zipf.write(file_path, arcname=filename)
+                except Exception as e:
+                    print(f"下载学生 {student.name} 的弃选表失败: {e}")
+                    continue
+
+        with open(zip_filename, 'rb') as f:
+            response = HttpResponse(f.read(), content_type="application/zip")
+            response['Content-Disposition'] = 'attachment; filename="弃选表打包下载.zip"'
             return response
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):

@@ -1,11 +1,52 @@
-<!-- templates/admin/import_quota.html -->
 {% extends "admin/base_site.html" %}
 {% block content %}
-<!-- <h1>一键导入导师名额</h1> -->
-<form method="post" enctype="multipart/form-data">
+<div id="content-main">
+  <h1>{{ title }}</h1>
+  <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit" class="button">导入</button>
-    <a href="{% url 'admin:Professor_Student_Manage_professor_changelist' %}" class="button">取消</a>
-</form>
+    
+    <div style="margin: 20px 0; padding: 15px; background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 4px;">
+      <h3 style="margin-top: 0;">导入模式选择：</h3>
+      
+      <div style="margin: 15px 0;">
+        <label style="display: block; padding: 10px; cursor: pointer; background-color: #fff; border: 2px solid #5b9bd5; border-radius: 4px;">
+          <input type="radio" name="import_mode" value="full" style="margin-right: 10px;" checked>
+          <strong>全量导入（覆盖模式）</strong>
+          <p style="margin: 5px 0 0 25px; color: #666; font-size: 14px;">
+            直接用CSV文件中的数据覆盖导师的招生名额，<strong>不会调整候补学生状态</strong>。适合初次导入或完全重新设置名额。
+          </p>
+        </label>
+      </div>
+      
+      <div style="margin: 15px 0;">
+        <label style="display: block; padding: 10px; cursor: pointer; background-color: #fff; border: 2px solid #ddd; border-radius: 4px;">
+          <input type="radio" name="import_mode" value="incremental" style="margin-right: 10px;">
+          <strong>增量导入（追加模式）</strong>
+          <p style="margin: 5px 0 0 25px; color: #666; font-size: 14px;">
+            在当前名额基础上增加CSV中的名额。如果导入后专业总名额增加，可以选择是否调整候补学生状态。
+          </p>
+        </label>
+      </div>
+    </div>
+    
+    <div style="margin-top: 20px;">
+      <button type="submit" class="button" style="background-color: #5b9bd5; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px;">
+        开始导入
+      </button>
+      <a href="{% url 'admin:Professor_Student_Manage_professor_changelist' %}" class="button" style="margin-left: 10px; padding: 10px 20px; background-color: #f0f0f0; color: #333; text-decoration: none; border-radius: 4px; display: inline-block;">
+        取消
+      </a>
+    </div>
+    
+    <div style="margin-top: 30px; padding: 15px; background-color: #d9edf7; border: 1px solid #bce8f1; border-radius: 4px;">
+      <strong>💡 说明：</strong>
+      <ul style="margin: 10px 0; padding-left: 20px;">
+        <li><strong>全量导入</strong>：适合每学期初次设置名额，会清空原有数据并导入新数据</li>
+        <li><strong>增量导入</strong>：适合中途调整名额，在原有基础上增加名额</li>
+        <li>只有增量导入模式才可能触发候补学生状态的调整</li>
+      </ul>
+    </div>
+  </form>
+</div>
 {% endblock %}

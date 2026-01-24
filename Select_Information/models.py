@@ -25,7 +25,8 @@ class StudentProfessorChoice(models.Model):
         [1, "已同意"],
         [2, "已拒绝"],
         [3, "请等待"],
-        [4, "已取消"]
+        [4, "已取消"],
+        [5, "已撤销"]
     ]
     status = models.IntegerField(default=3, choices=STATUS_CHOICES, verbose_name="状态")
     chosen_by_professor = models.BooleanField(default=False, verbose_name="是否选中")

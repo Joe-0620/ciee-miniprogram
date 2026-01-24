@@ -48,7 +48,7 @@ class StudentProfessorChoiceApprovalAdmin(admin.ModelAdmin):
     search_fields = ["student__name_fk_search", "professor__name_fk_search"]
 
     actions = ["export_selected_choices", "reject_waiting_if_no_quota", 
-               "cancel_waiting_if_student_gave_up"]
+               "cancel_waiting_if_student_gave_up", "cancel_approved_choice"]
 
     # def export_selected_choices(self, request, queryset):
     #     """导出状态=已同意 且 是否选中=True 的师生互选记录"""
@@ -136,6 +136,121 @@ class StudentProfessorChoiceApprovalAdmin(admin.ModelAdmin):
         self.message_user(request, f"已取消 {cancelled_count} 条等待中的申请（因学生放弃拟录取）")
 
     cancel_waiting_if_student_gave_up.short_description = "批量取消等待中的申请（学生放弃）"
+
+    # ========= 新增 Action: 撤销已同意的互选 =========
+    def cancel_approved_choice(self, request, queryset):
+        """
+        撤销已同意的互选记录，恢复导师名额
+        只处理状态为"已同意"(status=1)的记录
+        """
+        # 只处理已同意的记录
+        approved_choices = queryset.filter(status=1)
+        
+        if not approved_choices.exists():
+            self.message_user(request, "所选记录中没有状态为'已同意'的互选记录", level='warning')
+            return
+        
+        cancelled_count = 0
+        error_messages = []
+        
+        with transaction.atomic():
+            for choice in approved_choices:
+                try:
+                    student = choice.student
+                    professor = choice.professor
+                    
+                    # 根据学生类型恢复对应的名额
+                    if student.postgraduate_type == 3:  # 博士
+                        quota = ProfessorDoctorQuota.objects.filter(
+                            professor=professor, 
+                            subject=student.subject
+                        ).first()
+                        
+                        if quota:
+                            quota.used_quota -= 1
+                            quota.remaining_quota += 1
+                            quota.save()
+                            
+                            # 更新方向已用名额
+                            dept = professor.department
+                            if dept:
+                                dept.used_doctor_quota = max(0, dept.used_doctor_quota - 1)
+                                dept.save()
+                    
+                    else:  # 硕士（学硕或专硕）
+                        quota = ProfessorMasterQuota.objects.filter(
+                            professor=professor, 
+                            subject=student.subject
+                        ).first()
+                        
+                        if quota:
+                            # 判断是北京还是烟台
+                            if student.postgraduate_type == 1:  # 专业型(北京)
+                                quota.beijing_remaining_quota += 1
+                                quota.save()
+                                
+                                # 更新方向已用名额
+                                dept = professor.department
+                                if dept:
+                                    dept.used_professional_quota = max(0, dept.used_professional_quota - 1)
+                                    dept.save()
+                                    
+                            elif student.postgraduate_type == 2:  # 学术型
+                                quota.beijing_remaining_quota += 1
+                                quota.save()
+                                
+                                # 更新方向已用名额
+                                dept = professor.department
+                                if dept:
+                                    dept.used_academic_quota = max(0, dept.used_academic_quota - 1)
+                                    dept.save()
+                                    
+                            elif student.postgraduate_type == 4:  # 专业型(烟台)
+                                quota.yantai_remaining_quota += 1
+                                quota.save()
+                                
+                                # 更新方向已用名额
+                                dept = professor.department
+                                if dept:
+                                    dept.used_professional_yt_quota = max(0, dept.used_professional_yt_quota - 1)
+                                    dept.save()
+                    
+                    # 更新互选记录状态为"已撤销"
+                    choice.status = 5  # 已撤销
+                    choice.finish_time = timezone.now()
+                    choice.save()
+                    
+                    # 重置学生的签名和审核状态
+                    student.is_selected = False
+                    student.signature_table_student_signatured = False
+                    student.signature_table_professor_signatured = False
+                    student.signature_table_review_status = 4  # 未提交
+                    student.save()
+                    
+                    # 删除或撤销相关的审核记录
+                    ReviewRecord.objects.filter(
+                        student=student,
+                        professor=professor
+                    ).delete()
+                    
+                    cancelled_count += 1
+                    
+                except Exception as e:
+                    error_messages.append(f"撤销学生 {student.name} 与导师 {professor.name} 的互选失败: {str(e)}")
+                    continue
+        
+        # 显示结果
+        if cancelled_count > 0:
+            self.message_user(
+                request, 
+                f"成功撤销 {cancelled_count} 条互选记录，已恢复导师名额", 
+                level='success'
+            )
+        
+        for error_msg in error_messages:
+            self.message_user(request, error_msg, level='error')
+    
+    cancel_approved_choice.short_description = "撤销已同意的互选（恢复名额）"
 
     # ========= 新增 Action =========
     def reject_waiting_if_no_quota(self, request, queryset=None):

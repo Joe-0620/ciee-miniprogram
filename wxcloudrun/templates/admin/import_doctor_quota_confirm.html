@@ -1,0 +1,359 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block extrastyle %}
+<style>
+    body {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        min-height: 100vh;
+    }
+    
+    .confirm-container {
+        max-width: 1200px;
+        margin: 40px auto;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        padding: 40px;
+    }
+    
+    .confirm-title {
+        font-size: 28px;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 10px;
+        text-align: center;
+    }
+    
+    .confirm-subtitle {
+        font-size: 14px;
+        color: #666;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    
+    .section {
+        margin-bottom: 30px;
+    }
+    
+    .section-title {
+        font-size: 20px;
+        font-weight: 600;
+        color: #444;
+        margin-bottom: 15px;
+        padding-bottom: 10px;
+        border-bottom: 3px solid #4facfe;
+    }
+    
+    .conflict-warning {
+        background: linear-gradient(135deg, #fff3cd 0%, #fff0b3 100%);
+        border-left: 4px solid #ffc107;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+    
+    .conflict-warning-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: #856404;
+        margin-bottom: 10px;
+    }
+    
+    .validation-warning {
+        background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+        border-left: 4px solid #dc3545;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+    
+    .validation-warning-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: #721c24;
+        margin-bottom: 10px;
+    }
+    
+    .table-wrapper {
+        overflow-x: auto;
+        margin-top: 15px;
+    }
+    
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 14px;
+    }
+    
+    th {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 12px;
+        text-align: left;
+        font-weight: 600;
+    }
+    
+    td {
+        padding: 12px;
+        border-bottom: 1px solid #e0e0e0;
+    }
+    
+    tr:hover {
+        background: #f8f9fa;
+    }
+    
+    .conflict-row {
+        background: #fff3cd;
+    }
+    
+    .exceed-row {
+        background: #f8d7da;
+    }
+    
+    .badge {
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+    
+    .badge-conflict {
+        background: #ffc107;
+        color: #856404;
+    }
+    
+    .badge-exceed {
+        background: #dc3545;
+        color: white;
+    }
+    
+    .radio-group {
+        background: #e8f5e9;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 25px;
+    }
+    
+    .radio-group-title {
+        font-size: 16px;
+        font-weight: 600;
+        color: #2e7d32;
+        margin-bottom: 15px;
+    }
+    
+    .radio-option {
+        display: flex;
+        align-items: center;
+        margin-bottom: 12px;
+        cursor: pointer;
+    }
+    
+    .radio-option input[type="radio"] {
+        margin-right: 10px;
+        width: 18px;
+        height: 18px;
+        cursor: pointer;
+    }
+    
+    .radio-option label {
+        font-size: 15px;
+        color: #333;
+        cursor: pointer;
+        flex: 1;
+    }
+    
+    .radio-option-desc {
+        font-size: 13px;
+        color: #666;
+        margin-left: 28px;
+        margin-top: -8px;
+        margin-bottom: 8px;
+    }
+    
+    .button-group {
+        display: flex;
+        gap: 15px;
+        margin-top: 30px;
+    }
+    
+    .btn {
+        flex: 1;
+        padding: 15px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-confirm {
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        color: white;
+    }
+    
+    .btn-confirm:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(79, 172, 254, 0.4);
+    }
+    
+    .btn-cancel {
+        background: #e0e0e0;
+        color: #666;
+    }
+    
+    .btn-cancel:hover {
+        background: #d0d0d0;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="confirm-container">
+    <h1 class="confirm-title">⚠️ 博士名额导入确认</h1>
+    <p class="confirm-subtitle">请仔细检查以下信息，确认无误后选择导入方式</p>
+    
+    <form method="post" id="confirmForm">
+        {% csrf_token %}
+        <input type="hidden" name="confirm_import" value="1">
+        <input type="hidden" name="import_data" value="{{ import_data_json }}">
+        
+        {% if conflicts %}
+        <div class="section">
+            <div class="conflict-warning">
+                <div class="conflict-warning-title">⚠️ 检测到 {{ conflicts|length }} 个名额冲突</div>
+                <p style="margin: 10px 0 0 0; color: #856404; font-size: 14px;">
+                    以下导师在对应学科已有博士招生名额记录，请选择处理方式：
+                </p>
+            </div>
+            
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>导师姓名</th>
+                            <th>工号</th>
+                            <th>学科名称</th>
+                            <th>学科代码</th>
+                            <th>现有名额</th>
+                            <th>本次导入</th>
+                            <th>状态</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in conflicts %}
+                        <tr class="conflict-row">
+                            <td>{{ item.professor_name }}</td>
+                            <td>{{ item.teacher_identity_id }}</td>
+                            <td>{{ item.subject_name }}</td>
+                            <td>{{ item.subject_code }}</td>
+                            <td><strong>{{ item.existing_quota }}</strong></td>
+                            <td><strong>{{ item.quota }}</strong></td>
+                            <td><span class="badge badge-conflict">冲突</span></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="radio-group">
+                <div class="radio-group-title">🔧 冲突处理方式</div>
+                <div class="radio-option">
+                    <input type="radio" name="conflict_action" id="action_replace" value="replace" checked>
+                    <label for="action_replace"><strong>覆盖模式</strong> - 使用本次导入的名额替换原有名额</label>
+                </div>
+                <div class="radio-option-desc">
+                    例如：原有名额5人，本次导入3人 → 最终名额为3人
+                </div>
+                
+                <div class="radio-option">
+                    <input type="radio" name="conflict_action" id="action_add" value="add">
+                    <label for="action_add"><strong>增加模式</strong> - 在原有名额基础上增加本次导入的名额</label>
+                </div>
+                <div class="radio-option-desc">
+                    例如：原有名额5人，本次导入3人 → 最终名额为8人
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        
+        {% if validation_result.warnings %}
+        <div class="section">
+            <div class="validation-warning">
+                <div class="validation-warning-title">❌ 名额超额警告</div>
+                <p style="margin: 10px 0 0 0; color: #721c24; font-size: 14px;">
+                    以下专业的导师名额总和超过专业总招生名额，请调整后重新导入：
+                </p>
+            </div>
+            
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>学科名称</th>
+                            <th>学科代码</th>
+                            <th>导师名额总和</th>
+                            <th>专业总招生名额</th>
+                            <th>超出</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for warning in validation_result.warnings %}
+                        <tr class="exceed-row">
+                            <td>{{ warning.subject_name }}</td>
+                            <td>{{ warning.subject_code }}</td>
+                            <td><strong>{{ warning.import_total }}</strong></td>
+                            <td>{{ warning.subject_total }}</td>
+                            <td><span class="badge badge-exceed">+{{ warning.exceed }}</span></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        {% endif %}
+        
+        <div class="section">
+            <div class="section-title">📊 导入数据统计（共 {{ import_data|length }} 条）</div>
+            
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>导师姓名</th>
+                            <th>工号</th>
+                            <th>学科名称</th>
+                            <th>学科代码</th>
+                            <th>本次名额</th>
+                            <th>现有名额</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in import_data %}
+                        <tr {% if item.has_conflict %}class="conflict-row"{% endif %}>
+                            <td>{{ item.professor_name }}</td>
+                            <td>{{ item.teacher_identity_id }}</td>
+                            <td>{{ item.subject_name }}</td>
+                            <td>{{ item.subject_code }}</td>
+                            <td><strong>{{ item.quota }}</strong></td>
+                            <td>{{ item.existing_quota }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="button-group">
+            <a href="{% url 'admin:Professor_Student_Manage_professor_import_doctor_quota' %}" class="btn btn-cancel">
+                ← 取消导入
+            </a>
+            <button type="submit" class="btn btn-confirm">
+                ✔️ 确认导入
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

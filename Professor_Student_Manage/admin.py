@@ -86,6 +86,9 @@ def reset_proposed_quota_approved(modeladmin, request, queryset):
 class ImportQuotaForm(forms.Form):
     csv_file = forms.FileField(label="选择 CSV 文件")
 
+class ImportDoctorQuotaForm(forms.Form):
+    xlsx_file = forms.FileField(label="选择 XLSX 文件")
+
 
 class ProfessorAdmin(admin.ModelAdmin):
     fieldsets = [
@@ -162,6 +165,7 @@ class ProfessorAdmin(admin.ModelAdmin):
         urls = super().get_urls()
         custom_urls = [
             path('import-quota/', self.admin_site.admin_view(self.import_quota_view), name='import_quota'),
+            path('import-doctor-quota/', self.admin_site.admin_view(self.import_doctor_quota_view), name='import_doctor_quota'),
         ]
         return custom_urls + urls
 
@@ -269,6 +273,168 @@ class ProfessorAdmin(admin.ModelAdmin):
             'opts': self.model._meta,
             'title': '一键导入导师硕士名额',
         }
+        return render(request, 'admin/import_quota.html', context)
+    
+    def import_doctor_quota_view(self, request):
+        """
+        博士名额部分导入功能
+        支持XLSX格式，根据工号和学科代码更新博士招生名额
+        """
+        # 处理确认导入请求
+        if request.method == 'POST' and 'confirm_import' in request.POST:
+            import json
+            import_data_json = request.POST.get('import_data')
+            conflict_action = request.POST.get('conflict_action', 'replace')  # replace 或 add
+            
+            if import_data_json:
+                import_data = json.loads(import_data_json)
+                self._process_doctor_quota_import(request, import_data, conflict_action)
+                return redirect('admin:Professor_Student_Manage_professor_changelist')
+        
+        if request.method == 'POST':
+            form = ImportDoctorQuotaForm(request.POST, request.FILES)
+            if form.is_valid():
+                xlsx_file = request.FILES['xlsx_file']
+                
+                try:
+                    import openpyxl
+                    from collections import defaultdict
+                    
+                    # 读取XLSX文件
+                    wb = openpyxl.load_workbook(xlsx_file)
+                    ws = wb.active
+                    
+                    # 读取表头
+                    headers = [cell.value for cell in ws[1]]
+                    
+                    # 查找核心列的索引
+                    try:
+                        col_name = headers.index('姓名') + 1
+                        col_teacher_id = headers.index('工号') + 1
+                        col_direction = headers.index('方向') + 1
+                    except ValueError as e:
+                        self.message_user(request, f"文件列名不正确，缺少必要列（姓名、工号、方向）: {str(e)}", level='error')
+                        return redirect('admin:Professor_Student_Manage_professor_changelist')
+                    
+                    # 解析导入数据
+                    import_data = []
+                    conflicts = []  # 存储有冲突的记录
+                    
+                    for row in ws.iter_rows(min_row=2, values_only=False):
+                        if not row[col_teacher_id - 1].value:
+                            continue
+                        
+                        teacher_id = str(row[col_teacher_id - 1].value).strip().zfill(5)
+                        teacher_name = str(row[col_name - 1].value).strip() if row[col_name - 1].value else ""
+                        
+                        # 查找导师
+                        try:
+                            professor = Professor.objects.get(teacher_identity_id=teacher_id)
+                        except Professor.DoesNotExist:
+                            self.message_user(request, f"工号 {teacher_id} 的导师不存在，跳过", level='warning')
+                            continue
+                        
+                        # 遍历所有可能的招生学科列（假设最多有5组）
+                        for i in range(1, 10):  # 支持最多9组学科
+                            try:
+                                # 查找学科相关列
+                                subject_col_name = f'招生学科{i}'
+                                code_col_name = f'学科{i}代码'
+                                type_col_name = f'专业类型{i}'
+                                quota_col_name = f'本次名额{i}'
+                                
+                                if subject_col_name not in headers:
+                                    break
+                                
+                                col_subject = headers.index(subject_col_name) + 1
+                                col_code = headers.index(code_col_name) + 1
+                                col_type = headers.index(type_col_name) + 1
+                                col_quota = headers.index(quota_col_name) + 1
+                                
+                                quota_value = row[col_quota - 1].value
+                                
+                                # 只处理本次名额>0的记录
+                                if not quota_value or int(quota_value) <= 0:
+                                    continue
+                                
+                                subject_code = str(row[col_code - 1].value).strip() if row[col_code - 1].value else ""
+                                subject_type = str(row[col_type - 1].value).strip() if row[col_type - 1].value else ""
+                                quota = int(quota_value)
+                                
+                                if not subject_code or subject_type != "博士":
+                                    continue
+                                
+                                # 查找专业（博士类型）
+                                subject = Subject.objects.filter(subject_code=subject_code, subject_type=2).first()
+                                if not subject:
+                                    self.message_user(request, f"博士专业代码 {subject_code} 不存在，跳过", level='warning')
+                                    continue
+                                
+                                # 检查是否已存在名额记录
+                                existing_quota = ProfessorDoctorQuota.objects.filter(
+                                    professor=professor,
+                                    subject=subject
+                                ).first()
+                                
+                                import_item = {
+                                    'professor_id': professor.id,
+                                    'professor_name': professor.name,
+                                    'teacher_identity_id': teacher_id,
+                                    'subject_id': subject.id,
+                                    'subject_name': subject.subject_name,
+                                    'subject_code': subject_code,
+                                    'quota': quota,
+                                    'existing_quota': existing_quota.total_quota if existing_quota else 0,
+                                    'has_conflict': existing_quota and existing_quota.total_quota > 0,
+                                }
+                                
+                                import_data.append(import_item)
+                                
+                                # 如果有冲突，记录下来
+                                if import_item['has_conflict']:
+                                    conflicts.append(import_item)
+                                    
+                            except (ValueError, IndexError):
+                                continue
+                    
+                    if not import_data:
+                        self.message_user(request, "没有找到有效的导入数据（本次名额必须>0）", level='warning')
+                        return redirect('admin:Professor_Student_Manage_professor_changelist')
+                    
+                    # 验证名额分配情况
+                    validation_result = self._validate_doctor_quota_import(import_data)
+                    
+                    # 如果有冲突或超额，需要用户确认
+                    if conflicts or validation_result['warnings']:
+                        import json
+                        context = {
+                            'form': form,
+                            'opts': self.model._meta,
+                            'title': '博士名额部分导入确认',
+                            'import_data': import_data,
+                            'conflicts': conflicts,
+                            'validation_result': validation_result,
+                            'import_data_json': json.dumps(import_data),
+                        }
+                        return render(request, 'admin/import_doctor_quota_confirm.html', context)
+                    else:
+                        # 没有冲突和超额，直接导入
+                        self._process_doctor_quota_import(request, import_data, 'replace')
+                        return redirect('admin:Professor_Student_Manage_professor_changelist')
+                    
+                except Exception as e:
+                    import traceback
+                    self.message_user(request, f"解析 XLSX 文件时出错: {str(e)}\\n{traceback.format_exc()}", level='error')
+                    return redirect('admin:Professor_Student_Manage_professor_changelist')
+        else:
+            form = ImportDoctorQuotaForm()
+        
+        context = {
+            'form': form,
+            'opts': self.model._meta,
+            'title': '博士名额部分导入',
+        }
+        return render(request, 'admin/import_doctor_quota.html', context)
         return render(request, 'admin/import_quota.html', context)
     
     def _validate_quota_import(self, import_data, import_mode='full'):
@@ -512,6 +678,125 @@ class ProfessorAdmin(admin.ModelAdmin):
                 f"📊 {subject_name} ({subject_code}): {quota_detail}",
                 level='success'
             )
+
+    def _validate_doctor_quota_import(self, import_data):
+        """
+        验证博士名额导入数据
+        检查每个专业的导师总名额是否超过专业总招生名额
+        """
+        from collections import defaultdict
+        
+        # 按专业汇总导入的名额
+        subject_quotas = defaultdict(lambda: {
+            'total': 0,
+            'subject_obj': None,
+            'subject_code': None,
+            'subject_name': None
+        })
+        
+        for item in import_data:
+            subject_code = item['subject_code']
+            quota = item['quota']
+            teacher_identity_id = item.get('teacher_identity_id', '')
+            
+            # 排除工号为csds开头的测试账号
+            if teacher_identity_id.startswith('csds'):
+                continue
+            
+            # 如果是覆盖模式（has_conflict=True且用户选择replace），使用新名额
+            # 如果是增加模式（has_conflict=True且用户选择add），需要加上原有名额
+            # 如果没有冲突，直接使用新名额
+            subject_quotas[subject_code]['total'] += quota
+            
+            if subject_quotas[subject_code]['subject_obj'] is None:
+                subject = Subject.objects.get(id=item['subject_id'])
+                subject_quotas[subject_code]['subject_obj'] = subject
+                subject_quotas[subject_code]['subject_code'] = subject_code
+                subject_quotas[subject_code]['subject_name'] = item['subject_name']
+        
+        # 检查每个专业的总名额
+        warnings = []
+        comparison_data = []
+        
+        for subject_code, data in subject_quotas.items():
+            subject = data['subject_obj']
+            import_total = data['total']
+            subject_total = subject.total_admission_quota or 0
+            
+            # 注意：这里只是导入的名额总和，实际还需要加上已存在的名额（如果不是覆盖）
+            comparison_data.append({
+                'subject_name': data['subject_name'],
+                'subject_code': subject_code,
+                'import_total': import_total,
+                'subject_total': subject_total,
+                'is_exceed': import_total > subject_total,
+            })
+            
+            if import_total > subject_total:
+                warnings.append({
+                    'subject_name': data['subject_name'],
+                    'subject_code': subject_code,
+                    'import_total': import_total,
+                    'subject_total': subject_total,
+                    'exceed': import_total - subject_total,
+                })
+        
+        return {
+            'comparison_data': comparison_data,
+            'warnings': warnings,
+        }
+    
+    def _process_doctor_quota_import(self, request, import_data, conflict_action='replace'):
+        """
+        处理博士名额导入
+        conflict_action: 'replace' 覆盖，'add' 增加
+        """
+        success_count = 0
+        
+        for item in import_data:
+            professor = Professor.objects.get(id=item['professor_id'])
+            subject = Subject.objects.get(id=item['subject_id'])
+            quota = item['quota']
+            
+            quota_obj, created = ProfessorDoctorQuota.objects.get_or_create(
+                professor=professor,
+                subject=subject,
+                defaults={
+                    'total_quota': quota,
+                    'used_quota': 0,
+                    'remaining_quota': quota,
+                }
+            )
+            
+            if not created:
+                # 已存在的记录
+                if conflict_action == 'add':
+                    # 增加模式：在原有基础上增加
+                    quota_obj.total_quota += quota
+                    quota_obj.remaining_quota += quota
+                else:
+                    # 覆盖模式：直接覆盖
+                    used_quota = quota_obj.used_quota or 0
+                    quota_obj.total_quota = quota
+                    quota_obj.remaining_quota = quota - used_quota
+                
+                quota_obj.save()
+            
+            success_count += 1
+        
+        # 显示导入结果
+        action_text = "增加" if conflict_action == 'add' else "覆盖"
+        self.message_user(request, f"[博士名额部分导入] 成功处理 {success_count} 条记录（{action_text}模式）", level='success')
+        
+        # 按专业统计并显示
+        from collections import defaultdict
+        subject_stats = defaultdict(int)
+        for item in import_data:
+            subject_stats[item['subject_name']] += item['quota']
+        
+        for subject_name in sorted(subject_stats.keys()):
+            total = subject_stats[subject_name]
+            self.message_user(request, f"📊 {subject_name}: {total} 人", level='success')
 
     def get_readonly_fields(self, request, obj=None):
         readonly_fields = self.readonly_fields

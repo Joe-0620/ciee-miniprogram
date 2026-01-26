@@ -1,0 +1,209 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block extrastyle %}
+<style>
+    body {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+    }
+    
+    .adjust-container {
+        max-width: 700px;
+        margin: 40px auto;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        padding: 40px;
+    }
+    
+    .adjust-title {
+        font-size: 28px;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 10px;
+        text-align: center;
+    }
+    
+    .adjust-subtitle {
+        font-size: 14px;
+        color: #666;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    
+    .info-card {
+        background: linear-gradient(135deg, #f5f7fa 0%, #e8eaf6 100%);
+        border-left: 4px solid #667eea;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 30px;
+    }
+    
+    .info-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 12px;
+        font-size: 15px;
+    }
+    
+    .info-row:last-child {
+        margin-bottom: 0;
+    }
+    
+    .info-label {
+        color: #555;
+        font-weight: 500;
+    }
+    
+    .info-value {
+        color: #333;
+        font-weight: 600;
+    }
+    
+    .form-section {
+        margin-bottom: 25px;
+    }
+    
+    .form-label {
+        font-size: 15px;
+        font-weight: 600;
+        color: #444;
+        margin-bottom: 8px;
+        display: block;
+    }
+    
+    .input-wrapper {
+        position: relative;
+    }
+    
+    .quota-input {
+        width: 100%;
+        padding: 15px;
+        font-size: 24px;
+        font-weight: 700;
+        color: #667eea;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        text-align: center;
+        transition: all 0.3s ease;
+        box-sizing: border-box;
+    }
+    
+    .quota-input:focus {
+        outline: none;
+        border-color: #667eea;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+    
+    .quota-input:hover {
+        border-color: #764ba2;
+    }
+    
+    .help-text {
+        background: #fff9e6;
+        padding: 15px;
+        border-radius: 8px;
+        margin-top: 20px;
+        font-size: 13px;
+        color: #856404;
+        line-height: 1.6;
+    }
+    
+    .help-text strong {
+        color: #d97706;
+    }
+    
+    .button-group {
+        display: flex;
+        gap: 15px;
+        margin-top: 30px;
+    }
+    
+    .btn {
+        flex: 1;
+        padding: 15px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-submit {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+    }
+    
+    .btn-submit:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+    }
+    
+    .btn-cancel {
+        background: #e0e0e0;
+        color: #666;
+    }
+    
+    .btn-cancel:hover {
+        background: #d0d0d0;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="adjust-container">
+    <h1 class="adjust-title">📊 调整招生人数</h1>
+    <p class="adjust-subtitle">修改专业总招生名额，系统将自动调整候补学生状态</p>
+    
+    <div class="info-card">
+        <div class="info-row">
+            <span class="info-label">专业名称：</span>
+            <span class="info-value">{{ subject.subject_name }}</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">专业代码：</span>
+            <span class="info-value">{{ subject.subject_code }}</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">专业类型：</span>
+            <span class="info-value">{{ subject.get_subject_type_display }}</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">当前招生人数：</span>
+            <span class="info-value" style="color: #667eea; font-size: 18px;">{{ subject.total_admission_quota|default:"0" }} 人</span>
+        </div>
+    </div>
+    
+    <form method="post">
+        {% csrf_token %}
+        
+        <div class="form-section">
+            <label class="form-label">🔢 新的招生人数</label>
+            <div class="input-wrapper">
+                <input type="number" name="new_quota" class="quota-input" 
+                       value="{{ subject.total_admission_quota|default:'0' }}" 
+                       min="0" required autofocus>
+            </div>
+        </div>
+        
+        <div class="help-text">
+            <strong>📝 调整说明：</strong><br>
+            • <strong>增加人数</strong>：部分候补学生将自动转为正式录取<br>
+            • <strong>减少人数</strong>：部分正式录取学生将转为候补<br>
+            • 系统会根据学生的最终排名自动重新计算候补次序<br>
+            • 调整完成后会显示具体的学生状态变更情况
+        </div>
+        
+        <div class="button-group">
+            <a href="{% url 'admin:Enrollment_Manage_subject_changelist' %}" class="btn btn-cancel">
+                ← 取消
+            </a>
+            <button type="submit" class="btn btn-submit">
+                ✔️ 确认调整
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

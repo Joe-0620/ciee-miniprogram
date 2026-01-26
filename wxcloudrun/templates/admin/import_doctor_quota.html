@@ -1,0 +1,209 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block extrastyle %}
+<style>
+    body {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+    }
+    
+    .import-container {
+        max-width: 800px;
+        margin: 40px auto;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        padding: 40px;
+    }
+    
+    .import-title {
+        font-size: 28px;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 10px;
+        text-align: center;
+    }
+    
+    .import-subtitle {
+        font-size: 14px;
+        color: #666;
+        text-align: center;
+        margin-bottom: 30px;
+    }
+    
+    .form-section {
+        margin-bottom: 25px;
+    }
+    
+    .form-label {
+        font-size: 15px;
+        font-weight: 500;
+        color: #444;
+        margin-bottom: 8px;
+        display: block;
+    }
+    
+    .file-input-wrapper {
+        position: relative;
+        overflow: hidden;
+        display: inline-block;
+        width: 100%;
+    }
+    
+    .file-input-wrapper input[type=file] {
+        position: absolute;
+        left: -9999px;
+    }
+    
+    .file-input-label {
+        display: block;
+        padding: 15px 20px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        text-align: center;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-size: 15px;
+    }
+    
+    .file-input-label:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+    }
+    
+    .file-name-display {
+        margin-top: 10px;
+        padding: 12px;
+        background: #f8f9fa;
+        border-radius: 6px;
+        color: #666;
+        font-size: 14px;
+        display: none;
+    }
+    
+    .file-name-display.show {
+        display: block;
+    }
+    
+    .help-text {
+        background: #e8eaf6;
+        padding: 15px;
+        border-radius: 8px;
+        margin-top: 20px;
+        font-size: 13px;
+        color: #5e35b1;
+        line-height: 1.6;
+    }
+    
+    .help-text ul {
+        margin: 10px 0 0 20px;
+        padding: 0;
+    }
+    
+    .help-text li {
+        margin-bottom: 5px;
+    }
+    
+    .submit-btn {
+        width: 100%;
+        padding: 15px;
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 25px;
+    }
+    
+    .submit-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(245, 87, 108, 0.4);
+    }
+    
+    .submit-btn:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+        transform: none;
+    }
+    
+    .back-link {
+        display: inline-block;
+        margin-top: 20px;
+        color: #667eea;
+        text-decoration: none;
+        font-size: 14px;
+        text-align: center;
+        width: 100%;
+    }
+    
+    .back-link:hover {
+        color: #764ba2;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="import-container">
+    <h1 class="import-title">📚 博士名额部分导入</h1>
+    <p class="import-subtitle">上传 XLSX 文件，更新导师的博士招生名额</p>
+    
+    <form method="post" enctype="multipart/form-data" id="importForm">
+        {% csrf_token %}
+        
+        <div class="form-section">
+            <label class="form-label">选择 XLSX 文件</label>
+            <div class="file-input-wrapper">
+                <input type="file" name="xlsx_file" id="xlsx_file" accept=".xlsx" required>
+                <label for="xlsx_file" class="file-input-label">
+                    📁 点击选择文件
+                </label>
+            </div>
+            <div class="file-name-display" id="fileNameDisplay">
+                未选择文件
+            </div>
+        </div>
+        
+        <div class="help-text">
+            <strong>📋 文件格式说明：</strong>
+            <ul>
+                <li>必须包含列：姓名、工号、方向</li>
+                <li>学科列格式：招生学科1、学科1代码、专业类型1、本次名额1（可有多组）</li>
+                <li>只有 <strong>专业类型="博士"</strong> 且 <strong>本次名额>0</strong> 的记录会被导入</li>
+                <li>如果导师在该学科已有名额记录，系统会提示您选择<strong>覆盖</strong>或<strong>增加</strong></li>
+                <li>导入前会验证所有导师的名额总和不超过专业的总招生名额</li>
+            </ul>
+        </div>
+        
+        <button type="submit" class="submit-btn" id="submitBtn" disabled>
+            开始导入
+        </button>
+        
+        <a href="{% url 'admin:Professor_Student_Manage_professor_changelist' %}" class="back-link">
+            ← 返回导师列表
+        </a>
+    </form>
+</div>
+
+<script>
+document.getElementById('xlsx_file').addEventListener('change', function(e) {
+    const fileDisplay = document.getElementById('fileNameDisplay');
+    const submitBtn = document.getElementById('submitBtn');
+    
+    if (e.target.files.length > 0) {
+        const fileName = e.target.files[0].name;
+        fileDisplay.textContent = '已选择: ' + fileName;
+        fileDisplay.classList.add('show');
+        submitBtn.disabled = false;
+    } else {
+        fileDisplay.textContent = '未选择文件';
+        fileDisplay.classList.remove('show');
+        submitBtn.disabled = true;
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,190 @@
+/* 模态框遮罩层 */
+.quota-modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 9999;
+    animation: fadeIn 0.3s ease;
+}
+
+.quota-modal-overlay.active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 模态框容器 */
+.quota-modal {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    max-width: 800px;
+    width: 90%;
+    max-height: 80vh;
+    overflow: hidden;
+    animation: slideUp 0.3s ease;
+}
+
+/* 模态框头部 */
+.quota-modal-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 20px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 12px 12px 0 0;
+}
+
+.quota-modal-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0;
+}
+
+.quota-modal-close {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    font-size: 24px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.quota-modal-close:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: rotate(90deg);
+}
+
+/* 模态框内容 */
+.quota-modal-body {
+    padding: 25px;
+    max-height: calc(80vh - 140px);
+    overflow-y: auto;
+    background: #ffffff;
+}
+
+/* 表格样式 */
+.quota-detail-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    margin-top: 10px;
+    background: white;
+}
+
+.quota-detail-table thead {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.quota-detail-table th {
+    padding: 14px 12px;
+    text-align: center;
+    font-weight: 600;
+    color: white;
+    border: none;
+    font-size: 14px;
+}
+
+.quota-detail-table tbody {
+    background: white;
+}
+
+.quota-detail-table tbody tr {
+    background: white;
+    border-bottom: 1px solid #e8e8e8;
+    transition: background-color 0.2s ease;
+}
+
+.quota-detail-table tbody tr:nth-child(even) {
+    background: #f8f9fc;
+}
+
+.quota-detail-table tbody tr:hover {
+    background-color: #e8eaf6 !important;
+}
+
+.quota-detail-table tbody tr:last-child {
+    border-bottom: none;
+}
+
+.quota-detail-table td {
+    padding: 14px 12px;
+    color: #4a5568;
+    text-align: center;
+    font-size: 14px;
+}
+
+.quota-detail-table td:first-child {
+    color: #2d3748;
+    font-weight: 500;
+}
+
+.quota-detail-table td.remaining {
+    color: #48bb78;
+    font-weight: 600;
+}
+
+.quota-detail-table td strong {
+    color: #667eea;
+    font-weight: 700;
+    font-size: 15px;
+}
+
+/* 空状态 */
+.quota-empty {
+    text-align: center;
+    padding: 40px;
+    color: #999;
+    font-size: 16px;
+}
+
+/* 动画效果 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* 滚动条美化 */
+.quota-modal-body::-webkit-scrollbar {
+    width: 8px;
+}
+
+.quota-modal-body::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.quota-modal-body::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.quota-modal-body::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}

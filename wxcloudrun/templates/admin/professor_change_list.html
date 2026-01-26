@@ -4,7 +4,10 @@
     <h1>导师管理</h1>
     <div style="margin-bottom: 20px;">
         <a href="{% url 'admin:import_quota' %}" class="addlink">
-            一键导入导师名额
+            一键导入导师硕士名额
+        </a>
+        <a href="{% url 'admin:import_doctor_quota' %}" class="addlink" style="margin-left: 10px;">
+            博士名额部分导入
         </a>
     </div>
 {% endblock %}

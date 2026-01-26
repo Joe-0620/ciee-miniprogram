@@ -1,32 +1,281 @@
 {% extends "admin/base_site.html" %}
 {% block content %}
+<style>
+  #content-main {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  
+  .page-title {
+    color: #e74c3c;
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 25px;
+    padding-bottom: 15px;
+    border-bottom: 3px solid #e74c3c;
+  }
+  
+  .alert-warning {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 15px rgba(245, 87, 108, 0.3);
+  }
+  
+  .alert-warning strong {
+    font-size: 18px;
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .warning-table {
+    width: 100%;
+    margin: 25px 0;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  }
+  
+  .warning-table thead tr {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+  }
+  
+  .warning-table th {
+    padding: 15px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 14px;
+  }
+  
+  .warning-table th:nth-child(2),
+  .warning-table th:nth-child(3),
+  .warning-table th:nth-child(4),
+  .warning-table th:nth-child(5) {
+    text-align: center;
+  }
+  
+  .warning-table tbody tr {
+    background-color: white;
+    transition: all 0.3s;
+  }
+  
+  .warning-table tbody tr:hover {
+    background-color: #f8f9fa;
+    transform: scale(1.01);
+  }
+  
+  .warning-table tbody tr:not(:last-child) {
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  .warning-table td {
+    padding: 15px;
+    color: #2c3e50;
+  }
+  
+  .warning-table td:nth-child(2),
+  .warning-table td:nth-child(3),
+  .warning-table td:nth-child(4),
+  .warning-table td:nth-child(5) {
+    text-align: center;
+  }
+  
+  .exceed-number {
+    font-weight: 700;
+    color: #e74c3c;
+    font-size: 16px;
+  }
+  
+  .form-section {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 25px;
+    border-radius: 10px;
+    margin: 30px 0;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  }
+  
+  .form-section h3 {
+    color: white;
+    font-size: 20px;
+    font-weight: 600;
+    margin: 0 0 20px 0;
+  }
+  
+  .radio-option {
+    display: block;
+    padding: 18px;
+    margin-bottom: 15px;
+    background-color: white;
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  
+  .radio-option:hover {
+    border-color: #667eea;
+    transform: translateX(5px);
+    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+  }
+  
+  .radio-option input[type="radio"] {
+    margin-right: 12px;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+  }
+  
+  .radio-option strong {
+    color: #2c3e50;
+    font-size: 16px;
+  }
+  
+  .radio-option p {
+    margin: 8px 0 0 30px;
+    color: #555;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  
+  .full-mode-notice {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 4px solid #f39c12;
+  }
+  
+  .full-mode-notice strong {
+    color: #e67e22;
+    font-size: 16px;
+  }
+  
+  .full-mode-notice p {
+    margin: 10px 0 0 0;
+    color: #555;
+    line-height: 1.6;
+  }
+  
+  .action-buttons {
+    margin-top: 30px;
+    text-align: center;
+  }
+  
+  .btn-submit {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+    padding: 14px 40px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px rgba(245, 87, 108, 0.4);
+  }
+  
+  .btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(245, 87, 108, 0.6);
+  }
+  
+  .btn-cancel {
+    margin-left: 15px;
+    padding: 14px 40px;
+    background-color: #e0e0e0;
+    color: #555;
+    text-decoration: none;
+    border-radius: 25px;
+    display: inline-block;
+    font-weight: 600;
+    transition: all 0.3s;
+  }
+  
+  .btn-cancel:hover {
+    background-color: #bdbdbd;
+    transform: translateY(-2px);
+  }
+  
+  .info-box {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 30px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  }
+  
+  .info-box-title {
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 15px;
+  }
+  
+  .info-box ul {
+    margin: 0;
+    padding-left: 20px;
+    color: white;
+  }
+  
+  .info-box li {
+    margin-bottom: 10px;
+    line-height: 1.6;
+  }
+  
+  .info-box strong {
+    font-weight: 700;
+  }
+</style>
+
 <div id="content-main">
-  <h1>{{ title }}</h1>
+  <h1 class="page-title">{{ title }}</h1>
   
-  <div class="messagelist">
-    <div class="warning">
-      <strong>⚠️ 警告：以下专业的导师名额总和超过了专业总招生名额</strong>
-    </div>
+  {% if message %}
+  <div class="alert-warning">
+    <strong>{{ message }}</strong>
   </div>
+  {% endif %}
   
-  <table style="width: 100%; margin: 20px 0; border-collapse: collapse;">
+  <table class="warning-table">
     <thead>
-      <tr style="background-color: #f8f8f8; border-bottom: 2px solid #ddd;">
-        <th style="padding: 10px; text-align: left;">专业名称</th>
-        <th style="padding: 10px; text-align: center;">专业代码</th>
-        <th style="padding: 10px; text-align: center;">当前总招生名额</th>
-        <th style="padding: 10px; text-align: center;">导入的导师名额总和</th>
-        <th style="padding: 10px; text-align: center;">超额人数</th>
+      <tr>
+        <th>专业名称</th>
+        <th>专业代码</th>
+        {% if import_mode == 'incremental' %}
+        <th>当前总招生名额</th>
+        <th>本次追加名额</th>
+        <th>更新后总名额</th>
+        {% else %}
+        <th>当前总招生名额</th>
+        <th>导入的导师名额</th>
+        <th>差额</th>
+        {% endif %}
+        <th>北京名额</th>
+        <th>烟台名额</th>
       </tr>
     </thead>
     <tbody>
-      {% for warning in warnings %}
-      <tr style="border-bottom: 1px solid #eee;">
-        <td style="padding: 10px;">{{ warning.subject_name }}</td>
-        <td style="padding: 10px; text-align: center;">{{ warning.subject_code }}</td>
-        <td style="padding: 10px; text-align: center;">{{ warning.current_total }}</td>
-        <td style="padding: 10px; text-align: center; font-weight: bold; color: #d9534f;">{{ warning.import_total }}</td>
-        <td style="padding: 10px; text-align: center; font-weight: bold; color: #d9534f;">+{{ warning.exceed }}</td>
+      {% for item in comparison_data %}
+      <tr>
+        <td>{{ item.subject_name }}</td>
+        <td>{{ item.subject_code }}</td>
+        {% if import_mode == 'incremental' %}
+        <td>{{ item.current_total }}</td>
+        <td class="exceed-number">+{{ item.increase }}</td>
+        <td class="exceed-number">{{ item.new_total }}</td>
+        {% else %}
+        <td>{{ item.current_total }}</td>
+        <td {% if item.is_exceed %}class="exceed-number"{% endif %}>{{ item.import_total }}</td>
+        <td {% if item.is_exceed %}class="exceed-number"{% endif %}>
+          {% if item.difference > 0 %}+{% endif %}{{ item.difference }}
+        </td>
+        {% endif %}
+        <td>{{ item.bj_quota }}</td>
+        <td>{{ item.yt_quota }}</td>
       </tr>
       {% endfor %}
     </tbody>
@@ -38,59 +287,63 @@
     <input type="hidden" name="import_data" value="{{ import_data_json }}">
     <input type="hidden" name="import_mode" value="{{ import_mode }}">
     
-    <div style="margin: 30px 0; padding: 20px; background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 4px;">
-      <h3>请选择处理方式：</h3>
+    <div class="form-section">
+      <h3>🔧 请选择处理方式：</h3>
       
       {% if import_mode == 'incremental' %}
-      <div style="margin: 15px 0;">
-        <label style="display: block; padding: 10px; cursor: pointer; background-color: #fff; border: 2px solid #5b9bd5; border-radius: 4px;">
-          <input type="radio" name="sync_quotas" value="yes" style="margin-right: 10px;" checked>
-          <strong>自动同步专业总招生名额并调整候补状态</strong>
-          <p style="margin: 5px 0 0 25px; color: #666; font-size: 14px;">
-            将专业总招生名额自动调整为导师名额总和，并自动调整候补学生状态（将部分候补学生转为正式）
-          </p>
-        </label>
-      </div>
+      <label class="radio-option">
+        <input type="radio" name="sync_quotas" value="yes" checked>
+        <strong>更新专业总招生名额并调整候补状态（推荐）</strong>
+        <p>
+          将专业总招生名额更新为新的总数，并自动调整候补学生状态（将部分候补学生转为正式录取）
+        </p>
+      </label>
       
-      <div style="margin: 15px 0;">
-        <label style="display: block; padding: 10px; cursor: pointer; background-color: #fff; border: 2px solid #ddd; border-radius: 4px;">
-          <input type="radio" name="sync_quotas" value="no" style="margin-right: 10px;">
-          <strong>仅同步专业总招生名额（不调整候补）</strong>
-          <p style="margin: 5px 0 0 25px; color: #666; font-size: 14px;">
-            更新专业总招生名额，但不修改学生的候补状态
-          </p>
-        </label>
-      </div>
+      <label class="radio-option">
+        <input type="radio" name="sync_quotas" value="no">
+        <strong>仅更新专业总招生名额（不调整候补）</strong>
+        <p>
+          更新专业总招生名额，但不修改学生的候补状态
+        </p>
+      </label>
       {% else %}
-      <div style="padding: 15px; background-color: #fcf8e3; border: 1px solid #faebcc; border-radius: 4px;">
-        <strong>⚠️ 全量导入模式</strong>
-        <p style="margin: 10px 0 0 0;">将更新专业总招生名额为导师名额总和，<strong>不会调整候补学生状态</strong>。</p>
-      </div>
-      <input type="hidden" name="sync_quotas" value="no">
+      <label class="radio-option">
+        <input type="radio" name="sync_quotas" value="yes" checked>
+        <strong>更新专业总招生名额并调整候补状态（推荐）</strong>
+        <p>
+          对于超额的专业，将总招生名额更新为导入的导师名额总和，并自动调整候补学生状态
+        </p>
+      </label>
+      
+      <label class="radio-option">
+        <input type="radio" name="sync_quotas" value="no">
+        <strong>仅更新专业总招生名额（不调整候补）</strong>
+        <p>
+          更新专业总招生名额，但保持学生的候补状态不变
+        </p>
+      </label>
       {% endif %}
     </div>
     
-    <div style="margin-top: 20px;">
-      <button type="submit" class="button" style="background-color: #5b9bd5; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px;">
-        确认并继续导入
-      </button>
-      <a href="{% url 'admin:Professor_Student_Manage_professor_changelist' %}" class="button" style="margin-left: 10px; padding: 10px 20px; background-color: #f0f0f0; color: #333; text-decoration: none; border-radius: 4px; display: inline-block;">
-        取消导入
-      </a>
+    <div class="action-buttons">
+      <button type="submit" class="btn-submit">确认并继续导入</button>
+      <a href="{% url 'admin:Professor_Student_Manage_professor_changelist' %}" class="btn-cancel">取消导入</a>
     </div>
   </form>
   
-  <div style="margin-top: 30px; padding: 15px; background-color: #fcf8e3; border: 1px solid #faebcc; border-radius: 4px;">
-    <strong>💡 说明：</strong>
-    <ul style="margin: 10px 0; padding-left: 20px;">
+  <div class="info-box">
+    <div class="info-box-title">💡 导入说明</div>
+    <ul>
       {% if import_mode == 'incremental' %}
-      <li>当前为<strong>增量导入模式</strong>，可以选择是否调整候补学生状态</li>
-      <li>如果选择调整候补，系统会自动将排名靠前的候补学生转为正式录取</li>
-      <li>建议在中途增加名额时选择调整候补状态</li>
+      <li>当前为<strong>增量导入模式</strong>，将在导师现有名额基础上追加新名额</li>
+      <li>剩余名额也会同步增加，确保导师可以使用新增的名额</li>
+      <li>专业总招生名额将自动更新为：当前名额 + 追加名额</li>
+      <li>建议选择调整候补状态，让增加的名额能够惠及候补学生</li>
       {% else %}
-      <li>当前为<strong>全量导入模式</strong>，不会调整候补学生状态</li>
+      <li>当前为<strong>全量导入模式</strong>，将覆盖导师的现有名额</li>
+      <li>上表显示了导入名额与当前总招生名额的对比情况</li>
+      <li>对于超额的专业，可以选择是否更新总招生名额并调整候补</li>
       <li>全量导入适合初次设置或完全重新分配名额的场景</li>
-      <li>候补学生状态由学生批量导入时自动设置</li>
       {% endif %}
     </ul>
   </div>

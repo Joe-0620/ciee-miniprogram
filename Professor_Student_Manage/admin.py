@@ -236,23 +236,25 @@ class ProfessorAdmin(admin.ModelAdmin):
                                 'yt_quota': yt_quota,
                             })
 
-                    # 验证导入数据是否超过专业总招生名额
-                    warnings = self._validate_quota_import(import_data)
+                    # 验证导入数据并生成对比信息
+                    validation_result = self._validate_quota_import(import_data, import_mode)
                     
-                    if warnings:
-                        # 有超额情况，需要用户确认
+                    if validation_result['need_confirm']:
+                        # 需要用户确认
                         import json
                         context = {
                             'form': form,
                             'opts': self.model._meta,
-                            'title': '导入确认 - 发现名额超额',
-                            'warnings': warnings,
+                            'title': validation_result['title'],
+                            'comparison_data': validation_result['comparison_data'],
+                            'warnings': validation_result.get('warnings', []),
                             'import_data_json': json.dumps(import_data),
                             'import_mode': import_mode,
+                            'message': validation_result.get('message', ''),
                         }
                         return render(request, 'admin/import_quota_confirm.html', context)
                     else:
-                        # 没有超额，直接导入
+                        # 不需要确认，直接导入
                         self._process_import_data(request, import_data, import_mode, sync_quotas=False)
                         return redirect('admin:Professor_Student_Manage_professor_changelist')
 
@@ -269,36 +271,102 @@ class ProfessorAdmin(admin.ModelAdmin):
         }
         return render(request, 'admin/import_quota.html', context)
     
-    def _validate_quota_import(self, import_data):
+    def _validate_quota_import(self, import_data, import_mode='full'):
         """
-        验证导入数据，检查是否超过专业总招生名额
-        返回超额警告列表
+        验证导入数据，根据导入模式生成不同的验证结果
+        全量模式：显示导入名额与总招生名额的对比
+        增量模式：显示将要追加的名额并提示更新总名额
         """
         # 按学科代码汇总导入的名额
-        subject_quotas = defaultdict(lambda: {'total': 0, 'subject_obj': None})
+        subject_quotas = defaultdict(lambda: {
+            'bj_total': 0, 
+            'yt_total': 0,
+            'total': 0, 
+            'subject_obj': None,
+            'subject_code': None,
+            'subject_name': None
+        })
+        
         for item in import_data:
-            subject_code = item['subject_code']  # 使用学科代码作为key
-            total = item['bj_quota'] + item['yt_quota']
-            subject_quotas[subject_code]['total'] += total
+            subject_code = item['subject_code']
+            bj_quota = item['bj_quota']
+            yt_quota = item['yt_quota']
+            
+            subject_quotas[subject_code]['bj_total'] += bj_quota
+            subject_quotas[subject_code]['yt_total'] += yt_quota
+            subject_quotas[subject_code]['total'] += (bj_quota + yt_quota)
             if subject_quotas[subject_code]['subject_obj'] is None:
                 subject_quotas[subject_code]['subject_obj'] = Subject.objects.get(id=item['subject_id'])
+                subject_quotas[subject_code]['subject_code'] = subject_code
+                subject_quotas[subject_code]['subject_name'] = item['subject_name']
         
-        # 检查是否超过专业总招生名额
+        comparison_data = []
         warnings = []
-        for subject_code, data in subject_quotas.items():
-            subject = data['subject_obj']
-            total_quota = data['total']
-            subject_total = subject.total_admission_quota or 0
-            if total_quota > subject_total:
-                warnings.append({
-                    'subject_name': subject.subject_name,
-                    'subject_code': subject.subject_code,
-                    'current_total': subject_total,
-                    'import_total': total_quota,
-                    'exceed': total_quota - subject_total,
-                })
+        need_confirm = False
         
-        return warnings
+        if import_mode == 'full':
+            # 全量导入模式：显示导入名额与总招生名额的对比
+            for subject_code, data in subject_quotas.items():
+                subject = data['subject_obj']
+                import_total = data['total']
+                current_total = subject.total_admission_quota or 0
+                
+                comparison_data.append({
+                    'subject_name': data['subject_name'],
+                    'subject_code': subject_code,
+                    'current_total': current_total,
+                    'import_total': import_total,
+                    'bj_quota': data['bj_total'],
+                    'yt_quota': data['yt_total'],
+                    'difference': import_total - current_total,
+                    'is_exceed': import_total > current_total,
+                })
+                
+                # 如果导入名额超过总招生名额，需要确认
+                if import_total > current_total:
+                    need_confirm = True
+                    warnings.append({
+                        'subject_name': data['subject_name'],
+                        'subject_code': subject_code,
+                        'current_total': current_total,
+                        'import_total': import_total,
+                        'exceed': import_total - current_total,
+                    })
+            
+            return {
+                'need_confirm': need_confirm,
+                'title': '全量导入确认 - 名额对比' if need_confirm else '全量导入',
+                'comparison_data': comparison_data,
+                'warnings': warnings,
+                'message': '以下专业的导入名额超过当前总招生名额，是否更新总招生名额并调整学生候补状态？' if need_confirm else '',
+            }
+        
+        else:  # incremental mode
+            # 增量导入模式：显示追加信息并提示更新总名额
+            for subject_code, data in subject_quotas.items():
+                subject = data['subject_obj']
+                import_total = data['total']
+                current_total = subject.total_admission_quota or 0
+                new_total = current_total + import_total
+                
+                comparison_data.append({
+                    'subject_name': data['subject_name'],
+                    'subject_code': subject_code,
+                    'current_total': current_total,
+                    'import_total': import_total,
+                    'bj_quota': data['bj_total'],
+                    'yt_quota': data['yt_total'],
+                    'new_total': new_total,
+                    'increase': import_total,
+                })
+            
+            return {
+                'need_confirm': True,  # 增量模式总是需要确认
+                'title': '增量导入确认 - 追加名额',
+                'comparison_data': comparison_data,
+                'warnings': [],
+                'message': '增量导入将在导师现有名额基础上追加新名额（包括剩余名额），并更新专业总招生名额，是否重新计算学生候补状态？',
+            }
 
     def _process_import_data(self, request, import_data, import_mode='full', sync_quotas=False):
         """
@@ -331,51 +399,58 @@ class ProfessorAdmin(admin.ModelAdmin):
                 subject_quotas[subject_code]['subject_name'] = item['subject_name']
         
         # 处理专业总招生名额的更新
-        if import_mode == 'incremental' and sync_quotas:
-            # 增量模式且选择同步：更新专业总名额并调整候补
+        if import_mode == 'incremental':
+            # 增量模式：总名额 = 当前名额 + 导入名额
             for subject_code, data in subject_quotas.items():
                 subject = data['subject_obj']
-                total_quota = data['total']
-                if total_quota > subject.total_admission_quota:
-                    old_quota = subject.total_admission_quota
-                    subject.total_admission_quota = total_quota
-                    subject.save()
+                import_total = data['total']
+                old_quota = subject.total_admission_quota or 0
+                new_quota = old_quota + import_total
+                
+                subject.total_admission_quota = new_quota
+                subject.save()
+                
+                if sync_quotas:
                     # 同步候补状态
                     updated = sync_student_alternate_status(subject)
                     self.message_user(
                         request,
-                        f"专业 {subject.subject_name} 总招生名额已从 {old_quota} 更新为 {total_quota}，"
+                        f"专业 {subject.subject_name} 总招生名额已从 {old_quota} 更新为 {new_quota}，"
                         f"同步调整了 {updated} 名学生的候补状态",
                         level='success'
                     )
-        elif import_mode == 'incremental':
-            # 增量模式但不调整候补：只更新专业总名额
-            for subject_code, data in subject_quotas.items():
-                subject = data['subject_obj']
-                total_quota = data['total']
-                if total_quota > subject.total_admission_quota:
-                    old_quota = subject.total_admission_quota
-                    subject.total_admission_quota = total_quota
-                    subject.save()
+                else:
                     self.message_user(
                         request,
-                        f"专业 {subject.subject_name} 总招生名额已从 {old_quota} 更新为 {total_quota}（未调整候补状态）",
-                        level='warning'
-                    )
-        else:
-            # 全量模式：只更新专业总名额，不调整候补
-            for subject_code, data in subject_quotas.items():
-                subject = data['subject_obj']
-                total_quota = data['total']
-                if total_quota != subject.total_admission_quota:
-                    old_quota = subject.total_admission_quota
-                    subject.total_admission_quota = total_quota
-                    subject.save()
-                    self.message_user(
-                        request,
-                        f"专业 {subject.subject_name} 总招生名额已更新为 {total_quota}（全量导入模式，不调整候补状态）",
+                        f"专业 {subject.subject_name} 总招生名额已从 {old_quota} 更新为 {new_quota}（未调整候补状态）",
                         level='info'
                     )
+        else:
+            # 全量模式：更新专业总名额为导入的名额总和
+            for subject_code, data in subject_quotas.items():
+                subject = data['subject_obj']
+                import_total = data['total']
+                current_total = subject.total_admission_quota or 0
+                
+                if import_total != current_total:
+                    subject.total_admission_quota = import_total
+                    subject.save()
+                    
+                    if sync_quotas and import_total > current_total:
+                        # 仅当名额增加且用户选择时才调整候补
+                        updated = sync_student_alternate_status(subject)
+                        self.message_user(
+                            request,
+                            f"专业 {subject.subject_name} 总招生名额已从 {current_total} 更新为 {import_total}，"
+                            f"同步调整了 {updated} 名学生的候补状态",
+                            level='success'
+                        )
+                    else:
+                        self.message_user(
+                            request,
+                            f"专业 {subject.subject_name} 总招生名额已更新为 {import_total}",
+                            level='info'
+                        )
         
         # 保存导师名额数据
         success_count = 0
@@ -398,11 +473,11 @@ class ProfessorAdmin(admin.ModelAdmin):
             
             if not created:
                 if import_mode == 'incremental':
-                    # 增量模式：在原有基础上增加
+                    # 增量模式：在原有基础上增加（包括剩余名额）
                     quota_obj.beijing_quota += bj_quota
                     quota_obj.yantai_quota += yt_quota
-                    quota_obj.beijing_remaining_quota += bj_quota
-                    quota_obj.yantai_remaining_quota += yt_quota
+                    quota_obj.beijing_remaining_quota += bj_quota  # 剩余名额也要追加
+                    quota_obj.yantai_remaining_quota += yt_quota  # 剩余名额也要追加
                 else:
                     # 全量模式：直接覆盖
                     quota_obj.beijing_quota = bj_quota

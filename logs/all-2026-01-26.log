@@ -554,3 +554,26 @@ django.urls.exceptions.NoReverseMatch: Reverse for 'Professor_Student_Manage_pro
 [2026-01-26 08:35:27,313] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
 [2026-01-26 08:35:33,193] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Enrollment_Manage/admin.py changed, reloading.
 [2026-01-26 08:35:33,795] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2026-01-26 08:36:47,638] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Enrollment_Manage/subject/10/adjust-quota/ HTTP/1.1" 200 6558
+[2026-01-26 08:36:58,745] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Enrollment_Manage/subject/10/adjust-quota/ HTTP/1.1" 302 0
+[2026-01-26 08:37:01,640] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Enrollment_Manage/subject/ HTTP/1.1" 200 30044
+[2026-01-26 08:37:01,671] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/quota_modal.css HTTP/1.1" 304 0
+[2026-01-26 08:37:01,671] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/quota_modal.js HTTP/1.1" 304 0
+[2026-01-26 08:37:02,123] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2026-01-26 08:38:09,436] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Enrollment_Manage/subject/ HTTP/1.1" 200 29677
+[2026-01-26 08:38:09,941] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2026-01-26 08:39:05,856] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/wxcloudrun/urls.py changed, reloading.
+[2026-01-26 08:39:06,412] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2026-01-26 08:40:30,733] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/wxcloudrun/urls.py changed, reloading.
+[2026-01-26 08:40:31,330] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2026-01-26 08:40:35,229] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Enrollment_Manage/subject/ HTTP/1.1" 200 29723
+[2026-01-26 08:40:35,260] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/quota_modal.css HTTP/1.1" 304 0
+[2026-01-26 08:40:35,263] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/quota_modal.js HTTP/1.1" 304 0
+[2026-01-26 08:40:35,757] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2026-01-26 08:40:39,267] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/ HTTP/1.1" 200 12678
+[2026-01-26 08:40:52,954] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/wxcloudrun/urls.py changed, reloading.
+[2026-01-26 08:40:53,613] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2026-01-26 08:41:06,373] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/wxcloudrun/urls.py changed, reloading.
+[2026-01-26 08:41:07,026] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2026-01-26 08:41:10,056] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/ HTTP/1.1" 200 12714
+[2026-01-26 08:41:10,753] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/ HTTP/1.1" 200 12714

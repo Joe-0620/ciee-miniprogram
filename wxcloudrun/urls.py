@@ -24,6 +24,11 @@ from django.conf.urls.static import static # 添加本行
 from django.conf import settings # 添加本行
 from .views import index
 
+# 自定义 Django Admin 标题
+admin.site.site_header = '中国农业大学信电研究生复试互选管理系统'  # 左上角标题
+admin.site.site_title = 'CIEE复试互选管理系统'  # 浏览器标签页标题
+admin.site.index_title = 'CIEE复试互选系统管理'  # 首页标题
+
 urlpatterns = [
     path('', index, name='index'),
     path('admin/', admin.site.urls),

@@ -76,16 +76,20 @@ def validate_and_sync_admission_quota(sender, instance, **kwargs):
         if old_quota == new_quota:
             return
         
-        # 计算该专业所有导师的名额总和
+        # 计算该专业所有导师的名额总和（排除测试账号）
         if instance.subject_type in [0, 1]:  # 硕士专业
             total_assigned = ProfessorMasterQuota.objects.filter(
                 subject=instance
+            ).exclude(
+                professor__teacher_identity_id__startswith='csds'
             ).aggregate(
                 total=models.Sum(models.F('beijing_quota') + models.F('yantai_quota'))
             )['total'] or 0
         else:  # 博士专业
             total_assigned = ProfessorDoctorQuota.objects.filter(
                 subject=instance
+            ).exclude(
+                professor__teacher_identity_id__startswith='csds'
             ).aggregate(total=models.Sum('total_quota'))['total'] or 0
         
         # 如果减少名额，验证不能少于已分配的导师名额

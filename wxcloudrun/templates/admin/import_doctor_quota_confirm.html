@@ -207,6 +207,77 @@
     .btn-cancel:hover {
         background: #d0d0d0;
     }
+    
+    /* 进度条样式 */
+    .progress-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 9999;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .progress-overlay.active {
+        display: flex;
+    }
+    
+    .progress-container {
+        background: white;
+        border-radius: 12px;
+        padding: 40px;
+        max-width: 500px;
+        width: 90%;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    }
+    
+    .progress-title {
+        font-size: 20px;
+        font-weight: 600;
+        color: #333;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    
+    .progress-info {
+        text-align: center;
+        color: #666;
+        font-size: 14px;
+        margin-bottom: 20px;
+    }
+    
+    .progress-bar-wrapper {
+        width: 100%;
+        height: 30px;
+        background: #f0f0f0;
+        border-radius: 15px;
+        overflow: hidden;
+        margin-bottom: 15px;
+        position: relative;
+    }
+    
+    .progress-bar {
+        height: 100%;
+        background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        border-radius: 15px;
+        transition: width 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 600;
+        font-size: 14px;
+    }
+    
+    .progress-detail {
+        text-align: center;
+        color: #888;
+        font-size: 13px;
+    }
 </style>
 {% endblock %}
 
@@ -347,13 +418,70 @@
         </div>
         
         <div class="button-group">
-            <a href="{% url 'admin:Professor_Student_Manage_professor_import_doctor_quota' %}" class="btn btn-cancel">
+            <a href="{% url 'admin:import_doctor_quota' %}" class="btn btn-cancel">
                 ← 取消导入
             </a>
-            <button type="submit" class="btn btn-confirm">
+            <button type="submit" class="btn btn-confirm" id="confirmBtn">
                 ✔️ 确认导入
             </button>
         </div>
     </form>
 </div>
+
+<!-- 进度条遮罩层 -->
+<div id="progressOverlay" class="progress-overlay">
+    <div class="progress-container">
+        <div class="progress-title">💾 正在写入数据...</div>
+        <div class="progress-info" id="progressInfo">正在保存导师名额...</div>
+        <div class="progress-bar-wrapper">
+            <div class="progress-bar" id="progressBar" style="width: 0%;">0%</div>
+        </div>
+        <div class="progress-detail" id="progressDetail">正在更新数据库...</div>
+    </div>
+</div>
+
+<script>
+document.getElementById('confirmForm').addEventListener('submit', function(e) {
+    const overlay = document.getElementById('progressOverlay');
+    const progressBar = document.getElementById('progressBar');
+    const progressInfo = document.getElementById('progressInfo');
+    const progressDetail = document.getElementById('progressDetail');
+    const confirmBtn = document.getElementById('confirmBtn');
+    
+    // 禁用按钮
+    confirmBtn.disabled = true;
+    confirmBtn.textContent = '正在处理...';
+    
+    // 显示进度条
+    overlay.classList.add('active');
+    
+    // 获取导入数据的数量
+    const importDataCount = {{ import_data|length }};
+    
+    // 模拟写入进度
+    let progress = 0;
+    progressInfo.textContent = `正在保存 ${importDataCount} 条名额记录...`;
+    
+    const progressInterval = setInterval(function() {
+        progress += Math.random() * 8;
+        if (progress > 90) {
+            progress = 90; // 停在90%，等待服务器完成
+            clearInterval(progressInterval);
+        }
+        
+        progressBar.style.width = progress + '%';
+        progressBar.textContent = Math.floor(progress) + '%';
+        
+        if (progress < 30) {
+            progressDetail.textContent = '正在更新导师名额数据...';
+        } else if (progress < 60) {
+            progressDetail.textContent = '正在更新专业总招生名额...';
+        } else if (progress < 90) {
+            progressDetail.textContent = '正在同步学生候补状态...';
+        }
+    }, 300);
+    
+    // 表单正常提交
+});
+</script>
 {% endblock %}

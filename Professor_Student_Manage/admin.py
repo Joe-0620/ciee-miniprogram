@@ -751,12 +751,22 @@ class ProfessorAdmin(admin.ModelAdmin):
         处理博士名额导入
         conflict_action: 'replace' 覆盖，'add' 增加
         """
+        from collections import defaultdict
+        from Enrollment_Manage.models import sync_student_alternate_status
+        
         success_count = 0
+        
+        # 按专业汇总导入的名额
+        subject_totals = defaultdict(int)
         
         for item in import_data:
             professor = Professor.objects.get(id=item['professor_id'])
             subject = Subject.objects.get(id=item['subject_id'])
             quota = item['quota']
+            
+            # 跳过测试账号
+            if item.get('teacher_identity_id', '').startswith('csds'):
+                continue
             
             quota_obj, created = ProfessorDoctorQuota.objects.get_or_create(
                 professor=professor,
@@ -783,20 +793,64 @@ class ProfessorAdmin(admin.ModelAdmin):
                 quota_obj.save()
             
             success_count += 1
+            subject_totals[subject.id] += quota
+        
+        # 更新专业总招生名额并同步候补状态（仅当导师名额总和超过专业总招生名额时）
+        for subject_id, allocated_total in subject_totals.items():
+            subject = Subject.objects.get(id=subject_id)
+            old_quota = subject.total_admission_quota or 0
+            
+            # 计算该专业所有导师的总名额（排除测试账号）
+            all_quotas = ProfessorDoctorQuota.objects.filter(subject=subject).exclude(
+                professor__teacher_identity_id__startswith='csds'
+            )
+            new_total_quota = all_quotas.aggregate(total=Sum('total_quota'))['total'] or 0
+            
+            # 只有当导师名额总和超过专业总招生名额时，才更新总招生名额
+            if new_total_quota > old_quota:
+                # 更新专业总招生名额
+                subject.total_admission_quota = new_total_quota
+                subject.save()
+                
+                # 同步候补状态
+                updated_count = sync_student_alternate_status(subject)
+                
+                self.message_user(
+                    request,
+                    f"✅ 专业 {subject.subject_name} 总招生名额已从 {old_quota} 自动增加为 {new_total_quota}，"
+                    f"同步调整了 {updated_count} 名学生的候补状态",
+                    level='success'
+                )
+            elif new_total_quota < old_quota:
+                # 导师名额总和小于专业总招生名额，不修改专业总招生名额
+                self.message_user(
+                    request,
+                    f"📊 专业 {subject.subject_name} 导师名额总和为 {new_total_quota} 人，"
+                    f"专业总招生名额保持为 {old_quota} 人（未调整）",
+                    level='info'
+                )
+            else:
+                # 名额相等，无需调整
+                self.message_user(
+                    request,
+                    f"✓ 专业 {subject.subject_name} 导师名额总和为 {new_total_quota} 人，"
+                    f"与专业总招生名额一致",
+                    level='success'
+                )
         
         # 显示导入结果
         action_text = "增加" if conflict_action == 'add' else "覆盖"
         self.message_user(request, f"[博士名额部分导入] 成功处理 {success_count} 条记录（{action_text}模式）", level='success')
         
         # 按专业统计并显示
-        from collections import defaultdict
         subject_stats = defaultdict(int)
         for item in import_data:
-            subject_stats[item['subject_name']] += item['quota']
+            if not item.get('teacher_identity_id', '').startswith('csds'):
+                subject_stats[item['subject_name']] += item['quota']
         
         for subject_name in sorted(subject_stats.keys()):
             total = subject_stats[subject_name]
-            self.message_user(request, f"📊 {subject_name}: {total} 人", level='success')
+            self.message_user(request, f"📊 {subject_name}: 导入名额 {total} 人", level='success')
 
     def get_readonly_fields(self, request, obj=None):
         readonly_fields = self.readonly_fields

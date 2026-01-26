@@ -577,3 +577,135 @@ django.urls.exceptions.NoReverseMatch: Reverse for 'Professor_Student_Manage_pro
 [2026-01-26 08:41:07,026] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
 [2026-01-26 08:41:10,056] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/ HTTP/1.1" 200 12714
 [2026-01-26 08:41:10,753] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/ HTTP/1.1" 200 12714
+[2026-01-26 08:42:11,488] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Enrollment_Manage/subject/ HTTP/1.1" 200 29727
+[2026-01-26 08:42:11,534] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/quota_modal.css HTTP/1.1" 304 0
+[2026-01-26 08:42:11,535] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/quota_modal.js HTTP/1.1" 304 0
+[2026-01-26 08:42:11,988] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2026-01-26 08:43:19,306] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professordoctorquota/ HTTP/1.1" 200 44096
+[2026-01-26 08:43:19,808] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2026-01-26 08:43:37,085] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Professor_Student_Manage/professordoctorquota/ HTTP/1.1" 200 18398
+[2026-01-26 08:43:37,105] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/cancel.js HTTP/1.1" 304 0
+[2026-01-26 08:43:50,857] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Professor_Student_Manage/professordoctorquota/ HTTP/1.1" 302 0
+[2026-01-26 08:43:51,863] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professordoctorquota/ HTTP/1.1" 200 27698
+[2026-01-26 08:43:52,398] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2026-01-26 08:44:58,287] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 67721
+[2026-01-26 08:44:58,753] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2026-01-26 08:46:41,957] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 67721
+[2026-01-26 08:46:42,414] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2026-01-26 08:46:45,074] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/?q=%E9%A9%AC%E9%9F%AB%E9%9F%AC HTTP/1.1" 200 15403
+[2026-01-26 08:46:45,576] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2026-01-26 08:50:04,317] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Enrollment_Manage/subject/ HTTP/1.1" 200 22836
+[2026-01-26 08:50:04,354] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/quota_modal.js HTTP/1.1" 304 0
+[2026-01-26 08:50:04,356] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/quota_modal.css HTTP/1.1" 304 0
+[2026-01-26 08:50:04,781] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2026-01-26 08:50:17,905] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Enrollment_Manage/subject/ HTTP/1.1" 200 22836
+[2026-01-26 08:50:18,388] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2026-01-26 08:50:22,658] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 67721
+[2026-01-26 08:50:23,150] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2026-01-26 08:50:22,861] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/import-doctor-quota/ HTTP/1.1" 200 6933
+[2026-01-26 08:50:43,180] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Professor_Student_Manage/professor/import-doctor-quota/ HTTP/1.1" 302 0
+[2026-01-26 08:50:44,066] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 71754
+[2026-01-26 08:50:44,533] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2026-01-26 08:52:35,718] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/import-doctor-quota/ HTTP/1.1" 200 6933
+[2026-01-26 08:52:55,305] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Professor_Student_Manage/professor/import-doctor-quota/ HTTP/1.1" 302 0
+[2026-01-26 08:52:56,317] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 71754
+[2026-01-26 08:52:56,832] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2026-01-26 08:53:20,791] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/wxcloudrun/urls.py changed, reloading.
+[2026-01-26 08:53:21,347] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2026-01-26 08:54:36,668] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 67721
+[2026-01-26 08:54:37,135] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2026-01-26 08:54:39,426] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/import-doctor-quota/ HTTP/1.1" 200 6933
+[2026-01-26 08:56:57,751] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 67721
+[2026-01-26 08:57:00,549] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/import-doctor-quota/ HTTP/1.1" 200 12485
+[2026-01-26 08:57:18,470] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Professor_Student_Manage/professor/import-doctor-quota/ HTTP/1.1" 200 46526
+[2026-01-26 08:57:20,014] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 67721
+[2026-01-26 08:57:20,476] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2026-01-26 08:57:29,028] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professordoctorquota/ HTTP/1.1" 200 27545
+[2026-01-26 08:57:29,526] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2026-01-26 08:57:43,991] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Select_Information/reviewrecord/ HTTP/1.1" 200 64484
+[2026-01-26 08:57:44,494] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2026-01-26 08:57:49,142] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Enrollment_Manage/subject/ HTTP/1.1" 200 22836
+[2026-01-26 08:57:49,172] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/quota_modal.css HTTP/1.1" 304 0
+[2026-01-26 08:57:49,173] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/quota_modal.js HTTP/1.1" 304 0
+[2026-01-26 08:57:49,681] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2026-01-26 08:59:17,689] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Enrollment_Manage/subject/ HTTP/1.1" 200 22836
+[2026-01-26 08:59:17,077] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2026-01-26 08:59:27,919] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 67721
+[2026-01-26 08:59:28,397] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2026-01-26 08:59:30,111] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/import-doctor-quota/ HTTP/1.1" 200 11348
+[2026-01-26 08:59:49,054] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Professor_Student_Manage/professor/import-doctor-quota/ HTTP/1.1" 200 46526
+[2026-01-26 09:04:51,904] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/import-doctor-quota/ HTTP/1.1" 200 11348
+[2026-01-26 09:04:55,401] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/ HTTP/1.1" 200 12978
+[2026-01-26 09:04:57,360] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/admin.py changed, reloading.
+[2026-01-26 09:04:57,955] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2026-01-26 09:05:19,461] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/admin.py changed, reloading.
+[2026-01-26 09:05:20,077] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2026-01-26 09:05:22,528] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 67721
+[2026-01-26 09:05:23,053] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2026-01-26 09:05:23,109] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/import-doctor-quota/ HTTP/1.1" 200 11348
+[2026-01-26 09:05:41,347] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Professor_Student_Manage/professor/import-doctor-quota/ HTTP/1.1" 200 46526
+[2026-01-26 09:06:37,088] [log.py:224] [log:log_response] [ERROR]- Internal Server Error: /admin/Professor_Student_Manage/professor/import-doctor-quota/
+Traceback (most recent call last):
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/exception.py", line 47, in inner
+    response = get_response(request)
+  File "/root/.local/lib/python3.8/site-packages/django/core/handlers/base.py", line 181, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/utils/decorators.py", line 130, in _wrapped_view
+    response = view_func(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/views/decorators/cache.py", line 44, in _wrapped_view_func
+    response = view_func(request, *args, **kwargs)
+  File "/root/.local/lib/python3.8/site-packages/django/contrib/admin/sites.py", line 232, in inner
+    return view(request, *args, **kwargs)
+  File "/app/Professor_Student_Manage/admin.py", line 291, in import_doctor_quota_view
+    self._process_doctor_quota_import(request, import_data, conflict_action)
+  File "/app/Professor_Student_Manage/admin.py", line 812, in _process_doctor_quota_import
+    subject.save()
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/base.py", line 726, in save
+    self.save_base(using=using, force_insert=force_insert,
+  File "/root/.local/lib/python3.8/site-packages/django/db/models/base.py", line 750, in save_base
+    pre_save.send(
+  File "/root/.local/lib/python3.8/site-packages/django/dispatch/dispatcher.py", line 180, in send
+    return [
+  File "/root/.local/lib/python3.8/site-packages/django/dispatch/dispatcher.py", line 181, in <listcomp>
+    (receiver, receiver(signal=self, sender=sender, **named))
+  File "/app/Enrollment_Manage/models.py", line 93, in validate_and_sync_admission_quota
+    raise ValidationError(
+django.core.exceptions.ValidationError: ['专业 智能科学与技术 的总招生名额不能少于已分配的导师名额总和(6人）。\n当前设置: 5人，需要至少: 6人。']
+[2026-01-26 09:06:37,096] [basehttp.py:161] [basehttp:log_message] [ERROR]- "POST /admin/Professor_Student_Manage/professor/import-doctor-quota/ HTTP/1.1" 500 154429
+[2026-01-26 09:12:04,709] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Enrollment_Manage/models.py changed, reloading.
+[2026-01-26 09:12:05,297] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2026-01-26 09:13:07,962] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Enrollment_Manage/models.py changed, reloading.
+[2026-01-26 09:13:08,576] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2026-01-26 09:13:42,131] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/import-doctor-quota/ HTTP/1.1" 200 11575
+[2026-01-26 09:13:45,862] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage HTTP/1.1" 301 0
+[2026-01-26 09:13:46,376] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/ HTTP/1.1" 200 5069
+[2026-01-26 09:13:48,688] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/ HTTP/1.1" 200 12993
+[2026-01-26 09:13:50,454] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 67721
+[2026-01-26 09:13:49,772] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2026-01-26 09:13:51,079] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/import-doctor-quota/ HTTP/1.1" 200 11348
+[2026-01-26 09:14:52,732] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Professor_Student_Manage/professor/import-doctor-quota/ HTTP/1.1" 302 0
+[2026-01-26 09:14:53,805] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 68461
+[2026-01-26 09:14:54,310] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2026-01-26 09:15:48,680] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Enrollment_Manage/subject/ HTTP/1.1" 200 31472
+[2026-01-26 09:15:48,714] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/css/quota_modal.css HTTP/1.1" 304 0
+[2026-01-26 09:15:48,715] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /static/admin/js/quota_modal.js HTTP/1.1" 304 0
+[2026-01-26 09:15:49,145] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2026-01-26 09:15:52,740] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Enrollment_Manage/subject/13/adjust-quota/ HTTP/1.1" 200 6618
+[2026-01-26 09:15:57,205] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Enrollment_Manage/subject/13/adjust-quota/ HTTP/1.1" 302 0
+[2026-01-26 09:16:00,035] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Enrollment_Manage/subject/ HTTP/1.1" 200 32367
+[2026-01-26 09:16:00,547] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2026-01-26 09:16:43,549] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Enrollment_Manage/subject/ HTTP/1.1" 200 31473
+[2026-01-26 09:16:44,073] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2026-01-26 09:20:49,678] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/ HTTP/1.1" 200 67721
+[2026-01-26 09:20:50,179] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2026-01-26 09:20:53,340] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/?q=%E4%BD%8D HTTP/1.1" 200 14986
+[2026-01-26 09:20:53,818] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2026-01-26 09:20:58,441] [basehttp.py:161] [basehttp:log_message] [INFO]- "POST /admin/Professor_Student_Manage/professor/?q=%E4%BD%8D HTTP/1.1" 302 0
+[2026-01-26 09:20:59,205] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/professor/?q=%E4%BD%8D HTTP/1.1" 200 15143
+[2026-01-26 09:20:59,710] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2026-01-26 09:23:14,804] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/admin.py changed, reloading.
+[2026-01-26 09:23:15,390] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader
+[2026-01-26 09:25:01,025] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/Professor_Student_Manage/student/ HTTP/1.1" 200 102014
+[2026-01-26 09:25:01,557] [basehttp.py:161] [basehttp:log_message] [INFO]- "GET /admin/jsi18n/ HTTP/1.1" 200 8398
+[2026-01-26 09:25:33,851] [autoreload.py:251] [autoreload:trigger_reload] [INFO]- /app/Professor_Student_Manage/admin.py changed, reloading.
+[2026-01-26 09:25:33,331] [autoreload.py:637] [autoreload:run_with_reloader] [INFO]- Watching for file changes with StatReloader

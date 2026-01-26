@@ -203,9 +203,15 @@ class SelectInformationView(APIView):
                     has_previous = students_page.has_previous()
                     
                 else:
-                    # 每个专业显示 page_size 个学生
+                    # 每个专业按分页显示 page_size 个学生
                     students_list = []
+                    offset = (page - 1) * page_size
+                    
+                    # 检查是否还有下一页的数据
+                    has_more_data = False
+                    
                     for subject in enroll_subjects:
+                        # 获取该专业的学生，跳过前面的页，取当前页的数据
                         subject_students = Student.objects.select_related(
                             'subject'
                         ).filter(
@@ -213,18 +219,29 @@ class SelectInformationView(APIView):
                             is_alternate=False,
                             is_giveup=False,
                             subject=subject
-                        ).order_by('final_rank', 'id')[:page_size]
+                        ).order_by('final_rank', 'id')[offset:offset + page_size]
                         
                         students_list.extend(subject_students)
+                        
+                        # 检查该专业是否还有更多数据
+                        next_page_check = Student.objects.filter(
+                            is_selected=False,
+                            is_alternate=False,
+                            is_giveup=False,
+                            subject=subject
+                        )[offset + page_size:offset + page_size + 1]
+                        
+                        if next_page_check.exists():
+                            has_more_data = True
                     
                     # 按总排名排序
                     students_list.sort(key=lambda x: (x.final_rank or 0, x.id))
                     
                     student_serializer = StudentSerializer(students_list, many=True)
                     total_count = len(students_list)
-                    total_pages = 1
-                    has_next = False
-                    has_previous = False
+                    total_pages = 999  # 使用一个大数字，实际由has_next控制
+                    has_next = has_more_data
+                    has_previous = page > 1
 
                 # 获取导师的互选记录
                 student_choices = StudentProfessorChoice.objects.filter(professor=professor)

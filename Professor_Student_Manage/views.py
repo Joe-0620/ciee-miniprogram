@@ -203,101 +203,132 @@ class GetStudentResumeListView(APIView):
 # 用户登录验证试图，继承自 APIView，这个类是一个自定义的基于类的视图
 class UserLoginView(APIView):
     def post(self, request):
-        usertype = request.data.get('usertype')
-        code = request.data.get('code')  # 从请求数据中获取微信的 code
-        device_id = request.data.get('device_id')  # 设备唯一标识符（可选）
-        del request.data['usertype']
+        try:
+            usertype = request.data.get('usertype')
+            code = request.data.get('code')  # 从请求数据中获取微信的 code
+            device_id = request.data.get('device_id')  # 设备唯一标识符（可选）
+            
+            # 创建一个副本用于序列化器验证，避免修改原始数据
+            login_data = {
+                'username': request.data.get('username'),
+                'password': request.data.get('password')
+            }
 
-        serializer = UserLoginSerializer(data=request.data)
-        if serializer.is_valid():
-            username = serializer.validated_data['username']
-            password = serializer.validated_data['password']
+            serializer = UserLoginSerializer(data=login_data)
+            if serializer.is_valid():
+                username = serializer.validated_data['username']
+                password = serializer.validated_data['password']
 
-            user = authenticate(username=username, password=password)
+                user = authenticate(username=username, password=password)
 
-            if user:
-                # 如果是学生并且已放弃拟录取 → 禁止登录
-                if usertype == 'student' and hasattr(user, 'student'):
-                    if user.student.is_giveup:
-                        return Response(
-                            {"error": "您已放弃拟录取，无法再次登录，请联系招生老师"},
-                            status=status.HTTP_403_FORBIDDEN
-                        )
-
-                # 删除该用户的所有旧 Token
-                Token.objects.filter(user=user).delete()
-
-                # 生成一个新的 Token
-                token = Token.objects.create(user=user)
-
-                # 如果设备 ID 存在，将其与 Token 关联（可选）
-                if device_id:
-                    token.device_id = device_id
-                    token.save()
-
-                if code:
-                    # 使用微信的 API 将 code 换取 OpenID
-                    url = 'https://api.weixin.qq.com/sns/jscode2session'
-                    params = {
-                        'appid': 'wxa67ae78c4f1f6275',  # 你的微信小程序的 appid
-                        'secret': '7241b1950145a193f15b3584d50f3989',  # 你的微信小程序的 app secret
-                        'js_code': code,
-                        'grant_type': 'authorization_code'
-                    }
-                    res = requests.get(url, params=params)
-                    data = res.json()
-                    print(data)
-                    session_key = data.get('session_key')
-                    openid = data.get('openid')
-
-                    if openid:
-                        # 查找或创建一个与 OpenID 对应的 WeChatAccount 对象
-                        wechat_account, created = WeChatAccount.objects.get_or_create(
-                            openid=openid,
-                            defaults={'user': user, 'session_key': session_key})
-
-                        # 检查 WeChatAccount 的 user 是否存在
-                        if not User.objects.filter(id=wechat_account.user_id).exists():
-                            # 如果 user 不存在，删除该 WeChatAccount 记录
-                            wechat_account.delete()
-                            # 重新创建 WeChatAccount 记录
-                            wechat_account = WeChatAccount.objects.create(
-                                openid=openid,
-                                user=user,
-                                session_key=session_key
+                if user:
+                    # 如果是学生并且已放弃拟录取 → 禁止登录
+                    if usertype == 'student' and hasattr(user, 'student'):
+                        if user.student.is_giveup:
+                            return Response(
+                                {"error": "您已放弃拟录取,无法再次登录，请联系招生老师"},
+                                status=status.HTTP_403_FORBIDDEN
                             )
 
-                        # 如果 WeChatAccount 已经绑定了其他用户，拒绝登录
-                        if wechat_account.user != user:
-                            # 返回已绑定用户的用户名
-                            bound_username = wechat_account.user.username
-                            return Response({
-                                'error': '该微信账号已绑定其他用户: ' + bound_username,
-                                'bound_username': bound_username  # 返回已绑定用户的用户名
-                            }, status=status.HTTP_400_BAD_REQUEST)
+                    # 先进行微信账号绑定检查（如果提供了code）
+                    if code:
+                        # 使用微信的 API 将 code 换取 OpenID
+                        url = 'https://api.weixin.qq.com/sns/jscode2session'
+                        params = {
+                            'appid': 'wxa67ae78c4f1f6275',  # 你的微信小程序的 appid
+                            'secret': '7241b1950145a193f15b3584d50f3989',  # 你的微信小程序的 app secret
+                            'js_code': code,
+                            'grant_type': 'authorization_code'
+                        }
+                        res = requests.get(url, params=params)
+                        data = res.json()
+                        print(data)
+                        session_key = data.get('session_key')
+                        openid = data.get('openid')
 
-                        # 更新 WeChatAccount 的 session_key
-                        wechat_account.session_key = session_key
-                        wechat_account.save()
+                        if openid:
+                            # 检查该用户是否已经绑定了其他微信账号
+                            existing_wechat = WeChatAccount.objects.filter(user=user).exclude(openid=openid).first()
+                            if existing_wechat:
+                                return Response({
+                                    'error': '该账号已绑定至其他设备，请在原设备上退出后重试'
+                                }, status=status.HTTP_400_BAD_REQUEST)
+                            
+                            # 查找或创建一个与 OpenID 对应的 WeChatAccount 对象
+                            wechat_account, created = WeChatAccount.objects.get_or_create(
+                                openid=openid,
+                                defaults={'user': user, 'session_key': session_key})
 
-                if usertype == 'student' and hasattr(user, 'student'):
-                    user_information = user.student
-                    return Response({'token': token.key, 
-                                     'user_information': StudentSerializer(user_information).data,
-                                     'user_id': user.id}, status=status.HTTP_200_OK)
-                elif usertype == 'professor' and hasattr(user, 'professor'):
-                    user_information = user.professor
-                    return Response({'token': token.key, 
-                                     'user_information': ProfessorSerializer(user_information).data,
-                                     'user_id': user.id})
+                            # 检查 WeChatAccount 的 user 是否存在
+                            if not User.objects.filter(id=wechat_account.user_id).exists():
+                                # 如果 user 不存在，删除该 WeChatAccount 记录
+                                wechat_account.delete()
+                                # 重新创建 WeChatAccount 记录
+                                wechat_account = WeChatAccount.objects.create(
+                                    openid=openid,
+                                    user=user,
+                                    session_key=session_key
+                                )
+
+                            # ⚠️ 如果 WeChatAccount 已经绑定了其他用户，拒绝登录（不删除原用户Token）
+                            if wechat_account.user != user:
+                                # 返回已绑定用户的用户名
+                                bound_username = wechat_account.user.username
+                                return Response({
+                                    'error': '该微信账号已绑定其他用户: ' + bound_username,
+                                    'bound_username': bound_username  # 返回已绑定用户的用户名
+                                }, status=status.HTTP_400_BAD_REQUEST)
+
+                            # 更新 WeChatAccount 的 session_key
+                            wechat_account.session_key = session_key
+                            wechat_account.save()
+
+                    # ✅ 所有验证通过后，才删除旧Token并生成新Token
+                    # 删除该用户的所有旧 Token
+                    Token.objects.filter(user=user).delete()
+
+                    # 生成一个新的 Token
+                    token = Token.objects.create(user=user)
+
+                    # 如果设备 ID 存在，将其与 Token 关联（可选）
+                    if device_id:
+                        token.device_id = device_id
+                        token.save()
+
+                    if usertype == 'student' and hasattr(user, 'student'):
+                        user_information = user.student
+                        return Response({'token': token.key, 
+                                         'user_information': StudentSerializer(user_information).data,
+                                         'user_id': user.id}, status=status.HTTP_200_OK)
+                    elif usertype == 'professor' and hasattr(user, 'professor'):
+                        user_information = user.professor
+                        return Response({'token': token.key, 
+                                         'user_information': ProfessorSerializer(user_information).data,
+                                         'user_id': user.id})
+                    else:
+                        return Response({'error': 'Invalid usertype'}, status=status.HTTP_401_UNAUTHORIZED)
                 else:
-                    return Response({'error': 'Invalid usertype'}, status=status.HTTP_401_UNAUTHORIZED)
+                    return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
             else:
-                return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
-        else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
+                # 序列化器验证失败，格式化错误信息
+                try:
+                    error_messages = []
+                    for field, errors in serializer.errors.items():
+                        for error in errors:
+                            error_messages.append(f"{field}: {str(error)}")
+                    error_text = '; '.join(error_messages) if error_messages else '请求参数错误'
+                except Exception as e:
+                    error_text = '登录参数格式错误'
+                    print(f"Error formatting serializer errors: {e}")
+                return Response({'error': error_text}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            # 捕获所有未预期的异常
+            print(f"Login error: {str(e)}")
+            import traceback
+            traceback.print_exc()
+            return Response({'error': '登录服务异常，请稍后重试'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+        
 # 修改密码
 class ChangePasswordView(APIView):
     permission_classes = [IsAuthenticated]  # 需要登录才能修改密码

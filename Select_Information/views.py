@@ -169,35 +169,62 @@ class SelectInformationView(APIView):
                 # 查询所有专业（去重，仅为 subject__in 查询）
                 enroll_subjects = Subject.objects.filter(id__in=all_subject_ids)
 
-                # 构建学生查询，使用 select_related 优化
-                students_query = Student.objects.select_related(
-                    'subject'
-                ).filter(
-                    is_selected=False,
-                    is_alternate=False,
-                    is_giveup=False,
-                    subject__in=enroll_subjects
-                ).order_by('final_rank', 'id')  # 按总排名和ID排序
-                
-                # 专业筛选
-                if subject_id:
-                    students_query = students_query.filter(subject_id=subject_id)
-                
-                # 搜索功能：根据学生姓名、准考证号等进行模糊搜索
-                if search_keyword:
-                    students_query = students_query.filter(
-                        Q(name__icontains=search_keyword) |
-                        Q(candidate_number__icontains=search_keyword)
-                    )
-                
-                # 分页处理
-                paginator = Paginator(students_query, page_size)
-                try:
-                    students_page = paginator.page(page)
-                except:
-                    students_page = paginator.page(1)
-                
-                student_serializer = StudentSerializer(students_page, many=True)
+                # 如果指定了专业ID或搜索关键词，使用传统分页
+                if subject_id or search_keyword:
+                    students_query = Student.objects.select_related(
+                        'subject'
+                    ).filter(
+                        is_selected=False,
+                        is_alternate=False,
+                        is_giveup=False,
+                        subject__in=enroll_subjects
+                    ).order_by('final_rank', 'id')
+                    
+                    if subject_id:
+                        students_query = students_query.filter(subject_id=subject_id)
+                    
+                    if search_keyword:
+                        students_query = students_query.filter(
+                            Q(name__icontains=search_keyword) |
+                            Q(candidate_number__icontains=search_keyword)
+                        )
+                    
+                    # 分页处理
+                    paginator = Paginator(students_query, page_size)
+                    try:
+                        students_page = paginator.page(page)
+                    except:
+                        students_page = paginator.page(1)
+                    
+                    student_serializer = StudentSerializer(students_page, many=True)
+                    total_count = paginator.count
+                    total_pages = paginator.num_pages
+                    has_next = students_page.has_next()
+                    has_previous = students_page.has_previous()
+                    
+                else:
+                    # 每个专业显示 page_size 个学生
+                    students_list = []
+                    for subject in enroll_subjects:
+                        subject_students = Student.objects.select_related(
+                            'subject'
+                        ).filter(
+                            is_selected=False,
+                            is_alternate=False,
+                            is_giveup=False,
+                            subject=subject
+                        ).order_by('final_rank', 'id')[:page_size]
+                        
+                        students_list.extend(subject_students)
+                    
+                    # 按总排名排序
+                    students_list.sort(key=lambda x: (x.final_rank or 0, x.id))
+                    
+                    student_serializer = StudentSerializer(students_list, many=True)
+                    total_count = len(students_list)
+                    total_pages = 1
+                    has_next = False
+                    has_previous = False
 
                 # 获取导师的互选记录
                 student_choices = StudentProfessorChoice.objects.filter(professor=professor)
@@ -211,11 +238,11 @@ class SelectInformationView(APIView):
                     'student_choices': choice_serializer.data,
                     'students_without_professor': student_serializer.data,
                     'subjects': subject_data,  # 新增：专业列表供筛选
-                    'has_next': students_page.has_next(),
-                    'has_previous': students_page.has_previous(),
-                    'total_pages': paginator.num_pages,
+                    'has_next': has_next,
+                    'has_previous': has_previous,
+                    'total_pages': total_pages,
                     'current_page': page,
-                    'total_count': paginator.count
+                    'total_count': total_count
                 }, status=status.HTTP_200_OK)
             except Professor.DoesNotExist:
                 return Response({"message": "Professor object does not exist."}, status=status.HTTP_404_NOT_FOUND)

@@ -4,16 +4,62 @@
   <h1>{{ title }}</h1>
   <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">上传并导入</button>
+    
+    <div style="margin-bottom: 20px;">
+      <label><strong>选择导入类型：</strong></label><br>
+      {% for radio in form.import_type %}
+        {{ radio }}<br>
+      {% endfor %}
+    </div>
+    
+    <div style="margin-bottom: 20px;">
+      {{ form.file.label_tag }}
+      {{ form.file }}
+    </div>
+    
+    <div style="margin-bottom: 20px;">
+      {{ form.update_quota }}
+      <label for="{{ form.update_quota.id_for_label }}">{{ form.update_quota.label }}</label>
+    </div>
+    
+    <button type="submit" style="padding: 8px 16px; background-color: #417690; color: white; border: none; cursor: pointer;">上传并导入</button>
   </form>
-  <p>请确保 CSV 文件包含以下列：准考证号、姓名、学生类型、研究生类型、学习方式</p>
-  <p>示例：
-    <pre>
-准考证号,姓名,学生类型,研究生类型,学习方式
-1234567890,张三,1,2,全日制
-0987654321,李四,2,1,非全日制
-    </pre>
-  </p>
+  
+  <div style="margin-top: 30px; padding: 15px; background-color: #f8f8f8; border-left: 4px solid #417690;">
+    <h3 style="margin-top: 0;">导入说明：</h3>
+    
+    <h4>1. 博士生申请导入（支持XLSX格式）</h4>
+    <p>必需列：考生编号、考生姓名、报考专业代码、复核成绩（满分100分）、排名、备注、手机号</p>
+    <ul>
+      <li>系统会统计每个专业下"备注=选导师"的人数作为该专业的总招生人数</li>
+      <li>排名超过总招生人数的学生将被标记为候补，候补顺序=排名-总招生人数</li>
+      <li>账号名=考生编号，密码=手机号</li>
+      <li>学生类型=博士统考生，研究生类型=博士，学习方式=全日制</li>
+    </ul>
+    
+    <h4>2. 硕士统考生导入（支持CSV格式）</h4>
+    <p>必需列：专业代码、专业、考生编号、姓名、初试成绩、复试成绩、综合成绩、综合排名、研究生类型、学生类型、手机号、身份证号</p>
+    <p>示例：
+      <pre style="background-color: white; padding: 10px; overflow-x: auto;">
+专业代码,专业,考生编号,姓名,初试成绩,复试成绩,综合成绩,综合排名,研究生类型,学生类型,手机号,身份证号
+140500,智能科学与技术,1001961130811160,张三,85.5,90.2,87.8,1,2,2,13800138000,110101199001011234
+      </pre>
+    </p>
+    
+    <h4>3. 硕士推免生导入（支持CSV格式）</h4>
+    <p>格式与硕士统考生相同，后续会根据需求定制</p>
+  </div>
 </div>
+
+<style>
+  pre {
+    font-size: 12px;
+    line-height: 1.4;
+  }
+  h4 {
+    color: #417690;
+    margin-top: 15px;
+    margin-bottom: 8px;
+  }
+</style>
 {% endblock %}

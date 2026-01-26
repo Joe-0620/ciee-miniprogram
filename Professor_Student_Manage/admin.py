@@ -451,7 +451,23 @@ class ProfessorAdmin(admin.ModelAdmin):
 
 
 class ImportStudentForm(forms.Form):
-    csv_file = forms.FileField(label="选择 CSV 文件")
+    IMPORT_TYPE_CHOICES = [
+        ('doctor', '博士生申请导入'),
+        ('master_exam', '硕士统考生导入'),
+        ('master_recommend', '硕士推免生导入'),
+    ]
+    import_type = forms.ChoiceField(
+        label="导入类型",
+        choices=IMPORT_TYPE_CHOICES,
+        widget=forms.RadioSelect,
+        initial='doctor'
+    )
+    file = forms.FileField(label="选择文件（支持CSV或XLSX）")
+    update_quota = forms.BooleanField(
+        label="是否根据表格信息更新专业总招生人数",
+        required=False,
+        initial=True
+    )
 
 
 class CustomModelChoiceField(forms.ModelChoiceField):
@@ -705,99 +721,17 @@ class StudentAdmin(admin.ModelAdmin):
         if request.method == 'POST':
             form = ImportStudentForm(request.POST, request.FILES)
             if form.is_valid():
-                csv_file = request.FILES['csv_file']
-                try:
-                    # 读取 CSV 文件
-                    csv_file_wrapper = TextIOWrapper(csv_file, encoding='utf-8-sig')
-                    reader = csv.DictReader(csv_file_wrapper)
-
-                    # 检查列名是否正确
-                    required_columns = ["专业代码", "专业", "考生编号", "姓名", "初试成绩", "复试成绩",
-                                        "综合成绩", "综合排名", "研究生类型", "学生类型", "手机号", "身份证号"]
-                    if not all(column in reader.fieldnames for column in required_columns):
-                        self.message_user(
-                            request,
-                            "CSV 文件列名不正确，请确保包含：专业代码、专业、考生编号、姓名、初试成绩、复试成绩、综合成绩、综合排名、研究生类型、学生类型、手机号、身份证号",
-                            level='error'
-                        )
-                        return redirect('admin:Professor_Student_Manage_student_changelist')
-
-                    success_count = 0
-                    for row in reader:
-                        print(row)
-                        subject_number = str(row["专业代码"]).zfill(6)
-                        subject = Subject.objects.filter(subject_code=subject_number).first()
-                        if not subject:
-                            self.message_user(request, f"学科代码 {subject_number} 不存在，跳过", level='warning')
-                            continue
-
-                        candidate_number = str(row["考生编号"]).strip()
-                        name = row["姓名"].strip()
-                        # initial_exam_score = float(row["初试成绩"])
-                        secondary_exam_score = float(row["综合成绩"])
-                        final_rank = int(row["综合排名"])  # 综合排名需要转 int
-                        postgraduate_type = int(row["研究生类型"])
-                        student_type = int(row["学生类型"])
-                        phone_number = str(row["手机号"]).strip()
-                        identity_number = str(row["身份证号"]).strip()
-
-                        try:
-                            # 检查准考证号是否已存在
-                            if Student.objects.filter(candidate_number=candidate_number).exists():
-                                self.message_user(request, f"考生编号 {candidate_number} 已存在，跳过", level='warning')
-                                continue
-
-                            username = candidate_number
-                            if User.objects.filter(username=username).exists():
-                                self.message_user(request, f"用户名 {username} 已存在，跳过", level='warning')
-                                continue
-
-                            user = User.objects.create_user(
-                                username=username,
-                                password=phone_number  # 初始密码 = 手机号
-                            )
-
-                            # 判断是否候补
-                            total_quota = subject.total_admission_quota or 0
-                            if final_rank <= total_quota:
-                                is_alternate = False
-                                alternate_rank = None
-                            else:
-                                is_alternate = True
-                                alternate_rank = final_rank - total_quota
-
-                            # 创建 Student 对象
-                            student = Student(
-                                user_name=user,
-                                name=name,
-                                candidate_number=candidate_number,
-                                subject=subject,
-                                identify_number=identity_number,
-                                student_type=student_type,
-                                postgraduate_type=postgraduate_type,
-                                phone_number=phone_number,
-                                # initial_exam_score=initial_exam_score,
-                                secondary_exam_score=secondary_exam_score,
-                                final_rank=final_rank,
-                                is_alternate=is_alternate,
-                                alternate_rank=alternate_rank,
-                            )
-                            student.save()
-                            success_count += 1
-
-                        except ValueError as e:
-                            self.message_user(request, f"考生编号 {candidate_number} 的数据格式不正确: {str(e)}", level='warning')
-                            continue
-                        except Exception as e:
-                            self.message_user(request, f"创建学生 {candidate_number} 时出错: {str(e)}", level='error')
-                            continue
-
-                    self.message_user(request, f"成功创建 {success_count} 个学生账号")
-                    return redirect('admin:Professor_Student_Manage_student_changelist')
-
-                except Exception as e:
-                    self.message_user(request, f"解析 CSV 文件时出错: {str(e)}", level='error')
-                    return redirect('admin:Professor_Student_Manage_student_changelist')
+                import_type = form.cleaned_data['import_type']
+                file = request.FILES['file']
+                update_quota = form.cleaned_data.get('update_quota', True)
+                
+                # 根据导入类型调用不同的处理方法
+                if import_type == 'doctor':
+                    return self._import_doctor_students(request, file, update_quota)
+                elif import_type == 'master_exam':
+                    return self._import_master_exam_students(request, file, update_quota)
+                elif import_type == 'master_recommend':
+                    return self._import_master_recommend_students(request, file, update_quota)
         else:
             form = ImportStudentForm()
 
@@ -807,6 +741,251 @@ class StudentAdmin(admin.ModelAdmin):
             'title': '一键导入学生账号',
         }
         return render(request, 'admin/import_students.html', context)
+    
+    def _import_doctor_students(self, request, file, update_quota):
+        """
+        博士生申请导入
+        列：考生编号、考生姓名、报考专业代码、复试成绩、排名、备注、递补顺序、手机号
+        """
+        try:
+            import openpyxl
+            from collections import defaultdict
+            
+            # 读取xlsx文件
+            wb = openpyxl.load_workbook(file)
+            ws = wb.active
+            
+            # 读取表头
+            headers = [cell.value for cell in ws[1]]
+            
+            # 查找需要的列索引
+            try:
+                col_candidate_number = headers.index('考生编号') + 1
+                col_name = headers.index('考生姓名') + 1
+                col_subject_code = headers.index('报考专业代码') + 1
+                col_retest_score = headers.index('复核成绩（满分100分）') + 1
+                col_rank = headers.index('排名') + 1
+                col_remark = headers.index('备注') + 1
+                col_phone = headers.index('手机号') + 1
+            except ValueError as e:
+                self.message_user(request, f"文件列名不正确，缺少必要列: {str(e)}", level='error')
+                return redirect('admin:Professor_Student_Manage_student_changelist')
+            
+            # 第一遍扫描：统计各专业的总招生人数（备注=选导师的人数）
+            subject_quota_map = defaultdict(int)
+            rows_data = []
+            
+            for row in ws.iter_rows(min_row=2, values_only=False):
+                if not row[col_candidate_number - 1].value:
+                    continue
+                    
+                candidate_number = str(row[col_candidate_number - 1].value).strip()
+                name = str(row[col_name - 1].value).strip() if row[col_name - 1].value else ""
+                subject_code = str(row[col_subject_code - 1].value).strip()
+                retest_score = row[col_retest_score - 1].value
+                rank = int(row[col_rank - 1].value) if row[col_rank - 1].value else 0
+                remark = str(row[col_remark - 1].value).strip() if row[col_remark - 1].value else ""
+                phone = str(row[col_phone - 1].value).strip() if row[col_phone - 1].value else ""
+                
+                rows_data.append({
+                    'candidate_number': candidate_number,
+                    'name': name,
+                    'subject_code': subject_code,
+                    'retest_score': retest_score,
+                    'rank': rank,
+                    'remark': remark,
+                    'phone': phone
+                })
+                
+                # 统计备注为"选导师"的人数
+                if remark == '选导师':
+                    subject_quota_map[subject_code] += 1
+            
+            # 如果勾选了更新专业总招生人数，则更新
+            if update_quota:
+                for subject_code, quota in subject_quota_map.items():
+                    subject = Subject.objects.filter(subject_code=subject_code, subject_type=2).first()  # subject_type=2 表示博士
+                    if subject:
+                        subject.total_admission_quota = quota
+                        subject.save()
+                        self.message_user(request, f"已更新专业 {subject.subject_name}({subject_code}) 的总招生人数为 {quota}", level='info')
+                    else:
+                        self.message_user(request, f"未找到博士专业代码 {subject_code}，跳过更新", level='warning')
+            
+            # 第二遍处理：创建学生账号
+            success_count = 0
+            skip_count = 0
+            
+            for row_data in rows_data:
+                try:
+                    candidate_number = row_data['candidate_number']
+                    name = row_data['name']
+                    subject_code = row_data['subject_code']
+                    retest_score = row_data['retest_score']
+                    rank = row_data['rank']
+                    phone = row_data['phone']
+                    
+                    # 查找专业（必须是博士专业，subject_type=2）
+                    subject = Subject.objects.filter(subject_code=subject_code, subject_type=2).first()
+                    if not subject:
+                        self.message_user(request, f"博士专业代码 {subject_code} 不存在，跳过考生 {candidate_number}", level='warning')
+                        skip_count += 1
+                        continue
+                    
+                    # 检查是否已存在
+                    if Student.objects.filter(candidate_number=candidate_number).exists():
+                        self.message_user(request, f"考生编号 {candidate_number} 已存在，跳过", level='warning')
+                        skip_count += 1
+                        continue
+                    
+                    # 创建用户账号
+                    username = candidate_number
+                    if User.objects.filter(username=username).exists():
+                        self.message_user(request, f"用户名 {username} 已存在，跳过", level='warning')
+                        skip_count += 1
+                        continue
+                    
+                    user = User.objects.create_user(
+                        username=username,
+                        password=phone  # 密码为手机号
+                    )
+                    
+                    # 计算是否候补及候补顺序
+                    total_quota = subject.total_admission_quota or 0
+                    if rank <= total_quota:
+                        is_alternate = False
+                        alternate_rank = None
+                    else:
+                        is_alternate = True
+                        alternate_rank = rank - total_quota
+                    
+                    # 创建学生
+                    student = Student(
+                        user_name=user,
+                        name=name,
+                        candidate_number=candidate_number,
+                        subject=subject,
+                        student_type=3,  # 博士统考生
+                        postgraduate_type=3,  # 博士
+                        study_mode=True,  # 全日制
+                        phone_number=phone,
+                        secondary_exam_score=float(retest_score) if retest_score else None,
+                        final_rank=rank,
+                        is_alternate=is_alternate,
+                        alternate_rank=alternate_rank
+                    )
+                    student.save()
+                    success_count += 1
+                    
+                except Exception as e:
+                    self.message_user(request, f"处理考生 {row_data.get('candidate_number', 'unknown')} 时出错: {str(e)}", level='error')
+                    skip_count += 1
+                    continue
+            
+            self.message_user(request, f"博士生导入完成：成功创建 {success_count} 个账号，跳过 {skip_count} 个", level='success')
+            return redirect('admin:Professor_Student_Manage_student_changelist')
+            
+        except Exception as e:
+            self.message_user(request, f"解析文件时出错: {str(e)}", level='error')
+            return redirect('admin:Professor_Student_Manage_student_changelist')
+    
+    def _import_master_exam_students(self, request, file, update_quota):
+        """
+        硕士统考生导入（暂用原CSV逻辑）
+        """
+        try:
+            # 读取 CSV 文件
+            csv_file_wrapper = TextIOWrapper(file, encoding='utf-8-sig')
+            reader = csv.DictReader(csv_file_wrapper)
+
+            # 检查列名是否正确
+            required_columns = ["专业代码", "专业", "考生编号", "姓名", "初试成绩", "复试成绩",
+                                "综合成绩", "综合排名", "研究生类型", "学生类型", "手机号", "身份证号"]
+            if not all(column in reader.fieldnames for column in required_columns):
+                self.message_user(
+                    request,
+                    "CSV 文件列名不正确，请确保包含：专业代码、专业、考生编号、姓名、初试成绩、复试成绩、综合成绩、综合排名、研究生类型、学生类型、手机号、身份证号",
+                    level='error'
+                )
+                return redirect('admin:Professor_Student_Manage_student_changelist')
+
+            success_count = 0
+            for row in reader:
+                subject_number = str(row["专业代码"]).zfill(6)
+                subject = Subject.objects.filter(subject_code=subject_number).first()
+                if not subject:
+                    self.message_user(request, f"学科代码 {subject_number} 不存在，跳过", level='warning')
+                    continue
+
+                candidate_number = str(row["考生编号"]).strip()
+                name = row["姓名"].strip()
+                secondary_exam_score = float(row["综合成绩"])
+                final_rank = int(row["综合排名"])
+                postgraduate_type = int(row["研究生类型"])
+                student_type = int(row["学生类型"])
+                phone_number = str(row["手机号"]).strip()
+                identity_number = str(row["身份证号"]).strip()
+
+                try:
+                    if Student.objects.filter(candidate_number=candidate_number).exists():
+                        self.message_user(request, f"考生编号 {candidate_number} 已存在，跳过", level='warning')
+                        continue
+
+                    username = candidate_number
+                    if User.objects.filter(username=username).exists():
+                        self.message_user(request, f"用户名 {username} 已存在，跳过", level='warning')
+                        continue
+
+                    user = User.objects.create_user(
+                        username=username,
+                        password=phone_number
+                    )
+
+                    total_quota = subject.total_admission_quota or 0
+                    if final_rank <= total_quota:
+                        is_alternate = False
+                        alternate_rank = None
+                    else:
+                        is_alternate = True
+                        alternate_rank = final_rank - total_quota
+
+                    student = Student(
+                        user_name=user,
+                        name=name,
+                        candidate_number=candidate_number,
+                        subject=subject,
+                        identify_number=identity_number,
+                        student_type=student_type,
+                        postgraduate_type=postgraduate_type,
+                        phone_number=phone_number,
+                        secondary_exam_score=secondary_exam_score,
+                        final_rank=final_rank,
+                        is_alternate=is_alternate,
+                        alternate_rank=alternate_rank,
+                    )
+                    student.save()
+                    success_count += 1
+
+                except ValueError as e:
+                    self.message_user(request, f"考生编号 {candidate_number} 的数据格式不正确: {str(e)}", level='warning')
+                    continue
+                except Exception as e:
+                    self.message_user(request, f"创建学生 {candidate_number} 时出错: {str(e)}", level='error')
+                    continue
+
+            self.message_user(request, f"硕士统考生导入完成：成功创建 {success_count} 个学生账号")
+            return redirect('admin:Professor_Student_Manage_student_changelist')
+
+        except Exception as e:
+            self.message_user(request, f"解析 CSV 文件时出错: {str(e)}", level='error')
+            return redirect('admin:Professor_Student_Manage_student_changelist')
+    
+    def _import_master_recommend_students(self, request, file, update_quota):
+        """
+        硕士推免生导入（暂用原CSV逻辑）
+        """
+        # 与硕士统考生导入逻辑相同，后续可以自定义
+        return self._import_master_exam_students(request, file, update_quota)
 
 
     def reset_password_to_exam_id(self, request, queryset):

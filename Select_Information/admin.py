@@ -42,10 +42,15 @@ class StudentProfessorChoiceApprovalAdmin(admin.ModelAdmin):
         ("互选信息更改", {"fields": ["student", "professor", "status", "chosen_by_professor",
                                      "submit_date"]}),
     ]
-    list_display = ["student", "professor", "status", "chosen_by_professor", "submit_date",
+    list_display = ["student", "student_subject", "professor", "status", "chosen_by_professor", "submit_date",
                     "finish_time"]
 
     search_fields = ["student__name_fk_search", "professor__name_fk_search"]
+    
+    def student_subject(self, obj):
+        """显示学生的报考专业"""
+        return obj.student.subject.subject_name if obj.student.subject else "未设置"
+    student_subject.short_description = "学生专业"
 
     actions = ["export_selected_choices", "reject_waiting_if_no_quota", 
                "cancel_waiting_if_student_gave_up", "cancel_approved_choice"]

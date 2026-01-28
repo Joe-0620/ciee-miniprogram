@@ -29,11 +29,54 @@ class ProfessorDoctorQuotaInline(admin.TabularInline):
     readonly_fields = ['used_quota', 'remaining_quota']  # 已用和剩余名额只读
     can_delete = False  # 禁止删除，确保每个博士专业都有记录
 
+
+def swap_doctor_quotas(modeladmin, request, queryset):
+    """
+    互换两个导师的博士专业名额（专业、总名额和剩余名额）
+    """
+    # 验证只选择了两条记录
+    if queryset.count() != 2:
+        modeladmin.message_user(
+            request, 
+            "请恰好选择两个导师的博士专业名额进行互换", 
+            level='error'
+        )
+        return
+    
+    # 获取两条记录
+    quota1, quota2 = list(queryset)
+    
+    # 互换专业和名额
+    quota1_subject = quota1.subject
+    quota1_total = quota1.total_quota
+    quota1_remaining = quota1.remaining_quota
+    
+    quota1.subject = quota2.subject
+    quota1.total_quota = quota2.total_quota
+    quota1.remaining_quota = quota2.remaining_quota
+    
+    quota2.subject = quota1_subject
+    quota2.total_quota = quota1_total
+    quota2.remaining_quota = quota1_remaining
+    
+    # 保存修改
+    quota1.save()
+    quota2.save()
+    
+    # 显示互换结果
+    message = f"成功互换 {quota1.professor.name}({quota1.subject.subject_name}) 和 {quota2.professor.name}({quota2.subject.subject_name}) 的博士专业名额"
+    
+    modeladmin.message_user(request, message)
+
+swap_doctor_quotas.short_description = "互换两个导师的博士专业名额"
+
+
 @admin.register(ProfessorDoctorQuota)
 class ProfessorDoctorQuotaAdmin(admin.ModelAdmin):
     list_display = ['professor', 'subject', 'total_quota', 'used_quota', 'remaining_quota']
-    list_filter = ['professor', 'subject']
+    list_filter = ['subject']
     search_fields = ['professor__name', 'subject__subject_name']
+    actions = [swap_doctor_quotas]
 
 # ========= 新增硕士专业内联 =========
 class ProfessorMasterQuotaInline(admin.TabularInline):
@@ -901,11 +944,24 @@ class StudentAdmin(admin.ModelAdmin):
                                "is_selected", "is_giveup", "is_alternate"]}),
     ]
     list_display = ["candidate_number", "name", "subject", "study_mode", "student_type", "postgraduate_type", "is_selected", 
-                    "is_giveup", "is_alternate", "download_hx_file", "download_fq_file"]
+                    "selected_professor", "is_giveup", "is_alternate", "download_hx_file", "download_fq_file"]
     list_filter = ["subject"]
     search_fields = ["name"]
     actions = ['reset_password_to_exam_id', 'download_all_signature_tables', 'download_all_giveup_tables']  # 添加自定义动作
     change_list_template = 'admin/student_change_list.html'
+    
+    def selected_professor(self, obj):
+        """显示学生选中的导师姓名"""
+        if obj.is_selected:
+            # 查找状态为"已同意"且被导师选中的互选记录
+            choice = StudentProfessorChoice.objects.filter(
+                student=obj, 
+                status=1,
+                chosen_by_professor=True
+            ).first()
+            return choice.professor.name if choice else "未找到"
+        return "-"
+    selected_professor.short_description = "选中导师"
 
     @admin.action(description="批量下载所有已签名互选表")
     def download_all_signature_tables(self, request, queryset):

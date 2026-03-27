@@ -9,3 +9,7 @@ logger = logging.getLogger('log')
 
 def index(request):
     return render(request, 'index.html')
+
+
+def dashboard(request, path=None):
+    return render(request, 'admin_app.html')

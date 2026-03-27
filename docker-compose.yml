@@ -1,11 +1,8 @@
-version: '3'
 services:
   app:
     build:
       context: .
-      dockerfile: Dockerfile.development
-    volumes:
-      - .:/app
+      dockerfile: Dockerfile
     ports:
       - '27081:80'
     container_name: wxcloud_ciee-miniprogram
@@ -18,7 +15,10 @@ services:
       - MYSQL_USERNAME=root
       - MYSQL_PASSWORD=WSGnnA83
       - MYSQL_ADDRESS=sh-cynosdbmysql-grp-buouyy58.sql.tencentcdb.com:26437
+      - COS_SECRET_ID=${COS_SECRET_ID}
+      - COS_SECRET_KEY=${COS_SECRET_KEY}
+      - COS_BUCKET=${COS_BUCKET}
 networks:
   default:
-    external:
-      name: wxcb0
+    name: wxcb0
+    external: true

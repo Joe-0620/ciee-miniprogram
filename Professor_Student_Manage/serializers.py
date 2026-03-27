@@ -40,18 +40,23 @@ class StudentSerializer(serializers.ModelSerializer):
     def get_current_alternate_rank(self, obj):
         """
         计算当前候补次序（动态排名）
+        优化：优先从 context 中获取预计算的排名，避免 N+1 查询
         """
         if not obj.alternate_rank:  
             return None  # 没有候补顺序的直接返回 None
 
-        # 找出同一专业下所有候补生
+        # 优先从 context 中获取预计算的排名映射（由 view 层批量计算后传入）
+        alternate_rank_map = self.context.get('alternate_rank_map')
+        if alternate_rank_map is not None:
+            return alternate_rank_map.get(obj.id)
+
+        # 回退：如果 context 中没有预计算数据，则单独查询（兼容单个对象序列化场景）
         same_subject_students = Student.objects.filter(
             subject=obj.subject,
             alternate_rank__isnull=False,
-            is_giveup=False  # 可选：排除放弃的
+            is_giveup=False
         ).order_by("alternate_rank")
 
-        # 遍历排名，找到当前学生的位置
         for idx, student in enumerate(same_subject_students, start=1):
             if student.id == obj.id:
                 return idx
@@ -274,7 +279,11 @@ class DepartmentReviewerSerializer(serializers.ModelSerializer):
         fields = ['id', 'department_name', 'reviewers']
 
     def get_reviewers(self, obj):
-        reviewers = Professor.objects.filter(department=obj, department_position__in=[1, 2])
+        # 优先使用 view 层预加载的 reviewer_professors（避免 N+1）
+        if hasattr(obj, 'reviewer_professors'):
+            reviewers = obj.reviewer_professors
+        else:
+            reviewers = Professor.objects.filter(department=obj, department_position__in=[1, 2])
         return ProfessorSerializer(reviewers, many=True).data
 
 

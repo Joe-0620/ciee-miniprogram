@@ -1,0 +1,13 @@
+.git
+.idea
+.cloudbase
+.VSCodeCounter
+logs
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+*.log
+celerybeat-schedule
+admin-frontend/node_modules
+miniprogram-260308

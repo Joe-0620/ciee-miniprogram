@@ -1,4 +1,4 @@
-# Professor_Student_Manage.models
+﻿# Professor_Student_Manage.models
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
@@ -9,6 +9,7 @@ from django.dispatch import receiver
 from django.db.models import Sum, Q, F
 from django.db.models.functions import Coalesce
 from django.db import transaction
+from rest_framework.authtoken.models import Token
 
 
 class WeChatAccount(models.Model):
@@ -18,7 +19,7 @@ class WeChatAccount(models.Model):
 
     class Meta:
         verbose_name = "微信账号绑定"  # 设置模型的显示名称
-        verbose_name_plural = "微信账号绑定"  # 设置模型的复数形式显示名称
+        verbose_name_plural = "微信账号绑定"  # 设置模型的复数显示名称
 
 
 class Professor(models.Model):
@@ -35,7 +36,7 @@ class Professor(models.Model):
     professional_quota = models.IntegerField(blank=True, default=0, verbose_name="专硕剩余名额")
     professional_yt_quota = models.IntegerField(blank=True, default=0, verbose_name="专硕(烟台)剩余名额")
     doctor_quota = models.IntegerField(blank=True, default=0, verbose_name="博士剩余名额")
-    proposed_quota_approved = models.BooleanField(default=False, verbose_name="开通被选择资格")
+    proposed_quota_approved = models.BooleanField(default=False, verbose_name="开放被选择资格")
     have_qualification = models.BooleanField(default=True, verbose_name="招生资格")
     remaining_quota = models.IntegerField(default=0, verbose_name="总剩余名额")
     personal_page = models.CharField(max_length=500, blank=True, verbose_name="个人介绍")
@@ -50,31 +51,178 @@ class Professor(models.Model):
         [2, "方向审核人(烟台)"]
     ]
 
-    department_position = models.IntegerField(choices=Department_Position, default=0, verbose_name="是否是审核人")
+    department_position = models.IntegerField(choices=Department_Position, default=0, verbose_name="是否为审核人")
     phone_number = models.CharField(max_length=20, null=True, blank=True, verbose_name="手机号码")
 
 
     def save(self, *args, **kwargs):
-        # 获取之前的样例信息
+        # 获取保存前的导师信息
         # original_instance = self.__class__.objects.get(pk=self.pk) if self.pk else None
         # print("获取之前的导师信息")
         original_instance = self.__class__.objects.filter(pk=self.pk).first()
         self.name_fk_search = self.name
-        # 计算总剩余名额，包括博士专业名额
+        # 计算总剩余名额，包括博士专业名额和共享池名额
         doctor_quota_sum = sum(
             quota.remaining_quota for quota in self.doctor_quotas.filter(subject__subject_type=2)
         )
         self.doctor_quota = doctor_quota_sum
-        self.remaining_quota = self.academic_quota + self.professional_quota + self.professional_yt_quota + self.doctor_quota
+        shared_pool_quota_sum = sum(
+            pool.remaining_quota for pool in self.shared_quota_pools.filter(is_active=True)
+        ) if self.pk else 0
+        self.remaining_quota = (
+            self.academic_quota
+            + self.professional_quota
+            + self.professional_yt_quota
+            + self.doctor_quota
+            + shared_pool_quota_sum
+        )
         super().save(*args, **kwargs)
-        # print("触发super.save()")
+        # print("触发 super.save()")
 
     class Meta:
         verbose_name = "导师"  # 设置模型的显示名称
-        verbose_name_plural = "导师"  # 设置模型的复数形式显示名称
+        verbose_name_plural = "导师"  # 设置模型的复数显示名称
 
     def __str__(self):
         return self.name
+
+
+class ProfessorSharedQuotaPool(models.Model):
+    SCOPE_MASTER = 'master'
+    SCOPE_DOCTOR = 'doctor'
+    SCOPE_CHOICES = [
+        (SCOPE_MASTER, '硕士共享池'),
+        (SCOPE_DOCTOR, '博士共享池'),
+    ]
+
+    CAMPUS_GENERAL = 'general'
+    CAMPUS_BEIJING = 'beijing'
+    CAMPUS_YANTAI = 'yantai'
+    CAMPUS_CHOICES = [
+        (CAMPUS_GENERAL, '不区分校区'),
+        (CAMPUS_BEIJING, '北京'),
+        (CAMPUS_YANTAI, '烟台'),
+    ]
+
+    professor = models.ForeignKey(
+        Professor,
+        on_delete=models.CASCADE,
+        related_name='shared_quota_pools',
+        verbose_name="导师",
+    )
+    pool_name = models.CharField(max_length=100, verbose_name="共享名额池名称")
+    quota_scope = models.CharField(max_length=20, choices=SCOPE_CHOICES, verbose_name="名额类型")
+    campus = models.CharField(max_length=20, choices=CAMPUS_CHOICES, default=CAMPUS_GENERAL, verbose_name="适用校区")
+    subjects = models.ManyToManyField(Subject, related_name='shared_quota_pools', verbose_name="可使用专业")
+    total_quota = models.IntegerField(default=0, verbose_name="总名额")
+    used_quota = models.IntegerField(default=0, verbose_name="已用名额")
+    remaining_quota = models.IntegerField(default=0, verbose_name="剩余名额")
+    is_active = models.BooleanField(default=True, verbose_name="是否启用")
+    notes = models.TextField(blank=True, default="", verbose_name="备注")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="更新时间")
+
+    def clean(self):
+        if self.total_quota < 0 or self.used_quota < 0 or self.remaining_quota < 0:
+            raise ValidationError("名额字段必须是非负整数")
+        if self.used_quota > self.total_quota:
+            raise ValidationError("已用名额不能大于总名额")
+        if self.quota_scope == self.SCOPE_DOCTOR and self.campus != self.CAMPUS_GENERAL:
+            raise ValidationError("博士共享池不能设置北京或烟台校区")
+
+    def save(self, *args, **kwargs):
+        self.clean()
+        if self.remaining_quota > self.total_quota:
+            self.remaining_quota = self.total_quota
+        super().save(*args, **kwargs)
+        recalculate_professor_quota_summary(self.professor)
+
+
+    class Meta:
+        verbose_name = "导师共享名额池"
+        verbose_name_plural = "导师共享名额池"
+
+    def __str__(self):
+        return f"{self.professor.name} - {self.pool_name}"
+
+
+def get_student_quota_scope(student):
+    return ProfessorSharedQuotaPool.SCOPE_DOCTOR if student.postgraduate_type == 3 else ProfessorSharedQuotaPool.SCOPE_MASTER
+
+
+def get_student_campus(student):
+    if student.postgraduate_type == 4:
+        return ProfessorSharedQuotaPool.CAMPUS_YANTAI
+    if student.postgraduate_type in [1, 2]:
+        return ProfessorSharedQuotaPool.CAMPUS_BEIJING
+    return ProfessorSharedQuotaPool.CAMPUS_GENERAL
+
+
+def get_matching_shared_quota_pool(professor, student, remaining_only=False):
+    queryset = ProfessorSharedQuotaPool.objects.filter(
+        professor=professor,
+        quota_scope=get_student_quota_scope(student),
+        is_active=True,
+        subjects=student.subject,
+    )
+    if student.postgraduate_type != 3:
+        queryset = queryset.filter(campus=get_student_campus(student))
+    if remaining_only:
+        queryset = queryset.filter(remaining_quota__gt=0)
+    return queryset.order_by('id').first()
+
+
+def get_quota_source_for_student(professor, student, remaining_only=False):
+    shared_pool = get_matching_shared_quota_pool(professor, student, remaining_only=remaining_only)
+    if shared_pool:
+        return 'shared', shared_pool
+
+    if student.postgraduate_type == 3:
+        quota = ProfessorDoctorQuota.objects.filter(professor=professor, subject=student.subject).first()
+        if quota and (not remaining_only or (quota.remaining_quota or 0) > 0):
+            return 'doctor', quota
+        return None, None
+
+    quota = ProfessorMasterQuota.objects.filter(professor=professor, subject=student.subject).first()
+    if not quota:
+        return None, None
+    if not remaining_only:
+        return 'master', quota
+    if student.postgraduate_type in [1, 2] and (quota.beijing_remaining_quota or 0) > 0:
+        return 'master', quota
+    if student.postgraduate_type == 4 and (quota.yantai_remaining_quota or 0) > 0:
+        return 'master', quota
+    return None, None
+
+
+def recalculate_professor_quota_summary(professor):
+    academic_quota = (
+        professor.master_quotas.filter(subject__subject_type=1).aggregate(total=Coalesce(Sum('beijing_remaining_quota'), 0))['total']
+        or 0
+    )
+    professional_quota = (
+        professor.master_quotas.filter(subject__subject_type=0).aggregate(total=Coalesce(Sum('beijing_remaining_quota'), 0))['total']
+        or 0
+    )
+    professional_yt_quota = (
+        professor.master_quotas.filter(subject__subject_type=0).aggregate(total=Coalesce(Sum('yantai_remaining_quota'), 0))['total']
+        or 0
+    )
+    doctor_quota = (
+        professor.doctor_quotas.aggregate(total=Coalesce(Sum('remaining_quota'), 0))['total']
+        or 0
+    )
+    shared_pool_quota = (
+        professor.shared_quota_pools.filter(is_active=True).aggregate(total=Coalesce(Sum('remaining_quota'), 0))['total']
+        or 0
+    )
+    Professor.objects.filter(pk=professor.pk).update(
+        academic_quota=academic_quota,
+        professional_quota=professional_quota,
+        professional_yt_quota=professional_yt_quota,
+        doctor_quota=doctor_quota,
+        remaining_quota=academic_quota + professional_quota + professional_yt_quota + doctor_quota + shared_pool_quota,
+    )
 
 class ProfessorDoctorQuota(models.Model):
     professor = models.ForeignKey(Professor, on_delete=models.CASCADE, related_name='doctor_quotas', verbose_name="导师")
@@ -107,18 +255,16 @@ class ProfessorDoctorQuota(models.Model):
     class Meta:
         verbose_name = "导师博士专业名额"
         verbose_name_plural = "导师博士专业名额"
-        unique_together = [['professor', 'subject']]  # 确保每个导师在每个博士专业只有一个名额记录
+        unique_together = [['professor', 'subject']]  # 确保每个导师在每个博士专业下只有一条名额记录
 
     def __str__(self):
         return f"{self.professor.name} - {self.subject.subject_name} - 剩余: {self.remaining_quota}"
 
-# 信号：当创建导师或博士专业时，初始化所有博士专业名额记录
+# 信号：当创建博士专业时，初始化所有导师对应的博士名额记录
 # @receiver(post_save, sender=Professor)
 @receiver(post_save, sender=Subject)
 def initialize_doctor_quotas(sender, instance, created, **kwargs):
-    """
-    当新增博士专业时，自动为所有导师创建对应的博士配额记录
-    """
+    """当新增博士专业时，自动为所有导师创建对应的博士配额记录。"""
     if created and instance.subject_type == 2:  # 限制为博士专业
         professors = Professor.objects.all()
         for professor in professors:
@@ -133,9 +279,7 @@ def initialize_doctor_quotas(sender, instance, created, **kwargs):
             )
 
 class ProfessorMasterQuota(models.Model):
-    """
-    导师硕士专业名额（按地区拆分）
-    """
+    """导师硕士专业名额，按校区拆分。"""
     professor = models.ForeignKey(
         Professor,
         on_delete=models.CASCADE,
@@ -161,7 +305,7 @@ class ProfessorMasterQuota(models.Model):
     total_quota = models.IntegerField(default=0, verbose_name="硕士总招生名额")
 
     def save(self, *args, **kwargs):
-        """保存时自动计算总数 & 动态调整剩余名额"""
+        """保存时自动计算总数并同步剩余名额。"""
         if self.pk:
             old = ProfessorMasterQuota.objects.get(pk=self.pk)
 
@@ -191,17 +335,14 @@ class ProfessorMasterQuota(models.Model):
     def __str__(self):
         prof_name = self.professor.name if self.professor_id else "未绑定导师"
         subj_name = self.subject.subject_name if self.subject_id else "未绑定专业"
-        return f"{prof_name} - {subj_name} (总={self.total_quota}, 北京剩余={self.beijing_remaining_quota}, 烟台剩余={self.yantai_remaining_quota})"
+        return f"{prof_name} - {subj_name} (总额:{self.total_quota}, 北京剩余={self.beijing_remaining_quota}, 烟台剩余={self.yantai_remaining_quota})"
 
 
-# ========== 信号：新增导师或硕士专业时，自动初始化配额 ==========
+# ========== 信号：新增硕士专业时，自动初始化导师硕士名额 ==========
 # @receiver(post_save, sender=Professor)
 @receiver(post_save, sender=Subject)
 def initialize_master_quotas(sender, instance, created, **kwargs):
-    """
-    当新增硕士专业时，自动为所有导师创建对应的硕士配额记录
-    剩余名额 = 可用名额
-    """
+    """当新增硕士专业时，自动为所有导师创建对应的硕士配额记录。"""
     if created and instance.subject_type in [0, 1]:  # 限制为硕士专业
         professors = Professor.objects.all()
         for professor in professors:
@@ -221,22 +362,19 @@ def initialize_master_quotas(sender, instance, created, **kwargs):
 @receiver(post_save, sender=ProfessorMasterQuota)
 @receiver(post_delete, sender=ProfessorMasterQuota)
 def update_department_master_totals(sender, instance, **kwargs):
-    """
-    当任意一条硕士配额新增/更新/删除后，安全地汇总所在学系（方向）的总指标。
-    学硕：只看北京名额；专硕：北京/烟台各自统计。
-    """
+    """当硕士配额变化时，汇总所在方向的硕士总指标。"""
     dept = getattr(instance.professor, "department", None)
     if not dept:
         return
 
     qs = ProfessorMasterQuota.objects.filter(professor__department=dept)
 
-    # 学硕=subject_type=1（只统计北京）
+    # 学硕 = subject_type=1，对应北京名额
     academic_bj = qs.filter(subject__subject_type=1).aggregate(
         s=Coalesce(Sum('beijing_quota'), 0)
     )['s']
 
-    # 专硕=subject_type=0（北京、烟台分开统计）
+    # 专硕 = subject_type=0，对应北京和烟台名额
     prof_bj = qs.filter(subject__subject_type=0).aggregate(
         s=Coalesce(Sum('beijing_quota'), 0)
     )['s']
@@ -258,9 +396,7 @@ def update_department_master_totals(sender, instance, **kwargs):
 @receiver(post_save, sender=ProfessorDoctorQuota)
 @receiver(post_delete, sender=ProfessorDoctorQuota)
 def update_department_doctor_totals(sender, instance, **kwargs):
-    """
-    任意博士配额变动后，汇总方向的博士总指标
-    """
+    """任意博士配额变动后，汇总所在方向的博士总指标。"""
     dept = getattr(instance.professor, "department", None)
     if not dept:
         return
@@ -273,16 +409,47 @@ def update_department_doctor_totals(sender, instance, **kwargs):
     dept.save(update_fields=['total_doctor_quota'])
 
 
+@receiver(post_save, sender=ProfessorSharedQuotaPool)
+@receiver(post_delete, sender=ProfessorSharedQuotaPool)
+def refresh_professor_summary_for_shared_pool(sender, instance, **kwargs):
+    recalculate_professor_quota_summary(instance.professor)
+
+
+def get_default_admission_year():
+    today = timezone.localdate()
+    return today.year + 1 if (today.month, today.day) >= (9, 1) else today.year
+
+
+class AdmissionBatch(models.Model):
+    name = models.CharField(max_length=100, verbose_name="批次名称")
+    admission_year = models.PositiveIntegerField(default=get_default_admission_year, verbose_name="届别")
+    batch_code = models.CharField(max_length=50, blank=True, default="", verbose_name="批次编码")
+    sort_order = models.IntegerField(default=0, verbose_name="排序值")
+    is_active = models.BooleanField(default=True, verbose_name="是否启用")
+    description = models.TextField(blank=True, default="", verbose_name="批次说明")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="更新时间")
+
+    class Meta:
+        verbose_name = "招生批次"
+        verbose_name_plural = "招生批次"
+        ordering = ['-admission_year', 'sort_order', 'id']
+        unique_together = [['admission_year', 'name']]
+
+    def __str__(self):
+        return f"{self.admission_year}届 - {self.name}"
+
+
 class Student(models.Model):
     # 用户名
     user_name = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=100, verbose_name="学生姓名")
     name_fk_search = models.CharField(max_length=100, verbose_name="学生(搜索专用)", null=True)
-    candidate_number = models.CharField(max_length=20, unique=True, verbose_name="准考证号")
+    candidate_number = models.CharField(max_length=20, unique=True, verbose_name="考生编号")
     subject = models.ForeignKey(Subject, null=True, on_delete=models.SET_NULL, verbose_name="报考专业")
     identify_number = models.CharField(max_length=20, unique=True, verbose_name="身份证号", null=True, blank=True)
     is_selected = models.BooleanField(default=False, verbose_name="是否选好导师")
-    
+
     STUDENT_CHOICES = [
         [1, "硕士推免生"],
         [2, "硕士统考生"],
@@ -309,7 +476,7 @@ class Student(models.Model):
     giveup_signature_table = models.CharField(max_length=500, null=True, blank=True, verbose_name="放弃说明表下载地址")
     is_signate_giveup_table = models.BooleanField(default=False, verbose_name="是否签名放弃说明表")
     is_giveup = models.BooleanField(default=False, verbose_name="是否放弃拟录取")
-    
+
     REVIEW_STATUS = [
         [1, "已同意"],
         [2, "已拒绝"],
@@ -330,20 +497,49 @@ class Student(models.Model):
     initial_rank = models.PositiveIntegerField(null=True, blank=True, verbose_name="初试排名")
     # 复试排名
     secondary_rank = models.PositiveIntegerField(null=True, blank=True, verbose_name="复试排名")
-    # 总排名
-    final_rank = models.PositiveIntegerField(null=True, blank=True, verbose_name="总排名")
-    # 新增：候补状态
+    # 综合排名
+    final_rank = models.PositiveIntegerField(null=True, blank=True, verbose_name="综合排名")
+    # 候补状态
     is_alternate = models.BooleanField(default=False, verbose_name="是否候补")
     alternate_rank = models.PositiveIntegerField(null=True, blank=True, verbose_name="候补顺序")
 
+    admission_year = models.PositiveIntegerField(default=get_default_admission_year, verbose_name="届别")
+    admission_batch = models.ForeignKey(
+        AdmissionBatch,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name='students',
+        verbose_name="招生批次",
+    )
+    can_login = models.BooleanField(default=True, verbose_name="允许登录小程序")
+
     class Meta:
         verbose_name = "学生"  # 设置模型的显示名称
-        verbose_name_plural = "学生"  # 设置模型的复数形式显示名称
+        verbose_name_plural = "学生"  # 设置模型的复数显示名称
 
     def save(self, *args, **kwargs):
         self.name_fk_search = self.name
         super().save(*args, **kwargs)
 
-
     def __str__(self):
         return self.name
+        return self.name
+
+
+@receiver(pre_save, sender=Student)
+def cache_student_login_state(sender, instance, **kwargs):
+    if not instance.pk:
+        instance._old_can_login = None
+        return
+    old_student = Student.objects.filter(pk=instance.pk).only('can_login').first()
+    instance._old_can_login = old_student.can_login if old_student else None
+
+
+@receiver(post_save, sender=Student)
+def revoke_student_tokens_when_login_disabled(sender, instance, **kwargs):
+    old_can_login = getattr(instance, '_old_can_login', None)
+    if instance.user_name_id and old_can_login is True and instance.can_login is False:
+        Token.objects.filter(user=instance.user_name).delete()
+        WeChatAccount.objects.filter(user=instance.user_name).delete()
+

@@ -15,14 +15,14 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from django.contrib.auth.models import User
 from rest_framework import routers, serializers, viewsets
 from Professor_Student_Manage.views import UserLoginView, ProfessorListView
 from Select_Information.views import SelectInformationView
 from django.conf.urls.static import static # 添加本行
 from django.conf import settings # 添加本行
-from .views import index
+from .views import dashboard, index
 
 # 自定义 Django Admin 标题
 admin.site.site_header = '中国农业大学信电研究生复试互选管理系统'  # 左上角标题
@@ -32,6 +32,9 @@ admin.site.index_title = 'CIEE复试互选系统管理'  # 首页标题
 urlpatterns = [
     path('', index, name='index'),
     path('admin/', admin.site.urls),
+    path('dashboard-api/', include('dashboard_api.urls')),
+    path('dashboard/', dashboard, name='dashboard'),
+    re_path(r'^dashboard/(?P<path>.*)$', dashboard, name='dashboard-spa'),
     # 包含 Professor_Student_Manage 应用的URL配置
     path('Enrollment_Manage/', include('Enrollment_Manage.urls')),
     path('Select_Information/', include('Select_Information.urls')),

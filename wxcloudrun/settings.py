@@ -34,6 +34,7 @@ ALLOWED_HOSTS = ['*']
 INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
+    'dashboard_api.apps.DashboardApiConfig',
     'Professor_Student_Manage.apps.ProfessorStudentManageConfig',
     'Select_Information.apps.SelectInformationConfig',
     'Enrollment_Manage.apps.EnrollmentManageConfig',
@@ -201,6 +202,9 @@ USE_L10N = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'wxcloudrun', 'static'),
+]
 
 
 # Default primary key field type
@@ -221,7 +225,7 @@ REST_FRAMEWORK = {
     # TokenAuthentication：这是一种基于令牌的身份验证方式。在使用此身份验证类时，用户需要在每个API请求中提供有效的令牌（Token）以证明其身份。
     # 令牌通常在用户登录成功后生成并返回，然后在后续请求中通过HTTP标头传递。这允许用户在每次请求时进行身份验证，而无需在每次请求中都提供用户名和密码。
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
+        'Professor_Student_Manage.authentication.StudentAwareTokenAuthentication',
     ],
 }
 

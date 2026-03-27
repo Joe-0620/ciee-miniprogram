@@ -1,0 +1,8 @@
+services:
+  app:
+    command: python manage.py runserver 0.0.0.0:80
+    volumes:
+      - .:/app
+    environment:
+      - PYTHONDONTWRITEBYTECODE=1
+      - PYTHONUNBUFFERED=1

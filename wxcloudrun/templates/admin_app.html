@@ -1,0 +1,15 @@
+{% load static %}
+{% now "U" as cache_bust %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CIEE 管理后台</title>
+    <link rel="stylesheet" href="{% static 'admin/assets/admin-app.css' %}?v={{ cache_bust }}">
+</head>
+<body>
+    <div id="root"></div>
+    <script type="module" src="{% static 'admin/assets/admin-app.js' %}?v={{ cache_bust }}"></script>
+</body>
+</html>

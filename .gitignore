@@ -1,0 +1,36 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Django / local runtime
+db.sqlite3
+*.log
+media/
+staticfiles/
+
+# Environment variables
+.env
+.env.*
+!.env.example
+
+# React admin frontend
+admin-frontend/node_modules/
+admin-frontend/dist/
+wxcloudrun/static/admin/
+
+# Coverage / test cache
+.coverage
+.pytest_cache/
+htmlcov/
+
+# OS / editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

@@ -1,4 +1,4 @@
-from rest_framework.views import APIView
+﻿from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.authtoken.models import Token
@@ -6,7 +6,15 @@ from django.contrib.auth import authenticate
 from .serializers import UserLoginSerializer, StudentSerializer, ProfessorSerializer, ProfessorListSerializer, StudentPartialUpdateSerializer, ProfessorEnrollInfoSerializer
 from .serializers import DepartmentSerializer, ProfessorPartialUpdateSerializer, ChangePasswordSerializer, StudentResumeSerializer
 from .serializers import DepartmentReviewerSerializer
-from Professor_Student_Manage.models import Student, Professor, Department, WeChatAccount, ProfessorMasterQuota, ProfessorDoctorQuota
+from Professor_Student_Manage.models import (
+    Student,
+    Professor,
+    Department,
+    WeChatAccount,
+    ProfessorMasterQuota,
+    ProfessorDoctorQuota,
+    ProfessorSharedQuotaPool,
+)
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import FileUploadParser
@@ -37,11 +45,26 @@ from django.core.paginator import Paginator
 from django.db.models import Q, Prefetch
 
 
-# 类继承自类generics.ListAPIView，这个类是Django REST Framework提供的一个基于类的视图，
-# 用于实现列表查看操作。它自动处理了查询数据库并序列化数据返回，所以您只需要配置好查询集和序列化器即可。
-# 通常用于展示列表数据，比如显示所有教授的信息列表。
+# 继承自 generics.ListAPIView，用于返回导师列表数据。
+# 这里主要给小程序端和后台复用导师基础列表。
+# 返回结果会自动完成查询和序列化。
 class ProfessorListView(generics.ListAPIView):
-    queryset = Professor.objects.all()
+    permission_classes = [IsAuthenticated]
+    queryset = Professor.objects.select_related('department').prefetch_related(
+        'enroll_subject',
+        Prefetch(
+            'master_quotas',
+            queryset=ProfessorMasterQuota.objects.select_related('subject')
+        ),
+        Prefetch(
+            'doctor_quotas',
+            queryset=ProfessorDoctorQuota.objects.select_related('subject')
+        ),
+        Prefetch(
+            'shared_quota_pools',
+            queryset=ProfessorSharedQuotaPool.objects.prefetch_related('subjects')
+        ),
+    )
     serializer_class = ProfessorSerializer
 
 
@@ -64,8 +87,10 @@ class ProfessorEnrollInfoView(generics.ListAPIView):
 
 class GetSubjectsForFilterView(APIView):
     """
-    获取所有硕士和博士专业列表，供前端筛选使用
+    获取所有硕士和博士专业列表，供前端筛选使用。
     """
+    permission_classes = [IsAuthenticated]
+
     def get(self, request):
         # 获取硕士专业（学硕和专硕）
         master_subjects = Subject.objects.filter(subject_type__in=[0, 1]).order_by('subject_type', 'subject_name')
@@ -82,7 +107,7 @@ class GetSubjectsForFilterView(APIView):
 
 
 class ProfessorAndDepartmentListView(APIView):
-    # permission_classes = [IsAuthenticated]  # 需要登录才能修改密码
+    permission_classes = [IsAuthenticated]
 
     def get(self, request):
         # 获取分页参数
@@ -91,7 +116,7 @@ class ProfessorAndDepartmentListView(APIView):
         department_id = request.query_params.get('department_id', None)
         search_keyword = request.query_params.get('search', None)
         
-        # 获取专业筛选参数（逗号分隔的专业ID列表）
+        # 获取专业筛选参数（逗号分隔的专业 ID 列表）
         master_subject_ids = request.query_params.get('master_subject_ids', None)
         doctor_subject_ids = request.query_params.get('doctor_subject_ids', None)
         
@@ -99,7 +124,7 @@ class ProfessorAndDepartmentListView(APIView):
         departments = Department.objects.all()
         department_serializer = DepartmentSerializer(departments, many=True)
         
-        # 根据方向筛选导师，并优化查询（避免N+1查询问题）
+        # 根据方向筛选导师，并预加载关联数据避免 N+1 查询
         professors_query = Professor.objects.select_related('department').prefetch_related(
             'enroll_subject',  # 预加载招生专业（ManyToMany）
             Prefetch(
@@ -109,13 +134,17 @@ class ProfessorAndDepartmentListView(APIView):
             Prefetch(
                 'doctor_quotas',
                 queryset=ProfessorDoctorQuota.objects.select_related('subject')
-            )
+            ),
+            Prefetch(
+                'shared_quota_pools',
+                queryset=ProfessorSharedQuotaPool.objects.prefetch_related('subjects')
+            ),
         ).order_by('website_order', 'id')
         
         if department_id:
             professors_query = professors_query.filter(department_id=department_id)
         
-        # 搜索功能：根据导师姓名、研究方向等进行模糊搜索
+        # 搜索功能：根据导师姓名、工号、研究方向进行模糊搜索
         if search_keyword:
             professors_query = professors_query.filter(
                 Q(name__icontains=search_keyword) |
@@ -123,26 +152,42 @@ class ProfessorAndDepartmentListView(APIView):
                 Q(research_areas__icontains=search_keyword)
             )
         
-        # 硕士专业筛选：导师的硕士专业配额中包含任一指定专业且该专业有剩余名额
+        # 硕士专业筛选：固定名额或共享池中命中指定专业且仍有剩余名额
         if master_subject_ids:
             master_ids = [int(id.strip()) for id in master_subject_ids.split(',') if id.strip()]
             if master_ids:
                 professors_query = professors_query.filter(
-                    Q(master_quotas__subject_id__in=master_ids) &
-                    (Q(master_quotas__beijing_remaining_quota__gt=0) | 
-                     Q(master_quotas__yantai_remaining_quota__gt=0))
+                    (
+                        Q(master_quotas__subject_id__in=master_ids) &
+                        (Q(master_quotas__beijing_remaining_quota__gt=0) |
+                         Q(master_quotas__yantai_remaining_quota__gt=0))
+                    ) |
+                    (
+                        Q(shared_quota_pools__subjects__id__in=master_ids) &
+                        Q(shared_quota_pools__quota_scope='master') &
+                        Q(shared_quota_pools__remaining_quota__gt=0) &
+                        Q(shared_quota_pools__is_active=True)
+                    )
                 ).distinct()
         
-        # 博士专业筛选：导师的博士专业配额中包含任一指定专业且该专业有剩余名额
+        # 博士专业筛选：固定名额或共享池中命中指定专业且仍有剩余名额
         if doctor_subject_ids:
             doctor_ids = [int(id.strip()) for id in doctor_subject_ids.split(',') if id.strip()]
             if doctor_ids:
                 professors_query = professors_query.filter(
-                    doctor_quotas__subject_id__in=doctor_ids,
-                    doctor_quotas__remaining_quota__gt=0
+                    (
+                        Q(doctor_quotas__subject_id__in=doctor_ids) &
+                        Q(doctor_quotas__remaining_quota__gt=0)
+                    ) |
+                    (
+                        Q(shared_quota_pools__subjects__id__in=doctor_ids) &
+                        Q(shared_quota_pools__quota_scope='doctor') &
+                        Q(shared_quota_pools__remaining_quota__gt=0) &
+                        Q(shared_quota_pools__is_active=True)
+                    )
                 ).distinct()
         
-        # 分页处理
+        # 鍒嗛〉澶勭悊
         paginator = Paginator(professors_query, page_size)
         try:
             professors_page = paginator.page(page)
@@ -161,24 +206,24 @@ class ProfessorAndDepartmentListView(APIView):
             'total_count': paginator.count
         })
 
-        # 修改 professional_quota 的显示值
+        # 淇敼 professional_quota 鐨勬樉绀哄€?
         # modified_professors = []
         # for prof in professor_serializer.data:
         #     modified_prof = dict(prof)
-        #     modified_prof['professional_quota'] = "有" if prof['professional_quota'] != 0 else "无"
+        #     modified_prof['professional_quota'] = "鏈? if prof['professional_quota'] != 0 else "鏃?
         #     modified_professors.append(modified_prof)
-        #     modified_prof['academic_quota'] = "有" if prof['academic_quota'] != 0 else "无"
+        #     modified_prof['academic_quota'] = "鏈? if prof['academic_quota'] != 0 else "鏃?
         #     modified_professors.append(modified_prof)
-        #     modified_prof['professional_yt_quota'] = "有" if prof['professional_yt_quota'] != 0 else "无"
+        #     modified_prof['professional_yt_quota'] = "鏈? if prof['professional_yt_quota'] != 0 else "鏃?
         #     modified_professors.append(modified_prof)
-        #     modified_prof['doctor_quota'] = "有" if prof['doctor_quota'] != 0 else "无"
+        #     modified_prof['doctor_quota'] = "鏈? if prof['doctor_quota'] != 0 else "鏃?
         #     modified_professors.append(modified_prof)
         
         # print("modified_professors: ", len(modified_professors))
 
         # return Response({
         #     'departments': department_serializer.data,
-        #     'professors': modified_professors  # 使用修改后的数据
+        #     'professors': modified_professors  # 浣跨敤淇敼鍚庣殑鏁版嵁
         # })
     
 
@@ -190,25 +235,42 @@ class GetStudentResumeListView(APIView):
             student_id = request.query_params.get('student_id')
             student_info = Student.objects.get(id=student_id)
 
+            user = request.user
+            # 权限校验：学生只能查看自己的简历，导师只能查看和自己相关的学生材料
+            if hasattr(user, 'student'):
+                if user.student.id != student_info.id:
+                    return Response({'error': '无权查看该学生信息'}, status=status.HTTP_403_FORBIDDEN)
+            elif hasattr(user, 'professor'):
+                professor = user.professor
+                # 导师可查看：与自己有互选记录的学生，或属于自己招生专业的学生
+                has_choice = StudentProfessorChoice.objects.filter(
+                    student=student_info, professor=professor
+                ).exists()
+                has_subject = professor.enroll_subject.filter(id=student_info.subject_id).exists()
+                if not has_choice and not has_subject:
+                    return Response({'error': '无权查看该学生信息'}, status=status.HTTP_403_FORBIDDEN)
+            else:
+                return Response({'error': '无权访问'}, status=status.HTTP_403_FORBIDDEN)
+
             student_info_serializer = StudentResumeSerializer(student_info)
             
             return Response({
                 'student_info': student_info_serializer.data}, status=status.HTTP_200_OK)
         except ObjectDoesNotExist:
             return Response({
-                'error': 'Student not found'
+                'error': '学生不存在'
             }, status=status.HTTP_404_NOT_FOUND)
 
 
-# 用户登录验证试图，继承自 APIView，这个类是一个自定义的基于类的视图
+# 用户登录视图
 class UserLoginView(APIView):
     def post(self, request):
         try:
             usertype = request.data.get('usertype')
-            code = request.data.get('code')  # 从请求数据中获取微信的 code
-            device_id = request.data.get('device_id')  # 设备唯一标识符（可选）
+            code = request.data.get('code')  # 从请求中获取微信 code
+            device_id = request.data.get('device_id')  # 设备唯一标识（可选）
             
-            # 创建一个副本用于序列化器验证，避免修改原始数据
+            # 创建副本用于序列化校验，避免修改原始请求数据
             login_data = {
                 'username': request.data.get('username'),
                 'password': request.data.get('password')
@@ -222,21 +284,26 @@ class UserLoginView(APIView):
                 user = authenticate(username=username, password=password)
 
                 if user:
-                    # 如果是学生并且已放弃拟录取 → 禁止登录
+                    # 如果是学生且已放弃拟录取，则禁止再次登录
                     if usertype == 'student' and hasattr(user, 'student'):
+                        if not user.student.can_login:
+                            return Response(
+                                {"error": "当前账号已被禁止登录，请联系管理员"},
+                                status=status.HTTP_403_FORBIDDEN
+                            )
                         if user.student.is_giveup:
                             return Response(
-                                {"error": "您已放弃拟录取,无法再次登录，请联系招生老师"},
+                                {"error": "您已放弃拟录取，无法再次登录，请联系招生老师"},
                                 status=status.HTTP_403_FORBIDDEN
                             )
 
-                    # 先进行微信账号绑定检查（如果提供了code）
+                    # 如果传入了 code，则先进行微信账号绑定检查
                     if code:
-                        # 使用微信的 API 将 code 换取 OpenID
+                        # 使用微信接口通过 code 换取 OpenID
                         url = 'https://api.weixin.qq.com/sns/jscode2session'
                         params = {
-                            'appid': 'wxa67ae78c4f1f6275',  # 你的微信小程序的 appid
-                            'secret': '7241b1950145a193f15b3584d50f3989',  # 你的微信小程序的 app secret
+                            'appid': 'wxa67ae78c4f1f6275',  # 微信小程序 appid
+                            'secret': '7241b1950145a193f15b3584d50f3989',  # 微信小程序 app secret
                             'js_code': code,
                             'grant_type': 'authorization_code'
                         }
@@ -247,21 +314,21 @@ class UserLoginView(APIView):
                         openid = data.get('openid')
 
                         if openid:
-                            # 检查该用户是否已经绑定了其他微信账号
+                            # 检查当前用户是否已绑定其他微信账号
                             existing_wechat = WeChatAccount.objects.filter(user=user).exclude(openid=openid).first()
                             if existing_wechat:
                                 return Response({
-                                    'error': '该账号已绑定至其他设备，请在原设备上退出后重试'
+                                    'error': '该账号已绑定至其他设备，请先在原设备上退出后再试'
                                 }, status=status.HTTP_400_BAD_REQUEST)
                             
-                            # 查找或创建一个与 OpenID 对应的 WeChatAccount 对象
+                            # 查找或创建与 OpenID 对应的 WeChatAccount 对象
                             wechat_account, created = WeChatAccount.objects.get_or_create(
                                 openid=openid,
                                 defaults={'user': user, 'session_key': session_key})
 
-                            # 检查 WeChatAccount 的 user 是否存在
+                            # 检查 WeChatAccount 关联的用户是否存在
                             if not User.objects.filter(id=wechat_account.user_id).exists():
-                                # 如果 user 不存在，删除该 WeChatAccount 记录
+                                # 如果关联用户不存在，则删除旧的 WeChatAccount 记录
                                 wechat_account.delete()
                                 # 重新创建 WeChatAccount 记录
                                 wechat_account = WeChatAccount.objects.create(
@@ -270,7 +337,7 @@ class UserLoginView(APIView):
                                     session_key=session_key
                                 )
 
-                            # ⚠️ 如果 WeChatAccount 已经绑定了其他用户，拒绝登录（不删除原用户Token）
+                            # 如果该微信账号已绑定其他用户，则拒绝登录
                             if wechat_account.user != user:
                                 # 返回已绑定用户的用户名
                                 bound_username = wechat_account.user.username
@@ -283,14 +350,14 @@ class UserLoginView(APIView):
                             wechat_account.session_key = session_key
                             wechat_account.save()
 
-                    # ✅ 所有验证通过后，才删除旧Token并生成新Token
-                    # 删除该用户的所有旧 Token
+                    # 所有验证通过后，删除旧 Token 并生成新 Token
+                    # 删除该用户已有的全部旧 Token
                     Token.objects.filter(user=user).delete()
 
-                    # 生成一个新的 Token
+                    # 生成新的 Token
                     token = Token.objects.create(user=user)
 
-                    # 如果设备 ID 存在，将其与 Token 关联（可选）
+                    # 如果传入设备 ID，则将其和 Token 关联（可选）
                     if device_id:
                         token.device_id = device_id
                         token.save()
@@ -306,9 +373,9 @@ class UserLoginView(APIView):
                                          'user_information': ProfessorSerializer(user_information).data,
                                          'user_id': user.id})
                     else:
-                        return Response({'error': 'Invalid usertype'}, status=status.HTTP_401_UNAUTHORIZED)
+                        return Response({'error': '无效的用户类型'}, status=status.HTTP_401_UNAUTHORIZED)
                 else:
-                    return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
+                    return Response({'error': '用户名或密码错误'}, status=status.HTTP_401_UNAUTHORIZED)
             else:
                 # 序列化器验证失败，格式化错误信息
                 try:
@@ -322,7 +389,7 @@ class UserLoginView(APIView):
                     print(f"Error formatting serializer errors: {e}")
                 return Response({'error': error_text}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
-            # 捕获所有未预期的异常
+            # 捕获所有未预期异常
             print(f"Login error: {str(e)}")
             import traceback
             traceback.print_exc()
@@ -331,7 +398,7 @@ class UserLoginView(APIView):
         
 # 修改密码
 class ChangePasswordView(APIView):
-    permission_classes = [IsAuthenticated]  # 需要登录才能修改密码
+    permission_classes = [IsAuthenticated]  # 需要登录后才能修改密码
 
     def post(self, request):
         serializer = ChangePasswordSerializer(data=request.data)
@@ -341,7 +408,7 @@ class ChangePasswordView(APIView):
             old_password = serializer.validated_data['old_password']
             new_password = serializer.validated_data['new_password']
 
-            # 验证旧密码是否正确
+            # 校验旧密码是否正确
             if user.check_password(old_password):
                 user.set_password(new_password)
                 user.save()
@@ -363,13 +430,13 @@ class UpdateProfessorView(APIView):
         # 检查是否传入了 signature_temp 字段
         signature_temp = request.data.get('signature_temp', None)
         if signature_temp:
-            # 获取学生id
+            # 获取学生 ID
             student_id = request.data.get('student_id')
             if not student_id:
                 return Response({'message': '学生ID未提供'}, status=status.HTTP_400_BAD_REQUEST)
 
             try:
-                # 获取该ID的学生并获取待导师签名的pdf云端文件id
+                # 获取该学生及其待导师签名的 PDF 云文件 ID
                 student = Student.objects.get(id=student_id)
                 student_pdf_file_id = student.signature_table
             except Student.DoesNotExist:
@@ -383,23 +450,23 @@ class UpdateProfessorView(APIView):
             else:
                 return Response({'message': '获取签名图片下载地址失败'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-            # 获取学生PDF的下载地址
+            # 获取学生 PDF 的下载地址
             response_data_pdf = self.get_fileid_download_url(student_pdf_file_id)
             if response_data_pdf.get("errcode") == 0:
                 pdf_download_url = response_data_pdf['file_list'][0]['download_url']
-                print(f"PDF下载地址: {pdf_download_url}")
+                print(f"PDF 下载地址: {pdf_download_url}")
             else:
-                return Response({'message': '获取PDF下载地址失败'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                return Response({'message': '获取 PDF 下载地址失败'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
             # signature_download_url = 'https://7072-prod-2g1jrmkk21c1d283-1319836128.tcb.qcloud.la/signature/professor/zhujian123_signature.png'
             # pdf_download_url = 'https://7072-prod-2g1jrmkk21c1d283-1319836128.tcb.qcloud.la/signature/student/S2022666_1727257165_agreement.pdf'
-            # 生成包含签名和导师信息的PDF
+            # 生成包含签名和导师信息的 PDF
             try:
                 self.generate_and_upload_pdf(professor, signature_download_url, pdf_download_url, student)
             except Exception as e:
-                return Response({'message': f'生成或上传PDF失败: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                return Response({'message': f'生成或上传 PDF 失败: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-        # 将 request.data 转换为一个可修改的字典
+        # 将 request.data 转成可修改的副本
         mutable_data = request.data.copy()
         mutable_data.pop('student_id', None)
         mutable_data.pop('professor_id', None)
@@ -425,7 +492,7 @@ class UpdateProfessorView(APIView):
             ]
         }
 
-        # 发送POST请求
+        # 发送 POST 请求
         response = requests.post(url, json=data)
         return response.json()
 
@@ -433,9 +500,9 @@ class UpdateProfessorView(APIView):
 
     def generate_and_upload_pdf(self, professor, signature_url, pdf_url, student):
         """
-        生成包含签名图片和导师信息的PDF，并上传到微信云托管
+        生成包含签名图片和导师信息的 PDF，并上传到微信云托管
         """
-        # 下载签名图片和PDF
+        # 下载签名图片和 PDF
         signature_image = self.download_file(signature_url)
         pdf_file = self.download_file(pdf_url)
 
@@ -445,13 +512,13 @@ class UpdateProfessorView(APIView):
         # 将当前时间转换为时间戳
         timestamp = int(now.timestamp())
 
-        # 将时间戳转换为字符串
+        # 将时间戳转成字符串
         timestamp_str = str(timestamp)
 
-        # 使用PyPDF2等库合并签名图片和PDF文件
+        # 使用 PyPDF2 等库合并签名图片和 PDF 文件
         updated_pdf_path = self.add_signature_to_pdf(pdf_file, signature_image, professor, student)
         print("完成签名")
-        # 上传合并后的PDF文件
+        # 上传合并后的 PDF 文件
         cloud_path = f"signature/student/{student.candidate_number}_{timestamp_str}_signed_agreement.pdf"
         print("开始上传")
         self.upload_to_wechat_cloud(updated_pdf_path, cloud_path, student)
@@ -468,13 +535,13 @@ class UpdateProfessorView(APIView):
 
     def add_signature_to_pdf(self, pdf_data, signature_data, professor, student):
         """
-        将签名图片添加到PDF中，并返回包含签名的PDF文件路径
+        将签名图片添加到 PDF 中，并返回带签名的 PDF 文件路径
         """
         # 将签名图片保存为临时文件
-        signature_image_path = f"/app/Select_Information/tempFile/{professor.teacher_identity_id}_signature_image.png"  # 你可以根据需要更改保存路径
+        signature_image_path = f"/app/Select_Information/tempFile/{professor.teacher_identity_id}_signature_image.png"  # 可按需调整保存路径
         with open(signature_image_path, "wb") as f:
             f.write(signature_data)
-        # 假设使用 reportlab 和 PyPDF2 来处理PDF和签名合并
+        # 使用 reportlab 和 PyPDF2 处理 PDF 与签名合并
         packet = io.BytesIO()
         can = canvas.Canvas(packet, pagesize=letter)
         try:
@@ -489,7 +556,7 @@ class UpdateProfessorView(APIView):
         can.drawImage(signature_image_path, 420, 320, width=100, height=50)
         can.drawString(172, 427, student.name)
         can.drawString(363, 427, student.subject.subject_name)
-        date = timezone.now().strftime("%Y 年 %m 月 %d 日")
+        date = timezone.now().strftime("%Y 年%m 月%d 日")
         can.drawString(324, 305, date)
         can.save()
         packet.seek(0)
@@ -500,7 +567,7 @@ class UpdateProfessorView(APIView):
         output = PdfWriter()
         for i in range(len(existing_pdf.pages)):
             page = existing_pdf.pages[i]
-            if i == 0:  # 假设我们只在第一页添加签名
+            if i == 0:  # 默认只在第一页叠加签名
                 page.merge_page(overlay_pdf.pages[0])
             output.add_page(page)
 
@@ -510,7 +577,7 @@ class UpdateProfessorView(APIView):
         # 将当前时间转换为时间戳
         timestamp = int(now.timestamp())
 
-        # 将时间戳转换为字符串
+        # 将时间戳转成字符串
         timestamp_str = str(timestamp)
 
         updated_pdf_path = f"/app/Select_Information/tempFile/{professor.user_name.username}_{timestamp_str}_signed_agreement.pdf"
@@ -521,9 +588,9 @@ class UpdateProfessorView(APIView):
 
     def upload_to_wechat_cloud(self, save_path, cloud_path, student):
         """
-        上传生成的PDF到微信云托管
+        上传生成的 PDF 到微信云托管
         """
-        # 正常情况日志级别使用 INFO，需要定位时可以修改为 DEBUG，此时 SDK 会打印和服务端的通信信息
+        # 正常情况下使用 INFO 级别日志，排查问题时可临时改为 DEBUG
         logging.basicConfig(level=logging.INFO, stream=sys.stdout)
 
         secret_id = os.environ.get("COS_SECRET_ID")
@@ -545,7 +612,7 @@ class UpdateProfessorView(APIView):
                 "path": cloud_path,
             }
 
-            # 发送POST请求
+            # 发送 POST 请求
             response = requests.post(url, json=data)
             response_data = response.json()
             print(response_data)
@@ -602,18 +669,18 @@ class UpdateStudentView(APIView):
             else:
                 return Response({'message': '获取签名图片下载地址失败'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-            # 获取学生PDF的下载地址
+            # 获取学生 PDF 的下载地址
             response_data_pdf = self.get_fileid_download_url(student_pdf_file_id)
             if response_data_pdf.get("errcode") == 0:
                 pdf_download_url = response_data_pdf['file_list'][0]['download_url']
-                print(f"PDF下载地址: {pdf_download_url}")
+                print(f"PDF 下载地址: {pdf_download_url}")
             else:
-                return Response({'message': '获取PDF下载地址失败'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                return Response({'message': '获取 PDF 下载地址失败'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
             try:
                 self.generate_and_upload_pdf(signature_download_url, pdf_download_url, student)
             except Exception as e:
-                return Response({'message': f'生成或上传PDF失败: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                return Response({'message': f'生成或上传 PDF 失败: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
         # 学生签名放弃表
         if signature_temp and professor_id == '-1':
@@ -627,21 +694,21 @@ class UpdateStudentView(APIView):
             else:
                 return Response({'message': '获取签名图片下载地址失败'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-            # 获取学生PDF的下载地址
+            # 获取学生 PDF 的下载地址
             response_data_pdf = self.get_fileid_download_url(student_pdf_file_id)
             if response_data_pdf.get("errcode") == 0:
                 pdf_download_url = response_data_pdf['file_list'][0]['download_url']
-                print(f"PDF下载地址: {pdf_download_url}")
+                print(f"PDF 下载地址: {pdf_download_url}")
             else:
-                return Response({'message': '获取PDF下载地址失败'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                return Response({'message': '获取 PDF 下载地址失败'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
             try:
                 self.generate_and_upload_giveup_pdf(signature_download_url, pdf_download_url, student)
             except Exception as e:
-                return Response({'message': f'生成或上传PDF失败: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                return Response({'message': f'生成或上传 PDF 失败: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-        # 将 request.data 转换为一个可修改的字典
+        # 将 request.data 转成可修改的副本
         mutable_data = request.data.copy()
         mutable_data.pop('student_id', None)
         mutable_data.pop('professor_id', None)
@@ -668,7 +735,7 @@ class UpdateStudentView(APIView):
             ]
         }
 
-        # 发送POST请求
+        # 发送 POST 请求
         response = requests.post(url, json=data)
         return response.json()
 
@@ -676,9 +743,9 @@ class UpdateStudentView(APIView):
 
     def generate_and_upload_pdf(self, signature_url, pdf_url, student):
         """
-        生成包含签名图片和导师信息的PDF，并上传到微信云托管
+        生成包含签名图片和导师信息的 PDF，并上传到微信云托管
         """
-        # 下载签名图片和PDF
+        # 下载签名图片和 PDF
         signature_image = self.download_file(signature_url)
         pdf_file = self.download_file(pdf_url)
 
@@ -688,38 +755,38 @@ class UpdateStudentView(APIView):
         # 将当前时间转换为时间戳
         timestamp = int(now.timestamp())
 
-        # 将时间戳转换为字符串
+        # 将时间戳转成字符串
         timestamp_str = str(timestamp)
 
-        # 使用PyPDF2等库合并签名图片和PDF文件
+        # 使用 PyPDF2 等库合并签名图片和 PDF 文件
         updated_pdf_path = self.add_signature_to_pdf(pdf_file, signature_image, student)
         print("完成签名")
-        # 上传合并后的PDF文件
+        # 上传合并后的 PDF 文件
         cloud_path = f"signature/student/{student.candidate_number}_{timestamp_str}_signed_agreement.pdf"
         print("开始上传")
         self.upload_to_wechat_cloud(updated_pdf_path, cloud_path, student)
 
     def generate_and_upload_giveup_pdf(self, signature_url, pdf_url, student):
         """
-        生成包含签名图片和导师信息的PDF，并上传到微信云托管
+        生成包含签名图片和导师信息的 PDF，并上传到微信云托管
         """
-        # 下载签名图片和PDF
+        # 涓嬭浇绛惧悕鍥剧墖鍜孭DF
         signature_image = self.download_file(signature_url)
         pdf_file = self.download_file(pdf_url)
 
-        # 获取当前时间
+        # 鑾峰彇褰撳墠鏃堕棿
         now = datetime.now()
 
-        # 将当前时间转换为时间戳
+        # 灏嗗綋鍓嶆椂闂磋浆鎹负鏃堕棿鎴?
         timestamp = int(now.timestamp())
 
-        # 将时间戳转换为字符串
+        # 灏嗘椂闂存埑杞崲涓哄瓧绗︿覆
         timestamp_str = str(timestamp)
 
-        # 使用PyPDF2等库合并签名图片和PDF文件
+        # 使用 PyPDF2 等库合并签名图片和 PDF 文件
         updated_pdf_path = self.add_signature_to_giveup_pdf(pdf_file, signature_image, student)
-        print("完成签名")
-        # 上传合并后的PDF文件
+        print("瀹屾垚绛惧悕")
+        # 上传合并后的 PDF 文件
         cloud_path = f"signature/student/{student.candidate_number}_{timestamp_str}_signed_giveup_table.pdf"
         print("开始上传")
         self.upload_to_wechat_cloud_giveup(updated_pdf_path, cloud_path, student)
@@ -736,13 +803,13 @@ class UpdateStudentView(APIView):
 
     def add_signature_to_pdf(self, pdf_data, signature_data, student):
         """
-        将签名图片添加到PDF中，并返回包含签名的PDF文件路径
+        将签名图片添加到 PDF 中，并返回带签名的 PDF 文件路径
         """
         # 将签名图片保存为临时文件
-        signature_image_path = f"/app/Select_Information/tempFile/{student.candidate_number}_signature_image.png"  # 你可以根据需要更改保存路径
+        signature_image_path = f"/app/Select_Information/tempFile/{student.candidate_number}_signature_image.png"  # 可按需调整保存路径
         with open(signature_image_path, "wb") as f:
             f.write(signature_data)
-        # 假设使用 reportlab 和 PyPDF2 来处理PDF和签名合并
+        # 使用 reportlab 和 PyPDF2 处理 PDF 与签名合并
         packet = io.BytesIO()
         can = canvas.Canvas(packet, pagesize=letter)
         try:
@@ -755,7 +822,7 @@ class UpdateStudentView(APIView):
             traceback.print_exc()
 
         can.drawImage(signature_image_path, 390, 498, width=100, height=50)
-        date = timezone.now().strftime("%Y 年 %m 月 %d 日")
+        date = timezone.now().strftime("%Y 年%m 月%d 日")
         can.drawString(324, 485, date)
         can.save()
         packet.seek(0)
@@ -766,7 +833,7 @@ class UpdateStudentView(APIView):
         output = PdfWriter()
         for i in range(len(existing_pdf.pages)):
             page = existing_pdf.pages[i]
-            if i == 0:  # 假设我们只在第一页添加签名
+            if i == 0:  # 默认只在第一页叠加签名
                 page.merge_page(overlay_pdf.pages[0])
             output.add_page(page)
 
@@ -776,7 +843,7 @@ class UpdateStudentView(APIView):
         # 将当前时间转换为时间戳
         timestamp = int(now.timestamp())
 
-        # 将时间戳转换为字符串
+        # 将时间戳转成字符串
         timestamp_str = str(timestamp)
 
         updated_pdf_path = f"/app/Select_Information/tempFile/{student.candidate_number}_{timestamp_str}_signed_agreement.pdf"
@@ -787,13 +854,13 @@ class UpdateStudentView(APIView):
     
     def add_signature_to_giveup_pdf(self, pdf_data, signature_data, student):
         """
-        将签名图片添加到PDF中，并返回包含签名的PDF文件路径
+        将签名图片添加到 PDF 中，并返回带签名的 PDF 文件路径
         """
         # 将签名图片保存为临时文件
-        signature_image_path = f"/app/Select_Information/tempFile/{student.candidate_number}_signature_image.png"  # 你可以根据需要更改保存路径
+        signature_image_path = f"/app/Select_Information/tempFile/{student.candidate_number}_signature_image.png"  # 可按需调整保存路径
         with open(signature_image_path, "wb") as f:
             f.write(signature_data)
-        # 假设使用 reportlab 和 PyPDF2 来处理PDF和签名合并
+        # 使用 reportlab 和 PyPDF2 处理 PDF 与签名合并
         packet = io.BytesIO()
         can = canvas.Canvas(packet, pagesize=letter)
         try:
@@ -806,7 +873,7 @@ class UpdateStudentView(APIView):
             traceback.print_exc()
 
         can.drawImage(signature_image_path, 388, 429, width=100, height=50)
-        date = timezone.now().strftime("%Y 年 %m 月 %d 日")
+        date = timezone.now().strftime("%Y 年%m 月%d 日")
         can.drawString(324, 420, date)
         can.save()
         packet.seek(0)
@@ -817,7 +884,7 @@ class UpdateStudentView(APIView):
         output = PdfWriter()
         for i in range(len(existing_pdf.pages)):
             page = existing_pdf.pages[i]
-            if i == 0:  # 假设我们只在第一页添加签名
+            if i == 0:  # 默认只在第一页叠加签名
                 page.merge_page(overlay_pdf.pages[0])
             output.add_page(page)
         
@@ -827,7 +894,7 @@ class UpdateStudentView(APIView):
         # 将当前时间转换为时间戳
         timestamp = int(now.timestamp())
 
-        # 将时间戳转换为字符串
+        # 将时间戳转成字符串
         timestamp_str = str(timestamp)
 
         updated_pdf_path = f"/app/Select_Information/tempFile/{student.candidate_number}_{timestamp_str}_signed_giveup_table.pdf"
@@ -838,9 +905,9 @@ class UpdateStudentView(APIView):
 
     def upload_to_wechat_cloud(self, save_path, cloud_path, student):
         """
-        上传生成的PDF到微信云托管
+        上传生成的 PDF 到微信云托管
         """
-        # 正常情况日志级别使用 INFO，需要定位时可以修改为 DEBUG，此时 SDK 会打印和服务端的通信信息
+        # 正常情况下使用 INFO 级别日志，排查问题时可临时改为 DEBUG
         logging.basicConfig(level=logging.INFO, stream=sys.stdout)
 
         secret_id = os.environ.get("COS_SECRET_ID")
@@ -862,7 +929,7 @@ class UpdateStudentView(APIView):
                 "path": cloud_path,
             }
 
-            # 发送POST请求
+            # 发送 POST 请求
             response = requests.post(url, json=data)
             response_data = response.json()
             print(response_data)
@@ -880,7 +947,7 @@ class UpdateStudentView(APIView):
             )
             print(f"文件上传成功: {response['ETag']}")
 
-            # 上传成功后将路径保存到学生模型的 signature_table 字段
+            # 涓婁紶鎴愬姛鍚庡皢璺緞淇濆瓨鍒板鐢熸ā鍨嬬殑 signature_table 瀛楁
             student.signature_table = response_data['file_id']
             student.signature_table_student_signatured = True
             student.save()
@@ -896,9 +963,9 @@ class UpdateStudentView(APIView):
 
     def upload_to_wechat_cloud_giveup(self, save_path, cloud_path, student):
         """
-        上传生成的PDF到微信云托管
+        涓婁紶鐢熸垚鐨凱DF鍒板井淇′簯鎵樼
         """
-        # 正常情况日志级别使用 INFO，需要定位时可以修改为 DEBUG，此时 SDK 会打印和服务端的通信信息
+        # 正常情况下使用 INFO 级别日志，排查问题时可临时改为 DEBUG
         logging.basicConfig(level=logging.INFO, stream=sys.stdout)
 
         secret_id = os.environ.get("COS_SECRET_ID")
@@ -920,7 +987,7 @@ class UpdateStudentView(APIView):
                 "path": cloud_path,
             }
 
-            # 发送POST请求
+            # 鍙戦€丳OST璇锋眰
             response = requests.post(url, json=data)
             response_data = response.json()
             print(response_data)
@@ -933,14 +1000,14 @@ class UpdateStudentView(APIView):
                 MAXThread=10,
                 EnableMD5=False,
                 Metadata={
-                    'x-cos-meta-fileid': response_data['cos_file_id']  # 自定义元数据
+                    'x-cos-meta-fileid': response_data['cos_file_id']  # 鑷畾涔夊厓鏁版嵁
                 }
             )
             print(f"文件上传成功: {response['ETag']}")
 
-            # 上传成功后将路径保存到学生模型的 signature_table 字段
+            # 涓婁紶鎴愬姛鍚庡皢璺緞淇濆瓨鍒板鐢熸ā鍨嬬殑 signature_table 瀛楁
             student.giveup_signature_table = response_data['file_id']
-            student.is_signate_giveup_table = True # 放弃说明表签名成功
+            student.is_signate_giveup_table = True  # 放弃说明表签名成功
             student.save()
             print(f"文件路径已保存到学生的 giveup_signature_table: {cloud_path}")
 
@@ -1013,7 +1080,7 @@ class UserLoginInfoView(APIView):
         if usertype == 'student':
             student = request.user.student
 
-            if student.is_giveup:  # 这里也加一层保护
+            if student.is_giveup:  # 这里也增加一层保护
                 return Response(
                     {"detail": "您已放弃拟录取，无法获取登录信息，请联系招生老师"},
                     status=status.HTTP_403_FORBIDDEN
@@ -1026,7 +1093,7 @@ class UserLoginInfoView(APIView):
             user_information = Professor.objects.get(id=professor.id)
             return Response(ProfessorSerializer(user_information).data, status=status.HTTP_200_OK)
         else:
-            return Response({'error': 'Invalid usertype'}, status=status.HTTP_401_UNAUTHORIZED)
+            return Response({'error': '无效的用户类型'}, status=status.HTTP_401_UNAUTHORIZED)
         
 
 # 提交审核信息
@@ -1045,7 +1112,7 @@ class SubmitQuotaView(APIView):
             academic_select_list = request.data.get('academic_select_list', [])
             professional_select_list = request.data.get('professional_select_list', [])
 
-            # 检查数据是否包含NaN值，如果包含，将其替换为0
+            # 检查数据中是否包含 NaN，如有则替换为 0
             
             # if isnan(academic_quota):
             #     academic_quota = 0
@@ -1056,7 +1123,7 @@ class SubmitQuotaView(APIView):
             # if isnan(doctor_quota):
             #     doctor_quota = 0
 
-            # 将获取的数据保存到导师的属性中
+            # 将获取到的数据保存到导师属性中
 
             # professor.academic_quota = academic_quota
             # professor.professional_quota = professional_quota
@@ -1067,12 +1134,12 @@ class SubmitQuotaView(APIView):
             # 清空导师的招生专业
             professor.enroll_subject.clear()
 
-            # 根据ID列表添加新的专业
+            # 根据 ID 列表添加新的专业
             # for subject_id in academic_select_list + professional_select_list:
             #     subject = Subject.objects.get(id=subject_id)
             #     professor.enroll_subject.add(subject)
 
-            # 保存导师的更改
+            # 保存导师的变更
             professor.save()
             
             return Response({'message': '指标设置成功'}, status=status.HTTP_200_OK)
@@ -1084,7 +1151,25 @@ class DepartmentReviewersView(APIView):
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        departments = Department.objects.all()
+        departments = Department.objects.prefetch_related(
+            Prefetch(
+                'professor_set',
+                queryset=Professor.objects.filter(
+                    department_position__in=[1, 2]
+                ).select_related('department').prefetch_related(
+                    'enroll_subject',
+                    Prefetch(
+                        'master_quotas',
+                        queryset=ProfessorMasterQuota.objects.select_related('subject')
+                    ),
+                    Prefetch(
+                        'doctor_quotas',
+                        queryset=ProfessorDoctorQuota.objects.select_related('subject')
+                    )
+                ),
+                to_attr='reviewer_professors'
+            )
+        ).all()
         serializer = DepartmentReviewerSerializer(departments, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
@@ -1110,7 +1195,7 @@ class CreateGiveupSignatureView(APIView):
 
 
     def generate_and_upload_giveup_signature(self, student):
-        date = timezone.now().strftime("%Y 年 %m 月 %d 日")
+        date = timezone.now().strftime("%Y 年%m 月%d 日")
         student_name = student.name
         student_major = student.subject.subject_name
         identity_number = student.identify_number or ''
@@ -1119,7 +1204,7 @@ class CreateGiveupSignatureView(APIView):
         now = datetime.now()
         # 将当前时间转换为时间戳
         timestamp = int(now.timestamp())
-        # 将时间戳转换为字符串
+        # 将时间戳转成字符串
         timestamp_str = str(timestamp)
 
         # 生成 PDF
@@ -1132,7 +1217,7 @@ class CreateGiveupSignatureView(APIView):
 
         print("sava_path: ", save_path)
 
-        # 将图层与现有的 PDF 模板合并
+        # 将图层与现有 PDF 模板合并
         self.merge_pdfs(save_path, packet)
 
         print("sava file")
@@ -1142,7 +1227,7 @@ class CreateGiveupSignatureView(APIView):
         self.upload_to_wechat_cloud(save_path, cloud_path, student)
 
     def merge_pdfs(self, save_path, overlay_pdf):
-        """将生成的 PDF 图层与模板合并"""
+        """将生成的 PDF 图层与模板合并。"""
         template_pdf_path = r'/app/Select_Information/pdfTemplate/giveup.pdf'
         
         # 读取现有的 PDF 模板
@@ -1157,7 +1242,7 @@ class CreateGiveupSignatureView(APIView):
             template_page = template_pdf.pages[i]
             overlay_page = overlay_pdf.pages[i]
 
-            # 将插入内容叠加到模板上
+            # 将插入内容叠加到模板中
             template_page.merge_page(overlay_page)
             output.add_page(template_page)
 
@@ -1166,7 +1251,7 @@ class CreateGiveupSignatureView(APIView):
             output.write(output_stream)
 
     def create_overlay(self, name, major, date, identity_number):
-        """生成 PDF 文件的动态内容"""
+        """生成 PDF 文件的动态内容。"""
         packet = io.BytesIO()
         # print("done!")
         can = canvas.Canvas(packet, pagesize=letter)
@@ -1191,17 +1276,16 @@ class CreateGiveupSignatureView(APIView):
         return packet
 
     def upload_to_wechat_cloud(self, save_path, cloud_path, student):
-        # 正常情况日志级别使用 INFO，需要定位时可以修改为 DEBUG，此时 SDK 会打印和服务端的通信信息
+        # 正常情况下使用 INFO 级别日志，排查问题时可临时改为 DEBUG
         logging.basicConfig(level=logging.INFO, stream=sys.stdout)
 
 
-        # 1. 设置用户属性, 包括 secret_id, secret_key, region 等。Appid 已在CosConfig中移除，请在参数 Bucket 中带上 Appid。Bucket 由 BucketName-Appid 组成
-        secret_id = os.environ.get("COS_SECRET_ID")    # 用户的 SecretId，建议使用子账号密钥，授权遵循最小权限指引，降低使用风险。子账号密钥获取可参见 https://cloud.tencent.com/document/product/598/37140
-        secret_key = os.environ.get("COS_SECRET_KEY")   # 用户的 SecretKey，建议使用子账号密钥，授权遵循最小权限指引，降低使用风险。子账号密钥获取可参见 https://cloud.tencent.com/document/product/598/37140
-        region = 'ap-shanghai'      # 替换为用户的 region，已创建桶归属的region可以在控制台查看，https://console.cloud.tencent.com/cos5/bucket
-                                # COS 支持的所有 region 列表参见 https://cloud.tencent.com/document/product/436/6224
-        token = None               # 如果使用永久密钥不需要填入 token，如果使用临时密钥需要填入，临时密钥生成和使用指引参见 https://cloud.tencent.com/document/product/436/14048
-        scheme = 'https'           # 指定使用 http/https 协议来访问 COS，默认为 https，可不填
+        # 1. 设置 COS 客户端配置，包括 secret_id、secret_key、region 等信息
+        secret_id = os.environ.get("COS_SECRET_ID")    # 建议使用子账号密钥并遵循最小权限原则
+        secret_key = os.environ.get("COS_SECRET_KEY")   # 建议使用子账号密钥并遵循最小权限原则
+        region = 'ap-shanghai'      # 已创建桶所属的 region，可在腾讯云 COS 控制台查看
+        token = None               # 使用永久密钥时无需传 token，临时密钥场景再传入
+        scheme = 'https'           # 指定使用 http/https 协议访问 COS，默认使用 https
 
 
         config = CosConfig(Region=region, SecretId=secret_id, SecretKey=secret_key, Token=token, Scheme=scheme)
@@ -1217,7 +1301,7 @@ class CreateGiveupSignatureView(APIView):
                 "path": cloud_path,
             }
 
-            # 发送POST请求
+            # 发送 POST 请求
             response = requests.post(url, json=data)
             response_data = response.json()
             print(response_data)
@@ -1225,7 +1309,7 @@ class CreateGiveupSignatureView(APIView):
             # metadata = {
             #     "x-cos-meta-fileid": cloud_path
             # }
-            # 根据文件大小自动选择简单上传或分块上传，分块上传具备断点续传功能。
+            # 根据文件大小自动选择简单上传或分块上传，分块上传支持断点续传
             response = client.upload_file(
                 Bucket=os.environ.get("COS_BUCKET"),
                 LocalFilePath=save_path,
@@ -1239,14 +1323,14 @@ class CreateGiveupSignatureView(APIView):
             )
             print(f"文件上传成功: {response['ETag']}")
             # print(f"文件上传成功: {response}")
-            # 上传成功后删除本地的临时文件
+            # 上传成功后删除本地临时文件
             if os.path.exists(save_path):
                 os.remove(save_path)
                 print(f"本地临时文件已删除: {save_path}")
             else:
                 print(f"本地文件不存在: {save_path}")
 
-            # 上传成功后将路径保存到学生模型的 signature_table 字段
+            # 上传成功后将路径保存到学生模型的 giveup_signature_table 字段
             student.giveup_signature_table = response_data['file_id']
             student.save()  # 保存更新后的学生信息
             print(f"文件路径已保存到学生的 giveup_signature_table: {cloud_path}")
@@ -1268,30 +1352,30 @@ class SubmitGiveupSignatureView(APIView):
 
         print(student)
 
-        # 1.1 如果学生已完成导师互选，不允许放弃
+        # 1.1 如果学生已经完成师生互选，则不允许放弃
         if student.is_selected:
             return Response(
                 {'message': '您已完成师生互选，如需放弃请联系招生老师'},
                 status=status.HTTP_400_BAD_REQUEST
             )
         
-        # 1.2 如果学生是候补状态，不允许放弃
+        # 1.2 如果学生处于候补状态，则不允许放弃
         if student.is_alternate:
             return Response(
                 {'message': '您处于候补状态，无法提交'},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        # 2. 检查是否上传了放弃签署表
+        # 2. 检查是否已上传放弃签字表
         if not getattr(student, "is_signate_giveup_table", False):
             return Response({'message': '请先上传放弃拟录取说明表'}, status=status.HTTP_400_BAD_REQUEST)
 
-        # 3. 确认有签署表才允许放弃
+        # 3. 确认已签字后才允许放弃
         if student.giveup_signature_table:
             student.is_giveup = True
             student.save()
 
-            # 把所有“请等待”的改成“已取消”
+            # 将所有“请等待”的记录改成“已取消”
             waiting_choices = StudentProfessorChoice.objects.filter(student=student, status=3)
             cancelled_count = waiting_choices.update(status=4, finish_time=timezone.now())
 
@@ -1350,3 +1434,4 @@ class SubmitGiveupSignatureView(APIView):
                 print(f"通知发送失败: {response_data.get('errmsg')}")
         except WeChatAccount.DoesNotExist:
             print("学生微信账号不存在，无法发送通知。")
+

@@ -105,6 +105,7 @@ export default function StudentsPage() {
     admission_year: undefined,
     admission_batch_id: undefined,
     can_login: undefined,
+    selection_display_enabled: undefined,
     student_type: undefined,
     postgraduate_type: undefined,
     is_selected: undefined,
@@ -206,6 +207,7 @@ export default function StudentsPage() {
       admission_year: undefined,
       admission_batch_id: undefined,
       can_login: undefined,
+      selection_display_enabled: undefined,
       student_type: undefined,
       postgraduate_type: undefined,
       is_selected: undefined,
@@ -228,6 +230,7 @@ export default function StudentsPage() {
       postgraduate_type: 1,
       study_mode: true,
       can_login: true,
+      selection_display_enabled: true,
       admission_year: getDefaultAdmissionYear(),
       is_selected: false,
       is_alternate: false,
@@ -248,6 +251,7 @@ export default function StudentsPage() {
         admission_year: detail.admission_year,
         admission_batch_id: detail.admission_batch?.id,
         can_login: detail.can_login,
+        selection_display_enabled: detail.selection_display_enabled,
         student_type: detail.student_type,
         postgraduate_type: detail.postgraduate_type,
         study_mode: detail.study_mode,
@@ -348,6 +352,34 @@ export default function StudentsPage() {
     await execute();
   }
 
+  async function toggleSelectedStudentsDisplay(selectionDisplayEnabled) {
+    const actionText = selectionDisplayEnabled ? '开启' : '关闭';
+    const targetCount = selectedRowKeys.length;
+    if (!targetCount) {
+      message.warning('请先选择学生。');
+      return;
+    }
+
+    const execute = () =>
+      runAction(
+        () => post('/students/actions/toggle-selection-display/', { ids: selectedRowKeys, selection_display_enabled: selectionDisplayEnabled }),
+        `已${actionText}选中学生的可选学生池展示`,
+      );
+
+    if (!selectionDisplayEnabled) {
+      confirmDanger({
+        title: '确认关闭选中学生的可选学生池展示吗？',
+        content: `关闭后，这 ${targetCount} 名学生将不会出现在小程序导师端的可选学生列表中。`,
+        okText: '确认关闭',
+        cancelText: '取消',
+        onOk: execute,
+      });
+      return;
+    }
+
+    await execute();
+  }
+
   async function batchDownload(fileType, filename) {
     try {
       await postDownload('/students/actions/batch-download/', { ids: selectedRowKeys, file_type: fileType }, filename);
@@ -398,6 +430,13 @@ export default function StudentsPage() {
       key: 'can_login',
       sorter: true,
       render: (value) => (value ? <Tag color="green">允许登录</Tag> : <Tag color="red">禁止登录</Tag>),
+    },
+    {
+      title: '可选学生池显示',
+      dataIndex: 'selection_display_enabled',
+      key: 'selection_display_enabled',
+      sorter: true,
+      render: (value) => (value ? <Tag color="blue">显示</Tag> : <Tag color="default">隐藏</Tag>),
     },
     {
       title: '当前状态',
@@ -462,6 +501,33 @@ export default function StudentsPage() {
             }
           >
             {record.can_login ? '关闭登录' : '开启登录'}
+          </Button>
+          <Button
+            size="small"
+            onClick={() => {
+              const checked = !record.selection_display_enabled;
+              const execute = () =>
+                post('/students/actions/toggle-selection-display/', { ids: [record.id], selection_display_enabled: checked })
+                  .then((payload) => {
+                    message.success(payload?.detail || '操作成功');
+                    fetchData();
+                  })
+                  .catch((error) => message.error(error.message));
+
+              if (!checked) {
+                confirmDanger({
+                  title: '确认关闭该学生的可选学生池展示吗？',
+                  content: `${record.name}（${record.candidate_number}）将从导师端可选学生列表中隐藏。`,
+                  okText: '确认关闭',
+                  cancelText: '取消',
+                  onOk: execute,
+                });
+                return;
+              }
+              execute();
+            }}
+          >
+            {record.selection_display_enabled ? '隐藏展示' : '恢复展示'}
           </Button>
           <Button
             size="small"
@@ -533,6 +599,14 @@ export default function StudentsPage() {
               value={filters.can_login}
               options={buildBooleanOptions('允许登录', '禁止登录')}
               onChange={(value) => updateFilter('can_login', value)}
+            />
+            <Select
+              allowClear
+              placeholder="按展示状态筛选"
+              style={{ width: 160 }}
+              value={filters.selection_display_enabled}
+              options={buildBooleanOptions('显示', '隐藏')}
+              onChange={(value) => updateFilter('selection_display_enabled', value)}
             />
             <Select
               allowClear
@@ -608,6 +682,12 @@ export default function StudentsPage() {
               onClick={() => toggleSelectedStudentsLogin(false)}
             >
               关闭选中学生登录
+            </Button>
+            <Button disabled={!selectedRowKeys.length} loading={actionLoading} onClick={() => toggleSelectedStudentsDisplay(true)}>
+              开启选中学生展示
+            </Button>
+            <Button disabled={!selectedRowKeys.length} loading={actionLoading} onClick={() => toggleSelectedStudentsDisplay(false)}>
+              关闭选中学生展示
             </Button>
             <Button
               icon={<LockOutlined />}
@@ -725,6 +805,9 @@ export default function StudentsPage() {
               </Form.Item>
               <Form.Item label="允许登录小程序" name="can_login" valuePropName="checked">
                 <Switch checkedChildren="允许" unCheckedChildren="禁止" />
+              </Form.Item>
+              <Form.Item label="显示在可选学生池" name="selection_display_enabled" valuePropName="checked">
+                <Switch checkedChildren="显示" unCheckedChildren="隐藏" />
               </Form.Item>
             </div>
           </div>

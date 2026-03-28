@@ -3,6 +3,7 @@ from Professor_Student_Manage.models import (
     Professor,
     get_professor_heat_display_metrics,
     get_professor_heat_display_setting,
+    ProfessorHeatDisplaySetting,
     ProfessorProfileSection,
     Student,
     Department,
@@ -483,12 +484,24 @@ class ProfessorListSerializer(serializers.ModelSerializer):
         return self._get_available_doctor_subject_names(instance)
 
     def _get_heat_metrics(self, instance):
-        if not hasattr(instance, '_heat_metrics_cache'):
-            instance._heat_metrics_cache = get_professor_heat_display_metrics(
+        setting = self.context.get('heat_setting') or get_professor_heat_display_setting()
+        subject = self.context.get('heat_subject')
+        postgraduate_type = self.context.get('heat_postgraduate_type')
+        cache_key = (
+            getattr(setting, 'calculation_scope', ProfessorHeatDisplaySetting.CALCULATION_SCOPE_OVERALL),
+            getattr(subject, 'id', subject),
+            postgraduate_type,
+        )
+        cache_map = getattr(instance, '_heat_metrics_cache_map', {})
+        if cache_key not in cache_map:
+            cache_map[cache_key] = get_professor_heat_display_metrics(
                 instance,
-                global_setting=get_professor_heat_display_setting(),
+                global_setting=setting,
+                subject=subject,
+                postgraduate_type=postgraduate_type,
             )
-        return instance._heat_metrics_cache
+            instance._heat_metrics_cache_map = cache_map
+        return cache_map[cache_key]
 
     def get_master_subjects(self, instance):
         return self._get_available_master_subject_names(instance)

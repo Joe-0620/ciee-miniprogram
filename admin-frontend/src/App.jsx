@@ -3,6 +3,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 
 import AlternatesPage from './pages/AlternatesPage';
 import AdmissionBatchesPage from './pages/AdmissionBatchesPage';
+import AvailableStudentsControlPage from './pages/AvailableStudentsControlPage';
 import AuditLogsPage from './pages/AuditLogsPage';
 import DashboardLayout from './layouts/DashboardLayout';
 import ChoicesPage from './pages/ChoicesPage';
@@ -49,6 +50,7 @@ export default function App() {
           <Route path="users" element={<UsersPage />} />
           <Route path="professors" element={<ProfessorsPage />} />
           <Route path="students" element={<StudentsPage />} />
+          <Route path="student-display-control" element={<AvailableStudentsControlPage />} />
           <Route path="choices" element={<ChoicesPage />} />
           <Route path="professor-heat" element={<ProfessorHeatPage />} />
           <Route path="reviews" element={<ReviewsPage />} />

@@ -15,6 +15,7 @@ from Professor_Student_Manage.models import (
     ProfessorMasterQuota,
     ProfessorDoctorQuota,
     ProfessorSharedQuotaPool,
+    get_professor_heat_display_setting,
     get_quota_source_for_student,
 )
 from rest_framework import generics
@@ -218,6 +219,13 @@ class ProfessorAndDepartmentListView(APIView):
         master_subject_ids = request.query_params.get('master_subject_ids', None)
         doctor_subject_ids = request.query_params.get('doctor_subject_ids', None)
         
+        heat_setting = get_professor_heat_display_setting()
+        heat_subject = None
+        heat_postgraduate_type = None
+        if hasattr(request.user, 'student'):
+            heat_subject = request.user.student.subject
+            heat_postgraduate_type = request.user.student.postgraduate_type
+
         # 获取所有方向
         departments = Department.objects.all()
         department_serializer = DepartmentSerializer(departments, many=True)
@@ -296,7 +304,16 @@ class ProfessorAndDepartmentListView(APIView):
         except:
             professors_page = paginator.page(1)
         
-        professor_serializer = ProfessorListSerializer(professors_page, many=True)
+        professor_serializer = ProfessorListSerializer(
+            professors_page,
+            many=True,
+            context={
+                'request': request,
+                'heat_setting': heat_setting,
+                'heat_subject': heat_subject,
+                'heat_postgraduate_type': heat_postgraduate_type,
+            },
+        )
         
         return Response({
             'departments': department_serializer.data,

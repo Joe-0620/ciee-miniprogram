@@ -4,6 +4,7 @@ from rest_framework.authtoken.models import Token
 
 from Enrollment_Manage.models import Department, Subject
 from Professor_Student_Manage.models import (
+    AvailableStudentDisplaySetting,
     AdmissionBatch,
     get_professor_heat_display_metrics,
     Professor,
@@ -151,6 +152,19 @@ class AdmissionBatchSerializer(serializers.ModelSerializer):
         ]
 
 
+class AvailableStudentDisplaySettingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AvailableStudentDisplaySetting
+        fields = [
+            'enabled',
+            'require_resume',
+            'allowed_admission_years',
+            'allowed_batch_ids',
+            'allowed_postgraduate_types',
+            'updated_at',
+        ]
+
+
 class SelectionTimeSerializer(serializers.ModelSerializer):
     status_text = serializers.SerializerMethodField()
     target_display = serializers.CharField(source='get_target_display', read_only=True)
@@ -218,9 +232,24 @@ class ProfessorListSerializer(serializers.ModelSerializer):
         ]
 
     def _get_heat_metrics(self, obj):
-        if not hasattr(obj, '_heat_metrics_cache'):
-            obj._heat_metrics_cache = get_professor_heat_display_metrics(obj)
-        return obj._heat_metrics_cache
+        setting = self.context.get('heat_setting')
+        subject = self.context.get('heat_subject')
+        postgraduate_type = self.context.get('heat_postgraduate_type')
+        cache_key = (
+            getattr(setting, 'calculation_scope', ProfessorHeatDisplaySetting.CALCULATION_SCOPE_OVERALL) if setting else 'overall',
+            getattr(subject, 'id', subject),
+            postgraduate_type,
+        )
+        cache_map = getattr(obj, '_heat_metrics_cache_map', {})
+        if cache_key not in cache_map:
+            cache_map[cache_key] = get_professor_heat_display_metrics(
+                obj,
+                global_setting=setting,
+                subject=subject,
+                postgraduate_type=postgraduate_type,
+            )
+            obj._heat_metrics_cache_map = cache_map
+        return cache_map[cache_key]
 
     def get_master_subjects(self, obj):
         quotas = getattr(obj, 'master_quotas', None)
@@ -329,9 +358,24 @@ class ProfessorHeatListSerializer(serializers.ModelSerializer):
         ]
 
     def _get_heat_metrics(self, obj):
-        if not hasattr(obj, '_heat_metrics_cache'):
-            obj._heat_metrics_cache = get_professor_heat_display_metrics(obj)
-        return obj._heat_metrics_cache
+        setting = self.context.get('heat_setting')
+        subject = self.context.get('heat_subject')
+        postgraduate_type = self.context.get('heat_postgraduate_type')
+        cache_key = (
+            getattr(setting, 'calculation_scope', ProfessorHeatDisplaySetting.CALCULATION_SCOPE_OVERALL) if setting else 'overall',
+            getattr(subject, 'id', subject),
+            postgraduate_type,
+        )
+        cache_map = getattr(obj, '_heat_metrics_cache_map', {})
+        if cache_key not in cache_map:
+            cache_map[cache_key] = get_professor_heat_display_metrics(
+                obj,
+                global_setting=setting,
+                subject=subject,
+                postgraduate_type=postgraduate_type,
+            )
+            obj._heat_metrics_cache_map = cache_map
+        return cache_map[cache_key]
 
     def get_available_quota_total(self, obj):
         return self._get_heat_metrics(obj)['available_quota_total']
@@ -356,9 +400,22 @@ class ProfessorHeatListSerializer(serializers.ModelSerializer):
 
 
 class ProfessorHeatDisplaySettingSerializer(serializers.ModelSerializer):
+    calculation_scope_display = serializers.CharField(source='get_calculation_scope_display', read_only=True)
+
     class Meta:
         model = ProfessorHeatDisplaySetting
-        fields = ['show_professor_heat', 'updated_at']
+        fields = [
+            'show_professor_heat',
+            'calculation_scope',
+            'calculation_scope_display',
+            'pending_weight',
+            'accepted_weight',
+            'rejected_weight',
+            'medium_threshold',
+            'high_threshold',
+            'very_high_threshold',
+            'updated_at',
+        ]
 
 
 class ProfessorDetailSerializer(serializers.ModelSerializer):
@@ -466,6 +523,7 @@ class StudentListSerializer(serializers.ModelSerializer):
             'admission_year',
             'admission_batch',
             'can_login',
+            'selection_display_enabled',
             'student_type',
             'student_type_display',
             'postgraduate_type',
@@ -528,6 +586,7 @@ class StudentDetailSerializer(serializers.ModelSerializer):
             'admission_year',
             'admission_batch',
             'can_login',
+            'selection_display_enabled',
             'student_type',
             'student_type_display',
             'postgraduate_type',

@@ -2,19 +2,24 @@ import React, { useEffect, useMemo, useState } from 'react';
 import {
   AuditOutlined,
   DashboardOutlined,
+  DesktopOutlined,
   KeyOutlined,
   LinkOutlined,
   LogoutOutlined,
+  MoonOutlined,
   ReadOutlined,
   ScheduleOutlined,
+  SkinOutlined,
+  SunOutlined,
   TeamOutlined,
   UserDeleteOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import { Button, Layout, Menu, Space, Typography, theme } from 'antd';
+import { Button, Dropdown, Layout, Menu, Space, Typography } from 'antd';
 import { Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom';
 
 import { post } from '../api/client';
+import { useDashboardTheme } from '../theme/DashboardThemeProvider';
 import { removeDashboardToken } from '../utils/auth';
 
 
@@ -53,7 +58,8 @@ const NAV_GROUPS = [
     label: '招生业务',
     children: [
       { key: '/choices', icon: <AuditOutlined />, label: '双选记录' },
-      { key: '/professor-heat', icon: <AuditOutlined />, label: '导师热度分析' },
+      { key: '/student-display-control', icon: <ReadOutlined />, label: '可选学生展示控制' },
+      { key: '/professor-heat', icon: <AuditOutlined />, label: '导师热度管理' },
       { key: '/reviews', icon: <ReadOutlined />, label: '审核记录' },
       { key: '/alternates', icon: <ScheduleOutlined />, label: '候补管理' },
       { key: '/giveups', icon: <UserDeleteOutlined />, label: '放弃录取' },
@@ -88,17 +94,29 @@ const flatItems = NAV_GROUPS.flatMap((group) =>
   })),
 );
 
+const THEME_OPTIONS = [
+  { key: 'system', label: '跟随系统', icon: <DesktopOutlined /> },
+  { key: 'light', label: '浅色模式', icon: <SunOutlined /> },
+  { key: 'dark', label: '深色模式', icon: <MoonOutlined /> },
+];
+
 export default function DashboardLayout() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { token } = theme.useToken();
   const [openKeys, setOpenKeys] = useState(['overview', 'accounts', 'people', 'admission', 'config']);
+  const { themeMode, resolvedThemeMode, setThemeMode } = useDashboardTheme();
 
   const selectedItem = useMemo(
     () => flatItems.find((item) => location.pathname === item.key || location.pathname.startsWith(`${item.key}/`)),
     [location.pathname],
   );
   const selectedKey = selectedItem?.key || '/';
+  const currentThemeOption = THEME_OPTIONS.find((option) => option.key === themeMode) || THEME_OPTIONS[0];
+  const themeMenuItems = THEME_OPTIONS.map((option) => ({
+    key: option.key,
+    icon: option.icon,
+    label: option.label,
+  }));
 
   useEffect(() => {
     if (selectedItem?.parentKey && !openKeys.includes(selectedItem.parentKey)) {
@@ -123,10 +141,7 @@ export default function DashboardLayout() {
       <Sider
         width={232}
         className="dashboard-sider"
-        style={{
-          background: `linear-gradient(180deg, ${token.colorPrimaryBg} 0%, #0f172a 100%)`,
-          paddingTop: 24,
-        }}
+        style={{ paddingTop: 24 }}
       >
         <Space direction="vertical" size={4} className="dashboard-sider-brand">
           <Typography.Title level={3} style={{ color: '#fff', margin: 0 }}>
@@ -154,9 +169,33 @@ export default function DashboardLayout() {
           <Typography.Title level={4} style={{ margin: 0 }}>
             招生管理后台
           </Typography.Title>
-          <Button icon={<LogoutOutlined />} onClick={onLogout}>
-            退出登录
-          </Button>
+          <Space size={12}>
+            <Dropdown
+              menu={{
+                items: themeMenuItems,
+                selectable: true,
+                selectedKeys: [themeMode],
+                onClick: ({ key }) => setThemeMode(key),
+              }}
+              trigger={['click']}
+            >
+              <Button icon={currentThemeOption.icon}>
+                <Space size={6}>
+                  <span>主题</span>
+                  <span className="theme-mode-label">
+                    {currentThemeOption.label}
+                    {themeMode === 'system' ? ` · 当前${resolvedThemeMode === 'dark' ? '深色' : '浅色'}` : ''}
+                  </span>
+                </Space>
+              </Button>
+            </Dropdown>
+            <Button icon={<SkinOutlined />} className="theme-mode-indicator" type="text">
+              {resolvedThemeMode === 'dark' ? '深色已启用' : '浅色已启用'}
+            </Button>
+            <Button icon={<LogoutOutlined />} onClick={onLogout}>
+              退出登录
+            </Button>
+          </Space>
         </Header>
         <Content className="dashboard-content">
           <Outlet />

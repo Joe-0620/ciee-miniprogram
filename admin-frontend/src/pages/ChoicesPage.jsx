@@ -241,7 +241,19 @@ export default function ChoicesPage() {
           >
             删除当前筛选结果
           </Button>
-          <Button danger loading={actionLoading} disabled={!selectedRowKeys.length} onClick={() => runAction(() => post('/choices/actions/cancel-approved/', { ids: selectedRowKeys }))}>
+          <Button
+            danger
+            loading={actionLoading}
+            disabled={!selectedRowKeys.length}
+            onClick={() =>
+              confirmDanger({
+                title: '确认撤销选中的已同意双选记录吗？',
+                content: `共 ${selectedRowKeys.length} 条记录，撤销后会回补对应名额。`,
+                okText: '确认',
+                onOk: () => runAction(() => post('/choices/actions/cancel-approved/', { ids: selectedRowKeys })),
+              })
+            }
+          >
             撤销已同意
           </Button>
           <Button loading={actionLoading} onClick={() => runAction(() => post('/choices/actions/reject-waiting-no-quota/', {}))}>

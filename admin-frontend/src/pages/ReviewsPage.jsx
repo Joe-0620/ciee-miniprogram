@@ -18,6 +18,7 @@ const statusMap = {
   1: { tone: 'success', text: '已通过' },
   2: { tone: 'error', text: '已驳回' },
   3: { tone: 'processing', text: '待审核' },
+  4: { tone: 'warning', text: '已撤销' },
 };
 
 export default function ReviewsPage() {

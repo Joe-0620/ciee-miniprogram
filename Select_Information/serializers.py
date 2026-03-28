@@ -35,6 +35,7 @@ class StudentProfessorChoiceSerializer(serializers.ModelSerializer):
 
     student_signature_table_student_signature_status = serializers.BooleanField(source='student.signature_table_student_signatured')
     student_signature_table_professor_signature_status = serializers.BooleanField(source='student.signature_table_professor_signatured')
+    review_reviewer_name = serializers.SerializerMethodField()
 
     # student_final_rank = serializers.CharField(source='student.final_rank')
     signature_table_review_status = serializers.SerializerMethodField()
@@ -47,7 +48,7 @@ class StudentProfessorChoiceSerializer(serializers.ModelSerializer):
                   'finish_time', 'student_phone', 'student_avatar', 'student_initial_exam_score', 'student_secondary_exam_score',
                   'student_initial_rank', 'student_secondary_rank', 'student_final_rank', 'professor_contact_details', 'student_pdf_file_id',
                   'signature_table_review_status', 'student_signature_table_review_status', 'student_signature_table_student_signature_status',
-                  'student_signature_table_professor_signature_status']
+                  'student_signature_table_professor_signature_status', 'review_reviewer_name']
 
     def get_signature_table_review_status(self, obj):
         REVIEW_STATUS = [
@@ -63,6 +64,15 @@ class StudentProfessorChoiceSerializer(serializers.ModelSerializer):
 
     def get_professor_name(self, obj):
         return obj.professor.name
+
+    def get_review_reviewer_name(self, obj):
+        review_record = ReviewRecord.objects.filter(
+            student=obj.student,
+            professor=obj.professor,
+        ).select_related('reviewer').order_by('-submit_time', '-id').first()
+        if review_record and review_record.reviewer_id:
+            return review_record.reviewer.name
+        return ''
     
 
 class ReviewRecordSerializer(serializers.ModelSerializer):

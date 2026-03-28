@@ -191,7 +191,26 @@ class ProfessorProfileSection(models.Model):
 
 
 class ProfessorHeatDisplaySetting(models.Model):
+    CALCULATION_SCOPE_OVERALL = 'overall'
+    CALCULATION_SCOPE_SUBJECT = 'subject'
+    CALCULATION_SCOPE_CHOICES = [
+        (CALCULATION_SCOPE_OVERALL, '按导师总量计算'),
+        (CALCULATION_SCOPE_SUBJECT, '按当前学生专业计算'),
+    ]
+
     show_professor_heat = models.BooleanField(default=True, verbose_name="前端是否显示导师热度")
+    calculation_scope = models.CharField(
+        max_length=20,
+        choices=CALCULATION_SCOPE_CHOICES,
+        default=CALCULATION_SCOPE_OVERALL,
+        verbose_name="热度计算维度",
+    )
+    pending_weight = models.DecimalField(max_digits=5, decimal_places=2, default=1.00, verbose_name="待处理人数权重")
+    accepted_weight = models.DecimalField(max_digits=5, decimal_places=2, default=0.60, verbose_name="已同意人数权重")
+    rejected_weight = models.DecimalField(max_digits=5, decimal_places=2, default=0.20, verbose_name="已拒绝人数权重")
+    medium_threshold = models.DecimalField(max_digits=5, decimal_places=2, default=1.00, verbose_name="中热度阈值")
+    high_threshold = models.DecimalField(max_digits=5, decimal_places=2, default=3.00, verbose_name="高热度阈值")
+    very_high_threshold = models.DecimalField(max_digits=5, decimal_places=2, default=6.00, verbose_name="很高热度阈值")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="更新时间")
 
     class Meta:
@@ -220,14 +239,66 @@ def get_professor_heat_display_setting():
     return setting
 
 
-def resolve_heat_level(heat_score):
-    if heat_score >= 6:
+def resolve_heat_level_by_setting(heat_score, setting=None):
+    if setting is None:
+        setting = get_professor_heat_display_setting()
+    medium_threshold = float(getattr(setting, 'medium_threshold', 1) or 1)
+    high_threshold = float(getattr(setting, 'high_threshold', 3) or 3)
+    very_high_threshold = float(getattr(setting, 'very_high_threshold', 6) or 6)
+
+    if heat_score >= very_high_threshold:
         return Professor.HEAT_LEVEL_VERY_HIGH
-    if heat_score >= 3:
+    if heat_score >= high_threshold:
         return Professor.HEAT_LEVEL_HIGH
-    if heat_score >= 1:
+    if heat_score >= medium_threshold:
         return Professor.HEAT_LEVEL_MEDIUM
     return Professor.HEAT_LEVEL_LOW
+
+
+class AvailableStudentDisplaySetting(models.Model):
+    enabled = models.BooleanField(default=True, verbose_name="是否开放可选学生展示")
+    require_resume = models.BooleanField(default=False, verbose_name="仅展示已上传简历学生")
+    allowed_admission_years = models.JSONField(default=list, blank=True, verbose_name="允许展示届别")
+    allowed_batch_ids = models.JSONField(default=list, blank=True, verbose_name="允许展示批次")
+    allowed_postgraduate_types = models.JSONField(default=list, blank=True, verbose_name="允许展示培养类型")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="更新时间")
+
+    class Meta:
+        verbose_name = "可选学生展示配置"
+        verbose_name_plural = "可选学生展示配置"
+
+    def save(self, *args, **kwargs):
+        self.pk = 1
+        super().save(*args, **kwargs)
+        cache.delete('available_student_display_setting')
+
+    def delete(self, *args, **kwargs):
+        return
+
+    def __str__(self):
+        return '可选学生展示配置'
+
+
+def get_available_student_display_setting():
+    cache_key = 'available_student_display_setting'
+    cached_value = cache.get(cache_key)
+    if cached_value is not None:
+        return cached_value
+    setting, _ = AvailableStudentDisplaySetting.objects.get_or_create(pk=1)
+    cache.set(cache_key, setting, timeout=300)
+    return setting
+
+
+def normalize_available_student_display_values(values):
+    normalized_values = []
+    for value in values or []:
+        try:
+            normalized_value = int(value)
+        except (TypeError, ValueError):
+            continue
+        if normalized_value not in normalized_values:
+            normalized_values.append(normalized_value)
+    return normalized_values
 
 
 def get_student_quota_scope(student):
@@ -309,7 +380,10 @@ def recalculate_professor_quota_summary(professor):
     )
 
 
-def calculate_professor_heat_metrics(professor):
+def calculate_professor_heat_metrics(professor, setting=None):
+    if setting is None:
+        setting = get_professor_heat_display_setting()
+
     pending_count = 0
     accepted_count = 0
     rejected_count = 0
@@ -330,7 +404,7 @@ def calculate_professor_heat_metrics(professor):
                 'rejected_count': rejected_count,
                 'available_quota_total': max(int(getattr(professor, 'remaining_quota', 0) or 0), 0),
                 'heat_score': 0,
-                'heat_level': '低',
+                'heat_level': Professor.HEAT_LEVEL_LOW,
             }
         choice_stats = choice_queryset.aggregate(
             pending_count=Count('id', filter=Q(status=3)),
@@ -342,21 +416,124 @@ def calculate_professor_heat_metrics(professor):
         rejected_count = choice_stats.get('rejected_count') or 0
 
     available_quota_total = max(int(getattr(professor, 'remaining_quota', 0) or 0), 0)
-    heat_score = round(pending_count / max(available_quota_total, 1), 2)
-    heat_level = resolve_heat_level(heat_score)
+    pending_weight = float(getattr(setting, 'pending_weight', 1) or 1)
+    accepted_weight = float(getattr(setting, 'accepted_weight', 0.6) or 0)
+    rejected_weight = float(getattr(setting, 'rejected_weight', 0.2) or 0)
+    weighted_demand = (
+        pending_count * pending_weight
+        + accepted_count * accepted_weight
+        + rejected_count * rejected_weight
+    )
+    heat_score = round(weighted_demand / max(available_quota_total, 1), 2)
+    heat_level = resolve_heat_level_by_setting(heat_score, setting=setting)
 
     return {
         'pending_count': pending_count,
         'accepted_count': accepted_count,
         'rejected_count': rejected_count,
         'available_quota_total': available_quota_total,
+        'weighted_demand': round(weighted_demand, 2),
         'heat_score': heat_score,
         'heat_level': heat_level,
     }
 
 
-def get_professor_heat_display_metrics(professor, global_setting=None):
-    metrics = calculate_professor_heat_metrics(professor)
+def calculate_professor_subject_heat_metrics(professor, subject=None, postgraduate_type=None, setting=None):
+    if setting is None:
+        setting = get_professor_heat_display_setting()
+
+    if subject is None:
+        return calculate_professor_heat_metrics(professor, setting=setting)
+
+    choice_queryset = professor.studentprofessorchoice_set.filter(student__subject=subject)
+    if postgraduate_type:
+        choice_queryset = choice_queryset.filter(student__postgraduate_type=postgraduate_type)
+
+    choice_stats = choice_queryset.aggregate(
+        pending_count=Count('id', filter=Q(status=3)),
+        accepted_count=Count('id', filter=Q(status=1)),
+        rejected_count=Count('id', filter=Q(status=2)),
+    )
+    pending_count = choice_stats.get('pending_count') or 0
+    accepted_count = choice_stats.get('accepted_count') or 0
+    rejected_count = choice_stats.get('rejected_count') or 0
+
+    available_quota_total = 0
+
+    if postgraduate_type == 3:
+        quota = ProfessorDoctorQuota.objects.filter(professor=professor, subject=subject).first()
+        available_quota_total += (quota.remaining_quota or 0) if quota else 0
+        shared_total = ProfessorSharedQuotaPool.objects.filter(
+            professor=professor,
+            quota_scope=ProfessorSharedQuotaPool.SCOPE_DOCTOR,
+            is_active=True,
+            subjects=subject,
+        ).aggregate(total=Coalesce(Sum('remaining_quota'), 0))['total'] or 0
+        available_quota_total += shared_total
+    elif postgraduate_type in [1, 2, 4]:
+        quota = ProfessorMasterQuota.objects.filter(professor=professor, subject=subject).first()
+        if quota:
+            if postgraduate_type == 4:
+                available_quota_total += quota.yantai_remaining_quota or 0
+            else:
+                available_quota_total += quota.beijing_remaining_quota or 0
+
+        shared_pool_queryset = ProfessorSharedQuotaPool.objects.filter(
+            professor=professor,
+            quota_scope=ProfessorSharedQuotaPool.SCOPE_MASTER,
+            is_active=True,
+            subjects=subject,
+        )
+        if postgraduate_type == 4:
+            shared_pool_queryset = shared_pool_queryset.filter(campus=ProfessorSharedQuotaPool.CAMPUS_YANTAI)
+        elif postgraduate_type in [1, 2]:
+            shared_pool_queryset = shared_pool_queryset.filter(campus=ProfessorSharedQuotaPool.CAMPUS_BEIJING)
+        shared_total = shared_pool_queryset.aggregate(total=Coalesce(Sum('remaining_quota'), 0))['total'] or 0
+        available_quota_total += shared_total
+    else:
+        return calculate_professor_heat_metrics(professor, setting=setting)
+
+    pending_weight = float(getattr(setting, 'pending_weight', 1) or 1)
+    accepted_weight = float(getattr(setting, 'accepted_weight', 0.6) or 0)
+    rejected_weight = float(getattr(setting, 'rejected_weight', 0.2) or 0)
+    weighted_demand = (
+        pending_count * pending_weight
+        + accepted_count * accepted_weight
+        + rejected_count * rejected_weight
+    )
+    heat_score = round(weighted_demand / max(available_quota_total, 1), 2)
+    heat_level = resolve_heat_level_by_setting(heat_score, setting=setting)
+
+    return {
+        'pending_count': pending_count,
+        'accepted_count': accepted_count,
+        'rejected_count': rejected_count,
+        'available_quota_total': max(int(available_quota_total or 0), 0),
+        'weighted_demand': round(weighted_demand, 2),
+        'heat_score': heat_score,
+        'heat_level': heat_level,
+    }
+
+
+def get_professor_heat_display_metrics(professor, global_setting=None, subject=None, postgraduate_type=None):
+    if global_setting is None:
+        global_setting = get_professor_heat_display_setting()
+
+    use_subject_scope = (
+        getattr(global_setting, 'calculation_scope', ProfessorHeatDisplaySetting.CALCULATION_SCOPE_OVERALL)
+        == ProfessorHeatDisplaySetting.CALCULATION_SCOPE_SUBJECT
+        and subject is not None
+    )
+
+    if use_subject_scope:
+        metrics = calculate_professor_subject_heat_metrics(
+            professor,
+            subject=subject,
+            postgraduate_type=postgraduate_type,
+            setting=global_setting,
+        )
+    else:
+        metrics = calculate_professor_heat_metrics(professor, setting=global_setting)
     manual_heat_score = getattr(professor, 'manual_heat_score', None)
     manual_heat_level = getattr(professor, 'manual_heat_level', None)
 
@@ -368,16 +545,16 @@ def get_professor_heat_display_metrics(professor, global_setting=None):
     if manual_heat_level:
         heat_level = manual_heat_level
     else:
-        heat_level = resolve_heat_level(heat_score)
+        heat_level = resolve_heat_level_by_setting(heat_score, setting=global_setting)
 
-    if global_setting is None:
-        global_setting = get_professor_heat_display_setting()
     heat_visible = bool(getattr(global_setting, 'show_professor_heat', True)) and bool(
         getattr(professor, 'heat_display_enabled', True)
     )
 
     return {
         **metrics,
+        'calculation_scope': getattr(global_setting, 'calculation_scope', ProfessorHeatDisplaySetting.CALCULATION_SCOPE_OVERALL),
+        'subject_heat': use_subject_scope,
         'heat_score': heat_score,
         'heat_level': heat_level,
         'heat_visible': heat_visible,
@@ -675,6 +852,7 @@ class Student(models.Model):
         verbose_name="招生批次",
     )
     can_login = models.BooleanField(default=True, verbose_name="允许登录小程序")
+    selection_display_enabled = models.BooleanField(default=True, verbose_name="允许显示在可选学生池")
 
     class Meta:
         verbose_name = "学生"  # 设置模型的显示名称

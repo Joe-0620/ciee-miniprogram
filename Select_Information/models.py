@@ -119,6 +119,7 @@ class ReviewRecord(models.Model):
             (1, "已通过"),
             (2, "已驳回"),
             (3, "待审核"),
+            (4, "已撤销"),
         ],
         verbose_name="状态",
     )

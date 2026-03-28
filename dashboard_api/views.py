@@ -28,8 +28,11 @@ from openpyxl import Workbook, load_workbook
 
 from Enrollment_Manage.models import Department, Subject, sync_student_alternate_status
 from Professor_Student_Manage.models import (
+    AvailableStudentDisplaySetting,
     AdmissionBatch,
     get_professor_heat_display_metrics,
+    get_available_student_display_setting,
+    normalize_available_student_display_values,
     get_professor_heat_display_setting,
     Professor,
     ProfessorHeatDisplaySetting,
@@ -50,6 +53,7 @@ from .models import DashboardAuditLog
 from .permissions import IsDashboardAdmin
 from .serializers import (
     AdmissionBatchSerializer,
+    AvailableStudentDisplaySettingSerializer,
     AlternateStudentSerializer,
     ChoiceListSerializer,
     DashboardAdminSerializer,
@@ -577,6 +581,46 @@ def parse_bool_param(value):
     return None
 
 
+def parse_int_list_param(value):
+    if value in (None, ''):
+        return []
+    if isinstance(value, (list, tuple, set)):
+        items = value
+    else:
+        items = str(value).split(',')
+    parsed_values = []
+    for item in items:
+        item_value = to_int(item, default=None)
+        if item_value is not None:
+            parsed_values.append(item_value)
+    return parsed_values
+
+
+def serialize_available_student_display_setting_payload(data):
+    return {
+        'enabled': parse_bool_param(data.get('enabled')),
+        'require_resume': parse_bool_param(data.get('require_resume')),
+        'allowed_admission_years': parse_int_list_param(data.get('allowed_admission_years')),
+        'allowed_batch_ids': parse_int_list_param(data.get('allowed_batch_ids')),
+        'allowed_postgraduate_types': parse_int_list_param(data.get('allowed_postgraduate_types')),
+    }
+
+
+def save_available_student_display_setting_from_payload(data):
+    setting = get_available_student_display_setting()
+    payload = serialize_available_student_display_setting_payload(data)
+
+    if payload['enabled'] is not None:
+        setting.enabled = payload['enabled']
+    if payload['require_resume'] is not None:
+        setting.require_resume = payload['require_resume']
+    setting.allowed_admission_years = normalize_available_student_display_values(payload['allowed_admission_years'])
+    setting.allowed_batch_ids = normalize_available_student_display_values(payload['allowed_batch_ids'])
+    setting.allowed_postgraduate_types = normalize_available_student_display_values(payload['allowed_postgraduate_types'])
+    setting.save()
+    return setting
+
+
 def update_professor_summary_fields(professor):
     refresh_professor_summary_quotas(professor)
     professor.save(update_fields=['name_fk_search'])
@@ -670,6 +714,7 @@ def serialize_student_form_data(data):
         'admission_year': data.get('admission_year'),
         'admission_batch_id': data.get('admission_batch_id'),
         'can_login': parse_bool_param(data.get('can_login')),
+        'selection_display_enabled': parse_bool_param(data.get('selection_display_enabled')),
         'student_type': data.get('student_type'),
         'postgraduate_type': data.get('postgraduate_type'),
         'study_mode': parse_bool_param(data.get('study_mode')),
@@ -757,6 +802,8 @@ def save_student_from_payload(payload, student=None):
         student.is_giveup = payload['is_giveup']
     if payload['can_login'] is not None:
         student.can_login = payload['can_login']
+    if payload['selection_display_enabled'] is not None:
+        student.selection_display_enabled = payload['selection_display_enabled']
     student.save()
 
     if previous_subject and previous_subject != student.subject:
@@ -1213,6 +1260,7 @@ def build_student_queryset(request):
     admission_year = request.query_params.get('admission_year')
     admission_batch_id = request.query_params.get('admission_batch_id')
     can_login = request.query_params.get('can_login')
+    selection_display_enabled = request.query_params.get('selection_display_enabled')
     student_type = request.query_params.get('student_type')
     postgraduate_type = request.query_params.get('postgraduate_type')
     is_selected = request.query_params.get('is_selected')
@@ -1231,6 +1279,8 @@ def build_student_queryset(request):
         queryset = queryset.filter(admission_batch_id=admission_batch_id)
     if can_login in {'true', 'false'}:
         queryset = queryset.filter(can_login=(can_login == 'true'))
+    if selection_display_enabled in {'true', 'false'}:
+        queryset = queryset.filter(selection_display_enabled=(selection_display_enabled == 'true'))
     if student_type not in (None, ''):
         queryset = queryset.filter(student_type=student_type)
     if postgraduate_type not in (None, ''):
@@ -1788,6 +1838,7 @@ class DashboardStatsView(APIView):
             {'label': '待审核', 'value': ReviewRecord.objects.filter(status=3).count()},
             {'label': '已通过', 'value': ReviewRecord.objects.filter(status=1).count()},
             {'label': '已驳回', 'value': ReviewRecord.objects.filter(status=2).count()},
+            {'label': '已撤销', 'value': ReviewRecord.objects.filter(status=4).count()},
         ]
 
         student_status_distribution = [
@@ -1876,6 +1927,7 @@ class DashboardStatsView(APIView):
                 'pending_review_count': ReviewRecord.objects.filter(status=3).count(),
                 'approved_review_count': ReviewRecord.objects.filter(status=1).count(),
                 'rejected_review_count': ReviewRecord.objects.filter(status=2).count(),
+                'revoked_review_count': ReviewRecord.objects.filter(status=4).count(),
                 'alternate_student_count': Student.objects.filter(is_alternate=True, is_giveup=False).count(),
                 'giveup_student_count': Student.objects.filter(is_giveup=True).count(),
                 'department_usage': department_usage,
@@ -1957,26 +2009,80 @@ class DashboardProfessorHeatListView(APIView):
     def get(self, request):
         page = max(int(request.query_params.get('page', 1)), 1)
         page_size = min(max(int(request.query_params.get('page_size', 10)), 1), 100)
+        setting = get_professor_heat_display_setting()
+        subject_id = request.query_params.get('subject_id')
+        postgraduate_type = request.query_params.get('postgraduate_type')
+        heat_subject = Subject.objects.filter(pk=subject_id).first() if subject_id else None
+        heat_postgraduate_type = None
+        if postgraduate_type not in (None, ''):
+            try:
+                heat_postgraduate_type = int(postgraduate_type)
+            except (TypeError, ValueError):
+                return Response({'detail': '培养类型参数不正确。'}, status=status.HTTP_400_BAD_REQUEST)
+
         queryset = build_professor_queryset(request).select_related('department').order_by('-pending_choice_count', 'id')
 
         heat_level = request.query_params.get('heat_level')
         if heat_level:
-            queryset = [professor for professor in queryset if get_professor_heat_display_metrics(professor)['heat_level'] == heat_level]
+            queryset = [
+                professor
+                for professor in queryset
+                if get_professor_heat_display_metrics(
+                    professor,
+                    global_setting=setting,
+                    subject=heat_subject,
+                    postgraduate_type=heat_postgraduate_type,
+                )['heat_level'] == heat_level
+            ]
             total = len(queryset)
             start = (page - 1) * page_size
             end = start + page_size
-            serializer = ProfessorHeatListSerializer(queryset[start:end], many=True)
+            serializer = ProfessorHeatListSerializer(
+                queryset[start:end],
+                many=True,
+                context={
+                    'heat_setting': setting,
+                    'heat_subject': heat_subject,
+                    'heat_postgraduate_type': heat_postgraduate_type,
+                },
+            )
             return Response(
-                {'count': total, 'page': page, 'page_size': page_size, 'results': serializer.data},
+                {
+                    'count': total,
+                    'page': page,
+                    'page_size': page_size,
+                    'results': serializer.data,
+                    'subject_id': heat_subject.id if heat_subject else None,
+                    'subject_name': heat_subject.subject_name if heat_subject else '',
+                    'postgraduate_type': heat_postgraduate_type,
+                    'calculation_scope': setting.calculation_scope,
+                },
                 status=status.HTTP_200_OK,
             )
 
         total = queryset.count()
         start = (page - 1) * page_size
         end = start + page_size
-        serializer = ProfessorHeatListSerializer(queryset[start:end], many=True)
+        serializer = ProfessorHeatListSerializer(
+            queryset[start:end],
+            many=True,
+            context={
+                'heat_setting': setting,
+                'heat_subject': heat_subject,
+                'heat_postgraduate_type': heat_postgraduate_type,
+            },
+        )
         return Response(
-            {'count': total, 'page': page, 'page_size': page_size, 'results': serializer.data},
+            {
+                'count': total,
+                'page': page,
+                'page_size': page_size,
+                'results': serializer.data,
+                'subject_id': heat_subject.id if heat_subject else None,
+                'subject_name': heat_subject.subject_name if heat_subject else '',
+                'postgraduate_type': heat_postgraduate_type,
+                'calculation_scope': setting.calculation_scope,
+            },
             status=status.HTTP_200_OK,
         )
 
@@ -1991,21 +2097,79 @@ class DashboardProfessorHeatSettingView(APIView):
 
     def patch(self, request):
         setting = get_professor_heat_display_setting()
-        before_data = {'show_professor_heat': setting.show_professor_heat}
-        show_professor_heat = request.data.get('show_professor_heat')
-        setting.show_professor_heat = parse_request_bool(show_professor_heat, default=setting.show_professor_heat)
+        before_data = {
+            'show_professor_heat': setting.show_professor_heat,
+            'calculation_scope': setting.calculation_scope,
+            'pending_weight': str(setting.pending_weight),
+            'accepted_weight': str(setting.accepted_weight),
+            'rejected_weight': str(setting.rejected_weight),
+            'medium_threshold': str(setting.medium_threshold),
+            'high_threshold': str(setting.high_threshold),
+            'very_high_threshold': str(setting.very_high_threshold),
+        }
+
+        if 'show_professor_heat' in request.data:
+            show_professor_heat = request.data.get('show_professor_heat')
+            setting.show_professor_heat = parse_request_bool(show_professor_heat, default=setting.show_professor_heat)
+
+        if 'calculation_scope' in request.data:
+            calculation_scope = str(request.data.get('calculation_scope') or '').strip()
+            valid_scopes = {
+                ProfessorHeatDisplaySetting.CALCULATION_SCOPE_OVERALL,
+                ProfessorHeatDisplaySetting.CALCULATION_SCOPE_SUBJECT,
+            }
+            if calculation_scope and calculation_scope not in valid_scopes:
+                return Response({'detail': '热度计算维度不正确。'}, status=status.HTTP_400_BAD_REQUEST)
+            if calculation_scope:
+                setting.calculation_scope = calculation_scope
+
+        decimal_fields = [
+            'pending_weight',
+            'accepted_weight',
+            'rejected_weight',
+            'medium_threshold',
+            'high_threshold',
+            'very_high_threshold',
+        ]
+        for field_name in decimal_fields:
+            if field_name not in request.data:
+                continue
+            raw_value = request.data.get(field_name)
+            try:
+                decimal_value = Decimal(str(raw_value))
+            except Exception:
+                return Response({'detail': f'{field_name} 不是有效数字。'}, status=status.HTTP_400_BAD_REQUEST)
+            if decimal_value < 0:
+                return Response({'detail': f'{field_name} 不能小于 0。'}, status=status.HTTP_400_BAD_REQUEST)
+            setattr(setting, field_name, decimal_value)
+
+        if not (setting.medium_threshold < setting.high_threshold < setting.very_high_threshold):
+            return Response(
+                {'detail': '热度阈值必须满足：中热度 < 高热度 < 很高热度。'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
         setting.save()
         create_audit_log(
             request,
             action='professor_heat.setting_update',
-            module='导师热度分析',
+            module='导师热度管理',
             level=DashboardAuditLog.LEVEL_WARNING,
             target_type='professor_heat_setting',
             target_id=setting.pk,
-            target_display='导师热度显示配置',
-            detail='更新前端导师热度全局显示开关。',
+            target_display='导师热度配置',
+            detail='更新导师热度显示与计算规则。',
             before_data=before_data,
-            after_data={'show_professor_heat': setting.show_professor_heat},
+            after_data={
+                'show_professor_heat': setting.show_professor_heat,
+                'calculation_scope': setting.calculation_scope,
+                'pending_weight': str(setting.pending_weight),
+                'accepted_weight': str(setting.accepted_weight),
+                'rejected_weight': str(setting.rejected_weight),
+                'medium_threshold': str(setting.medium_threshold),
+                'high_threshold': str(setting.high_threshold),
+                'very_high_threshold': str(setting.very_high_threshold),
+            },
         )
         return Response(ProfessorHeatDisplaySettingSerializer(setting).data, status=status.HTTP_200_OK)
 
@@ -2044,7 +2208,7 @@ class DashboardProfessorHeatDetailView(APIView):
         create_audit_log(
             request,
             action='professor_heat.update',
-            module='导师热度分析',
+            module='导师热度管理',
             level=DashboardAuditLog.LEVEL_WARNING,
             target_type='professor',
             target_id=professor.pk,
@@ -2956,6 +3120,7 @@ class DashboardStudentListView(APIView):
             'admission_year': 'admission_year',
             'admission_batch': 'admission_batch__name',
             'can_login': 'can_login',
+            'selection_display_enabled': 'selection_display_enabled',
             'student_type': 'student_type',
             'postgraduate_type': 'postgraduate_type',
             'final_rank': 'final_rank',
@@ -3151,6 +3316,32 @@ class DashboardStudentDetailView(APIView):
             before_data=before_data,
         )
         return Response({'detail': '学生已删除。'}, status=status.HTTP_200_OK)
+
+
+class DashboardAvailableStudentDisplaySettingView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsDashboardAdmin]
+
+    def get(self, request):
+        setting = get_available_student_display_setting()
+        return Response(AvailableStudentDisplaySettingSerializer(setting).data, status=status.HTTP_200_OK)
+
+    def patch(self, request):
+        setting = get_available_student_display_setting()
+        before_data = snapshot_instance(setting)
+        setting = save_available_student_display_setting_from_payload(request.data)
+        create_audit_log(
+            request,
+            action='student_display_setting.update',
+            module='可选学生展示控制',
+            target_type='available_student_display_setting',
+            target_id=setting.pk,
+            target_display='可选学生展示配置',
+            detail='更新可选学生展示配置。',
+            before_data=before_data,
+            after_data=snapshot_instance(setting),
+        )
+        return Response(AvailableStudentDisplaySettingSerializer(setting).data, status=status.HTTP_200_OK)
 
 
 class DashboardStudentBatchDeleteView(APIView):
@@ -3352,6 +3543,76 @@ class DashboardStudentToggleLoginView(APIView):
         return Response(
             {
                 'detail': f'已{action_text} {len(changed_students)} 名学生的小程序登录权限。',
+                'updated_count': len(changed_students),
+                'unchanged_count': unchanged_count,
+            },
+            status=status.HTTP_200_OK,
+        )
+
+
+class DashboardStudentToggleSelectionDisplayView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsDashboardAdmin]
+
+    def post(self, request):
+        ids = request.data.get('ids') or []
+        selection_display_enabled = parse_bool_param(request.data.get('selection_display_enabled'))
+
+        if selection_display_enabled is None:
+            return Response({'detail': '请指定目标展示状态。'}, status=status.HTTP_400_BAD_REQUEST)
+        if not isinstance(ids, list) or not ids:
+            return Response({'detail': '请先选择学生。'}, status=status.HTTP_400_BAD_REQUEST)
+
+        queryset = Student.objects.filter(id__in=ids)
+        if not queryset.exists():
+            return Response({'detail': '未找到可操作的学生。'}, status=status.HTTP_400_BAD_REQUEST)
+
+        changed_students = []
+        unchanged_count = 0
+
+        for student in queryset:
+            if student.selection_display_enabled == selection_display_enabled:
+                unchanged_count += 1
+                continue
+            before_value = student.selection_display_enabled
+            student.selection_display_enabled = selection_display_enabled
+            student.save(update_fields=['selection_display_enabled'])
+            changed_students.append(
+                {
+                    'id': student.id,
+                    'name': student.name,
+                    'candidate_number': student.candidate_number,
+                    'before_selection_display_enabled': before_value,
+                    'after_selection_display_enabled': selection_display_enabled,
+                }
+            )
+
+        if not changed_students:
+            return Response(
+                {'detail': '所选学生的展示状态已经是目标状态。', 'updated_count': 0, 'unchanged_count': unchanged_count},
+                status=status.HTTP_200_OK,
+            )
+
+        action_text = '开启' if selection_display_enabled else '关闭'
+        create_audit_log(
+            request,
+            action='student.toggle_selection_display',
+            module='可选学生展示控制',
+            level=DashboardAuditLog.LEVEL_WARNING if not selection_display_enabled else DashboardAuditLog.LEVEL_INFO,
+            target_type='student',
+            target_display=f'批量{action_text}学生展示',
+            detail=f'批量{action_text} {len(changed_students)} 名学生的可选学生池展示状态。',
+            before_data={'ids': ids},
+            after_data={
+                'selection_display_enabled': selection_display_enabled,
+                'updated_count': len(changed_students),
+                'unchanged_count': unchanged_count,
+                'students': changed_students,
+            },
+        )
+        return Response(
+            {
+                'detail': f'已{action_text} {len(changed_students)} 名学生的可选学生池展示状态。',
                 'updated_count': len(changed_students),
                 'unchanged_count': unchanged_count,
             },

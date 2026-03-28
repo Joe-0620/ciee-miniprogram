@@ -2,6 +2,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.authentication import TokenAuthentication
 import requests
 from django.utils import timezone
 from rest_framework.authtoken.models import Token
@@ -11,8 +12,11 @@ from Professor_Student_Manage.models import (
     Student,
     Professor,
     WeChatAccount,
+    get_available_student_display_setting,
+    normalize_available_student_display_values,
     ProfessorDoctorQuota,
     ProfessorMasterQuota,
+    ProfessorSharedQuotaPool,
     get_matching_shared_quota_pool,
     get_quota_source_for_student,
     recalculate_professor_quota_summary,
@@ -231,6 +235,43 @@ class SelectInformationView(APIView):
             'accepted': queryset.filter(status=1).count(),
             'rejected': queryset.filter(status=2).count(),
         }
+
+    @staticmethod
+    def _build_available_student_subject_ids(professor):
+        master_subject_ids = list(
+            ProfessorMasterQuota.objects.filter(professor=professor).values_list('subject_id', flat=True)
+        )
+        doctor_subject_ids = list(
+            ProfessorDoctorQuota.objects.filter(professor=professor).values_list('subject_id', flat=True)
+        )
+        shared_pool_subject_ids = list(
+            ProfessorSharedQuotaPool.objects.filter(
+                professor=professor,
+                is_active=True,
+            ).values_list('subjects__id', flat=True)
+        )
+        return sorted({subject_id for subject_id in master_subject_ids + doctor_subject_ids + shared_pool_subject_ids if subject_id})
+
+    @staticmethod
+    def _apply_available_student_display_filters(queryset):
+        setting = get_available_student_display_setting()
+        if not setting.enabled:
+            return queryset.none(), setting
+
+        allowed_admission_years = normalize_available_student_display_values(setting.allowed_admission_years)
+        allowed_batch_ids = normalize_available_student_display_values(setting.allowed_batch_ids)
+        allowed_postgraduate_types = normalize_available_student_display_values(setting.allowed_postgraduate_types)
+
+        queryset = queryset.filter(selection_display_enabled=True)
+        if allowed_admission_years:
+            queryset = queryset.filter(admission_year__in=allowed_admission_years)
+        if allowed_batch_ids:
+            queryset = queryset.filter(admission_batch_id__in=allowed_batch_ids)
+        if allowed_postgraduate_types:
+            queryset = queryset.filter(postgraduate_type__in=allowed_postgraduate_types)
+        if setting.require_resume:
+            queryset = queryset.exclude(Q(resume__isnull=True) | Q(resume=''))
+        return queryset, setting
     
     def get(self, request):
         usertype = request.query_params.get('usertype')
@@ -293,19 +334,7 @@ class SelectInformationView(APIView):
                 choice_status = self._safe_int(request.query_params.get('choice_status', 0), 0, 0, 4)
                 include_students = str(request.query_params.get('include_students', '1')).lower() not in ('0', 'false', 'no')
                 
-                # === 获取硕士招生专业（从 ProfessorMasterQuota 里取） ===
-                master_subject_ids = list(
-                    ProfessorMasterQuota.objects.filter(professor=professor)
-                    .values_list('subject_id', flat=True)
-                )
-
-                # 获取博士专业 ID（允许重复）
-                doctor_subject_ids = list(ProfessorDoctorQuota.objects.filter(
-                    professor=professor
-                ).values_list('subject_id', flat=True))
-
-                # 合并 ID 列表，保留重复
-                all_subject_ids = master_subject_ids + doctor_subject_ids
+                all_subject_ids = self._build_available_student_subject_ids(professor)
 
                 # 查询所有专业（去重，仅为 subject__in 查询）
                 enroll_subjects = Subject.objects.filter(id__in=all_subject_ids)
@@ -327,6 +356,7 @@ class SelectInformationView(APIView):
                             is_giveup=False,
                             subject__in=enroll_subjects
                         ).order_by('final_rank', 'id')
+                        students_query, _ = self._apply_available_student_display_filters(students_query)
 
                         if subject_id:
                             students_query = students_query.filter(subject_id=subject_id)
@@ -368,7 +398,9 @@ class SelectInformationView(APIView):
                                 is_alternate=False,
                                 is_giveup=False,
                                 subject=subject
-                            ).order_by('final_rank', 'id')[offset:offset + page_size]
+                            ).order_by('final_rank', 'id')
+                            subject_students, _ = self._apply_available_student_display_filters(subject_students)
+                            subject_students = subject_students[offset:offset + page_size]
 
                             students_list.extend(subject_students)
 
@@ -377,7 +409,9 @@ class SelectInformationView(APIView):
                                 is_alternate=False,
                                 is_giveup=False,
                                 subject=subject
-                            )[offset + page_size:offset + page_size + 1]
+                            )
+                            next_page_check, _ = self._apply_available_student_display_filters(next_page_check)
+                            next_page_check = next_page_check[offset + page_size:offset + page_size + 1]
 
                             if next_page_check.exists():
                                 has_more_data = True
@@ -1448,7 +1482,7 @@ class SubmitSignatureFileView(APIView):
             existing_record = ReviewRecord.objects.filter(
                 student=student,
                 professor=professor
-            ).exclude(status=2).first()
+            ).exclude(status__in=[2, 4]).first()
 
             if existing_record:
                 # print("existing_record: ", existing_record.status)
@@ -1476,13 +1510,30 @@ class SubmitSignatureFileView(APIView):
             student.signature_table_review_status = 3
             student.save()
 
-            # 发送通知给方向审核人（假设方向审核人是一个特定的用户）
-            self.notify_department_reviewer(professor, review_professor)
+            # 发送通知给方向审核人，通知失败不影响主流程
+            try:
+                self.notify_department_reviewer(professor, review_professor)
+            except Exception as exc:
+                print(f"通知审核人失败: {exc}")
 
             return Response({'message': '提交审核成功'}, status=status.HTTP_200_OK)
         except Student.DoesNotExist:
             return Response({'message': '学生不存在'}, status=status.HTTP_404_NOT_FOUND)
         except Exception as e:
+            try:
+                if (
+                    'student' in locals()
+                    and 'professor' in locals()
+                    and ReviewRecord.objects.filter(
+                        student=student,
+                        professor=professor,
+                        review_status=False,
+                        status=3,
+                    ).exists()
+                ):
+                    return Response({'message': '提交审核成功'}, status=status.HTTP_200_OK)
+            except Exception:
+                pass
             return Response({'message': f'服务器错误: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     def notify_department_reviewer(self, professor, review_professor):
@@ -1494,39 +1545,71 @@ class SubmitSignatureFileView(APIView):
             professor_name = professor.name
             translation_table = str.maketrans('', '', '0123456789')
             cleaned_name = professor_name.translate(translation_table)
-            # print(type(professor_name))
-            # print("professor_openid: ", professor_openid)
-            # access_token = cache.get('access_token')
             if professor_openid:
-                # 微信小程序发送订阅消息的API endpoint
                 url = f'https://api.weixin.qq.com/cgi-bin/message/subscribe/send'
-
-                # 构造消息数据
-                # 注意：这里的key（如phrase1, time11等）和template_id需要根据你在微信后台配置的模板来确定
                 data = {
                     "touser": professor_openid,
-                    "template_id": "viilL7yUx1leDVAsGCsrBEkQS9v7A9NT6yH90MFP3jg",  # 你在微信小程序后台设置的模板ID
-                    "page": "pages/profile/profile",  # 用户点击消息后跳转的小程序页面
+                    "template_id": "viilL7yUx1leDVAsGCsrBEkQS9v7A9NT6yH90MFP3jg",
+                    "page": "pages/profile/profile",
                     "data": {
                         "short_thing23": {"value": "意向表审核"},
                         "name1": {"value": cleaned_name},
                         "time19": {"value": timezone.now().strftime('%Y年%m月%d日 %H:%M')}
                     }
                 }
-            print("data: ", data)
 
-            # 发送POST请求
-            response = requests.post(url, json=data)
-            response_data = response.json()
+                print("data: ", data)
+                response = requests.post(url, json=data)
+                response_data = response.json()
 
-            # 检查请求是否成功
-            if response_data.get("errcode") == 0:
-                print("通知发送成功")
-            else:
-                print(f"通知发送失败: {response_data.get('errmsg')}")
+                if response_data.get("errcode") == 0:
+                    print("通知发送成功")
+                else:
+                    print(f"通知发送失败: {response_data.get('errmsg')}")
         except WeChatAccount.DoesNotExist:
-            # 如果学生没有绑定微信账号信息，则不发送通知
             print("导师微信账号不存在，无法发送通知。")
+
+
+class CancelPendingReviewRecordView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        professor = request.user.professor
+        student_id = request.data.get('student_id')
+        if not student_id:
+            return Response({'message': '学生ID是必需的'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            student = Student.objects.get(id=student_id)
+        except Student.DoesNotExist:
+            return Response({'message': '学生不存在'}, status=status.HTTP_404_NOT_FOUND)
+
+        choice = StudentProfessorChoice.objects.filter(
+            student=student,
+            professor=professor,
+            status=1,
+        ).first()
+        if not choice:
+            return Response({'message': '没有找到已同意的互选记录'}, status=status.HTTP_404_NOT_FOUND)
+
+        review_record = ReviewRecord.objects.filter(
+            student=student,
+            professor=professor,
+            review_status=False,
+            status=3,
+        ).order_by('-submit_time', '-id').first()
+
+        if not review_record:
+            return Response({'message': '当前没有可撤销的待审核记录'}, status=status.HTTP_400_BAD_REQUEST)
+
+        review_record.status = 4
+        review_record.review_status = True
+        review_record.review_time = timezone.now()
+        review_record.save(update_fields=['status', 'review_status', 'review_time'])
+        student.signature_table_review_status = 4
+        student.save(update_fields=['signature_table_review_status'])
+
+        return Response({'message': '已撤销待审核提交，可重新选择审核人提交'}, status=status.HTTP_200_OK)
 
 
 class ReviewerReviewRecordsView(APIView):
@@ -1540,7 +1623,7 @@ class ReviewerReviewRecordsView(APIView):
 
         review_records_queryset = ReviewRecord.objects.select_related(
             'student', 'professor', 'professor__department', 'reviewer'
-        ).filter(reviewer=reviewer).order_by('-submit_time', '-id')
+        ).filter(reviewer=reviewer).exclude(status=4).order_by('-submit_time', '-id')
 
         counts = {
             'pending': review_records_queryset.filter(review_status=False).count(),

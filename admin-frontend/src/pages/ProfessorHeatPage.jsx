@@ -26,18 +26,49 @@ export default function ProfessorHeatPage() {
   const [keyword, setKeyword] = useState('');
   const [filters, setFilters] = useState({ department_id: undefined, heat_level: undefined });
   const [departments, setDepartments] = useState([]);
+  const [subjects, setSubjects] = useState([]);
   const [data, setData] = useState({ count: 0, results: [] });
   const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
   const [globalVisible, setGlobalVisible] = useState(true);
   const [editingRecord, setEditingRecord] = useState(null);
   const [editOpen, setEditOpen] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const [form] = Form.useForm();
+  const [settingsForm] = Form.useForm();
 
   const loadOptions = async () => {
     try {
-      const [payload, settingPayload] = await Promise.all([get('/departments/'), get('/professor-heat/settings/')]);
-      setDepartments(Array.isArray(payload) ? payload : []);
+      const [payload, subjectPayload, settingPayload] = await Promise.all([
+        get('/departments/'),
+        get('/subjects/'),
+        get('/professor-heat/settings/'),
+      ]);
+      const nextDepartments = Array.isArray(payload) ? payload : [];
+      const nextSubjects = Array.isArray(subjectPayload)
+        ? subjectPayload
+        : Array.isArray(subjectPayload?.results)
+          ? subjectPayload.results
+          : [];
+      const nextCalculationScope = settingPayload?.calculation_scope || 'overall';
+
+      setDepartments(nextDepartments);
+      setSubjects(nextSubjects);
       setGlobalVisible(Boolean(settingPayload?.show_professor_heat));
+      settingsForm.setFieldsValue({
+        calculation_scope: nextCalculationScope,
+        pending_weight: Number(settingPayload?.pending_weight ?? 1),
+        accepted_weight: Number(settingPayload?.accepted_weight ?? 0.6),
+        rejected_weight: Number(settingPayload?.rejected_weight ?? 0.2),
+        medium_threshold: Number(settingPayload?.medium_threshold ?? 1),
+        high_threshold: Number(settingPayload?.high_threshold ?? 3),
+        very_high_threshold: Number(settingPayload?.very_high_threshold ?? 6),
+      });
+
+      if (nextCalculationScope === 'subject' && !filters.subject_id && nextSubjects.length > 0) {
+        const nextFilters = { ...filters, subject_id: nextSubjects[0].id };
+        setFilters(nextFilters);
+        fetchData(1, pagination.pageSize, keyword, nextFilters);
+      }
     } catch (error) {
       message.error(error.message);
     }
@@ -101,6 +132,32 @@ export default function ProfessorHeatPage() {
       setGlobalVisible(Boolean(payload?.show_professor_heat));
       await fetchData();
     } catch {}
+  };
+
+  const handleSaveSettings = async () => {
+    try {
+      const values = await settingsForm.validateFields();
+      await runAction(
+        () =>
+          patch('/professor-heat/settings/', {
+            calculation_scope: values.calculation_scope,
+            pending_weight: values.pending_weight,
+            accepted_weight: values.accepted_weight,
+            rejected_weight: values.rejected_weight,
+            medium_threshold: values.medium_threshold,
+            high_threshold: values.high_threshold,
+            very_high_threshold: values.very_high_threshold,
+          }),
+        '热度计算设置已更新',
+      );
+      setSettingsOpen(false);
+      await loadOptions();
+      await fetchData();
+    } catch (error) {
+      if (!error?.errorFields) {
+        message.error(error.message);
+      }
+    }
   };
 
   const openEditModal = (record) => {
@@ -259,9 +316,9 @@ export default function ProfessorHeatPage() {
   return (
     <Card className="page-card" bordered={false}>
       <PageHeader
-        items={[{ title: '招生业务' }, { title: '导师热度分析' }]}
-        title="导师热度分析"
-        subtitle="根据待处理申请和当前可用名额，快速判断导师当前的竞争程度。"
+        items={[{ title: '招生业务' }, { title: '导师热度管理' }]}
+        title="导师热度管理"
+        subtitle="统一管理前端热度显示、手动热度覆盖和热度计算规则。"
       />
 
       <div className="page-toolbar">
@@ -295,16 +352,47 @@ export default function ProfessorHeatPage() {
             ]}
             onChange={(value) => updateFilter('heat_level', value)}
           />
+          <Select
+            allowClear
+            placeholder="按专业视角查看"
+            style={{ width: 240 }}
+            value={filters.subject_id}
+            options={subjects.map((item) => ({
+              label: `${item.subject_name}${item.subject_code ? `（${item.subject_code}）` : ''}`,
+              value: item.id,
+            }))}
+            onChange={(value) => updateFilter('subject_id', value)}
+          />
+          <Select
+            allowClear
+            placeholder="按培养类型视角"
+            style={{ width: 180 }}
+            value={filters.postgraduate_type}
+            options={[
+              { label: '北京专硕', value: 1 },
+              { label: '学硕', value: 2 },
+              { label: '博士', value: 3 },
+              { label: '烟台专硕', value: 4 },
+            ]}
+            onChange={(value) => updateFilter('postgraduate_type', value)}
+          />
         </div>
 
         <div className="page-actions">
           <Button onClick={() => fetchData(1, pagination.pageSize, keyword, filters)}>刷新</Button>
+          <Button onClick={() => setSettingsOpen(true)}>热度计算设置</Button>
           <Space size={8}>
             <Typography.Text>前端显示热度</Typography.Text>
             <Switch checked={globalVisible} onChange={handleToggleGlobalVisible} />
           </Space>
         </div>
       </div>
+
+      <Typography.Paragraph type="secondary" style={{ marginTop: 0 }}>
+        {filters.subject_id
+          ? '当前表格正在按所选专业视角展示导师热度。若同时指定培养类型，则会进一步按该培养类型下的申请人数和名额计算。'
+          : '当前表格默认展示导师总量热度。选择专业后，可切换为分专业视角查看导师热度。'}
+      </Typography.Paragraph>
 
       <Table
         rowKey="id"
@@ -349,6 +437,88 @@ export default function ProfessorHeatPage() {
               ]}
             />
           </Form.Item>
+        </Form>
+      </Modal>
+
+      <Modal
+        title="热度计算设置"
+        open={settingsOpen}
+        onCancel={() => setSettingsOpen(false)}
+        onOk={handleSaveSettings}
+        confirmLoading={actionLoading}
+        destroyOnClose
+      >
+        <Form form={settingsForm} layout="vertical">
+          <Form.Item
+            name="calculation_scope"
+            label="热度计算维度"
+            tooltip="学生端和后台都已支持按专业视角计算热度；后台建议同时选择专业查看具体热度值。"
+            rules={[{ required: true, message: '请选择热度计算维度' }]}
+          >
+            <Select
+              options={[
+                { label: '按导师总量计算', value: 'overall' },
+                { label: '按当前学生专业计算', value: 'subject' },
+              ]}
+            />
+          </Form.Item>
+          <Form.Item label="人数权重说明">
+            <Typography.Paragraph type="secondary" style={{ marginBottom: 0 }}>
+              热度指数 = （待处理人数 × 待处理权重 + 已同意人数 × 已同意权重 + 已拒绝人数 × 已拒绝权重）÷ 可用名额。
+            </Typography.Paragraph>
+          </Form.Item>
+          <Space size={12} style={{ display: 'flex' }} align="start">
+            <Form.Item
+              name="pending_weight"
+              label="待处理权重"
+              rules={[{ required: true, message: '请输入待处理权重' }]}
+              style={{ flex: 1 }}
+            >
+              <InputNumber min={0} step={0.1} precision={2} style={{ width: '100%' }} />
+            </Form.Item>
+            <Form.Item
+              name="accepted_weight"
+              label="已同意权重"
+              rules={[{ required: true, message: '请输入已同意权重' }]}
+              style={{ flex: 1 }}
+            >
+              <InputNumber min={0} step={0.1} precision={2} style={{ width: '100%' }} />
+            </Form.Item>
+            <Form.Item
+              name="rejected_weight"
+              label="已拒绝权重"
+              rules={[{ required: true, message: '请输入已拒绝权重' }]}
+              style={{ flex: 1 }}
+            >
+              <InputNumber min={0} step={0.1} precision={2} style={{ width: '100%' }} />
+            </Form.Item>
+          </Space>
+          <Space size={12} style={{ display: 'flex' }} align="start">
+            <Form.Item
+              name="medium_threshold"
+              label="中热度阈值"
+              rules={[{ required: true, message: '请输入中热度阈值' }]}
+              style={{ flex: 1 }}
+            >
+              <InputNumber min={0} step={0.1} precision={2} style={{ width: '100%' }} />
+            </Form.Item>
+            <Form.Item
+              name="high_threshold"
+              label="高热度阈值"
+              rules={[{ required: true, message: '请输入高热度阈值' }]}
+              style={{ flex: 1 }}
+            >
+              <InputNumber min={0} step={0.1} precision={2} style={{ width: '100%' }} />
+            </Form.Item>
+            <Form.Item
+              name="very_high_threshold"
+              label="很高热度阈值"
+              rules={[{ required: true, message: '请输入很高热度阈值' }]}
+              style={{ flex: 1 }}
+            >
+              <InputNumber min={0} step={0.1} precision={2} style={{ width: '100%' }} />
+            </Form.Item>
+          </Space>
         </Form>
       </Modal>
     </Card>

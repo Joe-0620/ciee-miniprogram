@@ -46,6 +46,7 @@ import logging
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
 from django.db import transaction
+from django.db import DataError, DatabaseError
 from django.db.models import Count, Q, Prefetch
 from django.core.cache import cache
 
@@ -633,12 +634,18 @@ class UpdateProfessorView(APIView):
             mutable_data['email'] = None
         serializer = ProfessorPartialUpdateSerializer(professor, data=mutable_data, partial=True)
         if serializer.is_valid():
-            professor = serializer.save()
             try:
+                professor = serializer.save()
                 if profile_sections is not None:
                     save_professor_profile_sections(professor, profile_sections)
             except (ValueError, json.JSONDecodeError) as exc:
                 return Response({'message': str(exc)}, status=status.HTTP_400_BAD_REQUEST)
+            except (DataError, DatabaseError):
+                logger.exception('保存导师主页信息失败，可能是数据库字符集不支持输入内容。')
+                return Response(
+                    {'message': '保存失败，当前输入内容包含数据库暂不支持的字符，请检查是否包含表情符号或特殊字符。'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
             return Response(ProfessorSerializer(professor).data, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

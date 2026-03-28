@@ -5,7 +5,9 @@ from rest_framework.authtoken.models import Token
 from Enrollment_Manage.models import Department, Subject
 from Professor_Student_Manage.models import (
     AdmissionBatch,
+    get_professor_heat_display_metrics,
     Professor,
+    ProfessorHeatDisplaySetting,
     ProfessorDoctorQuota,
     ProfessorMasterQuota,
     ProfessorSharedQuotaPool,
@@ -176,6 +178,13 @@ class ProfessorListSerializer(serializers.ModelSerializer):
     shared_quota_summary = serializers.SerializerMethodField()
     pending_choice_count = serializers.SerializerMethodField()
     accepted_choice_count = serializers.SerializerMethodField()
+    heat_score = serializers.SerializerMethodField()
+    heat_level = serializers.SerializerMethodField()
+    available_quota_total = serializers.SerializerMethodField()
+    heat_visible = serializers.SerializerMethodField()
+    heat_display_enabled = serializers.BooleanField(read_only=True)
+    manual_heat_score = serializers.DecimalField(max_digits=5, decimal_places=2, read_only=True, allow_null=True)
+    manual_heat_level = serializers.CharField(read_only=True)
 
     class Meta:
         model = Professor
@@ -199,7 +208,19 @@ class ProfessorListSerializer(serializers.ModelSerializer):
             'shared_quota_summary',
             'pending_choice_count',
             'accepted_choice_count',
+            'heat_score',
+            'heat_level',
+            'available_quota_total',
+            'heat_visible',
+            'heat_display_enabled',
+            'manual_heat_score',
+            'manual_heat_level',
         ]
+
+    def _get_heat_metrics(self, obj):
+        if not hasattr(obj, '_heat_metrics_cache'):
+            obj._heat_metrics_cache = get_professor_heat_display_metrics(obj)
+        return obj._heat_metrics_cache
 
     def get_master_subjects(self, obj):
         quotas = getattr(obj, 'master_quotas', None)
@@ -263,6 +284,81 @@ class ProfessorListSerializer(serializers.ModelSerializer):
 
     def get_accepted_choice_count(self, obj):
         return getattr(obj, 'accepted_choice_count', 0)
+
+    def get_heat_score(self, obj):
+        return self._get_heat_metrics(obj)['heat_score']
+
+    def get_heat_level(self, obj):
+        return self._get_heat_metrics(obj)['heat_level']
+
+    def get_available_quota_total(self, obj):
+        return self._get_heat_metrics(obj)['available_quota_total']
+
+    def get_heat_visible(self, obj):
+        return self._get_heat_metrics(obj)['heat_visible']
+
+
+class ProfessorHeatListSerializer(serializers.ModelSerializer):
+    department = DepartmentBriefSerializer(read_only=True)
+    available_quota_total = serializers.SerializerMethodField()
+    heat_score = serializers.SerializerMethodField()
+    heat_level = serializers.SerializerMethodField()
+    pending_count = serializers.SerializerMethodField()
+    accepted_count = serializers.SerializerMethodField()
+    rejected_count = serializers.SerializerMethodField()
+    heat_visible = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Professor
+        fields = [
+            'id',
+            'name',
+            'teacher_identity_id',
+            'department',
+            'have_qualification',
+            'available_quota_total',
+            'pending_count',
+            'accepted_count',
+            'rejected_count',
+            'heat_score',
+            'heat_level',
+            'heat_visible',
+            'heat_display_enabled',
+            'manual_heat_score',
+            'manual_heat_level',
+        ]
+
+    def _get_heat_metrics(self, obj):
+        if not hasattr(obj, '_heat_metrics_cache'):
+            obj._heat_metrics_cache = get_professor_heat_display_metrics(obj)
+        return obj._heat_metrics_cache
+
+    def get_available_quota_total(self, obj):
+        return self._get_heat_metrics(obj)['available_quota_total']
+
+    def get_pending_count(self, obj):
+        return self._get_heat_metrics(obj)['pending_count']
+
+    def get_accepted_count(self, obj):
+        return self._get_heat_metrics(obj)['accepted_count']
+
+    def get_rejected_count(self, obj):
+        return self._get_heat_metrics(obj)['rejected_count']
+
+    def get_heat_score(self, obj):
+        return self._get_heat_metrics(obj)['heat_score']
+
+    def get_heat_level(self, obj):
+        return self._get_heat_metrics(obj)['heat_level']
+
+    def get_heat_visible(self, obj):
+        return self._get_heat_metrics(obj)['heat_visible']
+
+
+class ProfessorHeatDisplaySettingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProfessorHeatDisplaySetting
+        fields = ['show_professor_heat', 'updated_at']
 
 
 class ProfessorDetailSerializer(serializers.ModelSerializer):

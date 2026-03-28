@@ -53,6 +53,7 @@ const NAV_GROUPS = [
     label: '招生业务',
     children: [
       { key: '/choices', icon: <AuditOutlined />, label: '双选记录' },
+      { key: '/professor-heat', icon: <AuditOutlined />, label: '导师热度分析' },
       { key: '/reviews', icon: <ReadOutlined />, label: '审核记录' },
       { key: '/alternates', icon: <ScheduleOutlined />, label: '候补管理' },
       { key: '/giveups', icon: <UserDeleteOutlined />, label: '放弃录取' },

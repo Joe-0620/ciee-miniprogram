@@ -22,6 +22,22 @@ function formatSubjectOption(item) {
   return `${item.subject_name}（${parts.join(' / ')}）`;
 }
 
+async function fetchAllPaginated(endpoint, pageSize = 100) {
+  const items = [];
+  let page = 1;
+  let total = 0;
+
+  do {
+    const payload = await get(`${endpoint}?page=${page}&page_size=${pageSize}`);
+    const pageResults = Array.isArray(payload?.results) ? payload.results : [];
+    total = Number(payload?.count || 0);
+    items.push(...pageResults);
+    page += 1;
+  } while (items.length < total);
+
+  return items;
+}
+
 export default function SharedQuotaPoolsPage() {
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -42,12 +58,12 @@ export default function SharedQuotaPoolsPage() {
     try {
       const [departmentPayload, professorPayload, subjectPayload] = await Promise.all([
         get('/departments/'),
-        get('/professors/?page=1&page_size=500'),
-        get('/subjects/?page=1&page_size=500'),
+        fetchAllPaginated('/professors'),
+        fetchAllPaginated('/subjects'),
       ]);
       setDepartments(Array.isArray(departmentPayload) ? departmentPayload : []);
-      setProfessors(professorPayload?.results || []);
-      setSubjects(subjectPayload?.results || []);
+      setProfessors(professorPayload);
+      setSubjects(subjectPayload);
     } catch (err) {
       message.error(err.message);
     }
@@ -244,6 +260,7 @@ export default function SharedQuotaPoolsPage() {
             <Select
               allowClear
               showSearch
+              optionFilterProp="label"
               placeholder="按导师筛选"
               style={{ width: 220 }}
               value={filters.professor_id}
@@ -300,9 +317,32 @@ export default function SharedQuotaPoolsPage() {
         destroyOnClose
         width={760}
       >
-        <Form form={form} layout="vertical">
+        <Form
+          form={form}
+          layout="vertical"
+          onValuesChange={(changedValues) => {
+            if (!Object.prototype.hasOwnProperty.call(changedValues, 'total_quota')) return;
+
+            const totalQuota = changedValues.total_quota;
+            if (editingRecord) {
+              const originalTotal = Number(editingRecord.total_quota || 0);
+              const originalRemaining = Number(editingRecord.remaining_quota || 0);
+              const nextTotal = Number(totalQuota || 0);
+              const nextRemaining = Math.max(0, originalRemaining + (nextTotal - originalTotal));
+              form.setFieldValue('remaining_quota', nextRemaining);
+              return;
+            }
+
+            form.setFieldValue('remaining_quota', totalQuota);
+          }}
+        >
           <Form.Item name="professor_id" label="导师" rules={[{ required: true, message: '请选择导师' }]}>
-            <Select showSearch options={professors.map((item) => ({ label: `${item.name} (${item.teacher_identity_id})`, value: item.id }))} />
+            <Select
+              showSearch
+              optionFilterProp="label"
+              options={professors.map((item) => ({ label: `${item.name} (${item.teacher_identity_id})`, value: item.id }))}
+              placeholder="输入导师姓名或工号搜索"
+            />
           </Form.Item>
           <Form.Item name="pool_name" label="共享池名称" rules={[{ required: true, message: '请输入共享池名称' }]}>
             <Input />
@@ -333,10 +373,10 @@ export default function SharedQuotaPoolsPage() {
             <InputNumber min={0} style={{ width: '100%' }} />
           </Form.Item>
           <Form.Item name="used_quota" label="已用名额" rules={[{ required: true, message: '请输入已用名额' }]}>
-            <InputNumber min={0} style={{ width: '100%' }} />
+            <InputNumber min={0} style={{ width: '100%' }} disabled />
           </Form.Item>
           <Form.Item name="remaining_quota" label="剩余名额">
-            <InputNumber min={0} style={{ width: '100%' }} />
+            <InputNumber min={0} style={{ width: '100%' }} disabled />
           </Form.Item>
           <Form.Item name="is_active" label="启用状态" valuePropName="checked">
             <Switch checkedChildren="启用" unCheckedChildren="停用" />

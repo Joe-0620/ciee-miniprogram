@@ -224,6 +224,54 @@ a {
   align-items: center;
 }
 
+.heat-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.5;
+}
+
+.heat-pill-icons {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.heat-pill-low {
+  background: rgba(22, 163, 74, 0.16);
+  border-color: rgba(22, 163, 74, 0.3);
+  color: #166534;
+}
+
+.heat-pill-medium {
+  background: rgba(8, 145, 178, 0.16);
+  border-color: rgba(8, 145, 178, 0.3);
+  color: #0f766e;
+}
+
+.heat-pill-high {
+  background: rgba(245, 158, 11, 0.18);
+  border-color: rgba(245, 158, 11, 0.32);
+  color: #b45309;
+}
+
+.heat-pill-very-high {
+  background: rgba(239, 68, 68, 0.18);
+  border-color: rgba(239, 68, 68, 0.32);
+  color: #b91c1c;
+}
+
+.heat-pill-muted {
+  background: rgba(148, 163, 184, 0.14);
+  border-color: rgba(148, 163, 184, 0.22);
+  color: #64748b;
+}
+
 .form-section-title {
   margin: 8px 0 16px;
   color: #0f172a;

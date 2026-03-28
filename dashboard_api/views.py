@@ -29,7 +29,10 @@ from openpyxl import Workbook, load_workbook
 from Enrollment_Manage.models import Department, Subject, sync_student_alternate_status
 from Professor_Student_Manage.models import (
     AdmissionBatch,
+    get_professor_heat_display_metrics,
+    get_professor_heat_display_setting,
     Professor,
+    ProfessorHeatDisplaySetting,
     ProfessorDoctorQuota,
     ProfessorMasterQuota,
     ProfessorSharedQuotaPool,
@@ -57,6 +60,8 @@ from .serializers import (
     GiveupStudentSerializer,
     DashboardTokenSerializer,
     ProfessorDetailSerializer,
+    ProfessorHeatDisplaySettingSerializer,
+    ProfessorHeatListSerializer,
     ProfessorDoctorQuotaSerializer,
     ProfessorListSerializer,
     ProfessorMasterQuotaSerializer,
@@ -107,6 +112,14 @@ def serialize_audit_value(value):
     if isinstance(value, Model):
         return {'id': value.pk, 'display': str(value)}
     return value
+
+
+def parse_request_bool(value, default=False):
+    if value is None:
+        return default
+    if isinstance(value, bool):
+        return value
+    return str(value).strip().lower() in ('1', 'true', 'yes', 'on')
 
 
 def snapshot_instance(instance, extra=None):
@@ -268,6 +281,98 @@ def professor_has_quota_for_student(professor, student):
     return quota_source is not None
 
 
+def apply_department_used_quota_delta(department, student, delta):
+    if not department:
+        return
+    if student.postgraduate_type == 3:
+        department.used_doctor_quota = max(0, (department.used_doctor_quota or 0) + delta)
+        department.save(update_fields=['used_doctor_quota'])
+    elif student.postgraduate_type == 2:
+        department.used_academic_quota = max(0, (department.used_academic_quota or 0) + delta)
+        department.save(update_fields=['used_academic_quota'])
+    elif student.postgraduate_type == 1:
+        department.used_professional_quota = max(0, (department.used_professional_quota or 0) + delta)
+        department.save(update_fields=['used_professional_quota'])
+    elif student.postgraduate_type == 4:
+        department.used_professional_yt_quota = max(0, (department.used_professional_yt_quota or 0) + delta)
+        department.save(update_fields=['used_professional_yt_quota'])
+
+
+def consume_quota_for_choice(choice):
+    student = choice.student
+    professor = choice.professor
+    department = professor.department
+
+    if choice.shared_quota_pool_id:
+        shared_pool = ProfessorSharedQuotaPool.objects.filter(
+            pk=choice.shared_quota_pool_id,
+            professor=professor,
+            is_active=True,
+        ).first()
+        if not shared_pool or (shared_pool.remaining_quota or 0) <= 0:
+            raise ValidationError('原共享名额池已无可用名额，无法恢复该录取。')
+        shared_pool.remaining_quota -= 1
+        shared_pool.used_quota += 1
+        shared_pool.save(update_fields=['remaining_quota', 'used_quota', 'updated_at'])
+        apply_department_used_quota_delta(department, student, 1)
+        recalculate_professor_quota_summary(professor)
+        return
+
+    if student.postgraduate_type == 3:
+        quota = ProfessorDoctorQuota.objects.filter(professor=professor, subject=student.subject).first()
+        if not quota or (quota.remaining_quota or 0) <= 0:
+            raise ValidationError('导师在该博士专业下已无可用名额，无法恢复该录取。')
+        quota.remaining_quota -= 1
+        quota.used_quota += 1
+        quota.save(update_fields=['remaining_quota', 'used_quota'])
+        apply_department_used_quota_delta(department, student, 1)
+        recalculate_professor_quota_summary(professor)
+        return
+
+    quota = ProfessorMasterQuota.objects.filter(professor=professor, subject=student.subject).first()
+    if not quota:
+        raise ValidationError('导师在该硕士专业下不存在名额配置，无法恢复该录取。')
+    update_fields = []
+    if student.postgraduate_type in [1, 2]:
+        if (quota.beijing_remaining_quota or 0) <= 0:
+            raise ValidationError('导师在该硕士专业北京校区已无可用名额，无法恢复该录取。')
+        quota.beijing_remaining_quota -= 1
+        update_fields.append('beijing_remaining_quota')
+    elif student.postgraduate_type == 4:
+        if (quota.yantai_remaining_quota or 0) <= 0:
+            raise ValidationError('导师在该硕士专业烟台校区已无可用名额，无法恢复该录取。')
+        quota.yantai_remaining_quota -= 1
+        update_fields.append('yantai_remaining_quota')
+    if update_fields:
+        quota.save(update_fields=update_fields)
+    apply_department_used_quota_delta(department, student, 1)
+    recalculate_professor_quota_summary(professor)
+
+
+def reinstate_revoked_choice(choice):
+    consume_quota_for_choice(choice)
+
+    student = choice.student
+    choice.status = 1
+    choice.finish_time = timezone.now()
+    choice.save(update_fields=['status', 'finish_time'])
+
+    student.is_selected = True
+    student.is_giveup = False
+    student.signature_table_student_signatured = False
+    student.signature_table_professor_signatured = False
+    student.signature_table_review_status = 4
+    student.save(
+        update_fields=[
+            'is_selected',
+            'is_giveup',
+            'signature_table_student_signatured',
+            'signature_table_professor_signatured',
+            'signature_table_review_status',
+        ]
+    )
+
+
 def normalize_alternate_ranks(subject):
     alternates = Student.objects.filter(
         subject=subject,
@@ -283,19 +388,26 @@ def normalize_alternate_ranks(subject):
     return changed
 
 
-def promote_next_alternate(subject):
+def promote_next_alternate(subject, require_available_quota=False):
     student = (
         Student.objects.filter(subject=subject, is_alternate=True, is_giveup=False)
         .order_by('alternate_rank', 'final_rank', 'id')
         .first()
     )
     if not student:
-        return None
+        return None, 'missing'
+    if require_available_quota:
+        has_available_quota = any(
+            professor_has_quota_for_student(professor, student)
+            for professor in Professor.objects.filter(have_qualification=True).iterator()
+        )
+        if not has_available_quota:
+            return None, 'no_quota'
     student.is_alternate = False
     student.alternate_rank = None
     student.save(update_fields=['is_alternate', 'alternate_rank'])
     normalize_alternate_ranks(subject)
-    return student
+    return student, None
 
 
 def cancel_waiting_choices_for_giveup_students():
@@ -478,6 +590,7 @@ def serialize_professor_form_data(data):
         'department_id': data.get('department_id'),
         'email': str(data.get('email') or '').strip(),
         'phone_number': str(data.get('phone_number') or '').strip(),
+        'avatar': str(data.get('avatar') or '').strip(),
         'contact_details': str(data.get('contact_details') or '').strip(),
         'research_areas': str(data.get('research_areas') or '').strip(),
         'personal_page': str(data.get('personal_page') or '').strip(),
@@ -531,6 +644,7 @@ def save_professor_from_payload(payload, professor=None):
     professor.department = department
     professor.email = payload['email'] or None
     professor.phone_number = payload['phone_number'] or None
+    professor.avatar = payload['avatar'] or None
     professor.contact_details = payload['contact_details'] or None
     professor.research_areas = payload['research_areas'] or None
     professor.personal_page = payload['personal_page'] or ''
@@ -1070,6 +1184,7 @@ def build_professor_queryset(request):
     queryset = Professor.objects.select_related('department', 'user_name').annotate(
         pending_choice_count=Count('studentprofessorchoice', filter=Q(studentprofessorchoice__status=3), distinct=True),
         accepted_choice_count=Count('studentprofessorchoice', filter=Q(studentprofessorchoice__status=1), distinct=True),
+        rejected_choice_count=Count('studentprofessorchoice', filter=Q(studentprofessorchoice__status=2), distinct=True),
     )
     search = request.query_params.get('search', '').strip()
     department_id = request.query_params.get('department_id')
@@ -1833,6 +1948,116 @@ class DashboardProfessorListView(APIView):
             after_data=snapshot_instance(professor),
         )
         return Response(ProfessorDetailSerializer(professor).data, status=status.HTTP_201_CREATED)
+
+
+class DashboardProfessorHeatListView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsDashboardAdmin]
+
+    def get(self, request):
+        page = max(int(request.query_params.get('page', 1)), 1)
+        page_size = min(max(int(request.query_params.get('page_size', 10)), 1), 100)
+        queryset = build_professor_queryset(request).select_related('department').order_by('-pending_choice_count', 'id')
+
+        heat_level = request.query_params.get('heat_level')
+        if heat_level:
+            queryset = [professor for professor in queryset if get_professor_heat_display_metrics(professor)['heat_level'] == heat_level]
+            total = len(queryset)
+            start = (page - 1) * page_size
+            end = start + page_size
+            serializer = ProfessorHeatListSerializer(queryset[start:end], many=True)
+            return Response(
+                {'count': total, 'page': page, 'page_size': page_size, 'results': serializer.data},
+                status=status.HTTP_200_OK,
+            )
+
+        total = queryset.count()
+        start = (page - 1) * page_size
+        end = start + page_size
+        serializer = ProfessorHeatListSerializer(queryset[start:end], many=True)
+        return Response(
+            {'count': total, 'page': page, 'page_size': page_size, 'results': serializer.data},
+            status=status.HTTP_200_OK,
+        )
+
+
+class DashboardProfessorHeatSettingView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsDashboardAdmin]
+
+    def get(self, request):
+        setting = get_professor_heat_display_setting()
+        return Response(ProfessorHeatDisplaySettingSerializer(setting).data, status=status.HTTP_200_OK)
+
+    def patch(self, request):
+        setting = get_professor_heat_display_setting()
+        before_data = {'show_professor_heat': setting.show_professor_heat}
+        show_professor_heat = request.data.get('show_professor_heat')
+        setting.show_professor_heat = parse_request_bool(show_professor_heat, default=setting.show_professor_heat)
+        setting.save()
+        create_audit_log(
+            request,
+            action='professor_heat.setting_update',
+            module='导师热度分析',
+            level=DashboardAuditLog.LEVEL_WARNING,
+            target_type='professor_heat_setting',
+            target_id=setting.pk,
+            target_display='导师热度显示配置',
+            detail='更新前端导师热度全局显示开关。',
+            before_data=before_data,
+            after_data={'show_professor_heat': setting.show_professor_heat},
+        )
+        return Response(ProfessorHeatDisplaySettingSerializer(setting).data, status=status.HTTP_200_OK)
+
+
+class DashboardProfessorHeatDetailView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsDashboardAdmin]
+
+    def patch(self, request, pk):
+        professor = Professor.objects.filter(pk=pk).first()
+        if not professor:
+            return Response({'detail': '导师不存在。'}, status=status.HTTP_404_NOT_FOUND)
+
+        before_data = {
+            'heat_display_enabled': professor.heat_display_enabled,
+            'manual_heat_score': str(professor.manual_heat_score) if professor.manual_heat_score is not None else None,
+            'manual_heat_level': professor.manual_heat_level or '',
+        }
+
+        if 'heat_display_enabled' in request.data:
+            professor.heat_display_enabled = parse_request_bool(
+                request.data.get('heat_display_enabled'),
+                default=professor.heat_display_enabled,
+            )
+
+        if 'manual_heat_score' in request.data:
+            raw_score = request.data.get('manual_heat_score')
+            professor.manual_heat_score = None if raw_score in (None, '', 'null') else raw_score
+
+        if 'manual_heat_level' in request.data:
+            raw_level = str(request.data.get('manual_heat_level') or '').strip()
+            professor.manual_heat_level = raw_level or None
+
+        professor.save(update_fields=['heat_display_enabled', 'manual_heat_score', 'manual_heat_level'])
+
+        create_audit_log(
+            request,
+            action='professor_heat.update',
+            module='导师热度分析',
+            level=DashboardAuditLog.LEVEL_WARNING,
+            target_type='professor',
+            target_id=professor.pk,
+            target_display=professor.name,
+            detail='更新导师热度显示开关或手动热度。',
+            before_data=before_data,
+            after_data={
+                'heat_display_enabled': professor.heat_display_enabled,
+                'manual_heat_score': str(professor.manual_heat_score) if professor.manual_heat_score is not None else None,
+                'manual_heat_level': professor.manual_heat_level or '',
+            },
+        )
+        return Response(ProfessorHeatListSerializer(professor).data, status=status.HTTP_200_OK)
 
 
 class DashboardProfessorDetailView(APIView):
@@ -2993,15 +3218,33 @@ class DashboardStudentRevokeGiveupView(APIView):
     permission_classes = [IsDashboardAdmin]
 
     def post(self, request, pk):
-        student = Student.objects.filter(pk=pk).first()
+        student = Student.objects.select_related('subject').filter(pk=pk).first()
         if not student:
             return Response({'detail': 'Student not found.'}, status=status.HTTP_404_NOT_FOUND)
         if not student.is_giveup:
             return Response({'detail': 'Student has not given up admission.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        student.is_giveup = False
-        student.save(update_fields=['is_giveup'])
-        normalize_alternate_ranks(student.subject)
+        revoked_choice = (
+            StudentProfessorChoice.objects.select_related(
+                'student__subject',
+                'professor__department',
+                'shared_quota_pool',
+            )
+            .filter(student=student, status=5, chosen_by_professor=True)
+            .order_by('-finish_time', '-submit_date', '-id')
+            .first()
+        )
+
+        with transaction.atomic():
+            if revoked_choice and not student.is_selected:
+                try:
+                    reinstate_revoked_choice(revoked_choice)
+                except ValidationError as exc:
+                    return Response({'detail': str(exc)}, status=status.HTTP_409_CONFLICT)
+            else:
+                student.is_giveup = False
+                student.save(update_fields=['is_giveup'])
+            normalize_alternate_ranks(student.subject)
         create_audit_log(
             request,
             action='student.revoke_giveup',
@@ -3012,8 +3255,10 @@ class DashboardStudentRevokeGiveupView(APIView):
             target_display=student.name,
             detail='撤销学生放弃录取状态。',
             before_data={'is_giveup': True},
-            after_data={'is_giveup': False},
+            after_data={'is_giveup': False, 'restored_choice_id': revoked_choice.id if revoked_choice else None},
         )
+        if revoked_choice:
+            return Response({'detail': '已撤销该学生的放弃录取状态，并恢复原录取名额。'}, status=status.HTTP_200_OK)
         return Response({'detail': '已撤销该学生的放弃录取状态。'}, status=status.HTTP_200_OK)
 
 
@@ -4393,8 +4638,10 @@ class DashboardAlternatePromoteNextView(APIView):
         if not subject:
             return Response({'detail': 'Subject not found.'}, status=status.HTTP_404_NOT_FOUND)
 
-        promoted_student = promote_next_alternate(subject)
+        promoted_student, reason = promote_next_alternate(subject, require_available_quota=True)
         if not promoted_student:
+            if reason == 'no_quota':
+                return Response({'detail': '该专业当前没有可回补的可用名额，无法递补候补学生。'}, status=status.HTTP_409_CONFLICT)
             return Response({'detail': '该专业没有可递补的候补学生。'}, status=status.HTTP_400_BAD_REQUEST)
 
         create_audit_log(

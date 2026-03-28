@@ -12,6 +12,7 @@ import EnrollmentPage from './pages/EnrollmentPage';
 import GiveupsPage from './pages/GiveupsPage';
 import LoginPage from './pages/LoginPage';
 import MasterQuotasPage from './pages/MasterQuotasPage';
+import ProfessorHeatPage from './pages/ProfessorHeatPage';
 import ProfessorsPage from './pages/ProfessorsPage';
 import ReviewsPage from './pages/ReviewsPage';
 import SelectionTimesPage from './pages/SelectionTimesPage';
@@ -49,6 +50,7 @@ export default function App() {
           <Route path="professors" element={<ProfessorsPage />} />
           <Route path="students" element={<StudentsPage />} />
           <Route path="choices" element={<ChoicesPage />} />
+          <Route path="professor-heat" element={<ProfessorHeatPage />} />
           <Route path="reviews" element={<ReviewsPage />} />
           <Route path="selection-times" element={<SelectionTimesPage />} />
           <Route path="admission-batches" element={<AdmissionBatchesPage />} />

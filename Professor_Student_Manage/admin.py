@@ -21,6 +21,39 @@ from django.http import JsonResponse, HttpResponse
 import zipfile
 import tempfile
 import os
+from django.core.cache import cache
+
+
+WECHAT_CLOUD_ENV = os.environ.get('WECHAT_CLOUD_ENV', 'prod-2g1jrmkk21c1d283')
+WECHAT_APPID = os.environ.get('WECHAT_APPID', 'wxa67ae78c4f1f6275')
+WECHAT_SECRET = os.environ.get('WECHAT_SECRET', '7241b1950145a193f15b3584d50f3989')
+
+
+def get_wechat_access_token(force_refresh=False):
+    cache_key = 'professor_student_manage_admin_wechat_access_token'
+    if not force_refresh:
+        cached_token = cache.get(cache_key)
+        if cached_token:
+            return cached_token
+
+    response = requests.get(
+        'https://api.weixin.qq.com/cgi-bin/token',
+        params={
+            'grant_type': 'client_credential',
+            'appid': WECHAT_APPID,
+            'secret': WECHAT_SECRET,
+        },
+        timeout=15,
+    )
+    response.raise_for_status()
+    payload = response.json()
+    access_token = payload.get('access_token')
+    if not access_token:
+        raise ValueError(payload.get('errmsg') or '获取微信 access_token 失败。')
+
+    expires_in = int(payload.get('expires_in') or 7200)
+    cache.set(cache_key, access_token, timeout=max(expires_in - 300, 300))
+    return access_token
 
 class ProfessorDoctorQuotaInline(admin.TabularInline):
     model = ProfessorDoctorQuota
@@ -1558,9 +1591,10 @@ class StudentAdmin(admin.ModelAdmin):
         """
         根据 file_id 获取下载地址
         """
-        url = f'https://api.weixin.qq.com/tcb/batchdownloadfile'
+        access_token = get_wechat_access_token()
+        url = f'https://api.weixin.qq.com/tcb/batchdownloadfile?access_token={access_token}'
         data = {
-            "env": 'prod-2g1jrmkk21c1d283',
+            "env": WECHAT_CLOUD_ENV,
             "file_list": [
                 {
                     "fileid": file_id,
@@ -1570,8 +1604,16 @@ class StudentAdmin(admin.ModelAdmin):
         }
 
         # 发送POST请求
-        response = requests.post(url, json=data)
-        return response.json()
+        response = requests.post(url, json=data, timeout=15)
+        response.raise_for_status()
+        payload = response.json()
+        if payload.get('errcode') == 41001:
+            access_token = get_wechat_access_token(force_refresh=True)
+            refresh_url = f'https://api.weixin.qq.com/tcb/batchdownloadfile?access_token={access_token}'
+            response = requests.post(refresh_url, json=data, timeout=15)
+            response.raise_for_status()
+            payload = response.json()
+        return payload
 
     # change_list_template = 'admin/student_change_list.html'  # 自定义列表页面模板
 

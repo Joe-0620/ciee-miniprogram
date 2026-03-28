@@ -6,9 +6,10 @@ from Enrollment_Manage.models import Department, Subject
 from django.core.exceptions import ValidationError
 from django.db.models.signals import post_save, post_delete, pre_save
 from django.dispatch import receiver
-from django.db.models import Sum, Q, F
+from django.db.models import Sum, Q, F, Count
 from django.db.models.functions import Coalesce
 from django.db import transaction
+from django.core.cache import cache
 from rest_framework.authtoken.models import Token
 
 
@@ -23,6 +24,17 @@ class WeChatAccount(models.Model):
 
 
 class Professor(models.Model):
+    HEAT_LEVEL_LOW = '低'
+    HEAT_LEVEL_MEDIUM = '中'
+    HEAT_LEVEL_HIGH = '高'
+    HEAT_LEVEL_VERY_HIGH = '很高'
+    HEAT_LEVEL_CHOICES = [
+        (HEAT_LEVEL_LOW, '低'),
+        (HEAT_LEVEL_MEDIUM, '中'),
+        (HEAT_LEVEL_HIGH, '高'),
+        (HEAT_LEVEL_VERY_HIGH, '很高'),
+    ]
+
     user_name = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
     name = models.CharField(max_length=100, verbose_name="导师姓名")
     professor_title = models.CharField(max_length=10, default="副教授", null=False, verbose_name="导师职称")
@@ -44,6 +56,15 @@ class Professor(models.Model):
     contact_details = models.CharField(max_length=100, null=True, blank=True, verbose_name="联系方式")
     signature_temp = models.CharField(max_length=500, null=True, blank=True, verbose_name="签名临时下载地址")
     website_order = models.IntegerField(default=0, verbose_name="官网排序号")
+    heat_display_enabled = models.BooleanField(default=True, verbose_name="前端是否显示热度")
+    manual_heat_score = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True, verbose_name="手动热度指数")
+    manual_heat_level = models.CharField(
+        max_length=10,
+        choices=HEAT_LEVEL_CHOICES,
+        null=True,
+        blank=True,
+        verbose_name="手动热度等级",
+    )
 
     Department_Position = [
         [0, "非审核人"],
@@ -146,6 +167,69 @@ class ProfessorSharedQuotaPool(models.Model):
         return f"{self.professor.name} - {self.pool_name}"
 
 
+class ProfessorProfileSection(models.Model):
+    professor = models.ForeignKey(
+        Professor,
+        on_delete=models.CASCADE,
+        related_name='profile_sections',
+        verbose_name="导师",
+    )
+    title = models.CharField(max_length=50, verbose_name="模块标题")
+    content = models.TextField(verbose_name="模块内容")
+    sort_order = models.IntegerField(default=0, verbose_name="排序值")
+    is_active = models.BooleanField(default=True, verbose_name="是否启用")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="创建时间")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="更新时间")
+
+    class Meta:
+        verbose_name = "导师主页自定义模块"
+        verbose_name_plural = "导师主页自定义模块"
+        ordering = ['sort_order', 'id']
+
+    def __str__(self):
+        return f"{self.professor.name} - {self.title}"
+
+
+class ProfessorHeatDisplaySetting(models.Model):
+    show_professor_heat = models.BooleanField(default=True, verbose_name="前端是否显示导师热度")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="更新时间")
+
+    class Meta:
+        verbose_name = "导师热度显示配置"
+        verbose_name_plural = "导师热度显示配置"
+
+    def save(self, *args, **kwargs):
+        self.pk = 1
+        super().save(*args, **kwargs)
+        cache.delete('professor_heat_display_setting')
+
+    def delete(self, *args, **kwargs):
+        return
+
+    def __str__(self):
+        return '导师热度显示配置'
+
+
+def get_professor_heat_display_setting():
+    cache_key = 'professor_heat_display_setting'
+    cached_value = cache.get(cache_key)
+    if cached_value is not None:
+        return cached_value
+    setting, _ = ProfessorHeatDisplaySetting.objects.get_or_create(pk=1)
+    cache.set(cache_key, setting, timeout=300)
+    return setting
+
+
+def resolve_heat_level(heat_score):
+    if heat_score >= 6:
+        return Professor.HEAT_LEVEL_VERY_HIGH
+    if heat_score >= 3:
+        return Professor.HEAT_LEVEL_HIGH
+    if heat_score >= 1:
+        return Professor.HEAT_LEVEL_MEDIUM
+    return Professor.HEAT_LEVEL_LOW
+
+
 def get_student_quota_scope(student):
     return ProfessorSharedQuotaPool.SCOPE_DOCTOR if student.postgraduate_type == 3 else ProfessorSharedQuotaPool.SCOPE_MASTER
 
@@ -223,6 +307,84 @@ def recalculate_professor_quota_summary(professor):
         doctor_quota=doctor_quota,
         remaining_quota=academic_quota + professional_quota + professional_yt_quota + doctor_quota + shared_pool_quota,
     )
+
+
+def calculate_professor_heat_metrics(professor):
+    pending_count = 0
+    accepted_count = 0
+    rejected_count = 0
+
+    if hasattr(professor, 'pending_choice_count') and professor.pending_choice_count is not None:
+        pending_count = professor.pending_choice_count
+    if hasattr(professor, 'accepted_choice_count') and professor.accepted_choice_count is not None:
+        accepted_count = professor.accepted_choice_count
+    if hasattr(professor, 'rejected_choice_count') and professor.rejected_choice_count is not None:
+        rejected_count = professor.rejected_choice_count
+
+    if pending_count == 0 and accepted_count == 0 and rejected_count == 0:
+        choice_queryset = getattr(professor, 'studentprofessorchoice_set', None)
+        if choice_queryset is None:
+            return {
+                'pending_count': pending_count,
+                'accepted_count': accepted_count,
+                'rejected_count': rejected_count,
+                'available_quota_total': max(int(getattr(professor, 'remaining_quota', 0) or 0), 0),
+                'heat_score': 0,
+                'heat_level': '低',
+            }
+        choice_stats = choice_queryset.aggregate(
+            pending_count=Count('id', filter=Q(status=3)),
+            accepted_count=Count('id', filter=Q(status=1)),
+            rejected_count=Count('id', filter=Q(status=2)),
+        )
+        pending_count = choice_stats.get('pending_count') or 0
+        accepted_count = choice_stats.get('accepted_count') or 0
+        rejected_count = choice_stats.get('rejected_count') or 0
+
+    available_quota_total = max(int(getattr(professor, 'remaining_quota', 0) or 0), 0)
+    heat_score = round(pending_count / max(available_quota_total, 1), 2)
+    heat_level = resolve_heat_level(heat_score)
+
+    return {
+        'pending_count': pending_count,
+        'accepted_count': accepted_count,
+        'rejected_count': rejected_count,
+        'available_quota_total': available_quota_total,
+        'heat_score': heat_score,
+        'heat_level': heat_level,
+    }
+
+
+def get_professor_heat_display_metrics(professor, global_setting=None):
+    metrics = calculate_professor_heat_metrics(professor)
+    manual_heat_score = getattr(professor, 'manual_heat_score', None)
+    manual_heat_level = getattr(professor, 'manual_heat_level', None)
+
+    if manual_heat_score is not None:
+        heat_score = round(float(manual_heat_score), 2)
+    else:
+        heat_score = metrics['heat_score']
+
+    if manual_heat_level:
+        heat_level = manual_heat_level
+    else:
+        heat_level = resolve_heat_level(heat_score)
+
+    if global_setting is None:
+        global_setting = get_professor_heat_display_setting()
+    heat_visible = bool(getattr(global_setting, 'show_professor_heat', True)) and bool(
+        getattr(professor, 'heat_display_enabled', True)
+    )
+
+    return {
+        **metrics,
+        'heat_score': heat_score,
+        'heat_level': heat_level,
+        'heat_visible': heat_visible,
+        'heat_display_enabled': getattr(professor, 'heat_display_enabled', True),
+        'manual_heat_score': manual_heat_score,
+        'manual_heat_level': manual_heat_level or '',
+    }
 
 class ProfessorDoctorQuota(models.Model):
     professor = models.ForeignKey(Professor, on_delete=models.CASCADE, related_name='doctor_quotas', verbose_name="导师")

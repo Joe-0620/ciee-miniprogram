@@ -41,7 +41,38 @@ from .serializers import ReviewRecordSerializer, ReviewRecordUpdateSerializer
 from django.core.paginator import Paginator
 from django.db.models import Q, Prefetch
 
-logger = logging.getLogger(__name__)
+logger = logging.getLogger('log')
+
+WECHAT_CLOUD_ENV = os.environ.get('WECHAT_CLOUD_ENV', 'prod-2g1jrmkk21c1d283')
+WECHAT_APPID = os.environ.get('WECHAT_APPID', 'wxa67ae78c4f1f6275')
+WECHAT_SECRET = os.environ.get('WECHAT_SECRET', '7241b1950145a193f15b3584d50f3989')
+
+
+def get_wechat_access_token(force_refresh=False):
+    cache_key = 'select_information_wechat_access_token'
+    if not force_refresh:
+        cached_token = cache.get(cache_key)
+        if cached_token:
+            return cached_token
+
+    response = requests.get(
+        'https://api.weixin.qq.com/cgi-bin/token',
+        params={
+            'grant_type': 'client_credential',
+            'appid': WECHAT_APPID,
+            'secret': WECHAT_SECRET,
+        },
+        timeout=15,
+    )
+    response.raise_for_status()
+    payload = response.json()
+    access_token = payload.get('access_token')
+    if not access_token:
+        raise ValueError(payload.get('errmsg') or '获取微信 access_token 失败。')
+
+    expires_in = int(payload.get('expires_in') or 7200)
+    cache.set(cache_key, access_token, timeout=max(expires_in - 300, 300))
+    return access_token
 
 
 def get_selection_time_config(target):
@@ -181,6 +212,25 @@ class SelectInformationView(APIView):
             for idx, sid in enumerate(student_ids, start=1):
                 rank_map[sid] = idx
         return rank_map
+
+    @staticmethod
+    def _safe_int(value, default, minimum=1, maximum=None):
+        try:
+            result = int(value)
+        except (TypeError, ValueError):
+            result = default
+        result = max(result, minimum)
+        if maximum is not None:
+            result = min(result, maximum)
+        return result
+
+    @staticmethod
+    def _build_choice_counts(queryset):
+        return {
+            'wait': queryset.filter(status=3).count(),
+            'accepted': queryset.filter(status=1).count(),
+            'rejected': queryset.filter(status=2).count(),
+        }
     
     def get(self, request):
         usertype = request.query_params.get('usertype')
@@ -189,12 +239,41 @@ class SelectInformationView(APIView):
         if usertype == 'student':
             try:
                 student = user.student
-                student_choices = StudentProfessorChoice.objects.select_related(
+                page = self._safe_int(request.query_params.get('page', 1), 1, 1, 99999)
+                choice_page_size = self._safe_int(request.query_params.get('choice_page_size', 10), 10, 1, 50)
+                choice_status = self._safe_int(request.query_params.get('choice_status', 0), 0, 0, 4)
+
+                student_choices_queryset = StudentProfessorChoice.objects.select_related(
                     'student', 'professor', 'professor__department'
-                ).filter(student=student)
-                serializer = StudentProfessorChoiceSerializer(student_choices, many=True)
+                ).filter(student=student).order_by('-submit_date', '-id')
+
+                choice_counts = {
+                    'wait': student_choices_queryset.filter(status=3).count(),
+                    'accepted': student_choices_queryset.filter(status=1).count(),
+                    'rejected': student_choices_queryset.filter(status=2).count(),
+                    'canceled': student_choices_queryset.filter(status=4).count(),
+                }
+
+                if choice_status in (1, 2, 3, 4):
+                    student_choices_queryset = student_choices_queryset.filter(status=choice_status)
+
+                paginator = Paginator(student_choices_queryset, choice_page_size)
+                try:
+                    student_choices_page = paginator.page(page)
+                except:
+                    student_choices_page = paginator.page(1)
+
+                serializer = StudentProfessorChoiceSerializer(student_choices_page, many=True)
                 return Response({
-                    'student_choices': serializer.data
+                    'student_choices': serializer.data,
+                    'choice_counts': choice_counts,
+                    'choice_has_next': student_choices_page.has_next(),
+                    'choice_has_previous': student_choices_page.has_previous(),
+                    'choice_total_pages': paginator.num_pages,
+                    'choice_current_page': student_choices_page.number,
+                    'choice_total_count': paginator.count,
+                    'choice_page_size': choice_page_size,
+                    'choice_status': choice_status,
                 }, status=status.HTTP_200_OK)
             except Student.DoesNotExist:
                 return Response({"message": "Student object does not exist."}, status=status.HTTP_404_NOT_FOUND)
@@ -204,12 +283,15 @@ class SelectInformationView(APIView):
                 professor = user.professor
                 
                 # 获取分页参数
-                page = int(request.query_params.get('page', 1))
-                page_size = int(request.query_params.get('page_size', 10))
+                page = self._safe_int(request.query_params.get('page', 1), 1, 1, 99999)
+                page_size = self._safe_int(request.query_params.get('page_size', 10), 10, 1, 50)
+                choice_page_size = self._safe_int(request.query_params.get('choice_page_size', page_size), page_size, 1, 50)
                 
                 # 获取筛选参数
                 subject_id = request.query_params.get('subject_id', None)
                 search_keyword = request.query_params.get('search', None)
+                choice_status = self._safe_int(request.query_params.get('choice_status', 0), 0, 0, 4)
+                include_students = str(request.query_params.get('include_students', '1')).lower() not in ('0', 'false', 'no')
                 
                 # === 获取硕士招生专业（从 ProfessorMasterQuota 里取） ===
                 master_subject_ids = list(
@@ -228,94 +310,106 @@ class SelectInformationView(APIView):
                 # 查询所有专业（去重，仅为 subject__in 查询）
                 enroll_subjects = Subject.objects.filter(id__in=all_subject_ids)
 
-                # 如果指定了专业ID或搜索关键词，使用传统分页
-                if subject_id or search_keyword:
-                    students_query = Student.objects.select_related(
-                        'subject'
-                    ).filter(
-                        is_selected=False,
-                        is_alternate=False,
-                        is_giveup=False,
-                        subject__in=enroll_subjects
-                    ).order_by('final_rank', 'id')
-                    
-                    if subject_id:
-                        students_query = students_query.filter(subject_id=subject_id)
-                    
-                    if search_keyword:
-                        students_query = students_query.filter(
-                            Q(name__icontains=search_keyword) |
-                            Q(candidate_number__icontains=search_keyword)
-                        )
-                    
-                    # 分页处理
-                    paginator = Paginator(students_query, page_size)
-                    try:
-                        students_page = paginator.page(page)
-                    except:
-                        students_page = paginator.page(1)
-                    
-                    students_for_serializer = list(students_page)
-                    alternate_rank_map = self._build_alternate_rank_map(students_for_serializer)
-                    student_serializer = StudentSerializer(
-                        students_page, many=True,
-                        context={'alternate_rank_map': alternate_rank_map}
-                    )
-                    total_count = paginator.count
-                    total_pages = paginator.num_pages
-                    has_next = students_page.has_next()
-                    has_previous = students_page.has_previous()
-                    
-                else:
-                    # 每个专业按分页显示 page_size 个学生
-                    students_list = []
-                    offset = (page - 1) * page_size
-                    
-                    # 检查是否还有下一页的数据
-                    has_more_data = False
-                    
-                    for subject in enroll_subjects:
-                        # 获取该专业的学生，跳过前面的页，取当前页的数据
-                        subject_students = Student.objects.select_related(
+                student_serializer = None
+                total_count = 0
+                total_pages = 0
+                has_next = False
+                has_previous = False
+
+                if include_students:
+                    # 如果指定了专业ID或搜索关键词，使用传统分页
+                    if subject_id or search_keyword:
+                        students_query = Student.objects.select_related(
                             'subject'
                         ).filter(
                             is_selected=False,
                             is_alternate=False,
                             is_giveup=False,
-                            subject=subject
-                        ).order_by('final_rank', 'id')[offset:offset + page_size]
-                        
-                        students_list.extend(subject_students)
-                        
-                        # 检查该专业是否还有更多数据
-                        next_page_check = Student.objects.filter(
-                            is_selected=False,
-                            is_alternate=False,
-                            is_giveup=False,
-                            subject=subject
-                        )[offset + page_size:offset + page_size + 1]
-                        
-                        if next_page_check.exists():
-                            has_more_data = True
-                    
-                    # 按总排名排序
-                    students_list.sort(key=lambda x: (x.final_rank or 0, x.id))
-                    
-                    alternate_rank_map = self._build_alternate_rank_map(students_list)
-                    student_serializer = StudentSerializer(
-                        students_list, many=True,
-                        context={'alternate_rank_map': alternate_rank_map}
-                    )
-                    total_count = len(students_list)
-                    total_pages = 999  # 使用一个大数字，实际由has_next控制
-                    has_next = has_more_data
-                    has_previous = page > 1
+                            subject__in=enroll_subjects
+                        ).order_by('final_rank', 'id')
+
+                        if subject_id:
+                            students_query = students_query.filter(subject_id=subject_id)
+
+                        if search_keyword:
+                            students_query = students_query.filter(
+                                Q(name__icontains=search_keyword) |
+                                Q(candidate_number__icontains=search_keyword)
+                            )
+
+                        paginator = Paginator(students_query, page_size)
+                        try:
+                            students_page = paginator.page(page)
+                        except:
+                            students_page = paginator.page(1)
+
+                        students_for_serializer = list(students_page)
+                        alternate_rank_map = self._build_alternate_rank_map(students_for_serializer)
+                        student_serializer = StudentSerializer(
+                            students_page, many=True,
+                            context={'alternate_rank_map': alternate_rank_map}
+                        )
+                        total_count = paginator.count
+                        total_pages = paginator.num_pages
+                        has_next = students_page.has_next()
+                        has_previous = students_page.has_previous()
+
+                    else:
+                        # 每个专业按分页显示 page_size 个学生
+                        students_list = []
+                        offset = (page - 1) * page_size
+                        has_more_data = False
+
+                        for subject in enroll_subjects:
+                            subject_students = Student.objects.select_related(
+                                'subject'
+                            ).filter(
+                                is_selected=False,
+                                is_alternate=False,
+                                is_giveup=False,
+                                subject=subject
+                            ).order_by('final_rank', 'id')[offset:offset + page_size]
+
+                            students_list.extend(subject_students)
+
+                            next_page_check = Student.objects.filter(
+                                is_selected=False,
+                                is_alternate=False,
+                                is_giveup=False,
+                                subject=subject
+                            )[offset + page_size:offset + page_size + 1]
+
+                            if next_page_check.exists():
+                                has_more_data = True
+
+                        students_list.sort(key=lambda x: (x.final_rank or 0, x.id))
+
+                        alternate_rank_map = self._build_alternate_rank_map(students_list)
+                        student_serializer = StudentSerializer(
+                            students_list, many=True,
+                            context={'alternate_rank_map': alternate_rank_map}
+                        )
+                        total_count = len(students_list)
+                        total_pages = 999
+                        has_next = has_more_data
+                        has_previous = page > 1
 
                 # 获取导师的互选记录（使用 select_related 避免 N+1）
-                student_choices = StudentProfessorChoice.objects.select_related(
+                student_choices_queryset = StudentProfessorChoice.objects.select_related(
                     'student', 'student__subject', 'professor', 'professor__department'
-                ).filter(professor=professor)
-                choice_serializer = StudentProfessorChoiceSerializer(student_choices, many=True)
+                ).filter(professor=professor).order_by('-submit_date', '-id')
+
+                choice_counts = self._build_choice_counts(student_choices_queryset)
+                if choice_status in (1, 2, 3):
+                    student_choices_queryset = student_choices_queryset.filter(status=choice_status)
+
+                choice_paginator = Paginator(student_choices_queryset, choice_page_size)
+                try:
+                    student_choices_page = choice_paginator.page(page)
+                except:
+                    student_choices_page = choice_paginator.page(1)
+
+                choice_serializer = StudentProfessorChoiceSerializer(student_choices_page, many=True)
                 
                 # 获取所有招生专业信息（用于前端筛选）
                 subject_list = Subject.objects.filter(id__in=all_subject_ids).distinct()
@@ -323,8 +417,16 @@ class SelectInformationView(APIView):
                 
                 return Response({
                     'student_choices': choice_serializer.data,
-                    'students_without_professor': student_serializer.data,
+                    'students_without_professor': student_serializer.data if student_serializer else [],
                     'subjects': subject_data,  # 新增：专业列表供筛选
+                    'choice_counts': choice_counts,
+                    'choice_has_next': student_choices_page.has_next(),
+                    'choice_has_previous': student_choices_page.has_previous(),
+                    'choice_total_pages': choice_paginator.num_pages,
+                    'choice_current_page': student_choices_page.number,
+                    'choice_total_count': choice_paginator.count,
+                    'choice_page_size': choice_page_size,
+                    'choice_status': choice_status,
                     'has_next': has_next,
                     'has_previous': has_previous,
                     'total_pages': total_pages,
@@ -564,7 +666,15 @@ class StudentChooseProfessorView(APIView):
                 status=3,
             )
 
-            self._notify_professor(professor)
+            try:
+                self._notify_professor(professor)
+            except Exception as exc:
+                logger.exception(
+                    '学生选择导师后发送通知失败: professor_id=%s student_id=%s error=%s',
+                    professor.id,
+                    student.id,
+                    exc,
+                )
             return Response({'message': '选择成功，请等待回复'}, status=status.HTTP_201_CREATED)
 
         except Professor.DoesNotExist:
@@ -592,10 +702,13 @@ class StudentChooseProfessorView(APIView):
                 "time7": {"value": timezone.now().strftime("%Y-%m-%d %H:%M:%S")}
             }
         }
-        response = requests.post(url, json=data)
-        response_data = response.json()
-        if response_data.get("errcode") != 0:
-            print(f"通知发送失败: {response_data.get('errmsg')}") 
+        try:
+            response = requests.post(url, json=data, timeout=10)
+            response_data = response.json()
+            if response_data.get("errcode") != 0:
+                logger.warning("通知发送失败: %s", response_data.get('errmsg'))
+        except Exception as exc:
+            logger.exception("发送导师订阅通知失败: %s", exc)
 
 # class ProfessorChooseStudentView(APIView):
 #     permission_classes = [IsAuthenticated]
@@ -1116,6 +1229,8 @@ class ProfessorChooseStudentView(APIView):
 
     # ================= PDF 生成 & 上传 =================
     def generate_and_upload_pdf(self, student, professor):
+        logger.info('开始生成并上传互选材料: student_id=%s professor_id=%s', student.id, professor.id)
+
         date = timezone.now().strftime("%Y 年 %m 月 %d 日")
         student_name = student.name
         student_major = student.subject.subject_name
@@ -1172,44 +1287,79 @@ class ProfessorChooseStudentView(APIView):
         return packet
 
     def upload_to_wechat_cloud(self, save_path, cloud_path, student):
-        logging.basicConfig(level=logging.INFO, stream=sys.stdout)
+        bucket = os.environ.get('COS_BUCKET')
+        secret_id = os.environ.get('COS_SECRET_ID')
+        secret_key = os.environ.get('COS_SECRET_KEY')
+
+        logger.info(
+            '准备上传互选材料: save_path=%s cloud_path=%s has_secret_id=%s has_secret_key=%s has_bucket=%s',
+            save_path,
+            cloud_path,
+            bool(secret_id),
+            bool(secret_key),
+            bool(bucket),
+        )
+
         try:
-
-            print("COS_SECRET_ID:", os.environ.get("COS_SECRET_ID"))
-            print("COS_SECRET_KEY:", os.environ.get("COS_SECRET_KEY"))
-            print("COS_SECRET_ID:", os.environ.get("COS_BUCKET"))
-
-            secret_id = os.environ.get("COS_SECRET_ID")
-            secret_key = os.environ.get("COS_SECRET_KEY")
             if not secret_id or not secret_key:
                 logger.warning('未配置 COS_SECRET_ID 或 COS_SECRET_KEY，跳过互选材料上传。')
+                return
+            if not bucket:
+                logger.warning('未配置 COS_BUCKET，跳过互选材料上传。')
                 return
 
             region = 'ap-shanghai'
             config = CosConfig(Region=region, SecretId=secret_id, SecretKey=secret_key)
             client = CosS3Client(config)
 
-            url = f'https://api.weixin.qq.com/tcb/uploadfile'
-            data = {"env": 'prod-2g1jrmkk21c1d283', "path": cloud_path}
-            response = requests.post(url, json=data)
+            access_token = get_wechat_access_token()
+            url = f'https://api.weixin.qq.com/tcb/uploadfile?access_token={access_token}'
+            data = {"env": WECHAT_CLOUD_ENV, "path": cloud_path}
+            response = requests.post(url, json=data, timeout=15)
+            response.raise_for_status()
             response_data = response.json()
 
+            if response_data.get('errcode') not in (None, 0):
+                errcode = response_data.get('errcode')
+                if errcode == 41001:
+                    access_token = get_wechat_access_token(force_refresh=True)
+                    refresh_url = f'https://api.weixin.qq.com/tcb/uploadfile?access_token={access_token}'
+                    response = requests.post(refresh_url, json=data, timeout=15)
+                    response.raise_for_status()
+                    response_data = response.json()
+                if response_data.get('errcode') not in (None, 0):
+                    raise ValueError(response_data.get('errmsg') or '调用 tcb/uploadfile 失败。')
+
+            cos_file_id = response_data.get('cos_file_id')
+            if not cos_file_id:
+                raise ValueError('微信接口未返回 cos_file_id，无法写入 x-cos-meta-fileid。')
+
             client.upload_file(
-                Bucket=os.environ.get("COS_BUCKET"),
+                Bucket=bucket,
                 LocalFilePath=save_path,
                 Key=cloud_path,
                 PartSize=1,
                 MAXThread=10,
                 EnableMD5=False,
-                Metadata={'x-cos-meta-fileid': response_data.get('cos_file_id', '')}
+                Metadata={'x-cos-meta-fileid': cos_file_id}
             )
-            if os.path.exists(save_path):
-                os.remove(save_path)
 
-            student.signature_table = response_data.get('file_id', cloud_path)
+            file_id = response_data.get('file_id')
+            if not file_id:
+                file_id = f'cloud://{WECHAT_CLOUD_ENV}.{bucket}/{cloud_path}'
+                logger.warning('微信接口未返回 file_id，使用推导值回填: %s', file_id)
+
+            student.signature_table = file_id
             student.save()
+            logger.info('互选材料上传成功并已写入 signature_table: student_id=%s file_id=%s', student.id, file_id)
         except Exception as e:
             logger.exception('文件上传失败: %s', e)
+        finally:
+            if os.path.exists(save_path):
+                try:
+                    os.remove(save_path)
+                except Exception:
+                    logger.exception('删除本地临时文件失败: %s', save_path)
 
     # ================= 通知学生 =================
     def send_notification(self, student, action):
@@ -1384,11 +1534,45 @@ class ReviewerReviewRecordsView(APIView):
 
     def get(self, request):
         reviewer = request.user.professor
-        review_records = ReviewRecord.objects.select_related(
+        page = SelectInformationView._safe_int(request.query_params.get('page', 1), 1, 1, 99999)
+        page_size = SelectInformationView._safe_int(request.query_params.get('page_size', 10), 10, 1, 50)
+        review_status = SelectInformationView._safe_int(request.query_params.get('review_status', 0), 0, 0, 3)
+
+        review_records_queryset = ReviewRecord.objects.select_related(
             'student', 'professor', 'professor__department', 'reviewer'
-        ).filter(reviewer=reviewer)
-        serializer = ReviewRecordSerializer(review_records, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        ).filter(reviewer=reviewer).order_by('-submit_time', '-id')
+
+        counts = {
+            'pending': review_records_queryset.filter(review_status=False).count(),
+            'approved': review_records_queryset.filter(review_status=True, status=1).count(),
+            'rejected': review_records_queryset.filter(review_status=True, status=2).count(),
+        }
+
+        if review_status == 1:
+            review_records_queryset = review_records_queryset.filter(review_status=False)
+        elif review_status == 2:
+            review_records_queryset = review_records_queryset.filter(review_status=True, status=1)
+        elif review_status == 3:
+            review_records_queryset = review_records_queryset.filter(review_status=True, status=2)
+
+        paginator = Paginator(review_records_queryset, page_size)
+        try:
+            review_records_page = paginator.page(page)
+        except:
+            review_records_page = paginator.page(1)
+
+        serializer = ReviewRecordSerializer(review_records_page, many=True)
+        return Response({
+            'results': serializer.data,
+            'counts': counts,
+            'has_next': review_records_page.has_next(),
+            'has_previous': review_records_page.has_previous(),
+            'page': review_records_page.number,
+            'page_size': page_size,
+            'total_pages': paginator.num_pages,
+            'total_count': paginator.count,
+            'review_status': review_status,
+        }, status=status.HTTP_200_OK)
     
 class ReviewRecordUpdateView(APIView):
     permission_classes = [IsAuthenticated]

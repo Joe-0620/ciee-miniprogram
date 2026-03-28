@@ -178,6 +178,7 @@ export default function ProfessorsPage() {
         department_id: detail.department?.id,
         email: detail.email,
         phone_number: detail.phone_number,
+        avatar: detail.avatar,
         contact_details: detail.contact_details,
         research_areas: detail.research_areas,
         personal_page: detail.personal_page,
@@ -539,6 +540,11 @@ export default function ProfessorsPage() {
             <Col span={12}>
               <Form.Item name="phone_number" label="手机号">
                 <Input />
+              </Form.Item>
+            </Col>
+            <Col span={24}>
+              <Form.Item name="avatar" label="头像地址">
+                <Input placeholder="请输入导师头像图片地址" />
               </Form.Item>
             </Col>
             <Col span={24}>

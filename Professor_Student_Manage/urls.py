@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import ProfessorAndDepartmentListView, ChangePasswordView, UpdateProfessorView
+from .views import ProfessorAndDepartmentListView, ProfessorDetailView, ChangePasswordView, UpdateProfessorView
 from .views import LogoutView, UserLoginInfoView, UpdateStudentView, GetStudentResumeListView
 from .views import LoginView, ProfessorEnrollInfoView, SubmitQuotaView
 from .views import DepartmentReviewersView, CreateGiveupSignatureView, SubmitGiveupSignatureView
@@ -10,6 +10,7 @@ urlpatterns = [
     # ...其他URL配置...
     path('professors_and_departments/', ProfessorAndDepartmentListView.as_view(), 
          name='professors_and_departments'),
+    path('professor-detail/', ProfessorDetailView.as_view(), name='professor_detail'),
     path('subjects-for-filter/', GetSubjectsForFilterView.as_view(), name='subjects_for_filter'),
     path('professors-enrollinfo/', ProfessorEnrollInfoView.as_view(), name='professor_enrollinfo'),
     path('change-password/', ChangePasswordView.as_view(), name='change_password'),

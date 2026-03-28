@@ -9,11 +9,13 @@ from .serializers import DepartmentReviewerSerializer
 from Professor_Student_Manage.models import (
     Student,
     Professor,
+    ProfessorProfileSection,
     Department,
     WeChatAccount,
     ProfessorMasterQuota,
     ProfessorDoctorQuota,
     ProfessorSharedQuotaPool,
+    get_quota_source_for_student,
 )
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
@@ -21,11 +23,12 @@ from rest_framework.parsers import FileUploadParser
 from django.conf import settings
 from django.core.files.storage import default_storage
 import os
+import json
 from django.core.exceptions import ObjectDoesNotExist
 import requests
 from Enrollment_Manage.models import Subject
 from Enrollment_Manage.serializers import SubjectSerializer
-from Select_Information.models import StudentProfessorChoice
+from Select_Information.models import StudentProfessorChoice, ReviewRecord
 from math import isnan
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
@@ -42,7 +45,85 @@ import sys
 import logging
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator
-from django.db.models import Q, Prefetch
+from django.db import transaction
+from django.db.models import Count, Q, Prefetch
+from django.core.cache import cache
+
+
+logger = logging.getLogger('log')
+
+WECHAT_CLOUD_ENV = os.environ.get('WECHAT_CLOUD_ENV', 'prod-2g1jrmkk21c1d283')
+WECHAT_APPID = os.environ.get('WECHAT_APPID', 'wxa67ae78c4f1f6275')
+WECHAT_SECRET = os.environ.get('WECHAT_SECRET', '7241b1950145a193f15b3584d50f3989')
+
+
+def get_wechat_access_token(force_refresh=False):
+    cache_key = 'professor_student_manage_wechat_access_token'
+    if not force_refresh:
+        cached_token = cache.get(cache_key)
+        if cached_token:
+            return cached_token
+
+    response = requests.get(
+        'https://api.weixin.qq.com/cgi-bin/token',
+        params={
+            'grant_type': 'client_credential',
+            'appid': WECHAT_APPID,
+            'secret': WECHAT_SECRET,
+        },
+        timeout=15,
+    )
+    response.raise_for_status()
+    payload = response.json()
+    access_token = payload.get('access_token')
+    if not access_token:
+        raise ValueError(payload.get('errmsg') or '获取微信 access_token 失败。')
+
+    expires_in = int(payload.get('expires_in') or 7200)
+    cache.set(cache_key, access_token, timeout=max(expires_in - 300, 300))
+    return access_token
+
+
+def save_professor_profile_sections(professor, raw_sections):
+    if isinstance(raw_sections, (list, tuple)) and len(raw_sections) == 1:
+        raw_sections = raw_sections[0]
+
+    if raw_sections in (None, '', [], '[]'):
+        professor.profile_sections.all().delete()
+        return
+
+    sections = raw_sections
+    if isinstance(raw_sections, str):
+        sections = json.loads(raw_sections)
+
+    if not isinstance(sections, list):
+        raise ValueError('自定义模块格式不正确。')
+
+    cleaned_sections = []
+    for index, section in enumerate(sections):
+        if not isinstance(section, dict):
+            continue
+        title = str(section.get('title') or '').strip()
+        content = str(section.get('content') or '').strip()
+        if not title or not content:
+            continue
+        cleaned_sections.append({
+            'title': title[:50],
+            'content': content[:1000],
+            'sort_order': index,
+        })
+
+    professor.profile_sections.all().delete()
+    ProfessorProfileSection.objects.bulk_create([
+        ProfessorProfileSection(
+            professor=professor,
+            title=section['title'],
+            content=section['content'],
+            sort_order=section['sort_order'],
+            is_active=True,
+        )
+        for section in cleaned_sections
+    ])
 
 
 # 继承自 generics.ListAPIView，用于返回导师列表数据。
@@ -139,6 +220,10 @@ class ProfessorAndDepartmentListView(APIView):
                 'shared_quota_pools',
                 queryset=ProfessorSharedQuotaPool.objects.prefetch_related('subjects')
             ),
+        ).annotate(
+            pending_choice_count=Count('studentprofessorchoice', filter=Q(studentprofessorchoice__status=3), distinct=True),
+            accepted_choice_count=Count('studentprofessorchoice', filter=Q(studentprofessorchoice__status=1), distinct=True),
+            rejected_choice_count=Count('studentprofessorchoice', filter=Q(studentprofessorchoice__status=2), distinct=True),
         ).order_by('website_order', 'id')
         
         if department_id:
@@ -225,6 +310,45 @@ class ProfessorAndDepartmentListView(APIView):
         #     'departments': department_serializer.data,
         #     'professors': modified_professors  # 浣跨敤淇敼鍚庣殑鏁版嵁
         # })
+
+
+class ProfessorDetailView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        professor_id = request.query_params.get('professor_id')
+        if not professor_id:
+            return Response({'message': '缺少导师编号。'}, status=status.HTTP_400_BAD_REQUEST)
+
+        professor = (
+            Professor.objects.select_related('department')
+            .prefetch_related(
+                'enroll_subject',
+                Prefetch(
+                    'master_quotas',
+                    queryset=ProfessorMasterQuota.objects.select_related('subject')
+                ),
+                Prefetch(
+                    'doctor_quotas',
+                    queryset=ProfessorDoctorQuota.objects.select_related('subject')
+                ),
+                Prefetch(
+                    'shared_quota_pools',
+                    queryset=ProfessorSharedQuotaPool.objects.prefetch_related('subjects')
+                ),
+                Prefetch(
+                    'profile_sections',
+                    queryset=ProfessorProfileSection.objects.filter(is_active=True).order_by('sort_order', 'id')
+                ),
+            )
+            .filter(id=professor_id)
+            .first()
+        )
+
+        if not professor:
+            return Response({'message': '导师不存在。'}, status=status.HTTP_404_NOT_FOUND)
+
+        return Response(ProfessorSerializer(professor).data, status=status.HTTP_200_OK)
     
 
 class GetStudentResumeListView(APIView):
@@ -242,12 +366,12 @@ class GetStudentResumeListView(APIView):
                     return Response({'error': '无权查看该学生信息'}, status=status.HTTP_403_FORBIDDEN)
             elif hasattr(user, 'professor'):
                 professor = user.professor
-                # 导师可查看：与自己有互选记录的学生，或属于自己招生专业的学生
+                # 导师可查看：与自己有互选记录的学生，或当前名额体系下可招收该专业的学生
                 has_choice = StudentProfessorChoice.objects.filter(
                     student=student_info, professor=professor
                 ).exists()
-                has_subject = professor.enroll_subject.filter(id=student_info.subject_id).exists()
-                if not has_choice and not has_subject:
+                has_quota_source = get_quota_source_for_student(professor, student_info, remaining_only=False)[1] is not None
+                if not has_choice and not has_quota_source:
                     return Response({'error': '无权查看该学生信息'}, status=status.HTTP_403_FORBIDDEN)
             else:
                 return Response({'error': '无权访问'}, status=status.HTTP_403_FORBIDDEN)
@@ -470,10 +594,18 @@ class UpdateProfessorView(APIView):
         mutable_data = request.data.copy()
         mutable_data.pop('student_id', None)
         mutable_data.pop('professor_id', None)
+        profile_sections = mutable_data.pop('profile_sections', None)
+        if mutable_data.get('email', None) == '':
+            mutable_data['email'] = None
         serializer = ProfessorPartialUpdateSerializer(professor, data=mutable_data, partial=True)
         if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            professor = serializer.save()
+            try:
+                if profile_sections is not None:
+                    save_professor_profile_sections(professor, profile_sections)
+            except (ValueError, json.JSONDecodeError) as exc:
+                return Response({'message': str(exc)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(ProfessorSerializer(professor).data, status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -481,9 +613,10 @@ class UpdateProfessorView(APIView):
         """
         根据 file_id 获取下载地址
         """
-        url = f'https://api.weixin.qq.com/tcb/batchdownloadfile'
+        access_token = get_wechat_access_token()
+        url = f'https://api.weixin.qq.com/tcb/batchdownloadfile?access_token={access_token}'
         data = {
-            "env": 'prod-2g1jrmkk21c1d283',
+            "env": WECHAT_CLOUD_ENV,
             "file_list": [
                 {
                     "fileid": file_id,
@@ -493,8 +626,16 @@ class UpdateProfessorView(APIView):
         }
 
         # 发送 POST 请求
-        response = requests.post(url, json=data)
-        return response.json()
+        response = requests.post(url, json=data, timeout=15)
+        response.raise_for_status()
+        payload = response.json()
+        if payload.get('errcode') == 41001:
+            access_token = get_wechat_access_token(force_refresh=True)
+            refresh_url = f'https://api.weixin.qq.com/tcb/batchdownloadfile?access_token={access_token}'
+            response = requests.post(refresh_url, json=data, timeout=15)
+            response.raise_for_status()
+            payload = response.json()
+        return payload
 
 
 
@@ -590,59 +731,77 @@ class UpdateProfessorView(APIView):
         """
         上传生成的 PDF 到微信云托管
         """
-        # 正常情况下使用 INFO 级别日志，排查问题时可临时改为 DEBUG
-        logging.basicConfig(level=logging.INFO, stream=sys.stdout)
-
         secret_id = os.environ.get("COS_SECRET_ID")
         secret_key = os.environ.get("COS_SECRET_KEY")
+        bucket = os.environ.get("COS_BUCKET")
         region = 'ap-shanghai'
         token = None
         scheme = 'https'
 
+        if not secret_id or not secret_key:
+            raise ValueError('未配置 COS_SECRET_ID 或 COS_SECRET_KEY。')
+        if not bucket:
+            raise ValueError('未配置 COS_BUCKET。')
+
         config = CosConfig(Region=region, SecretId=secret_id, SecretKey=secret_key, Token=token, Scheme=scheme)
         client = CosS3Client(config)
 
-        print("正在开始上传")
+        logger.info('UpdateProfessorView 上传签署文件: student_id=%s cloud_path=%s', student.id, cloud_path)
 
         try:
-            url = f'https://api.weixin.qq.com/tcb/uploadfile'
+            access_token = get_wechat_access_token()
+            url = f'https://api.weixin.qq.com/tcb/uploadfile?access_token={access_token}'
 
             data = {
-                "env": 'prod-2g1jrmkk21c1d283',
+                "env": WECHAT_CLOUD_ENV,
                 "path": cloud_path,
             }
 
             # 发送 POST 请求
-            response = requests.post(url, json=data)
+            response = requests.post(url, json=data, timeout=15)
+            response.raise_for_status()
             response_data = response.json()
-            print(response_data)
+            if response_data.get('errcode') == 41001:
+                access_token = get_wechat_access_token(force_refresh=True)
+                refresh_url = f'https://api.weixin.qq.com/tcb/uploadfile?access_token={access_token}'
+                response = requests.post(refresh_url, json=data, timeout=15)
+                response.raise_for_status()
+                response_data = response.json()
+            if response_data.get('errcode') not in (None, 0):
+                raise ValueError(response_data.get('errmsg') or '调用 tcb/uploadfile 失败。')
+
+            cos_file_id = response_data.get('cos_file_id')
+            if not cos_file_id:
+                raise ValueError('微信接口未返回 cos_file_id。')
 
             response = client.upload_file(
-                Bucket=os.environ.get("COS_BUCKET"),
+                Bucket=bucket,
                 LocalFilePath=save_path,
                 Key=cloud_path,
                 PartSize=1,
                 MAXThread=10,
                 EnableMD5=False,
                 Metadata={
-                    'x-cos-meta-fileid': response_data['cos_file_id']  # 自定义元数据
+                    'x-cos-meta-fileid': cos_file_id  # 自定义元数据
                 }
             )
-            print(f"文件上传成功: {response['ETag']}")
+            logger.info('UpdateProfessorView 上传成功: etag=%s', response.get('ETag'))
 
             # 上传成功后将路径保存到学生模型的 signature_table 字段
-            student.signature_table = response_data['file_id']
+            file_id = response_data.get('file_id') or f'cloud://{WECHAT_CLOUD_ENV}.{bucket}/{cloud_path}'
+            student.signature_table = file_id
             student.signature_table_professor_signatured = True
             student.save()
-            print(f"文件路径已保存到学生的 signature_table: {cloud_path}")
+            logger.info('更新学生签署表成功: student_id=%s file_id=%s', student.id, file_id)
 
             # 删除本地临时文件
             if os.path.exists(save_path):
                 os.remove(save_path)
-                print(f"本地临时文件已删除: {save_path}")
+                logger.info('删除临时文件成功: %s', save_path)
 
         except Exception as e:
-            print(f"文件上传失败: {str(e)}")
+            logger.exception('UpdateProfessorView 上传失败: %s', e)
+            raise
         
 
 # 修改学生信息
@@ -724,9 +883,10 @@ class UpdateStudentView(APIView):
         """
         根据 file_id 获取下载地址
         """
-        url = f'https://api.weixin.qq.com/tcb/batchdownloadfile'
+        access_token = get_wechat_access_token()
+        url = f'https://api.weixin.qq.com/tcb/batchdownloadfile?access_token={access_token}'
         data = {
-            "env": 'prod-2g1jrmkk21c1d283',
+            "env": WECHAT_CLOUD_ENV,
             "file_list": [
                 {
                     "fileid": file_id,
@@ -736,8 +896,16 @@ class UpdateStudentView(APIView):
         }
 
         # 发送 POST 请求
-        response = requests.post(url, json=data)
-        return response.json()
+        response = requests.post(url, json=data, timeout=15)
+        response.raise_for_status()
+        payload = response.json()
+        if payload.get('errcode') == 41001:
+            access_token = get_wechat_access_token(force_refresh=True)
+            refresh_url = f'https://api.weixin.qq.com/tcb/batchdownloadfile?access_token={access_token}'
+            response = requests.post(refresh_url, json=data, timeout=15)
+            response.raise_for_status()
+            payload = response.json()
+        return payload
 
 
 
@@ -907,117 +1075,153 @@ class UpdateStudentView(APIView):
         """
         上传生成的 PDF 到微信云托管
         """
-        # 正常情况下使用 INFO 级别日志，排查问题时可临时改为 DEBUG
-        logging.basicConfig(level=logging.INFO, stream=sys.stdout)
-
         secret_id = os.environ.get("COS_SECRET_ID")
         secret_key = os.environ.get("COS_SECRET_KEY")
+        bucket = os.environ.get("COS_BUCKET")
         region = 'ap-shanghai'
         token = None
         scheme = 'https'
 
+        if not secret_id or not secret_key:
+            raise ValueError('未配置 COS_SECRET_ID 或 COS_SECRET_KEY。')
+        if not bucket:
+            raise ValueError('未配置 COS_BUCKET。')
+
         config = CosConfig(Region=region, SecretId=secret_id, SecretKey=secret_key, Token=token, Scheme=scheme)
         client = CosS3Client(config)
 
-        print("正在开始上传")
+        logger.info('UpdateStudentView 上传签署文件: student_id=%s cloud_path=%s', student.id, cloud_path)
 
         try:
-            url = f'https://api.weixin.qq.com/tcb/uploadfile'
+            access_token = get_wechat_access_token()
+            url = f'https://api.weixin.qq.com/tcb/uploadfile?access_token={access_token}'
 
             data = {
-                "env": 'prod-2g1jrmkk21c1d283',
+                "env": WECHAT_CLOUD_ENV,
                 "path": cloud_path,
             }
 
             # 发送 POST 请求
-            response = requests.post(url, json=data)
+            response = requests.post(url, json=data, timeout=15)
+            response.raise_for_status()
             response_data = response.json()
-            print(response_data)
+            if response_data.get('errcode') == 41001:
+                access_token = get_wechat_access_token(force_refresh=True)
+                refresh_url = f'https://api.weixin.qq.com/tcb/uploadfile?access_token={access_token}'
+                response = requests.post(refresh_url, json=data, timeout=15)
+                response.raise_for_status()
+                response_data = response.json()
+            if response_data.get('errcode') not in (None, 0):
+                raise ValueError(response_data.get('errmsg') or '调用 tcb/uploadfile 失败。')
+
+            cos_file_id = response_data.get('cos_file_id')
+            if not cos_file_id:
+                raise ValueError('微信接口未返回 cos_file_id。')
 
             response = client.upload_file(
-                Bucket=os.environ.get("COS_BUCKET"),
+                Bucket=bucket,
                 LocalFilePath=save_path,
                 Key=cloud_path,
                 PartSize=1,
                 MAXThread=10,
                 EnableMD5=False,
                 Metadata={
-                    'x-cos-meta-fileid': response_data['cos_file_id']  # 自定义元数据
+                    'x-cos-meta-fileid': cos_file_id  # 自定义元数据
                 }
             )
-            print(f"文件上传成功: {response['ETag']}")
+            logger.info('UpdateStudentView 上传成功: etag=%s', response.get('ETag'))
 
             # 涓婁紶鎴愬姛鍚庡皢璺緞淇濆瓨鍒板鐢熸ā鍨嬬殑 signature_table 瀛楁
-            student.signature_table = response_data['file_id']
+            file_id = response_data.get('file_id') or f'cloud://{WECHAT_CLOUD_ENV}.{bucket}/{cloud_path}'
+            student.signature_table = file_id
             student.signature_table_student_signatured = True
             student.save()
-            print(f"文件路径已保存到学生的 signature_table: {cloud_path}")
+            logger.info('更新学生签署表成功: student_id=%s file_id=%s', student.id, file_id)
 
             # 删除本地临时文件
             if os.path.exists(save_path):
                 os.remove(save_path)
-                print(f"本地临时文件已删除: {save_path}")
+                logger.info('删除临时文件成功: %s', save_path)
 
         except Exception as e:
-            print(f"文件上传失败: {str(e)}")
+            logger.exception('UpdateStudentView 上传失败: %s', e)
+            raise
 
     def upload_to_wechat_cloud_giveup(self, save_path, cloud_path, student):
         """
         涓婁紶鐢熸垚鐨凱DF鍒板井淇′簯鎵樼
         """
-        # 正常情况下使用 INFO 级别日志，排查问题时可临时改为 DEBUG
-        logging.basicConfig(level=logging.INFO, stream=sys.stdout)
-
         secret_id = os.environ.get("COS_SECRET_ID")
         secret_key = os.environ.get("COS_SECRET_KEY")
+        bucket = os.environ.get("COS_BUCKET")
         region = 'ap-shanghai'
         token = None
         scheme = 'https'
 
+        if not secret_id or not secret_key:
+            raise ValueError('未配置 COS_SECRET_ID 或 COS_SECRET_KEY。')
+        if not bucket:
+            raise ValueError('未配置 COS_BUCKET。')
+
         config = CosConfig(Region=region, SecretId=secret_id, SecretKey=secret_key, Token=token, Scheme=scheme)
         client = CosS3Client(config)
 
-        print("正在开始上传")
+        logger.info('UpdateStudentView 上传放弃签署文件: student_id=%s cloud_path=%s', student.id, cloud_path)
 
         try:
-            url = f'https://api.weixin.qq.com/tcb/uploadfile'
+            access_token = get_wechat_access_token()
+            url = f'https://api.weixin.qq.com/tcb/uploadfile?access_token={access_token}'
 
             data = {
-                "env": 'prod-2g1jrmkk21c1d283',
+                "env": WECHAT_CLOUD_ENV,
                 "path": cloud_path,
             }
 
             # 鍙戦€丳OST璇锋眰
-            response = requests.post(url, json=data)
+            response = requests.post(url, json=data, timeout=15)
+            response.raise_for_status()
             response_data = response.json()
-            print(response_data)
+            if response_data.get('errcode') == 41001:
+                access_token = get_wechat_access_token(force_refresh=True)
+                refresh_url = f'https://api.weixin.qq.com/tcb/uploadfile?access_token={access_token}'
+                response = requests.post(refresh_url, json=data, timeout=15)
+                response.raise_for_status()
+                response_data = response.json()
+            if response_data.get('errcode') not in (None, 0):
+                raise ValueError(response_data.get('errmsg') or '调用 tcb/uploadfile 失败。')
+
+            cos_file_id = response_data.get('cos_file_id')
+            if not cos_file_id:
+                raise ValueError('微信接口未返回 cos_file_id。')
 
             response = client.upload_file(
-                Bucket=os.environ.get("COS_BUCKET"),
+                Bucket=bucket,
                 LocalFilePath=save_path,
                 Key=cloud_path,
                 PartSize=1,
                 MAXThread=10,
                 EnableMD5=False,
                 Metadata={
-                    'x-cos-meta-fileid': response_data['cos_file_id']  # 鑷畾涔夊厓鏁版嵁
+                    'x-cos-meta-fileid': cos_file_id  # 鑷畾涔夊厓鏁版嵁
                 }
             )
-            print(f"文件上传成功: {response['ETag']}")
+            logger.info('UpdateStudentView 放弃文件上传成功: etag=%s', response.get('ETag'))
 
             # 涓婁紶鎴愬姛鍚庡皢璺緞淇濆瓨鍒板鐢熸ā鍨嬬殑 signature_table 瀛楁
-            student.giveup_signature_table = response_data['file_id']
+            file_id = response_data.get('file_id') or f'cloud://{WECHAT_CLOUD_ENV}.{bucket}/{cloud_path}'
+            student.giveup_signature_table = file_id
             student.is_signate_giveup_table = True  # 放弃说明表签名成功
             student.save()
-            print(f"文件路径已保存到学生的 giveup_signature_table: {cloud_path}")
+            logger.info('更新放弃签署表成功: student_id=%s file_id=%s', student.id, file_id)
 
             # 删除本地临时文件
             if os.path.exists(save_path):
                 os.remove(save_path)
-                print(f"本地临时文件已删除: {save_path}")
+                logger.info('删除临时文件成功: %s', save_path)
 
         except Exception as e:
-            print(f"文件上传失败: {str(e)}")
+            logger.exception('UpdateStudentView 放弃文件上传失败: %s', e)
+            raise
         
 
 # 退出登录
@@ -1276,67 +1480,167 @@ class CreateGiveupSignatureView(APIView):
         return packet
 
     def upload_to_wechat_cloud(self, save_path, cloud_path, student):
-        # 正常情况下使用 INFO 级别日志，排查问题时可临时改为 DEBUG
-        logging.basicConfig(level=logging.INFO, stream=sys.stdout)
+        secret_id = os.environ.get("COS_SECRET_ID")
+        secret_key = os.environ.get("COS_SECRET_KEY")
+        bucket = os.environ.get("COS_BUCKET")
+        region = 'ap-shanghai'
+        token = None
+        scheme = 'https'
 
-
-        # 1. 设置 COS 客户端配置，包括 secret_id、secret_key、region 等信息
-        secret_id = os.environ.get("COS_SECRET_ID")    # 建议使用子账号密钥并遵循最小权限原则
-        secret_key = os.environ.get("COS_SECRET_KEY")   # 建议使用子账号密钥并遵循最小权限原则
-        region = 'ap-shanghai'      # 已创建桶所属的 region，可在腾讯云 COS 控制台查看
-        token = None               # 使用永久密钥时无需传 token，临时密钥场景再传入
-        scheme = 'https'           # 指定使用 http/https 协议访问 COS，默认使用 https
-
+        if not secret_id or not secret_key:
+            raise ValueError('未配置 COS_SECRET_ID 或 COS_SECRET_KEY。')
+        if not bucket:
+            raise ValueError('未配置 COS_BUCKET。')
 
         config = CosConfig(Region=region, SecretId=secret_id, SecretKey=secret_key, Token=token, Scheme=scheme)
         client = CosS3Client(config)
 
-        print("upload file")
+        logger.info('CreateGiveupSignatureView 上传放弃说明表: student_id=%s cloud_path=%s', student.id, cloud_path)
 
         try:
-            url = f'https://api.weixin.qq.com/tcb/uploadfile'
+            access_token = get_wechat_access_token()
+            url = f'https://api.weixin.qq.com/tcb/uploadfile?access_token={access_token}'
 
             data = {
-                "env": 'prod-2g1jrmkk21c1d283',
+                "env": WECHAT_CLOUD_ENV,
                 "path": cloud_path,
             }
 
             # 发送 POST 请求
-            response = requests.post(url, json=data)
+            response = requests.post(url, json=data, timeout=15)
+            response.raise_for_status()
             response_data = response.json()
-            print(response_data)
-            # 自定义 metadata，包括 `x-cos-meta-fileid`
-            # metadata = {
-            #     "x-cos-meta-fileid": cloud_path
-            # }
+            if response_data.get('errcode') == 41001:
+                access_token = get_wechat_access_token(force_refresh=True)
+                refresh_url = f'https://api.weixin.qq.com/tcb/uploadfile?access_token={access_token}'
+                response = requests.post(refresh_url, json=data, timeout=15)
+                response.raise_for_status()
+                response_data = response.json()
+            if response_data.get('errcode') not in (None, 0):
+                raise ValueError(response_data.get('errmsg') or '调用 tcb/uploadfile 失败。')
+
+            cos_file_id = response_data.get('cos_file_id')
+            if not cos_file_id:
+                raise ValueError('微信接口未返回 cos_file_id。')
+
             # 根据文件大小自动选择简单上传或分块上传，分块上传支持断点续传
             response = client.upload_file(
-                Bucket=os.environ.get("COS_BUCKET"),
+                Bucket=bucket,
                 LocalFilePath=save_path,
                 Key=cloud_path,
                 PartSize=1,
                 MAXThread=10,
                 EnableMD5=False,
                 Metadata={
-                    'x-cos-meta-fileid': response_data['cos_file_id']  # 自定义元数据
+                    'x-cos-meta-fileid': cos_file_id  # 自定义元数据
                 }
             )
-            print(f"文件上传成功: {response['ETag']}")
-            # print(f"文件上传成功: {response}")
+            logger.info('CreateGiveupSignatureView 上传成功: etag=%s', response.get('ETag'))
+
             # 上传成功后删除本地临时文件
             if os.path.exists(save_path):
                 os.remove(save_path)
-                print(f"本地临时文件已删除: {save_path}")
-            else:
-                print(f"本地文件不存在: {save_path}")
+                logger.info('删除临时文件成功: %s', save_path)
 
             # 上传成功后将路径保存到学生模型的 giveup_signature_table 字段
-            student.giveup_signature_table = response_data['file_id']
+            file_id = response_data.get('file_id') or f'cloud://{WECHAT_CLOUD_ENV}.{bucket}/{cloud_path}'
+            student.giveup_signature_table = file_id
             student.save()  # 保存更新后的学生信息
-            print(f"文件路径已保存到学生的 giveup_signature_table: {cloud_path}")
+            logger.info('更新放弃说明表文件成功: student_id=%s file_id=%s', student.id, file_id)
 
         except Exception as e:
-            print(f"文件上传失败: {str(e)}")
+            logger.exception('CreateGiveupSignatureView 上传失败: %s', e)
+            raise
+
+
+def restore_choice_quota(choice):
+    student = choice.student
+    professor = choice.professor
+    department = professor.department
+
+    if choice.shared_quota_pool_id:
+        shared_pool = choice.shared_quota_pool
+        if shared_pool:
+            shared_pool.used_quota = max(0, (shared_pool.used_quota or 0) - 1)
+            shared_pool.remaining_quota = (shared_pool.remaining_quota or 0) + 1
+            shared_pool.save(update_fields=['used_quota', 'remaining_quota', 'updated_at'])
+        if department:
+            if student.postgraduate_type == 3:
+                department.used_doctor_quota = max(0, (department.used_doctor_quota or 0) - 1)
+                department.save(update_fields=['used_doctor_quota'])
+            elif student.postgraduate_type == 2:
+                department.used_academic_quota = max(0, (department.used_academic_quota or 0) - 1)
+                department.save(update_fields=['used_academic_quota'])
+            elif student.postgraduate_type == 1:
+                department.used_professional_quota = max(0, (department.used_professional_quota or 0) - 1)
+                department.save(update_fields=['used_professional_quota'])
+            elif student.postgraduate_type == 4:
+                department.used_professional_yt_quota = max(0, (department.used_professional_yt_quota or 0) - 1)
+                department.save(update_fields=['used_professional_yt_quota'])
+        professor.save()
+        return
+
+    if student.postgraduate_type == 3:
+        quota = ProfessorDoctorQuota.objects.filter(professor=professor, subject=student.subject).first()
+        if quota:
+            quota.used_quota = max(0, (quota.used_quota or 0) - 1)
+            quota.remaining_quota = (quota.remaining_quota or 0) + 1
+            quota.save(update_fields=['used_quota', 'remaining_quota'])
+        if department:
+            department.used_doctor_quota = max(0, (department.used_doctor_quota or 0) - 1)
+            department.save(update_fields=['used_doctor_quota'])
+        professor.save()
+        return
+
+    quota = ProfessorMasterQuota.objects.filter(professor=professor, subject=student.subject).first()
+    if quota:
+        update_fields = []
+        if student.postgraduate_type in [1, 2]:
+            quota.beijing_remaining_quota = (quota.beijing_remaining_quota or 0) + 1
+            update_fields.append('beijing_remaining_quota')
+            if department:
+                if student.postgraduate_type == 2:
+                    department.used_academic_quota = max(0, (department.used_academic_quota or 0) - 1)
+                    department.save(update_fields=['used_academic_quota'])
+                else:
+                    department.used_professional_quota = max(0, (department.used_professional_quota or 0) - 1)
+                    department.save(update_fields=['used_professional_quota'])
+        elif student.postgraduate_type == 4:
+            quota.yantai_remaining_quota = (quota.yantai_remaining_quota or 0) + 1
+            update_fields.append('yantai_remaining_quota')
+            if department:
+                department.used_professional_yt_quota = max(0, (department.used_professional_yt_quota or 0) - 1)
+                department.save(update_fields=['used_professional_yt_quota'])
+        if update_fields:
+            quota.save(update_fields=update_fields)
+    professor.save()
+
+
+def cancel_approved_choice_for_giveup(choice):
+    restore_choice_quota(choice)
+
+    student = choice.student
+    professor = choice.professor
+
+    choice.status = 5
+    choice.finish_time = timezone.now()
+    choice.save(update_fields=['status', 'finish_time'])
+
+    student.is_selected = False
+    student.signature_table_student_signatured = False
+    student.signature_table_professor_signatured = False
+    student.signature_table_review_status = 4
+    student.save(
+        update_fields=[
+            'is_selected',
+            'signature_table_student_signatured',
+            'signature_table_professor_signatured',
+            'signature_table_review_status',
+        ]
+    )
+
+    ReviewRecord.objects.filter(student=student, professor=professor).delete()
+
 
 class SubmitGiveupSignatureView(APIView):
     permission_classes = [IsAuthenticated]
@@ -1352,14 +1656,7 @@ class SubmitGiveupSignatureView(APIView):
 
         print(student)
 
-        # 1.1 如果学生已经完成师生互选，则不允许放弃
-        if student.is_selected:
-            return Response(
-                {'message': '您已完成师生互选，如需放弃请联系招生老师'},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        
-        # 1.2 如果学生处于候补状态，则不允许放弃
+        # 1.1 如果学生处于候补状态，则不允许放弃
         if student.is_alternate:
             return Response(
                 {'message': '您处于候补状态，无法提交'},
@@ -1372,32 +1669,55 @@ class SubmitGiveupSignatureView(APIView):
 
         # 3. 确认已签字后才允许放弃
         if student.giveup_signature_table:
-            student.is_giveup = True
-            student.save()
-
-            # 将所有“请等待”的记录改成“已取消”
-            waiting_choices = StudentProfessorChoice.objects.filter(student=student, status=3)
-            cancelled_count = waiting_choices.update(status=4, finish_time=timezone.now())
-
-            # 4. 候补补录逻辑
-            subject = student.subject
-            alternate_student = (
-                Student.objects.filter(
-                    subject=subject,
-                    is_alternate=True,
-                    is_giveup=False
+            approved_choice = (
+                StudentProfessorChoice.objects.select_related(
+                    'professor__department',
+                    'shared_quota_pool',
                 )
-                .order_by("alternate_rank")
+                .filter(student=student, status=1, chosen_by_professor=True)
+                .order_by('-finish_time', '-submit_date', '-id')
                 .first()
             )
 
+            if student.is_selected and not approved_choice:
+                return Response(
+                    {'message': '未找到该学生对应的已录取记录，暂时无法执行放弃，请联系管理员处理。'},
+                    status=status.HTTP_409_CONFLICT
+                )
+
+            with transaction.atomic():
+                if approved_choice:
+                    cancel_approved_choice_for_giveup(approved_choice)
+
+                student.is_giveup = True
+                student.save(update_fields=['is_giveup'])
+
+                StudentProfessorChoice.objects.filter(student=student, status=3).update(
+                    status=4,
+                    finish_time=timezone.now(),
+                )
+
+                subject = student.subject
+                alternate_student = (
+                    Student.objects.filter(
+                        subject=subject,
+                        is_alternate=True,
+                        is_giveup=False
+                    )
+                    .order_by("alternate_rank", "final_rank", "id")
+                    .first()
+                )
+
+                if alternate_student:
+                    alternate_student.is_alternate = False
+                    alternate_student.alternate_rank = None
+                    alternate_student.save(update_fields=['is_alternate', 'alternate_rank'])
+
             if alternate_student:
-                alternate_student.is_alternate = False
-                alternate_student.alternate_rank = None
-                alternate_student.save()
-
-                self.send_notification(alternate_student)
-
+                try:
+                    self.send_notification(alternate_student)
+                except Exception as exc:
+                    logger.exception('通知候补学生递补成功失败: student_id=%s error=%s', alternate_student.id, exc)
                 return Response(
                     {
                         'message': f'放弃拟录取成功，已补录候补学生 {alternate_student.name}'

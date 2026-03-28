@@ -77,6 +77,20 @@ export default function ReviewsPage() {
     fetchData(1, 10);
   }, []);
 
+  const runAction = async (handler) => {
+    setActionLoading(true);
+    try {
+      const payload = await handler();
+      if (payload?.detail) message.success(payload.detail);
+      setSelectedRowKeys([]);
+      await fetchData();
+    } catch (err) {
+      message.error(err.message);
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
   const showDetail = async (record) => {
     setDetailLoading(true);
     try {

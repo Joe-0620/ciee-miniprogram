@@ -103,28 +103,50 @@ def validate_and_sync_admission_quota(sender, instance, **kwargs):
         pass
 
 
-def sync_student_alternate_status(subject):
+def sync_student_alternate_status(subject, admission_year=None):
     """
     同步指定专业的学生候补状态
-    根据专业总招生名额和学生排名自动调整候补状态
+    根据专业总招生名额和学生排名自动调整候补状态。
+    当 admission_year 为空时，会按该专业下各届别分别同步，
+    避免不同届别的学生相互影响候补状态。
     """
     from Professor_Student_Manage.models import Student
-    
+
     total_quota = subject.total_admission_quota or 0
-    students = Student.objects.filter(subject=subject).order_by('final_rank')
-    
     updated_count = 0
-    for student in students:
-        if student.final_rank and student.final_rank > 0:
-            # 根据排名判断是否候补
-            should_be_alternate = student.final_rank > total_quota
-            new_alternate_rank = student.final_rank - total_quota if should_be_alternate else None
-            
-            # 只有状态变化时才更新
-            if student.is_alternate != should_be_alternate or student.alternate_rank != new_alternate_rank:
-                student.is_alternate = should_be_alternate
-                student.alternate_rank = new_alternate_rank
-                student.save(update_fields=['is_alternate', 'alternate_rank'])
-                updated_count += 1
-    
+
+    base_queryset = Student.objects.filter(subject=subject)
+    if admission_year not in (None, ''):
+        admission_years = [admission_year]
+    else:
+        admission_years = list(
+            base_queryset.exclude(admission_year__isnull=True)
+            .order_by('admission_year')
+            .values_list('admission_year', flat=True)
+            .distinct()
+        )
+        if not admission_years and base_queryset.exists():
+            admission_years = [None]
+
+    for year in admission_years:
+        students = base_queryset
+        if year is None:
+            students = students.filter(admission_year__isnull=True)
+        else:
+            students = students.filter(admission_year=year)
+        students = students.order_by('final_rank')
+
+        for student in students:
+            if student.final_rank and student.final_rank > 0:
+                # 根据排名判断是否候补
+                should_be_alternate = student.final_rank > total_quota
+                new_alternate_rank = student.final_rank - total_quota if should_be_alternate else None
+
+                # 只有状态变化时才更新
+                if student.is_alternate != should_be_alternate or student.alternate_rank != new_alternate_rank:
+                    student.is_alternate = should_be_alternate
+                    student.alternate_rank = new_alternate_rank
+                    student.save(update_fields=['is_alternate', 'alternate_rank'])
+                    updated_count += 1
+
     return updated_count

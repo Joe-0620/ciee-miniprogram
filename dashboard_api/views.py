@@ -377,27 +377,46 @@ def reinstate_revoked_choice(choice):
     )
 
 
-def normalize_alternate_ranks(subject):
-    alternates = Student.objects.filter(
+def normalize_alternate_ranks(subject, admission_year=None):
+    changed = 0
+    base_queryset = Student.objects.filter(
         subject=subject,
         is_alternate=True,
         is_giveup=False,
-    ).order_by('alternate_rank', 'final_rank', 'id')
-    changed = 0
-    for index, student in enumerate(alternates, start=1):
-        if student.alternate_rank != index:
-            student.alternate_rank = index
-            student.save(update_fields=['alternate_rank'])
-            changed += 1
+    )
+    if admission_year not in (None, ''):
+        admission_years = [admission_year]
+    else:
+        admission_years = list(
+            base_queryset.exclude(admission_year__isnull=True)
+            .order_by('admission_year')
+            .values_list('admission_year', flat=True)
+            .distinct()
+        )
+        if not admission_years and base_queryset.exists():
+            admission_years = [None]
+
+    for year in admission_years:
+        alternates = base_queryset
+        if year is None:
+            alternates = alternates.filter(admission_year__isnull=True)
+        else:
+            alternates = alternates.filter(admission_year=year)
+        alternates = alternates.order_by('alternate_rank', 'final_rank', 'id')
+
+        for index, student in enumerate(alternates, start=1):
+            if student.alternate_rank != index:
+                student.alternate_rank = index
+                student.save(update_fields=['alternate_rank'])
+                changed += 1
     return changed
 
 
-def promote_next_alternate(subject, require_available_quota=False):
-    student = (
-        Student.objects.filter(subject=subject, is_alternate=True, is_giveup=False)
-        .order_by('alternate_rank', 'final_rank', 'id')
-        .first()
-    )
+def promote_next_alternate(subject, require_available_quota=False, admission_year=None):
+    student_queryset = Student.objects.filter(subject=subject, is_alternate=True, is_giveup=False)
+    if admission_year not in (None, ''):
+        student_queryset = student_queryset.filter(admission_year=admission_year)
+    student = student_queryset.order_by('alternate_rank', 'final_rank', 'id').first()
     if not student:
         return None, 'missing'
     if require_available_quota:
@@ -410,7 +429,7 @@ def promote_next_alternate(subject, require_available_quota=False):
     student.is_alternate = False
     student.alternate_rank = None
     student.save(update_fields=['is_alternate', 'alternate_rank'])
-    normalize_alternate_ranks(subject)
+    normalize_alternate_ranks(subject, student.admission_year if admission_year in (None, '') else admission_year)
     return student, None
 
 
@@ -754,6 +773,7 @@ def save_student_from_payload(payload, student=None):
         raise ValidationError('招生批次不存在。')
 
     previous_subject = student.subject if student else None
+    previous_admission_year = student.admission_year if student else None
 
     if student is None:
         if User.objects.filter(username=candidate_number).exists():
@@ -807,9 +827,9 @@ def save_student_from_payload(payload, student=None):
     student.save()
 
     if previous_subject and previous_subject != student.subject:
-        sync_student_alternate_status(previous_subject)
+        sync_student_alternate_status(previous_subject, previous_admission_year)
     if student.subject:
-        sync_student_alternate_status(student.subject)
+        sync_student_alternate_status(student.subject, student.admission_year)
     return student
 
 
@@ -3645,7 +3665,7 @@ class DashboardStudentPromoteAlternateView(APIView):
         student.is_alternate = False
         student.alternate_rank = None
         student.save(update_fields=['is_alternate', 'alternate_rank'])
-        normalize_alternate_ranks(student.subject)
+        normalize_alternate_ranks(student.subject, student.admission_year)
         create_audit_log(
             request,
             action='student.clear_alternate',
@@ -3692,7 +3712,7 @@ class DashboardStudentRevokeGiveupView(APIView):
             else:
                 student.is_giveup = False
                 student.save(update_fields=['is_giveup'])
-            normalize_alternate_ranks(student.subject)
+            normalize_alternate_ranks(student.subject, student.admission_year)
         create_audit_log(
             request,
             action='student.revoke_giveup',
@@ -5170,7 +5190,12 @@ class DashboardAlternatePromoteNextView(APIView):
         if not subject:
             return Response({'detail': 'Subject not found.'}, status=status.HTTP_404_NOT_FOUND)
 
-        promoted_student, reason = promote_next_alternate(subject, require_available_quota=True)
+        admission_year = request.data.get('admission_year')
+        promoted_student, reason = promote_next_alternate(
+            subject,
+            require_available_quota=True,
+            admission_year=to_int(admission_year, default=None) if admission_year not in (None, '') else None,
+        )
         if not promoted_student:
             if reason == 'no_quota':
                 return Response({'detail': '该专业当前没有可回补的可用名额，无法递补候补学生。'}, status=status.HTTP_409_CONFLICT)

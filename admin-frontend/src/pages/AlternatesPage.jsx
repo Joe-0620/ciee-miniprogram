@@ -117,7 +117,7 @@ export default function AlternatesPage() {
           <Button size="small" loading={actionLoading} onClick={() => runAction(() => post(`/students/${record.id}/promote-alternate/`, {}))}>
             取消候补
           </Button>
-          <Button size="small" loading={actionLoading} onClick={() => runAction(() => post('/alternates/promote-next/', { subject_id: record.subject?.id }))} disabled={!record.subject?.id}>
+          <Button size="small" loading={actionLoading} onClick={() => runAction(() => post('/alternates/promote-next/', { subject_id: record.subject?.id, admission_year: record.admission_year }))} disabled={!record.subject?.id}>
             递补下一位
           </Button>
           <Button

@@ -254,6 +254,7 @@ class StudentSerializer(serializers.ModelSerializer):
         # 回退：如果 context 中没有预计算数据，则单独查询（兼容单个对象序列化场景）
         same_subject_students = Student.objects.filter(
             subject=obj.subject,
+            admission_year=obj.admission_year,
             alternate_rank__isnull=False,
             is_giveup=False
         ).order_by("alternate_rank")

@@ -205,14 +205,14 @@ class SelectInformationView(APIView):
             subject_id__in=subject_ids,
             alternate_rank__isnull=False,
             is_giveup=False
-        ).order_by('subject_id', 'alternate_rank').values_list('id', 'subject_id')
-        # 按专业分组计算排名
+        ).order_by('subject_id', 'admission_year', 'alternate_rank').values_list('id', 'subject_id', 'admission_year')
+        # 按专业 + 届别分组计算排名
         from collections import defaultdict
         subject_groups = defaultdict(list)
-        for sid, subj_id in all_alternates:
-            subject_groups[subj_id].append(sid)
+        for sid, subj_id, admission_year in all_alternates:
+            subject_groups[(subj_id, admission_year)].append(sid)
         rank_map = {}
-        for subj_id, student_ids in subject_groups.items():
+        for _, student_ids in subject_groups.items():
             for idx, sid in enumerate(student_ids, start=1):
                 rank_map[sid] = idx
         return rank_map

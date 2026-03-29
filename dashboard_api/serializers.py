@@ -807,6 +807,7 @@ class AlternateStudentSerializer(serializers.ModelSerializer):
             'name',
             'candidate_number',
             'subject',
+            'admission_year',
             'final_rank',
             'alternate_rank',
             'current_professor_name',

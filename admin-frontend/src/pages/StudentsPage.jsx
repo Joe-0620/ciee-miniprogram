@@ -1,11 +1,13 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import {
+  Alert,
   Button,
   Card,
   Form,
   Input,
   InputNumber,
   Modal,
+  Progress,
   Select,
   Space,
   Switch,
@@ -23,7 +25,7 @@ import {
   UploadOutlined,
 } from '@ant-design/icons';
 
-import { get, patch, post, postDownload, upload } from '../api/client';
+import { get, patch, post, postDownload, upload, uploadWithProgress } from '../api/client';
 import PageHeader from '../components/PageHeader';
 import PdfPreviewModal from '../components/PdfPreviewModal';
 import StatusTag from '../components/StatusTag';
@@ -117,6 +119,9 @@ export default function StudentsPage() {
   const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
   const [editOpen, setEditOpen] = useState(false);
   const [importOpen, setImportOpen] = useState(false);
+  const [importSubmitting, setImportSubmitting] = useState(false);
+  const [importProgress, setImportProgress] = useState(0);
+  const [importResult, setImportResult] = useState(null);
   const [editingRecord, setEditingRecord] = useState(null);
   const [previewState, setPreviewState] = useState({ open: false, title: '', fileId: '' });
   const [editForm] = Form.useForm();
@@ -295,13 +300,21 @@ export default function StudentsPage() {
       formData.append('import_type', values.import_type);
       formData.append('update_quota', values.update_quota ? 'true' : 'false');
       formData.append('file', values.fileList[0].originFileObj);
-      await runAction(() => upload('/students/import/', formData), '学生导入完成');
-      setImportOpen(false);
+      setImportSubmitting(true);
+      setImportProgress(0);
+      setImportResult(null);
+      const payload = await uploadWithProgress('/students/import/', formData, setImportProgress);
+      setImportProgress(100);
+      setImportResult(payload);
+      message.success(payload?.detail || '学生导入完成');
+      await fetchData(1, pagination.pageSize, keyword, filters, sorter);
       importForm.resetFields();
     } catch (error) {
       if (!error?.errorFields) {
         message.error(error.message);
       }
+    } finally {
+      setImportSubmitting(false);
     }
   }
 
@@ -867,7 +880,21 @@ export default function StudentsPage() {
         </Form>
       </Modal>
 
-      <Modal open={importOpen} title="导入学生" onCancel={() => setImportOpen(false)} onOk={handleImport} destroyOnClose>
+      <Modal
+        open={importOpen}
+        title="导入学生"
+        onCancel={() => {
+          if (importSubmitting) return;
+          setImportOpen(false);
+          setImportProgress(0);
+          setImportResult(null);
+          importForm.resetFields();
+        }}
+        onOk={handleImport}
+        confirmLoading={importSubmitting}
+        okText={importSubmitting ? '导入中...' : '开始导入'}
+        destroyOnClose
+      >
         <Form form={importForm} layout="vertical">
           <Form.Item label="导入类型" name="import_type" rules={[{ required: true, message: '请选择导入类型' }]}>
             <Select options={importTypeOptions} />
@@ -887,6 +914,35 @@ export default function StudentsPage() {
             </Upload>
           </Form.Item>
         </Form>
+        {importSubmitting || importProgress > 0 ? (
+          <div style={{ marginTop: 16 }}>
+            <Progress percent={importProgress} status={importSubmitting ? 'active' : 'success'} />
+          </div>
+        ) : null}
+        {importResult ? (
+          <div style={{ marginTop: 16 }}>
+            <Alert
+              type="success"
+              showIcon
+              message={importResult.detail || '学生导入完成'}
+              description={
+                <div>
+                  <div>创建人数：{importResult.created_count ?? '-'}</div>
+                  <div>跳过人数：{importResult.skipped_rows ?? '-'}</div>
+                  {Array.isArray(importResult.summary) && importResult.summary.length ? (
+                    <div style={{ marginTop: 8 }}>
+                      {importResult.summary.map((item) => (
+                        <div key={`${item.subject_code}-${item.subject_name}`} style={{ marginBottom: 6 }}>
+                          {item.subject_name}（{item.subject_code}）：创建 {item.created_count}，候补 {item.alternate_count}，正常 {item.normal_count}
+                        </div>
+                      ))}
+                    </div>
+                  ) : null}
+                </div>
+              }
+            />
+          </div>
+        ) : null}
       </Modal>
 
       <PdfPreviewModal

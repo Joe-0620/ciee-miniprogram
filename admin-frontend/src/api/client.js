@@ -81,6 +81,43 @@ export async function upload(path, formData) {
   return payload;
 }
 
+export function uploadWithProgress(path, formData, onProgress) {
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', `${API_BASE}${path}`);
+
+    const headers = buildHeaders();
+    headers.forEach((value, key) => {
+      xhr.setRequestHeader(key, value);
+    });
+
+    xhr.upload.onprogress = (event) => {
+      if (!onProgress || !event.lengthComputable) return;
+      const percent = Math.min(100, Math.round((event.loaded / event.total) * 100));
+      onProgress(percent);
+    };
+
+    xhr.onload = () => {
+      if (xhr.status === 401) {
+        removeDashboardToken();
+      }
+      const contentType = xhr.getResponseHeader('content-type') || '';
+      const payload = contentType.includes('application/json') && xhr.responseText ? JSON.parse(xhr.responseText) : null;
+      if (xhr.status >= 200 && xhr.status < 300) {
+        resolve(payload);
+        return;
+      }
+      const error = new Error(payload?.detail || payload?.message || '上传失败');
+      error.status = xhr.status;
+      error.payload = payload;
+      reject(error);
+    };
+
+    xhr.onerror = () => reject(new Error('上传失败'));
+    xhr.send(formData);
+  });
+}
+
 export async function download(path, filename) {
   const response = await fetch(`${API_BASE}${path}`, {
     method: 'GET',

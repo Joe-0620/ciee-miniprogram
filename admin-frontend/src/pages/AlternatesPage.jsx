@@ -17,9 +17,10 @@ export default function AlternatesPage() {
   const [loading, setLoading] = useState(false);
   const [actionLoading, setActionLoading] = useState(false);
   const [keyword, setKeyword] = useState('');
-  const [filters, setFilters] = useState({ subject_id: undefined, is_giveup: undefined });
+  const [filters, setFilters] = useState({ subject_id: undefined, is_giveup: undefined, admission_year: undefined });
   const [sorter, setSorter] = useState({ order_by: 'alternate_rank', order_direction: 'asc' });
   const [subjects, setSubjects] = useState([]);
+  const [admissionYears, setAdmissionYears] = useState([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [data, setData] = useState({ count: 0, results: [] });
   const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
@@ -32,6 +33,8 @@ export default function AlternatesPage() {
       message.error(err.message);
     }
   };
+
+  const admissionYearOptions = (admissionYears || []).map((year) => ({ label: `${year}届`, value: year }));
 
   const fetchData = async (page = pagination.current, pageSize = pagination.pageSize, search = keyword, nextFilters = filters, nextSorter = sorter) => {
     setLoading(true);
@@ -48,6 +51,7 @@ export default function AlternatesPage() {
       });
       const payload = await get(`/alternates/?${params.toString()}`);
       setData(payload);
+      setAdmissionYears(payload.available_admission_years || []);
       setPagination({ current: payload.page, pageSize: payload.page_size });
     } catch (err) {
       message.error(err.message);
@@ -94,6 +98,7 @@ export default function AlternatesPage() {
     { title: '学生', dataIndex: 'name', key: 'name', sorter: true },
     { title: '考生编号', dataIndex: 'candidate_number', key: 'candidate_number', sorter: true },
     { title: '专业', key: 'subject_name', sorter: true, render: (_, record) => record.subject?.subject_name || '-' },
+    { title: '届别', dataIndex: 'admission_year', key: 'admission_year', sorter: true, render: (value) => (value ? `${value}届` : '-') },
     { title: '总排名', dataIndex: 'final_rank', key: 'final_rank', sorter: true, render: (value) => value || '-' },
     { title: '候补顺位', dataIndex: 'alternate_rank', key: 'alternate_rank', sorter: true, render: (value) => value || '-' },
     {
@@ -141,6 +146,7 @@ export default function AlternatesPage() {
         <div className="page-filters">
           <Input.Search placeholder="按学生姓名或考生编号搜索" value={keyword} onChange={(e) => setKeyword(e.target.value)} onSearch={(value) => fetchData(1, pagination.pageSize, value)} allowClear style={{ width: 320 }} />
           <Select allowClear placeholder="按专业筛选" style={{ width: 180 }} value={filters.subject_id} options={subjects.map((item) => ({ label: formatSubjectOption(item), value: item.id }))} onChange={(value) => updateFilter('subject_id', value)} />
+          <Select allowClear placeholder="按届别筛选" style={{ width: 150 }} value={filters.admission_year} options={admissionYearOptions} onChange={(value) => updateFilter('admission_year', value)} />
           <Select allowClear placeholder="按放弃状态筛选" style={{ width: 150 }} value={filters.is_giveup} options={[{ label: '已放弃', value: 'true' }, { label: '未放弃', value: 'false' }]} onChange={(value) => updateFilter('is_giveup', value)} />
         </div>
         <div className="page-actions">

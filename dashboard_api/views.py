@@ -1435,12 +1435,15 @@ def build_alternate_queryset(request):
     search = request.query_params.get('search', '').strip()
     subject_id = request.query_params.get('subject_id')
     is_giveup = request.query_params.get('is_giveup')
+    admission_year = request.query_params.get('admission_year')
     if search:
         queryset = queryset.filter(Q(name__icontains=search) | Q(candidate_number__icontains=search))
     if subject_id:
         queryset = queryset.filter(subject_id=subject_id)
     if is_giveup in {'true', 'false'}:
         queryset = queryset.filter(is_giveup=(is_giveup == 'true'))
+    if admission_year not in (None, ''):
+        queryset = queryset.filter(admission_year=admission_year)
     return queryset
 
 
@@ -2616,6 +2619,8 @@ class DashboardStudentImportView(APIView):
         try:
             if import_type == 'doctor':
                 result = self._import_doctor_students(upload, update_quota)
+            elif import_type == 'master_exam':
+                result = self._import_master_exam_students(upload)
             else:
                 result = self._import_master_students(upload, import_type)
         except ValidationError as exc:
@@ -2706,6 +2711,110 @@ class DashboardStudentImportView(APIView):
                 success_count += 1
 
         return {'detail': f'Doctor student import finished: created {success_count}, skipped {skipped_rows}.'}
+
+    def _import_master_exam_students(self, upload):
+        workbook = load_workbook(upload, data_only=True)
+        worksheet = workbook.active
+        headers = [cell.value for cell in worksheet[1]]
+        header_map = {header: index for index, header in enumerate(headers)}
+
+        candidate_header = resolve_header_name(headers, ['考生编号'])
+        name_header = resolve_header_name(headers, ['考生姓名', '姓名'])
+        subject_code_header = resolve_header_name(headers, ['专业代码', '报考专业代码'])
+        initial_score_header = resolve_header_name(headers, ['初试总成绩', '初试成绩'])
+        secondary_score_header = resolve_header_name(headers, ['复试成绩'])
+        final_score_header = resolve_header_name(headers, ['综合成绩'])
+        final_rank_header = resolve_header_name(headers, ['排名', '综合排名'])
+        campus_header = resolve_header_name(headers, ['校区'])
+        choose_professor_header = resolve_header_name(headers, ['选导师'])
+        alternate_header = resolve_header_name(headers, ['候补'])
+        phone_header = resolve_header_name(headers, ['手机号', '手机号码'])
+
+        required_headers = [
+            candidate_header,
+            name_header,
+            subject_code_header,
+            final_rank_header,
+            campus_header,
+            choose_professor_header,
+            phone_header,
+        ]
+        if not all(required_headers):
+            raise ValidationError('Master exam import template is missing required columns.')
+
+        success_count = 0
+        skipped_rows = 0
+
+        with transaction.atomic():
+            for row in worksheet.iter_rows(min_row=2, values_only=True):
+                candidate_number = str(row[header_map[candidate_header]] or '').strip()
+                name = str(row[header_map[name_header]] or '').strip()
+                subject_code = normalize_subject_code(row[header_map[subject_code_header]])
+                phone_number = str(row[header_map[phone_header]] or '').strip()
+                campus = str(row[header_map[campus_header]] or '').strip()
+                choose_professor = str(row[header_map[choose_professor_header]] or '').strip()
+                alternate_rank_value = row[header_map[alternate_header]] if alternate_header else None
+                final_rank = to_int(row[header_map[final_rank_header]], default=0)
+                initial_score = row[header_map[initial_score_header]] if initial_score_header else None
+                secondary_score = row[header_map[secondary_score_header]] if secondary_score_header else None
+                final_score = row[header_map[final_score_header]] if final_score_header else None
+
+                if not candidate_number or not name or not subject_code:
+                    skipped_rows += 1
+                    continue
+                if not phone_number:
+                    skipped_rows += 1
+                    continue
+
+                subject = Subject.objects.filter(subject_code=subject_code, subject_type__in=[0, 1]).first()
+                if not subject:
+                    skipped_rows += 1
+                    continue
+
+                if subject.subject_type == 1:
+                    postgraduate_type = 2
+                else:
+                    if '烟台' in campus:
+                        postgraduate_type = 4
+                    elif '北京' in campus:
+                        postgraduate_type = 1
+                    else:
+                        skipped_rows += 1
+                        continue
+
+                is_alternate = choose_professor == '候补'
+                alternate_rank = None
+                if is_alternate:
+                    alternate_rank = to_int(alternate_rank_value, default=0)
+                    if alternate_rank <= 0:
+                        skipped_rows += 1
+                        continue
+
+                if Student.objects.filter(candidate_number=candidate_number).exists():
+                    skipped_rows += 1
+                    continue
+                if User.objects.filter(username=candidate_number).exists():
+                    skipped_rows += 1
+                    continue
+
+                user = User.objects.create_user(username=candidate_number, password=f'xs{phone_number}')
+                Student.objects.create(
+                    user_name=user,
+                    name=name,
+                    candidate_number=candidate_number,
+                    subject=subject,
+                    student_type=2,
+                    postgraduate_type=postgraduate_type,
+                    phone_number=phone_number,
+                    initial_exam_score=float(initial_score) if initial_score not in (None, '') else None,
+                    secondary_exam_score=float(secondary_score) if secondary_score not in (None, '') else None,
+                    final_rank=final_rank or None,
+                    is_alternate=is_alternate,
+                    alternate_rank=alternate_rank,
+                )
+                success_count += 1
+
+        return {'detail': f'硕士统考生导入完成，创建 {success_count} 条，跳过 {skipped_rows} 条。'}
 
     def _import_master_students(self, upload, import_type):
         reader = csv.DictReader(TextIOWrapper(upload.file, encoding='utf-8-sig'))
@@ -2954,6 +3063,8 @@ class DashboardStudentImportView(APIView):
         try:
             if import_type == 'doctor':
                 result = self._import_doctor_students(upload, update_quota)
+            elif import_type == 'master_exam':
+                result = self._import_master_exam_students(upload)
             else:
                 result = self._import_master_students(upload, import_type)
         except ValidationError as exc:
@@ -3045,10 +3156,135 @@ class DashboardStudentImportView(APIView):
 
         return {'detail': f'Doctor student import finished: created {success_count}, skipped {skipped_rows}.'}
 
+    def _import_master_exam_students(self, upload):
+        workbook = load_workbook(upload, data_only=True)
+        worksheet = workbook.active
+        headers = [cell.value for cell in worksheet[1]]
+        header_map = {header: index for index, header in enumerate(headers)}
+
+        candidate_header = resolve_header_name(headers, ['考生编号'])
+        name_header = resolve_header_name(headers, ['考生姓名', '姓名'])
+        subject_code_header = resolve_header_name(headers, ['专业代码', '报考专业代码'])
+        initial_score_header = resolve_header_name(headers, ['初试总成绩', '初试成绩'])
+        secondary_score_header = resolve_header_name(headers, ['复试成绩'])
+        final_score_header = resolve_header_name(headers, ['综合成绩'])
+        final_rank_header = resolve_header_name(headers, ['排名', '综合排名'])
+        campus_header = resolve_header_name(headers, ['校区'])
+        choose_professor_header = resolve_header_name(headers, ['选导师'])
+        alternate_header = resolve_header_name(headers, ['候补'])
+        phone_header = resolve_header_name(headers, ['手机号', '手机号码'])
+
+        required_headers = [
+            candidate_header,
+            name_header,
+            subject_code_header,
+            final_rank_header,
+            campus_header,
+            choose_professor_header,
+            phone_header,
+        ]
+        if not all(required_headers):
+            raise ValidationError('Master exam import template is missing required columns.')
+
+        success_count = 0
+        skipped_rows = 0
+        subject_summary = {}
+
+        with transaction.atomic():
+            for row in worksheet.iter_rows(min_row=2, values_only=True):
+                candidate_number = str(row[header_map[candidate_header]] or '').strip()
+                name = str(row[header_map[name_header]] or '').strip()
+                subject_code = normalize_subject_code(row[header_map[subject_code_header]])
+                phone_number = str(row[header_map[phone_header]] or '').strip()
+                campus = str(row[header_map[campus_header]] or '').strip()
+                choose_professor = str(row[header_map[choose_professor_header]] or '').strip()
+                alternate_rank_value = row[header_map[alternate_header]] if alternate_header else None
+                final_rank = to_int(row[header_map[final_rank_header]], default=0)
+                initial_score = row[header_map[initial_score_header]] if initial_score_header else None
+                secondary_score = row[header_map[secondary_score_header]] if secondary_score_header else None
+                final_score = row[header_map[final_score_header]] if final_score_header else None
+
+                if not candidate_number or not name or not subject_code or not phone_number:
+                    skipped_rows += 1
+                    continue
+
+                subject = Subject.objects.filter(subject_code=subject_code, subject_type__in=[0, 1]).first()
+                if not subject:
+                    skipped_rows += 1
+                    continue
+
+                if subject.subject_type == 1:
+                    postgraduate_type = 2
+                else:
+                    if '烟台' in campus:
+                        postgraduate_type = 4
+                    elif '北京' in campus:
+                        postgraduate_type = 1
+                    else:
+                        skipped_rows += 1
+                        continue
+
+                is_alternate = choose_professor == '候补'
+                alternate_rank = None
+                if is_alternate:
+                    alternate_rank = to_int(alternate_rank_value, default=0)
+                    if alternate_rank <= 0:
+                        skipped_rows += 1
+                        continue
+
+                if Student.objects.filter(candidate_number=candidate_number).exists():
+                    skipped_rows += 1
+                    continue
+                if User.objects.filter(username=candidate_number).exists():
+                    skipped_rows += 1
+                    continue
+
+                user = User.objects.create_user(username=candidate_number, password=f'xs{phone_number}')
+                Student.objects.create(
+                    user_name=user,
+                    name=name,
+                    candidate_number=candidate_number,
+                    subject=subject,
+                    student_type=2,
+                    postgraduate_type=postgraduate_type,
+                    phone_number=phone_number,
+                    initial_exam_score=float(initial_score) if initial_score not in (None, '') else None,
+                    secondary_exam_score=float(secondary_score) if secondary_score not in (None, '') else None,
+                    final_rank=final_rank or None,
+                    is_alternate=is_alternate,
+                    alternate_rank=alternate_rank,
+                )
+                success_count += 1
+
+                summary_item = subject_summary.setdefault(
+                    subject.id,
+                    {
+                        'subject_code': subject.subject_code,
+                        'subject_name': subject.subject_name,
+                        'created_count': 0,
+                        'alternate_count': 0,
+                        'normal_count': 0,
+                    },
+                )
+                summary_item['created_count'] += 1
+                if is_alternate:
+                    summary_item['alternate_count'] += 1
+                else:
+                    summary_item['normal_count'] += 1
+
+        summary = sorted(subject_summary.values(), key=lambda item: (item['subject_code'], item['subject_name']))
+        return {
+            'detail': f'硕士统考生导入完成，创建 {success_count} 条，跳过 {skipped_rows} 条。',
+            'created_count': success_count,
+            'skipped_rows': skipped_rows,
+            'summary': summary,
+        }
+
     def _import_master_students(self, upload, import_type):
         reader = csv.DictReader(TextIOWrapper(upload.file, encoding='utf-8-sig'))
         success_count = 0
         skipped_rows = 0
+        subject_summary = {}
 
         with transaction.atomic():
             for row in reader:
@@ -3093,9 +3329,30 @@ class DashboardStudentImportView(APIView):
                     alternate_rank=alternate_rank,
                 )
                 success_count += 1
+                summary_item = subject_summary.setdefault(
+                    subject.id,
+                    {
+                        'subject_code': subject.subject_code,
+                        'subject_name': subject.subject_name,
+                        'created_count': 0,
+                        'alternate_count': 0,
+                        'normal_count': 0,
+                    },
+                )
+                summary_item['created_count'] += 1
+                if is_alternate:
+                    summary_item['alternate_count'] += 1
+                else:
+                    summary_item['normal_count'] += 1
 
         label = '\u7855\u58eb\u63a8\u514d\u751f' if import_type == 'master_recommend' else '\u7855\u58eb\u7edf\u8003\u751f'
-        return {'detail': f'{label} import finished: created {success_count}, skipped {skipped_rows}.'}
+        summary = sorted(subject_summary.values(), key=lambda item: (item['subject_code'], item['subject_name']))
+        return {
+            'detail': f'{label} import finished: created {success_count}, skipped {skipped_rows}.',
+            'created_count': success_count,
+            'skipped_rows': skipped_rows,
+            'summary': summary,
+        }
 
 
 class DashboardStudentListView(APIView):
@@ -4859,6 +5116,13 @@ class DashboardAlternateListView(APIView):
     def get(self, request):
         page = max(int(request.query_params.get('page', 1)), 1)
         page_size = min(max(int(request.query_params.get('page_size', 20)), 1), 100)
+        available_admission_years = list(
+            Student.objects.filter(is_alternate=True)
+            .exclude(admission_year__isnull=True)
+            .order_by('-admission_year')
+            .values_list('admission_year', flat=True)
+            .distinct()
+        )
         queryset = build_alternate_queryset(request).select_related('subject')
         order_by = request.query_params.get('order_by', 'alternate_rank')
         order_direction = request.query_params.get('order_direction', 'asc')
@@ -4867,6 +5131,7 @@ class DashboardAlternateListView(APIView):
             'name': 'name',
             'candidate_number': 'candidate_number',
             'subject_name': 'subject__subject_name',
+            'admission_year': 'admission_year',
             'final_rank': 'final_rank',
             'alternate_rank': 'alternate_rank',
             'is_giveup': 'is_giveup',
@@ -4881,7 +5146,13 @@ class DashboardAlternateListView(APIView):
         end = start + page_size
         serializer = AlternateStudentSerializer(queryset[start:end], many=True)
         return Response(
-            {'count': total, 'page': page, 'page_size': page_size, 'results': serializer.data},
+            {
+                'count': total,
+                'page': page,
+                'page_size': page_size,
+                'results': serializer.data,
+                'available_admission_years': available_admission_years,
+            },
             status=status.HTTP_200_OK,
         )
 

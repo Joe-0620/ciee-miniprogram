@@ -38,6 +38,7 @@ import traceback
 from qcloud_cos import CosConfig
 from qcloud_cos import CosS3Client
 import sys
+from django.db.models import Case, When, Value, IntegerField
 import os
 import logging
 from .models import ReviewRecord
@@ -101,8 +102,17 @@ def format_selection_time_window(selection_time, action_label):
 
 class GetSelectionTimeView(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
-    queryset = SelectionTime.objects.all().order_by('target')
     serializer_class = SelectionTimeSerializer
+
+    def get_queryset(self):
+        return SelectionTime.objects.annotate(
+            target_order=Case(
+                When(target=SelectionTime.TARGET_STUDENT, then=Value(0)),
+                When(target=SelectionTime.TARGET_PROFESSOR, then=Value(1)),
+                default=Value(9),
+                output_field=IntegerField(),
+            )
+        ).order_by('target_order', 'target')
 
 
 # Create your views here.

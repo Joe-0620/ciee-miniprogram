@@ -2134,13 +2134,47 @@ class DashboardStatsView(APIView):
     permission_classes = [IsDashboardAdmin]
 
     def get(self, request):
-        cache_key = 'dashboard_stats_v1'
+        admission_year = to_int(request.query_params.get('admission_year'), default=2026)
+        student_type = to_int(request.query_params.get('student_type'), default=2)
+        if student_type not in {1, 2, 3}:
+            student_type = 2
+
+        cache_key = f'dashboard_stats_v2:{admission_year}:{student_type}'
         cached_payload = cache.get(cache_key)
         if cached_payload:
             return Response(cached_payload, status=status.HTTP_200_OK)
 
         today = timezone.localdate()
         trend_days = [today - timedelta(days=offset) for offset in range(6, -1, -1)]
+        student_queryset = Student.objects.filter(admission_year=admission_year, student_type=student_type)
+        student_ids = student_queryset.values('id')
+        choice_queryset = StudentProfessorChoice.objects.filter(student_id__in=student_ids)
+        review_queryset = ReviewRecord.objects.filter(student_id__in=student_ids)
+
+        subject_type_filter = 2 if student_type == 3 else [0, 1]
+        subject_quota = []
+        if isinstance(subject_type_filter, list):
+            subject_queryset = Subject.objects.filter(subject_type__in=subject_type_filter).order_by('subject_code', 'id')
+        else:
+            subject_queryset = Subject.objects.filter(subject_type=subject_type_filter).order_by('subject_code', 'id')
+
+        for subject in subject_queryset:
+            total = subject.total_admission_quota or 0
+            selected = student_queryset.filter(subject=subject, is_selected=True, is_giveup=False).count()
+            alternate = student_queryset.filter(subject=subject, is_alternate=True, is_giveup=False).count()
+            giveup = student_queryset.filter(subject=subject, is_giveup=True).count()
+            subject_quota.append(
+                {
+                    'subject_id': subject.id,
+                    'subject_name': subject.subject_name,
+                    'subject_code': subject.subject_code,
+                    'total_quota': total,
+                    'selected_count': selected,
+                    'remaining_quota': max(total - selected, 0),
+                    'alternate_count': alternate,
+                    'giveup_count': giveup,
+                }
+            )
 
         department_usage = []
         for department in Department.objects.all().order_by('department_name'):
@@ -2169,39 +2203,20 @@ class DashboardStatsView(APIView):
                 }
             )
 
-        doctor_subject_quota = []
-        for subject in Subject.objects.filter(subject_type=2).order_by('subject_code', 'id'):
-            total = subject.total_admission_quota or 0
-            selected = subject.student_set.filter(is_selected=True, is_giveup=False).count()
-            alternate = subject.student_set.filter(is_alternate=True, is_giveup=False).count()
-            giveup = subject.student_set.filter(is_giveup=True).count()
-            doctor_subject_quota.append(
-                {
-                    'subject_id': subject.id,
-                    'subject_name': subject.subject_name,
-                    'subject_code': subject.subject_code,
-                    'total_quota': total,
-                    'selected_count': selected,
-                    'remaining_quota': max(total - selected, 0),
-                    'alternate_count': alternate,
-                    'giveup_count': giveup,
-                }
-            )
-
         review_distribution = [
-            {'label': '待审核', 'value': ReviewRecord.objects.filter(status=3).count()},
-            {'label': '已通过', 'value': ReviewRecord.objects.filter(status=1).count()},
-            {'label': '已驳回', 'value': ReviewRecord.objects.filter(status=2).count()},
-            {'label': '已撤销', 'value': ReviewRecord.objects.filter(status=4).count()},
+            {'label': '待审核', 'value': review_queryset.filter(status=3).count()},
+            {'label': '已通过', 'value': review_queryset.filter(status=1).count()},
+            {'label': '已驳回', 'value': review_queryset.filter(status=2).count()},
+            {'label': '已撤销', 'value': review_queryset.filter(status=4).count()},
         ]
 
         student_status_distribution = [
-            {'label': '已录取', 'value': Student.objects.filter(is_selected=True, is_giveup=False).count()},
-            {'label': '候补中', 'value': Student.objects.filter(is_alternate=True, is_giveup=False).count()},
-            {'label': '已放弃', 'value': Student.objects.filter(is_giveup=True).count()},
+            {'label': '已录取', 'value': student_queryset.filter(is_selected=True, is_giveup=False).count()},
+            {'label': '候补中', 'value': student_queryset.filter(is_alternate=True, is_giveup=False).count()},
+            {'label': '已放弃', 'value': student_queryset.filter(is_giveup=True).count()},
             {
                 'label': '未完成',
-                'value': Student.objects.filter(is_selected=False, is_alternate=False, is_giveup=False).count(),
+                'value': student_queryset.filter(is_selected=False, is_alternate=False, is_giveup=False).count(),
             },
         ]
 
@@ -2209,8 +2224,24 @@ class DashboardStatsView(APIView):
         professor_rows = (
             Professor.objects.select_related('department')
             .annotate(
-                pending_count=Count('studentprofessorchoice', filter=Q(studentprofessorchoice__status=3), distinct=True),
-                accepted_count=Count('studentprofessorchoice', filter=Q(studentprofessorchoice__status=1), distinct=True),
+                pending_count=Count(
+                    'studentprofessorchoice',
+                    filter=Q(
+                        studentprofessorchoice__status=3,
+                        studentprofessorchoice__student__admission_year=admission_year,
+                        studentprofessorchoice__student__student_type=student_type,
+                    ),
+                    distinct=True,
+                ),
+                accepted_count=Count(
+                    'studentprofessorchoice',
+                    filter=Q(
+                        studentprofessorchoice__status=1,
+                        studentprofessorchoice__student__admission_year=admission_year,
+                        studentprofessorchoice__student__student_type=student_type,
+                    ),
+                    distinct=True,
+                ),
             )
             .order_by('-pending_count', 'remaining_quota', 'id')[:8]
         )
@@ -2255,37 +2286,46 @@ class DashboardStatsView(APIView):
                 {
                     'date': day.isoformat(),
                     'label': day.strftime('%m-%d'),
-                    'value': StudentProfessorChoice.objects.filter(submit_date__gte=day, submit_date__lt=next_day).count(),
+                    'value': choice_queryset.filter(submit_date__gte=day, submit_date__lt=next_day).count(),
                 }
             )
             review_trend.append(
                 {
                     'date': day.isoformat(),
                     'label': day.strftime('%m-%d'),
-                    'value': ReviewRecord.objects.filter(review_time__gte=day, review_time__lt=next_day, status=1).count(),
+                    'value': review_queryset.filter(review_time__gte=day, review_time__lt=next_day, status=1).count(),
                 }
             )
             accepted_choice_trend.append(
                 {
                     'date': day.isoformat(),
                     'label': day.strftime('%m-%d'),
-                    'value': StudentProfessorChoice.objects.filter(finish_time__gte=day, finish_time__lt=next_day, status=1).count(),
+                    'value': choice_queryset.filter(finish_time__gte=day, finish_time__lt=next_day, status=1).count(),
                 }
             )
 
         payload = {
+                'admission_year': admission_year,
+                'student_type': student_type,
+                'available_admission_years': sorted(Student.objects.values_list('admission_year', flat=True).distinct()),
+                'student_type_options': [
+                    {'value': 2, 'label': '硕士统考生'},
+                    {'value': 1, 'label': '硕士推荐生'},
+                    {'value': 3, 'label': '博士统考生'},
+                ],
                 'professor_count': Professor.objects.count(),
-                'student_count': Student.objects.count(),
-                'pending_choice_count': StudentProfessorChoice.objects.filter(status=3).count(),
-                'accepted_choice_count': StudentProfessorChoice.objects.filter(status=1).count(),
-                'pending_review_count': ReviewRecord.objects.filter(status=3).count(),
-                'approved_review_count': ReviewRecord.objects.filter(status=1).count(),
-                'rejected_review_count': ReviewRecord.objects.filter(status=2).count(),
-                'revoked_review_count': ReviewRecord.objects.filter(status=4).count(),
-                'alternate_student_count': Student.objects.filter(is_alternate=True, is_giveup=False).count(),
-                'giveup_student_count': Student.objects.filter(is_giveup=True).count(),
+                'student_count': student_queryset.count(),
+                'pending_choice_count': choice_queryset.filter(status=3).count(),
+                'accepted_choice_count': choice_queryset.filter(status=1).count(),
+                'pending_review_count': review_queryset.filter(status=3).count(),
+                'approved_review_count': review_queryset.filter(status=1).count(),
+                'rejected_review_count': review_queryset.filter(status=2).count(),
+                'revoked_review_count': review_queryset.filter(status=4).count(),
+                'alternate_student_count': student_queryset.filter(is_alternate=True, is_giveup=False).count(),
+                'giveup_student_count': student_queryset.filter(is_giveup=True).count(),
                 'department_usage': department_usage,
-                'doctor_subject_quota': doctor_subject_quota,
+                'subject_quota': subject_quota,
+                'subject_quota_title': '博士专业剩余名额' if student_type == 3 else '硕士专业剩余名额',
                 'review_distribution': review_distribution,
                 'student_status_distribution': student_status_distribution,
                 'top_pending_professors': top_pending_professors,

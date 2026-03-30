@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Card, Col, Progress, Row, Skeleton, Table, Typography, message } from 'antd';
+import { Card, Col, Progress, Row, Select, Skeleton, Space, Table, Typography, message } from 'antd';
 
 import { get } from '../api/client';
 import PageHeader from '../components/PageHeader';
@@ -82,16 +82,24 @@ function MiniBarTrend({ title, subtitle, items, color }) {
 
 export default function DashboardPage() {
   const [stats, setStats] = useState(null);
+  const [filters, setFilters] = useState({ admission_year: 2026, student_type: 2 });
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    get('/dashboard/stats/')
+    setLoading(true);
+    const params = new URLSearchParams({
+      admission_year: String(filters.admission_year),
+      student_type: String(filters.student_type),
+    });
+    get(`/dashboard/stats/?${params.toString()}`)
       .then(setStats)
-      .catch((err) => message.error(err.message));
-  }, []);
+      .catch((err) => message.error(err.message))
+      .finally(() => setLoading(false));
+  }, [filters]);
 
   const doctorQuotaRows = useMemo(
     () =>
-      (stats?.doctor_subject_quota || []).map((item) => ({
+      (stats?.subject_quota || []).map((item) => ({
         key: item.subject_id,
         ...item,
         usage_percent: item.total_quota ? Math.round((item.selected_count / item.total_quota) * 100) : 0,
@@ -189,7 +197,7 @@ export default function DashboardPage() {
     },
   ];
 
-  if (!stats) {
+  if (!stats || loading) {
     return (
       <Card className="page-card" bordered={false}>
         <Skeleton active paragraph={{ rows: 12 }} />
@@ -205,6 +213,20 @@ export default function DashboardPage() {
           title="仪表盘"
           subtitle="集中查看招生双选、审核、名额和候补的整体态势，帮助管理员快速判断当前工作的优先级。"
         />
+        <Space wrap style={{ marginBottom: 20 }}>
+          <Select
+            style={{ width: 160 }}
+            value={filters.admission_year}
+            options={(stats?.available_admission_years || []).map((year) => ({ label: `${year}届`, value: year }))}
+            onChange={(value) => setFilters((prev) => ({ ...prev, admission_year: value }))}
+          />
+          <Select
+            style={{ width: 180 }}
+            value={filters.student_type}
+            options={stats?.student_type_options || []}
+            onChange={(value) => setFilters((prev) => ({ ...prev, student_type: value }))}
+          />
+        </Space>
         <div className="stat-grid">
           {statCards.map(([key, label]) => (
             <div key={key} className="stat-card">
@@ -239,9 +261,9 @@ export default function DashboardPage() {
       <Row gutter={[16, 16]}>
         <Col xs={24} xxl={13}>
           <Card className="page-card dashboard-section-card" bordered={false}>
-            <Typography.Title level={4}>博士专业剩余名额</Typography.Title>
+            <Typography.Title level={4}>{stats.subject_quota_title || '专业剩余名额'}</Typography.Title>
             <Typography.Paragraph type="secondary">
-              优先发现哪些博士专业已经接近满额，哪些专业开始堆积候补学生。
+              基于当前届别和学生类型，优先发现哪些专业已经接近满额，哪些专业开始堆积候补学生。
             </Typography.Paragraph>
             <Table rowKey="key" columns={doctorColumns} dataSource={doctorQuotaRows} pagination={false} size="small" scroll={{ y: 420 }} />
           </Card>

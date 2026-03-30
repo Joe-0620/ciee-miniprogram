@@ -14,6 +14,7 @@ import {
   Table,
   Typography,
   Upload,
+  List,
   message,
 } from 'antd';
 import { EditOutlined, PlusOutlined, UploadOutlined } from '@ant-design/icons';
@@ -228,9 +229,54 @@ export default function ProfessorsPage() {
   const handleMasterImport = async () => {
     try {
       const values = await masterImportForm.validateFields();
-      await runAction(() => upload('/professors/import-master-quota/', buildFormData(values)), '硕士名额导入完成');
+      const payload = await runAction(() => upload('/professors/import-master-quota/', buildFormData(values)), '硕士名额导入完成');
       setMasterImportOpen(false);
       masterImportForm.resetFields();
+      Modal.info({
+        title: '硕士名额导入结果',
+        width: 560,
+        content: (
+          <Space direction="vertical" style={{ width: '100%' }} size={12}>
+            <Typography.Text>{payload?.detail || '硕士名额导入完成'}</Typography.Text>
+            <Typography.Text>更新记录数：{payload?.updated_count ?? 0}</Typography.Text>
+            <Typography.Text>跳过行数：{payload?.skipped_rows ?? 0}</Typography.Text>
+            <Typography.Text>自动创建导师账号：{payload?.created_professor_count ?? 0}</Typography.Text>
+            {(payload?.created_professor_teacher_ids || []).length > 0 ? (
+              <>
+                <Typography.Text strong>新建导师工号</Typography.Text>
+                <List
+                  size="small"
+                  bordered
+                  dataSource={payload.created_professor_teacher_ids}
+                  renderItem={(item) => <List.Item>{item}</List.Item>}
+                />
+              </>
+            ) : null}
+            {(payload?.subject_quota_summary || []).length > 0 ? (
+              <>
+                <Typography.Text strong>按专业名额汇总</Typography.Text>
+                <List
+                  size="small"
+                  bordered
+                  dataSource={payload.subject_quota_summary}
+                  renderItem={(item) => (
+                    <List.Item>
+                      <Space direction="vertical" style={{ width: '100%' }} size={2}>
+                        <Typography.Text strong>
+                          {item.subject_name}（{item.subject_code}）
+                        </Typography.Text>
+                        <Typography.Text type="secondary">
+                          固定北京名额：{item.beijing_quota}　固定烟台名额：{item.yantai_quota}　共享北京名额：{item.shared_beijing_quota}　共享烟台名额：{item.shared_yantai_quota}　总名额：{item.total_quota}
+                        </Typography.Text>
+                      </Space>
+                    </List.Item>
+                  )}
+                />
+              </>
+            ) : null}
+          </Space>
+        ),
+      });
     } catch (error) {
       if (!error?.errorFields) {
         message.error(error.message);
@@ -634,21 +680,18 @@ export default function ProfessorsPage() {
         confirmLoading={actionLoading}
         destroyOnClose
       >
-        <Form form={masterImportForm} layout="vertical" initialValues={{ import_mode: 'full', sync_quotas: false }}>
-          <Form.Item name="import_mode" label="导入方式" rules={[{ required: true, message: '请选择导入方式' }]}>
-            <Select options={[{ label: '全量覆盖', value: 'full' }, { label: '增量叠加', value: 'incremental' }]} />
-          </Form.Item>
+        <Form form={masterImportForm} layout="vertical" initialValues={{ sync_quotas: false }}>
           <Form.Item name="sync_quotas" label="同步专业总名额" valuePropName="checked">
             <Switch checkedChildren="同步" unCheckedChildren="不同步" />
           </Form.Item>
           <Form.Item
             name="fileList"
-            label="CSV 文件"
+            label="XLSX 文件"
             valuePropName="fileList"
             getValueFromEvent={normalizeUploadEvent}
-            rules={[{ required: true, message: '请上传 CSV 文件' }]}
+            rules={[{ required: true, message: '请上传 XLSX 文件' }]}
           >
-            <Upload beforeUpload={() => false} maxCount={1} accept=".csv">
+            <Upload beforeUpload={() => false} maxCount={1} accept=".xlsx">
               <Button icon={<UploadOutlined />}>选择文件</Button>
             </Upload>
           </Form.Item>

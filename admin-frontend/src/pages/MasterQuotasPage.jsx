@@ -173,6 +173,26 @@ export default function MasterQuotasPage() {
     });
   };
 
+  const handleClearAll = () => {
+    Modal.confirm({
+      centered: true,
+      title: '确认一键删除全部硕士专业名额记录吗？',
+      content: '此操作会删除当前所有导师硕士专业名额记录，且不可恢复。',
+      okText: '删除全部',
+      cancelText: '取消',
+      okButtonProps: { danger: true },
+      onOk: async () => {
+        try {
+          const payload = await post('/master-quotas/actions/clear-all/', {});
+          message.success(payload.detail || '删除成功');
+          fetchData(1, pagination.pageSize, keyword, filters, sorter);
+        } catch (error) {
+          message.error(error.message);
+        }
+      },
+    });
+  };
+
   const selectSearchProps = {
     showSearch: true,
     optionFilterProp: 'label',
@@ -258,6 +278,9 @@ export default function MasterQuotasPage() {
           />
           <Space wrap>
             <Button onClick={() => fetchData(1, pagination.pageSize, keyword, filters, sorter)}>刷新</Button>
+            <Button danger onClick={handleClearAll}>
+              一键删除全部记录
+            </Button>
             <Button type="primary" icon={<PlusOutlined />} onClick={openCreateModal}>
               新建硕士专业名额
             </Button>

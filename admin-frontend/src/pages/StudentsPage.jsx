@@ -927,14 +927,32 @@ export default function StudentsPage() {
               message={importResult.detail || '学生导入完成'}
               description={
                 <div>
-                  <div>创建人数：{importResult.created_count ?? '-'}</div>
-                  <div>跳过人数：{importResult.skipped_rows ?? '-'}</div>
-                  {Array.isArray(importResult.summary) && importResult.summary.length ? (
-                    <div style={{ marginTop: 8 }}>
-                      {importResult.summary.map((item) => (
-                        <div key={`${item.subject_code}-${item.subject_name}`} style={{ marginBottom: 6 }}>
-                          {item.subject_name}（{item.subject_code}）：创建 {item.created_count}，候补 {item.alternate_count}，正常 {item.normal_count}
-                        </div>
+                   <div>创建人数：{importResult.created_count ?? '-'}</div>
+                   <div>跳过人数：{importResult.skipped_rows ?? '-'}</div>
+                   {importResult.skip_reason_summary && Object.keys(importResult.skip_reason_summary).length ? (
+                      <div style={{ marginTop: 8 }}>
+                        <div style={{ fontWeight: 600, marginBottom: 4 }}>跳过原因统计：</div>
+                        {Object.entries(importResult.skip_reason_summary).map(([reason, count]) => (
+                          <div key={reason}>{reason}：{count}</div>
+                        ))}
+                      </div>
+                    ) : null}
+                    {Array.isArray(importResult.skipped_examples) && importResult.skipped_examples.length ? (
+                      <div style={{ marginTop: 8 }}>
+                        <div style={{ fontWeight: 600, marginBottom: 4 }}>部分跳过明细：</div>
+                        {importResult.skipped_examples.map((item) => (
+                          <div key={`${item.row}-${item.candidate_number || item.name || item.reason}`}>
+                            第 {item.row} 行{item.name ? `，${item.name}` : ''}{item.candidate_number ? `（${item.candidate_number}）` : ''}：{item.reason}
+                          </div>
+                        ))}
+                      </div>
+                    ) : null}
+                   {Array.isArray(importResult.summary) && importResult.summary.length ? (
+                      <div style={{ marginTop: 8 }}>
+                        {importResult.summary.map((item) => (
+                          <div key={`${item.subject_code}-${item.subject_name}`} style={{ marginBottom: 6 }}>
+                            {item.subject_name}（{item.subject_code}）：创建 {item.created_count}，候补 {item.alternate_count}，正常 {item.normal_count}，不可选导师 {item.locked_count ?? 0}
+                          </div>
                       ))}
                     </div>
                   ) : null}

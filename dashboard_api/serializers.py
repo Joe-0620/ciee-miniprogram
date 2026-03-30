@@ -236,9 +236,10 @@ class ProfessorListSerializer(serializers.ModelSerializer):
         subject = self.context.get('heat_subject')
         postgraduate_type = self.context.get('heat_postgraduate_type')
         cache_key = (
-            getattr(setting, 'calculation_scope', ProfessorHeatDisplaySetting.CALCULATION_SCOPE_OVERALL) if setting else 'overall',
+            ProfessorHeatDisplaySetting.CALCULATION_SCOPE_SUBJECT,
             getattr(subject, 'id', subject),
             postgraduate_type,
+            getattr(setting, 'target_admission_year', 2026) if setting else 2026,
         )
         cache_map = getattr(obj, '_heat_metrics_cache_map', {})
         if cache_key not in cache_map:
@@ -362,9 +363,10 @@ class ProfessorHeatListSerializer(serializers.ModelSerializer):
         subject = self.context.get('heat_subject')
         postgraduate_type = self.context.get('heat_postgraduate_type')
         cache_key = (
-            getattr(setting, 'calculation_scope', ProfessorHeatDisplaySetting.CALCULATION_SCOPE_OVERALL) if setting else 'overall',
+            ProfessorHeatDisplaySetting.CALCULATION_SCOPE_SUBJECT,
             getattr(subject, 'id', subject),
             postgraduate_type,
+            getattr(setting, 'target_admission_year', 2026) if setting else 2026,
         )
         cache_map = getattr(obj, '_heat_metrics_cache_map', {})
         if cache_key not in cache_map:
@@ -408,6 +410,7 @@ class ProfessorHeatDisplaySettingSerializer(serializers.ModelSerializer):
             'show_professor_heat',
             'calculation_scope',
             'calculation_scope_display',
+            'target_admission_year',
             'pending_weight',
             'accepted_weight',
             'rejected_weight',

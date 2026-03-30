@@ -202,9 +202,10 @@ class ProfessorHeatDisplaySetting(models.Model):
     calculation_scope = models.CharField(
         max_length=20,
         choices=CALCULATION_SCOPE_CHOICES,
-        default=CALCULATION_SCOPE_OVERALL,
+        default=CALCULATION_SCOPE_SUBJECT,
         verbose_name="热度计算维度",
     )
+    target_admission_year = models.PositiveIntegerField(default=2026, verbose_name="统计届别")
     pending_weight = models.DecimalField(max_digits=5, decimal_places=2, default=1.00, verbose_name="待处理人数权重")
     accepted_weight = models.DecimalField(max_digits=5, decimal_places=2, default=0.60, verbose_name="已同意人数权重")
     rejected_weight = models.DecimalField(max_digits=5, decimal_places=2, default=0.20, verbose_name="已拒绝人数权重")
@@ -443,11 +444,22 @@ def calculate_professor_subject_heat_metrics(professor, subject=None, postgradua
         setting = get_professor_heat_display_setting()
 
     if subject is None:
-        return calculate_professor_heat_metrics(professor, setting=setting)
+        return {
+            'pending_count': 0,
+            'accepted_count': 0,
+            'rejected_count': 0,
+            'available_quota_total': 0,
+            'weighted_demand': 0,
+            'heat_score': 0,
+            'heat_level': resolve_heat_level_by_setting(0, setting=setting),
+        }
 
     choice_queryset = professor.studentprofessorchoice_set.filter(student__subject=subject)
     if postgraduate_type:
         choice_queryset = choice_queryset.filter(student__postgraduate_type=postgraduate_type)
+    target_admission_year = getattr(setting, 'target_admission_year', None)
+    if target_admission_year not in (None, ''):
+        choice_queryset = choice_queryset.filter(student__admission_year=target_admission_year)
 
     choice_stats = choice_queryset.aggregate(
         pending_count=Count('id', filter=Q(status=3)),
@@ -518,22 +530,12 @@ def calculate_professor_subject_heat_metrics(professor, subject=None, postgradua
 def get_professor_heat_display_metrics(professor, global_setting=None, subject=None, postgraduate_type=None):
     if global_setting is None:
         global_setting = get_professor_heat_display_setting()
-
-    use_subject_scope = (
-        getattr(global_setting, 'calculation_scope', ProfessorHeatDisplaySetting.CALCULATION_SCOPE_OVERALL)
-        == ProfessorHeatDisplaySetting.CALCULATION_SCOPE_SUBJECT
-        and subject is not None
+    metrics = calculate_professor_subject_heat_metrics(
+        professor,
+        subject=subject,
+        postgraduate_type=postgraduate_type,
+        setting=global_setting,
     )
-
-    if use_subject_scope:
-        metrics = calculate_professor_subject_heat_metrics(
-            professor,
-            subject=subject,
-            postgraduate_type=postgraduate_type,
-            setting=global_setting,
-        )
-    else:
-        metrics = calculate_professor_heat_metrics(professor, setting=global_setting)
     manual_heat_score = getattr(professor, 'manual_heat_score', None)
     manual_heat_level = getattr(professor, 'manual_heat_level', None)
 
@@ -553,8 +555,9 @@ def get_professor_heat_display_metrics(professor, global_setting=None, subject=N
 
     return {
         **metrics,
-        'calculation_scope': getattr(global_setting, 'calculation_scope', ProfessorHeatDisplaySetting.CALCULATION_SCOPE_OVERALL),
-        'subject_heat': use_subject_scope,
+        'calculation_scope': ProfessorHeatDisplaySetting.CALCULATION_SCOPE_SUBJECT,
+        'subject_heat': True,
+        'target_admission_year': getattr(global_setting, 'target_admission_year', 2026),
         'heat_score': heat_score,
         'heat_level': heat_level,
         'heat_visible': heat_visible,

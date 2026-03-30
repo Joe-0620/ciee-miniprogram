@@ -24,7 +24,7 @@ export default function ProfessorHeatPage() {
   const [loading, setLoading] = useState(false);
   const [actionLoading, setActionLoading] = useState(false);
   const [keyword, setKeyword] = useState('');
-  const [filters, setFilters] = useState({ department_id: undefined, heat_level: undefined });
+  const [filters, setFilters] = useState({ department_id: undefined, heat_level: undefined, subject_id: undefined, postgraduate_type: undefined });
   const [departments, setDepartments] = useState([]);
   const [subjects, setSubjects] = useState([]);
   const [data, setData] = useState({ count: 0, results: [] });
@@ -49,13 +49,12 @@ export default function ProfessorHeatPage() {
         : Array.isArray(subjectPayload?.results)
           ? subjectPayload.results
           : [];
-      const nextCalculationScope = settingPayload?.calculation_scope || 'overall';
-
       setDepartments(nextDepartments);
       setSubjects(nextSubjects);
       setGlobalVisible(Boolean(settingPayload?.show_professor_heat));
       settingsForm.setFieldsValue({
-        calculation_scope: nextCalculationScope,
+        calculation_scope: 'subject',
+        target_admission_year: Number(settingPayload?.target_admission_year ?? 2026),
         pending_weight: Number(settingPayload?.pending_weight ?? 1),
         accepted_weight: Number(settingPayload?.accepted_weight ?? 0.6),
         rejected_weight: Number(settingPayload?.rejected_weight ?? 0.2),
@@ -64,7 +63,7 @@ export default function ProfessorHeatPage() {
         very_high_threshold: Number(settingPayload?.very_high_threshold ?? 6),
       });
 
-      if (nextCalculationScope === 'subject' && !filters.subject_id && nextSubjects.length > 0) {
+      if (!filters.subject_id && nextSubjects.length > 0) {
         const nextFilters = { ...filters, subject_id: nextSubjects[0].id };
         setFilters(nextFilters);
         fetchData(1, pagination.pageSize, keyword, nextFilters);
@@ -140,7 +139,8 @@ export default function ProfessorHeatPage() {
       await runAction(
         () =>
           patch('/professor-heat/settings/', {
-            calculation_scope: values.calculation_scope,
+            calculation_scope: 'subject',
+            target_admission_year: values.target_admission_year,
             pending_weight: values.pending_weight,
             accepted_weight: values.accepted_weight,
             rejected_weight: values.rejected_weight,
@@ -390,8 +390,8 @@ export default function ProfessorHeatPage() {
 
       <Typography.Paragraph type="secondary" style={{ marginTop: 0 }}>
         {filters.subject_id
-          ? '当前表格正在按所选专业视角展示导师热度。若同时指定培养类型，则会进一步按该培养类型下的申请人数和名额计算。'
-          : '当前表格默认展示导师总量热度。选择专业后，可切换为分专业视角查看导师热度。'}
+          ? '当前表格正在按所选专业视角展示导师热度，并只统计所配置届别下的申请人数。若同时指定培养类型，则会进一步按该培养类型下的申请人数和名额计算。'
+          : '当前热度仅按专业视角计算。请选择专业查看对应口径下的导师热度。'}
       </Typography.Paragraph>
 
       <Table
@@ -452,15 +452,17 @@ export default function ProfessorHeatPage() {
           <Form.Item
             name="calculation_scope"
             label="热度计算维度"
-            tooltip="学生端和后台都已支持按专业视角计算热度；后台建议同时选择专业查看具体热度值。"
-            rules={[{ required: true, message: '请选择热度计算维度' }]}
+            tooltip="热度已统一固定为按当前学生专业计算。"
           >
-            <Select
-              options={[
-                { label: '按导师总量计算', value: 'overall' },
-                { label: '按当前学生专业计算', value: 'subject' },
-              ]}
-            />
+            <Input value="按当前学生专业计算" disabled />
+          </Form.Item>
+          <Form.Item
+            name="target_admission_year"
+            label="统计届别"
+            rules={[{ required: true, message: '请输入统计届别' }]}
+            extra="默认按 2026 届统计，不考虑往届。明年可在这里改成 2027 届。"
+          >
+            <InputNumber min={2000} max={9999} precision={0} style={{ width: '100%' }} />
           </Form.Item>
           <Form.Item label="人数权重说明">
             <Typography.Paragraph type="secondary" style={{ marginBottom: 0 }}>

@@ -179,6 +179,26 @@ export default function SharedQuotaPoolsPage() {
     });
   };
 
+  const handleClearAll = () => {
+    Modal.confirm({
+      centered: true,
+      title: '确认一键删除全部共享名额池记录吗？',
+      content: '若存在已用名额的共享池，会阻止本次操作。此操作不可恢复。',
+      okText: '删除全部',
+      cancelText: '取消',
+      okButtonProps: { danger: true },
+      onOk: async () => {
+        try {
+          const payload = await post('/shared-quota-pools/actions/clear-all/', {});
+          message.success(payload.detail || '删除成功');
+          fetchData(1, pagination.pageSize, keyword, filters, sorter);
+        } catch (err) {
+          message.error(err.message);
+        }
+      },
+    });
+  };
+
   const filteredSubjects = subjects.filter((item) => {
     if (scopeValue === 'doctor') return item.subject_type === 2;
     return item.subject_type !== 2;
@@ -286,6 +306,9 @@ export default function SharedQuotaPoolsPage() {
           </div>
           <div className="page-actions">
             <Button onClick={() => fetchData(1, pagination.pageSize, keyword, filters, sorter)}>刷新</Button>
+            <Button danger onClick={handleClearAll}>
+              一键删除全部记录
+            </Button>
             <Button type="primary" icon={<PlusOutlined />} onClick={openCreateModal}>
               新建共享名额池
             </Button>

@@ -600,6 +600,337 @@ def parse_bool_param(value):
     return None
 
 
+def get_excel_value(row, header_map, header, default=''):
+    if header is None:
+        return default
+    index = header_map.get(header)
+    if index is None or index >= len(row):
+        return default
+    value = row[index]
+    return default if value is None else value
+
+
+def normalize_marker_value(value):
+    return str(value or '').strip()
+
+
+def is_blank_marker(value):
+    return normalize_marker_value(value) in {'', '\\'}
+
+
+def is_empty_quota_cell(value):
+    return normalize_marker_value(value) == ''
+
+
+def find_master_subject_by_code(subject_code):
+    return Subject.objects.filter(subject_code=subject_code, subject_type__in=[0, 1]).first()
+
+
+def add_incremental_master_quota(professor, subject, beijing_quota=0, yantai_quota=0):
+    quota, _ = ProfessorMasterQuota.objects.get_or_create(professor=professor, subject=subject)
+    quota.beijing_quota = (quota.beijing_quota or 0) + max(0, beijing_quota)
+    quota.yantai_quota = (quota.yantai_quota or 0) + max(0, yantai_quota)
+    quota.save()
+    return quota
+
+
+def get_or_create_incremental_shared_pool(professor, subjects, quota_value, campus):
+    subject_ids = sorted(subject.id for subject in subjects)
+    pools = (
+        ProfessorSharedQuotaPool.objects.filter(
+            professor=professor,
+            quota_scope=ProfessorSharedQuotaPool.SCOPE_MASTER,
+            campus=campus,
+            is_active=True,
+        )
+        .prefetch_related('subjects')
+    )
+
+    for pool in pools:
+        if sorted(pool.subjects.values_list('id', flat=True)) == subject_ids:
+            pool.total_quota = (pool.total_quota or 0) + quota_value
+            pool.remaining_quota = min(pool.total_quota, (pool.remaining_quota or 0) + quota_value)
+            pool.save()
+            return pool
+
+    pool = ProfessorSharedQuotaPool.objects.create(
+        professor=professor,
+        pool_name='、'.join(subject.subject_name for subject in subjects) + '共享名额',
+        quota_scope=ProfessorSharedQuotaPool.SCOPE_MASTER,
+        campus=campus,
+        total_quota=quota_value,
+        used_quota=0,
+        remaining_quota=quota_value,
+        is_active=True,
+    )
+    pool.subjects.set(subject_ids)
+    return pool
+
+
+def sync_master_subject_total_quota(subject):
+    fixed_totals = ProfessorMasterQuota.objects.filter(subject=subject).aggregate(
+        bj_total=Coalesce(Sum('beijing_quota'), 0),
+        yt_total=Coalesce(Sum('yantai_quota'), 0),
+    )
+    shared_total = ProfessorSharedQuotaPool.objects.filter(
+        quota_scope=ProfessorSharedQuotaPool.SCOPE_MASTER,
+        is_active=True,
+        subjects=subject,
+    ).aggregate(total=Coalesce(Sum('total_quota'), 0))['total'] or 0
+    subject.total_admission_quota = (
+        (fixed_totals.get('bj_total') or 0)
+        + (fixed_totals.get('yt_total') or 0)
+        + shared_total
+    )
+    subject.save(update_fields=['total_admission_quota'])
+    sync_student_alternate_status(subject)
+
+
+def record_subject_import_summary(summary_map, subject, beijing_delta=0, yantai_delta=0, shared_beijing_delta=0, shared_yantai_delta=0):
+    if not subject:
+        return
+    item = summary_map.setdefault(
+        subject.id,
+        {
+            'subject_id': subject.id,
+            'subject_name': subject.subject_name,
+            'subject_code': subject.subject_code,
+            'beijing_quota': 0,
+            'yantai_quota': 0,
+            'shared_beijing_quota': 0,
+            'shared_yantai_quota': 0,
+            'total_quota': 0,
+        },
+    )
+    item['beijing_quota'] += max(0, beijing_delta or 0)
+    item['yantai_quota'] += max(0, yantai_delta or 0)
+    item['shared_beijing_quota'] += max(0, shared_beijing_delta or 0)
+    item['shared_yantai_quota'] += max(0, shared_yantai_delta or 0)
+    item['total_quota'] = (
+        item['beijing_quota']
+        + item['yantai_quota']
+        + item['shared_beijing_quota']
+        + item['shared_yantai_quota']
+    )
+
+
+def ensure_professor_for_master_quota_import(teacher_id, professor_name, subject_candidates):
+    professor = Professor.objects.filter(teacher_identity_id=teacher_id).first()
+    if professor:
+        if professor_name and professor.name != professor_name:
+            professor.name = professor_name
+            professor.save(update_fields=['name'])
+        return professor, False
+
+    department = None
+    for subject in subject_candidates:
+        department = subject.subject_department.order_by('id').first()
+        if department:
+            break
+    if department is None:
+        raise ValidationError(f'工号 {teacher_id} 对应导师不存在，且无法从专业关联中推断所属招生方向。')
+
+    user = User.objects.filter(username=teacher_id).first()
+    if user is None:
+        user = User.objects.create_user(username=teacher_id, password=teacher_id)
+
+    professor = Professor.objects.create(
+        user_name=user,
+        name=professor_name or f'导师{teacher_id}',
+        teacher_identity_id=teacher_id,
+        department=department,
+        proposed_quota_approved=True,
+        have_qualification=True,
+    )
+    return professor, True
+
+
+def import_master_quota_workbook(upload, sync_quotas=False):
+    workbook = load_workbook(upload, data_only=True)
+    worksheet = workbook.active
+    headers = [cell.value for cell in worksheet[1]]
+    header_map = {header: index for index, header in enumerate(headers)}
+
+    teacher_id_header = resolve_header_name(headers, ['工号'])
+    if teacher_id_header is None:
+        raise ValidationError('未找到工号列。')
+    name_header = resolve_header_name(headers, ['姓名', '导师姓名'])
+
+    subject1_code_header = resolve_header_name(headers, ['学科1代码'])
+    subject1_quota_header = resolve_header_name(headers, ['名额1', '本次名额1'])
+    subject2_code1_header = resolve_header_name(headers, ['学科2代码1'])
+    subject2_code2_header = resolve_header_name(headers, ['学科2代码2'])
+    subject2_beijing_header = resolve_header_name(headers, ['北京名额2', '北京招生名额2'])
+    subject2_yantai_header = resolve_header_name(headers, ['烟台名额2', '烟台招生名额2'])
+    subject3_code_header = resolve_header_name(headers, ['学科3代码'])
+    subject3_beijing_header = resolve_header_name(headers, ['北京名额3', '北京招生名额3'])
+    subject3_yantai_header = resolve_header_name(headers, ['烟台名额3', '烟台招生名额3'])
+    subject4_code_header = resolve_header_name(headers, ['学科4代码'])
+    subject4_quota_header = resolve_header_name(headers, ['名额4', '本次名额4'])
+
+    updated_count = 0
+    skipped_rows = 0
+    touched_professors = set()
+    touched_subjects = set()
+    created_professor_ids = []
+    subject_summary_map = {}
+
+    with transaction.atomic():
+        for row in worksheet.iter_rows(min_row=2, values_only=True):
+            if all(normalize_marker_value(value) == '' for value in row):
+                continue
+
+            teacher_id = normalize_marker_value(get_excel_value(row, header_map, teacher_id_header)).zfill(5)
+            professor_name = normalize_marker_value(get_excel_value(row, header_map, name_header))
+            if not teacher_id:
+                skipped_rows += 1
+                continue
+
+            row_imported = False
+
+            subject1_code = normalize_subject_code(get_excel_value(row, header_map, subject1_code_header))
+            subject1_quota_raw = get_excel_value(row, header_map, subject1_quota_header)
+            subject1 = find_master_subject_by_code(subject1_code) if subject1_code else None
+
+            subject2_code1 = normalize_subject_code(get_excel_value(row, header_map, subject2_code1_header))
+            subject2_code2_raw = get_excel_value(row, header_map, subject2_code2_header)
+            subject2_code2 = normalize_subject_code(subject2_code2_raw)
+            subject2_main = find_master_subject_by_code(subject2_code1) if subject2_code1 else None
+            subject2_shared = (
+                find_master_subject_by_code(subject2_code2)
+                if subject2_code2 and not is_blank_marker(subject2_code2_raw)
+                else None
+            )
+            subject2_beijing_raw = get_excel_value(row, header_map, subject2_beijing_header)
+            subject2_yantai_raw = get_excel_value(row, header_map, subject2_yantai_header)
+
+            subject3_code = normalize_subject_code(get_excel_value(row, header_map, subject3_code_header))
+            subject3_beijing_raw = get_excel_value(row, header_map, subject3_beijing_header)
+            subject3_yantai_raw = get_excel_value(row, header_map, subject3_yantai_header)
+            subject3 = find_master_subject_by_code(subject3_code) if subject3_code else None
+
+            subject4_code = normalize_subject_code(get_excel_value(row, header_map, subject4_code_header))
+            subject4_quota_raw = get_excel_value(row, header_map, subject4_quota_header)
+            subject4 = find_master_subject_by_code(subject4_code) if subject4_code else None
+
+            subject_candidates = [subject for subject in [subject1, subject2_main, subject2_shared, subject3, subject4] if subject]
+            if not subject_candidates:
+                skipped_rows += 1
+                continue
+
+            professor, professor_created = ensure_professor_for_master_quota_import(teacher_id, professor_name, subject_candidates)
+            if professor_created:
+                created_professor_ids.append(teacher_id)
+
+            if subject1_code and not is_empty_quota_cell(subject1_quota_raw):
+                if subject1:
+                    quota_value = to_int(subject1_quota_raw)
+                    if quota_value > 0:
+                        add_incremental_master_quota(professor, subject1, beijing_quota=quota_value)
+                        record_subject_import_summary(subject_summary_map, subject1, beijing_delta=quota_value)
+                        touched_subjects.add(subject1.id)
+                        updated_count += 1
+                        row_imported = True
+
+            if subject2_code1 and not (is_empty_quota_cell(subject2_beijing_raw) and is_empty_quota_cell(subject2_yantai_raw)):
+                if subject2_main:
+                    beijing_quota = to_int(subject2_beijing_raw)
+                    yantai_quota = to_int(subject2_yantai_raw)
+                    if not is_blank_marker(subject2_code2_raw):
+                        if subject2_shared:
+                            if beijing_quota > 0:
+                                get_or_create_incremental_shared_pool(
+                                    professor,
+                                    [subject2_main, subject2_shared],
+                                    beijing_quota,
+                                    ProfessorSharedQuotaPool.CAMPUS_BEIJING,
+                                )
+                                record_subject_import_summary(subject_summary_map, subject2_main, shared_beijing_delta=beijing_quota)
+                                record_subject_import_summary(subject_summary_map, subject2_shared, shared_beijing_delta=beijing_quota)
+                                touched_subjects.add(subject2_main.id)
+                                touched_subjects.add(subject2_shared.id)
+                                updated_count += 1
+                                row_imported = True
+                            if yantai_quota > 0:
+                                get_or_create_incremental_shared_pool(
+                                    professor,
+                                    [subject2_main, subject2_shared],
+                                    yantai_quota,
+                                    ProfessorSharedQuotaPool.CAMPUS_YANTAI,
+                                )
+                                record_subject_import_summary(subject_summary_map, subject2_main, shared_yantai_delta=yantai_quota)
+                                record_subject_import_summary(subject_summary_map, subject2_shared, shared_yantai_delta=yantai_quota)
+                                touched_subjects.add(subject2_main.id)
+                                touched_subjects.add(subject2_shared.id)
+                                updated_count += 1
+                                row_imported = True
+                    else:
+                        if beijing_quota > 0:
+                            add_incremental_master_quota(professor, subject2_main, beijing_quota=beijing_quota)
+                            record_subject_import_summary(subject_summary_map, subject2_main, beijing_delta=beijing_quota)
+                            touched_subjects.add(subject2_main.id)
+                            updated_count += 1
+                            row_imported = True
+                        if yantai_quota > 0:
+                            add_incremental_master_quota(professor, subject2_main, yantai_quota=yantai_quota)
+                            record_subject_import_summary(subject_summary_map, subject2_main, yantai_delta=yantai_quota)
+                            touched_subjects.add(subject2_main.id)
+                            updated_count += 1
+                            row_imported = True
+
+            if subject3_code and not (is_empty_quota_cell(subject3_beijing_raw) and is_empty_quota_cell(subject3_yantai_raw)):
+                if subject3:
+                    beijing_quota = to_int(subject3_beijing_raw)
+                    yantai_quota = to_int(subject3_yantai_raw)
+                    if beijing_quota > 0 or yantai_quota > 0:
+                        add_incremental_master_quota(
+                            professor,
+                            subject3,
+                            beijing_quota=beijing_quota,
+                            yantai_quota=yantai_quota,
+                        )
+                        record_subject_import_summary(
+                            subject_summary_map,
+                            subject3,
+                            beijing_delta=beijing_quota,
+                            yantai_delta=yantai_quota,
+                        )
+                        touched_subjects.add(subject3.id)
+                        updated_count += 1
+                        row_imported = True
+
+            if subject4_code and not is_empty_quota_cell(subject4_quota_raw):
+                if subject4:
+                    quota_value = to_int(subject4_quota_raw)
+                    if quota_value > 0:
+                        add_incremental_master_quota(professor, subject4, beijing_quota=quota_value)
+                        record_subject_import_summary(subject_summary_map, subject4, beijing_delta=quota_value)
+                        touched_subjects.add(subject4.id)
+                        updated_count += 1
+                        row_imported = True
+
+            if row_imported:
+                touched_professors.add(professor.id)
+            else:
+                skipped_rows += 1
+
+        for professor in Professor.objects.filter(id__in=touched_professors):
+            refresh_professor_summary_quotas(professor)
+
+        if sync_quotas:
+            for subject in Subject.objects.filter(id__in=touched_subjects):
+                sync_master_subject_total_quota(subject)
+
+    return {
+        'detail': f'硕士名额导入完成，更新 {updated_count} 条记录，跳过 {skipped_rows} 条。',
+        'updated_count': updated_count,
+        'skipped_rows': skipped_rows,
+        'created_professor_count': len(created_professor_ids),
+        'created_professor_teacher_ids': created_professor_ids,
+        'subject_quota_summary': sorted(subject_summary_map.values(), key=lambda item: (item['subject_code'], item['subject_name'])),
+    }
+
+
 def parse_int_list_param(value):
     if value in (None, ''):
         return []
@@ -2043,51 +2374,39 @@ class DashboardProfessorHeatListView(APIView):
             except (TypeError, ValueError):
                 return Response({'detail': '培养类型参数不正确。'}, status=status.HTTP_400_BAD_REQUEST)
 
-        queryset = build_professor_queryset(request).select_related('department').order_by('-pending_choice_count', 'id')
-
+        queryset = build_professor_queryset(request).select_related('department')
+        professors = list(queryset)
         heat_level = request.query_params.get('heat_level')
-        if heat_level:
-            queryset = [
-                professor
-                for professor in queryset
-                if get_professor_heat_display_metrics(
+
+        filtered_professors = []
+        for professor in professors:
+            metrics = get_professor_heat_display_metrics(
+                professor,
+                global_setting=setting,
+                subject=heat_subject,
+                postgraduate_type=heat_postgraduate_type,
+            )
+            if heat_level and metrics['heat_level'] != heat_level:
+                continue
+            filtered_professors.append(professor)
+
+        filtered_professors.sort(
+            key=lambda professor: (
+                -get_professor_heat_display_metrics(
                     professor,
                     global_setting=setting,
                     subject=heat_subject,
                     postgraduate_type=heat_postgraduate_type,
-                )['heat_level'] == heat_level
-            ]
-            total = len(queryset)
-            start = (page - 1) * page_size
-            end = start + page_size
-            serializer = ProfessorHeatListSerializer(
-                queryset[start:end],
-                many=True,
-                context={
-                    'heat_setting': setting,
-                    'heat_subject': heat_subject,
-                    'heat_postgraduate_type': heat_postgraduate_type,
-                },
+                )['pending_count'],
+                professor.id,
             )
-            return Response(
-                {
-                    'count': total,
-                    'page': page,
-                    'page_size': page_size,
-                    'results': serializer.data,
-                    'subject_id': heat_subject.id if heat_subject else None,
-                    'subject_name': heat_subject.subject_name if heat_subject else '',
-                    'postgraduate_type': heat_postgraduate_type,
-                    'calculation_scope': setting.calculation_scope,
-                },
-                status=status.HTTP_200_OK,
-            )
+        )
 
-        total = queryset.count()
+        total = len(filtered_professors)
         start = (page - 1) * page_size
         end = start + page_size
         serializer = ProfessorHeatListSerializer(
-            queryset[start:end],
+            filtered_professors[start:end],
             many=True,
             context={
                 'heat_setting': setting,
@@ -2104,7 +2423,8 @@ class DashboardProfessorHeatListView(APIView):
                 'subject_id': heat_subject.id if heat_subject else None,
                 'subject_name': heat_subject.subject_name if heat_subject else '',
                 'postgraduate_type': heat_postgraduate_type,
-                'calculation_scope': setting.calculation_scope,
+                'calculation_scope': ProfessorHeatDisplaySetting.CALCULATION_SCOPE_SUBJECT,
+                'target_admission_year': setting.target_admission_year,
             },
             status=status.HTTP_200_OK,
         )
@@ -2122,7 +2442,8 @@ class DashboardProfessorHeatSettingView(APIView):
         setting = get_professor_heat_display_setting()
         before_data = {
             'show_professor_heat': setting.show_professor_heat,
-            'calculation_scope': setting.calculation_scope,
+            'calculation_scope': ProfessorHeatDisplaySetting.CALCULATION_SCOPE_SUBJECT,
+            'target_admission_year': setting.target_admission_year,
             'pending_weight': str(setting.pending_weight),
             'accepted_weight': str(setting.accepted_weight),
             'rejected_weight': str(setting.rejected_weight),
@@ -2135,16 +2456,16 @@ class DashboardProfessorHeatSettingView(APIView):
             show_professor_heat = request.data.get('show_professor_heat')
             setting.show_professor_heat = parse_request_bool(show_professor_heat, default=setting.show_professor_heat)
 
-        if 'calculation_scope' in request.data:
-            calculation_scope = str(request.data.get('calculation_scope') or '').strip()
-            valid_scopes = {
-                ProfessorHeatDisplaySetting.CALCULATION_SCOPE_OVERALL,
-                ProfessorHeatDisplaySetting.CALCULATION_SCOPE_SUBJECT,
-            }
-            if calculation_scope and calculation_scope not in valid_scopes:
-                return Response({'detail': '热度计算维度不正确。'}, status=status.HTTP_400_BAD_REQUEST)
-            if calculation_scope:
-                setting.calculation_scope = calculation_scope
+        setting.calculation_scope = ProfessorHeatDisplaySetting.CALCULATION_SCOPE_SUBJECT
+
+        if 'target_admission_year' in request.data:
+            try:
+                target_admission_year = int(request.data.get('target_admission_year'))
+            except (TypeError, ValueError):
+                return Response({'detail': '统计届别不是有效整数。'}, status=status.HTTP_400_BAD_REQUEST)
+            if target_admission_year <= 0:
+                return Response({'detail': '统计届别必须大于 0。'}, status=status.HTTP_400_BAD_REQUEST)
+            setting.target_admission_year = target_admission_year
 
         decimal_fields = [
             'pending_weight',
@@ -2185,7 +2506,8 @@ class DashboardProfessorHeatSettingView(APIView):
             before_data=before_data,
             after_data={
                 'show_professor_heat': setting.show_professor_heat,
-                'calculation_scope': setting.calculation_scope,
+                'calculation_scope': ProfessorHeatDisplaySetting.CALCULATION_SCOPE_SUBJECT,
+                'target_admission_year': setting.target_admission_year,
                 'pending_weight': str(setting.pending_weight),
                 'accepted_weight': str(setting.accepted_weight),
                 'rejected_weight': str(setting.rejected_weight),
@@ -2458,81 +2780,11 @@ class DashboardProfessorImportMasterQuotaView(APIView):
     def post(self, request):
         upload = get_uploaded_file(request)
         if not upload:
-            return Response({'detail': 'Please upload a master quota CSV file.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'detail': 'Please upload a master quota XLSX file.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        import_mode = str(request.data.get('import_mode') or 'full').strip().lower()
         sync_quotas = str(request.data.get('sync_quotas') or 'false').lower() in {'1', 'true', 'yes', 'on'}
-        if import_mode not in {'full', 'incremental'}:
-            return Response({'detail': 'import_mode must be full or incremental.'}, status=status.HTTP_400_BAD_REQUEST)
-
-        reader = csv.DictReader(TextIOWrapper(upload.file, encoding='utf-8-sig'))
-        updated_count = 0
-        skipped_rows = 0
-        touched_professors = set()
-        touched_subjects = set()
-
-        with transaction.atomic():
-            for row in reader:
-                teacher_id = str(get_csv_value(row, ['工号'])).strip().zfill(5)
-                if not teacher_id:
-                    skipped_rows += 1
-                    continue
-
-                professor = Professor.objects.filter(teacher_identity_id=teacher_id).first()
-                if not professor:
-                    skipped_rows += 1
-                    continue
-
-                for index in range(1, 6):
-                    subject_code = normalize_subject_code(get_csv_value(row, [f'学科{index}代码', f'专业{index}代码']))
-                    if not subject_code:
-                        continue
-
-                    subject = Subject.objects.filter(subject_code=subject_code, subject_type__in=[0, 1]).first()
-                    if not subject:
-                        skipped_rows += 1
-                        continue
-
-                    bj_quota = to_int(get_csv_value(row, [f'北京招生名额{index}', f'北京名额{index}']))
-                    yt_quota = to_int(get_csv_value(row, [f'烟台招生名额{index}', f'烟台名额{index}']))
-                    quota, _ = ProfessorMasterQuota.objects.get_or_create(professor=professor, subject=subject)
-
-                    if import_mode == 'full':
-                        quota.beijing_quota = bj_quota
-                        quota.yantai_quota = yt_quota
-                    else:
-                        quota.beijing_quota = (quota.beijing_quota or 0) + bj_quota
-                        quota.yantai_quota = (quota.yantai_quota or 0) + yt_quota
-
-                    quota.save()
-                    updated_count += 1
-                    touched_professors.add(professor.id)
-                    touched_subjects.add(subject.id)
-
-            for professor in Professor.objects.filter(id__in=touched_professors):
-                refresh_professor_summary_quotas(professor)
-
-            if sync_quotas:
-                for subject in Subject.objects.filter(id__in=touched_subjects):
-                    total_assigned = (
-                        ProfessorMasterQuota.objects.filter(subject=subject).aggregate(
-                            bj_total=Coalesce(Sum('beijing_quota'), 0),
-                            yt_total=Coalesce(Sum('yantai_quota'), 0),
-                        )
-                    )
-                    subject.total_admission_quota = (total_assigned.get('bj_total') or 0) + (total_assigned.get('yt_total') or 0)
-                    subject.save(update_fields=['total_admission_quota'])
-                    sync_student_alternate_status(subject)
-
-        return Response(
-            {
-                'detail': f'硕士名额导入完成，更新 {updated_count} 条记录，跳过 {skipped_rows} 条。',
-                'detail': f'Master quota import finished: updated {updated_count}, skipped {skipped_rows}.',
-                'updated_count': updated_count,
-                'skipped_rows': skipped_rows,
-            },
-            status=status.HTTP_200_OK,
-        )
+        result = import_master_quota_workbook(upload, sync_quotas=sync_quotas)
+        return Response(result, status=status.HTTP_200_OK)
 
 
 class DashboardProfessorImportDoctorQuotaView(APIView):
@@ -2767,6 +3019,8 @@ class DashboardStudentImportView(APIView):
 
         with transaction.atomic():
             for row in worksheet.iter_rows(min_row=2, values_only=True):
+                if not any(value not in (None, '') for value in row):
+                    continue
                 candidate_number = str(row[header_map[candidate_header]] or '').strip()
                 name = str(row[header_map[name_header]] or '').strip()
                 subject_code = normalize_subject_code(row[header_map[subject_code_header]])
@@ -2774,6 +3028,7 @@ class DashboardStudentImportView(APIView):
                 campus = str(row[header_map[campus_header]] or '').strip()
                 choose_professor = str(row[header_map[choose_professor_header]] or '').strip()
                 alternate_rank_value = row[header_map[alternate_header]] if alternate_header else None
+                alternate_display_value = str(alternate_rank_value or '').strip()
                 final_rank = to_int(row[header_map[final_rank_header]], default=0)
                 initial_score = row[header_map[initial_score_header]] if initial_score_header else None
                 secondary_score = row[header_map[secondary_score_header]] if secondary_score_header else None
@@ -2803,6 +3058,7 @@ class DashboardStudentImportView(APIView):
                         continue
 
                 is_alternate = choose_professor == '候补'
+                lock_selection = choose_professor == '否' and alternate_display_value in {'', '否'}
                 alternate_rank = None
                 if is_alternate:
                     alternate_rank = to_int(alternate_rank_value, default=0)
@@ -2829,6 +3085,7 @@ class DashboardStudentImportView(APIView):
                     initial_exam_score=float(initial_score) if initial_score not in (None, '') else None,
                     secondary_exam_score=float(secondary_score) if secondary_score not in (None, '') else None,
                     final_rank=final_rank or None,
+                    is_selected=lock_selection,
                     is_alternate=is_alternate,
                     alternate_rank=alternate_rank,
                 )
@@ -2900,84 +3157,11 @@ class DashboardProfessorImportMasterQuotaView(APIView):
     def post(self, request):
         upload = get_uploaded_file(request)
         if not upload:
-            return Response({'detail': 'Please upload a master quota CSV file.'}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'detail': 'Please upload a master quota XLSX file.'}, status=status.HTTP_400_BAD_REQUEST)
 
-        import_mode = str(request.data.get('import_mode') or 'full').strip().lower()
         sync_quotas = str(request.data.get('sync_quotas') or 'false').lower() in {'1', 'true', 'yes', 'on'}
-        if import_mode not in {'full', 'incremental'}:
-            return Response({'detail': 'import_mode must be full or incremental.'}, status=status.HTTP_400_BAD_REQUEST)
-
-        reader = csv.DictReader(TextIOWrapper(upload.file, encoding='utf-8-sig'))
-        updated_count = 0
-        skipped_rows = 0
-        touched_professors = set()
-        touched_subjects = set()
-
-        with transaction.atomic():
-            for row in reader:
-                teacher_id = str(get_csv_value(row, ['\u5de5\u53f7'])).strip().zfill(5)
-                if not teacher_id:
-                    skipped_rows += 1
-                    continue
-
-                professor = Professor.objects.filter(teacher_identity_id=teacher_id).first()
-                if not professor:
-                    skipped_rows += 1
-                    continue
-
-                for index in range(1, 6):
-                    subject_code = normalize_subject_code(
-                        get_csv_value(row, [f'\u5b66\u79d1{index}\u4ee3\u7801', f'\u4e13\u4e1a{index}\u4ee3\u7801'])
-                    )
-                    if not subject_code:
-                        continue
-
-                    subject = Subject.objects.filter(subject_code=subject_code, subject_type__in=[0, 1]).first()
-                    if not subject:
-                        skipped_rows += 1
-                        continue
-
-                    bj_quota = to_int(
-                        get_csv_value(row, [f'\u5317\u4eac\u62db\u751f\u540d\u989d{index}', f'\u5317\u4eac\u540d\u989d{index}'])
-                    )
-                    yt_quota = to_int(
-                        get_csv_value(row, [f'\u70df\u53f0\u62db\u751f\u540d\u989d{index}', f'\u70df\u53f0\u540d\u989d{index}'])
-                    )
-                    quota, _ = ProfessorMasterQuota.objects.get_or_create(professor=professor, subject=subject)
-
-                    if import_mode == 'full':
-                        quota.beijing_quota = bj_quota
-                        quota.yantai_quota = yt_quota
-                    else:
-                        quota.beijing_quota = (quota.beijing_quota or 0) + bj_quota
-                        quota.yantai_quota = (quota.yantai_quota or 0) + yt_quota
-
-                    quota.save()
-                    updated_count += 1
-                    touched_professors.add(professor.id)
-                    touched_subjects.add(subject.id)
-
-            for professor in Professor.objects.filter(id__in=touched_professors):
-                refresh_professor_summary_quotas(professor)
-
-            if sync_quotas:
-                for subject in Subject.objects.filter(id__in=touched_subjects):
-                    totals = ProfessorMasterQuota.objects.filter(subject=subject).aggregate(
-                        bj_total=Coalesce(Sum('beijing_quota'), 0),
-                        yt_total=Coalesce(Sum('yantai_quota'), 0),
-                    )
-                    subject.total_admission_quota = (totals.get('bj_total') or 0) + (totals.get('yt_total') or 0)
-                    subject.save(update_fields=['total_admission_quota'])
-                    sync_student_alternate_status(subject)
-
-        return Response(
-            {
-                'detail': f'Master quota import finished: updated {updated_count}, skipped {skipped_rows}.',
-                'updated_count': updated_count,
-                'skipped_rows': skipped_rows,
-            },
-            status=status.HTTP_200_OK,
-        )
+        result = import_master_quota_workbook(upload, sync_quotas=sync_quotas)
+        return Response(result, status=status.HTTP_200_OK)
 
 
 class DashboardProfessorImportDoctorQuotaView(APIView):
@@ -3209,9 +3393,27 @@ class DashboardStudentImportView(APIView):
         success_count = 0
         skipped_rows = 0
         subject_summary = {}
+        skip_reason_summary = {}
+        skipped_examples = []
+
+        def add_skip_reason(reason, row_index, candidate_number='', name=''):
+            nonlocal skipped_rows
+            skipped_rows += 1
+            skip_reason_summary[reason] = skip_reason_summary.get(reason, 0) + 1
+            if len(skipped_examples) < 20:
+                skipped_examples.append(
+                    {
+                        'row': row_index,
+                        'candidate_number': candidate_number,
+                        'name': name,
+                        'reason': reason,
+                    }
+                )
 
         with transaction.atomic():
-            for row in worksheet.iter_rows(min_row=2, values_only=True):
+            for row_index, row in enumerate(worksheet.iter_rows(min_row=2, values_only=True), start=2):
+                if not any(value not in (None, '') for value in row):
+                    continue
                 candidate_number = str(row[header_map[candidate_header]] or '').strip()
                 name = str(row[header_map[name_header]] or '').strip()
                 subject_code = normalize_subject_code(row[header_map[subject_code_header]])
@@ -3219,18 +3421,19 @@ class DashboardStudentImportView(APIView):
                 campus = str(row[header_map[campus_header]] or '').strip()
                 choose_professor = str(row[header_map[choose_professor_header]] or '').strip()
                 alternate_rank_value = row[header_map[alternate_header]] if alternate_header else None
+                alternate_display_value = str(alternate_rank_value or '').strip()
                 final_rank = to_int(row[header_map[final_rank_header]], default=0)
                 initial_score = row[header_map[initial_score_header]] if initial_score_header else None
                 secondary_score = row[header_map[secondary_score_header]] if secondary_score_header else None
                 final_score = row[header_map[final_score_header]] if final_score_header else None
 
                 if not candidate_number or not name or not subject_code or not phone_number:
-                    skipped_rows += 1
+                    add_skip_reason('考生编号、姓名、专业代码或手机号为空', row_index, candidate_number, name)
                     continue
 
                 subject = Subject.objects.filter(subject_code=subject_code, subject_type__in=[0, 1]).first()
                 if not subject:
-                    skipped_rows += 1
+                    add_skip_reason(f'专业代码未匹配到硕士专业：{subject_code}', row_index, candidate_number, name)
                     continue
 
                 if subject.subject_type == 1:
@@ -3241,22 +3444,26 @@ class DashboardStudentImportView(APIView):
                     elif '北京' in campus:
                         postgraduate_type = 1
                     else:
-                        skipped_rows += 1
+                        add_skip_reason(f'专硕校区无法识别：{campus or "空"}', row_index, candidate_number, name)
                         continue
 
                 is_alternate = choose_professor == '候补'
+                lock_selection = choose_professor == '否' and alternate_display_value in {'', '否'}
+                if choose_professor not in {'是', '候补', '否'}:
+                    add_skip_reason(f'选导师列值无法识别：{choose_professor or "空"}', row_index, candidate_number, name)
+                    continue
                 alternate_rank = None
                 if is_alternate:
                     alternate_rank = to_int(alternate_rank_value, default=0)
                     if alternate_rank <= 0:
-                        skipped_rows += 1
+                        add_skip_reason('候补学生缺少有效候补排名', row_index, candidate_number, name)
                         continue
 
                 if Student.objects.filter(candidate_number=candidate_number).exists():
-                    skipped_rows += 1
+                    add_skip_reason(f'考生编号已存在：{candidate_number}', row_index, candidate_number, name)
                     continue
                 if User.objects.filter(username=candidate_number).exists():
-                    skipped_rows += 1
+                    add_skip_reason(f'登录账号已存在：{candidate_number}', row_index, candidate_number, name)
                     continue
 
                 user = User.objects.create_user(username=candidate_number, password=f'xs{phone_number}')
@@ -3271,6 +3478,7 @@ class DashboardStudentImportView(APIView):
                     initial_exam_score=float(initial_score) if initial_score not in (None, '') else None,
                     secondary_exam_score=float(secondary_score) if secondary_score not in (None, '') else None,
                     final_rank=final_rank or None,
+                    is_selected=lock_selection,
                     is_alternate=is_alternate,
                     alternate_rank=alternate_rank,
                 )
@@ -3284,11 +3492,14 @@ class DashboardStudentImportView(APIView):
                         'created_count': 0,
                         'alternate_count': 0,
                         'normal_count': 0,
+                        'locked_count': 0,
                     },
                 )
                 summary_item['created_count'] += 1
                 if is_alternate:
                     summary_item['alternate_count'] += 1
+                elif lock_selection:
+                    summary_item['locked_count'] += 1
                 else:
                     summary_item['normal_count'] += 1
 
@@ -3298,6 +3509,8 @@ class DashboardStudentImportView(APIView):
             'created_count': success_count,
             'skipped_rows': skipped_rows,
             'summary': summary,
+            'skip_reason_summary': skip_reason_summary,
+            'skipped_examples': skipped_examples,
         }
 
     def _import_master_students(self, upload, import_type):
@@ -4663,6 +4876,38 @@ class DashboardDoctorQuotaDetailView(APIView):
         return Response({'detail': '博士专业名额已删除。'}, status=status.HTTP_200_OK)
 
 
+class DashboardDoctorQuotaClearAllView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsDashboardAdmin]
+
+    def post(self, request):
+        quotas = list(ProfessorDoctorQuota.objects.select_related('professor', 'subject'))
+        if not quotas:
+            return Response({'detail': '当前没有可删除的博士专业名额记录。'}, status=status.HTTP_200_OK)
+
+        touched_professors = {quota.professor for quota in quotas if quota.professor_id}
+        deleted_count = len(quotas)
+        with transaction.atomic():
+            before_data = [
+                snapshot_instance(quota, extra={'professor_name': quota.professor.name, 'subject_name': quota.subject.subject_name})
+                for quota in quotas
+            ]
+            ProfessorDoctorQuota.objects.filter(id__in=[quota.id for quota in quotas]).delete()
+            for professor in touched_professors:
+                refresh_professor_summary_quotas(professor)
+            create_audit_log(
+                request,
+                action='doctor_quota.clear_all',
+                module='导师博士专业名额',
+                level=DashboardAuditLog.LEVEL_WARNING,
+                target_type='doctor_quota',
+                target_display='全部博士专业名额',
+                detail=f'一键删除全部导师博士专业名额，共 {deleted_count} 条。',
+                before_data={'records': before_data[:100], 'count': deleted_count},
+            )
+        return Response({'detail': f'已删除全部博士专业名额记录，共 {deleted_count} 条。'}, status=status.HTTP_200_OK)
+
+
 class DashboardMasterQuotaListView(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsDashboardAdmin]
@@ -4784,6 +5029,38 @@ class DashboardMasterQuotaDetailView(APIView):
             before_data=before_data,
         )
         return Response({'detail': '硕士专业名额已删除。'}, status=status.HTTP_200_OK)
+
+
+class DashboardMasterQuotaClearAllView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsDashboardAdmin]
+
+    def post(self, request):
+        quotas = list(ProfessorMasterQuota.objects.select_related('professor', 'subject'))
+        if not quotas:
+            return Response({'detail': '当前没有可删除的硕士专业名额记录。'}, status=status.HTTP_200_OK)
+
+        touched_professors = {quota.professor for quota in quotas if quota.professor_id}
+        deleted_count = len(quotas)
+        with transaction.atomic():
+            before_data = [
+                snapshot_instance(quota, extra={'professor_name': quota.professor.name, 'subject_name': quota.subject.subject_name})
+                for quota in quotas
+            ]
+            ProfessorMasterQuota.objects.filter(id__in=[quota.id for quota in quotas]).delete()
+            for professor in touched_professors:
+                refresh_professor_summary_quotas(professor)
+            create_audit_log(
+                request,
+                action='master_quota.clear_all',
+                module='导师硕士专业名额',
+                level=DashboardAuditLog.LEVEL_WARNING,
+                target_type='master_quota',
+                target_display='全部硕士专业名额',
+                detail=f'一键删除全部导师硕士专业名额，共 {deleted_count} 条。',
+                before_data={'records': before_data[:100], 'count': deleted_count},
+            )
+        return Response({'detail': f'已删除全部硕士专业名额记录，共 {deleted_count} 条。'}, status=status.HTTP_200_OK)
 
 
 class DashboardSharedQuotaPoolListView(APIView):
@@ -4909,6 +5186,45 @@ class DashboardSharedQuotaPoolDetailView(APIView):
             before_data=before_data,
         )
         return Response({'detail': '共享名额池已删除。'}, status=status.HTTP_200_OK)
+
+
+class DashboardSharedQuotaPoolClearAllView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsDashboardAdmin]
+
+    def post(self, request):
+        blocking_count = ProfessorSharedQuotaPool.objects.filter(used_quota__gt=0).count()
+        if blocking_count:
+            return Response(
+                {'detail': f'当前有 {blocking_count} 条共享名额池已有已用名额，不能一键删除，请先处理已用记录。'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        pools = list(ProfessorSharedQuotaPool.objects.prefetch_related('subjects').select_related('professor'))
+        if not pools:
+            return Response({'detail': '当前没有可删除的共享名额池记录。'}, status=status.HTTP_200_OK)
+
+        touched_professors = {pool.professor for pool in pools if pool.professor_id}
+        deleted_count = len(pools)
+        with transaction.atomic():
+            before_data = [
+                snapshot_instance(pool, extra={'subject_ids': list(pool.subjects.values_list('id', flat=True))})
+                for pool in pools
+            ]
+            ProfessorSharedQuotaPool.objects.filter(id__in=[pool.id for pool in pools]).delete()
+            for professor in touched_professors:
+                recalculate_professor_quota_summary(professor)
+            create_audit_log(
+                request,
+                action='shared_quota_pool.clear_all',
+                module='共享名额池',
+                level=DashboardAuditLog.LEVEL_WARNING,
+                target_type='shared_quota_pool',
+                target_display='全部共享名额池',
+                detail=f'一键删除全部共享名额池，共 {deleted_count} 条。',
+                before_data={'records': before_data[:100], 'count': deleted_count},
+            )
+        return Response({'detail': f'已删除全部共享名额池记录，共 {deleted_count} 条。'}, status=status.HTTP_200_OK)
 
 
 class DashboardWeChatAccountListView(APIView):

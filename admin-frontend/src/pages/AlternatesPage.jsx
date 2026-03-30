@@ -114,10 +114,33 @@ export default function AlternatesPage() {
       key: 'actions',
       render: (_, record) => (
         <Space>
-          <Button size="small" loading={actionLoading} onClick={() => runAction(() => post(`/students/${record.id}/promote-alternate/`, {}))}>
+          <Button
+            size="small"
+            loading={actionLoading}
+            onClick={() =>
+              confirmDanger({
+                title: '确认取消这名学生的候补状态吗？',
+                content: `${record.name}（${record.candidate_number}）将从候补名单中移除。`,
+                okText: '确认',
+                onOk: () => runAction(() => post(`/students/${record.id}/promote-alternate/`, {})),
+              })
+            }
+          >
             取消候补
           </Button>
-          <Button size="small" loading={actionLoading} onClick={() => runAction(() => post('/alternates/promote-next/', { subject_id: record.subject?.id, admission_year: record.admission_year }))} disabled={!record.subject?.id}>
+          <Button
+            size="small"
+            loading={actionLoading}
+            onClick={() =>
+              confirmDanger({
+                title: '确认将下一位候补递补为可选吗？',
+                content: `将按 ${record.subject?.subject_name || '当前专业'} ${record.admission_year ? `${record.admission_year}届` : ''} 的候补顺位递补下一位学生。`,
+                okText: '确认',
+                onOk: () => runAction(() => post('/alternates/promote-next/', { subject_id: record.subject?.id, admission_year: record.admission_year })),
+              })
+            }
+            disabled={!record.subject?.id}
+          >
             递补为可选
           </Button>
           <Button

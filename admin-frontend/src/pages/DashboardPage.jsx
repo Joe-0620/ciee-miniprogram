@@ -127,6 +127,10 @@ export default function DashboardPage() {
     () => (stats?.low_quota_professors || []).map((item) => ({ key: item.professor_id, ...item })),
     [stats],
   );
+  const studentChoiceBehaviorRows = useMemo(
+    () => (stats?.student_choice_behavior_top || []).map((item) => ({ key: item.id, ...item })),
+    [stats],
+  );
 
   const doctorColumns = [
     { title: '博士专业', dataIndex: 'subject_name', key: 'subject_name' },
@@ -195,6 +199,15 @@ export default function DashboardPage() {
       key: 'proposed_quota_approved',
       render: (value) => <StatusTag tone={value ? 'processing' : 'default'}>{value ? '已开放' : '未开放'}</StatusTag>,
     },
+  ];
+
+  const studentChoiceBehaviorColumns = [
+    { title: '学生姓名', dataIndex: 'name', key: 'name' },
+    { title: '考生编号', dataIndex: 'candidate_number', key: 'candidate_number' },
+    { title: '专业', dataIndex: 'subject_name', key: 'subject_name', render: (value) => value || '-' },
+    { title: '学生类型', dataIndex: 'student_type_display', key: 'student_type_display', render: (value) => value || '-' },
+    { title: '取消次数', dataIndex: 'cancel_count', key: 'cancel_count' },
+    { title: '选过导师数', dataIndex: 'distinct_professor_count', key: 'distinct_professor_count' },
   ];
 
   if (!stats || loading) {
@@ -296,6 +309,18 @@ export default function DashboardPage() {
               这块适合提前关注即将满额的导师和后续候补压力。
             </Typography.Paragraph>
             <Table rowKey="key" columns={lowQuotaProfessorColumns} dataSource={lowQuotaProfessorRows} pagination={false} size="small" />
+          </Card>
+        </Col>
+      </Row>
+
+      <Row gutter={[16, 16]}>
+        <Col xs={24}>
+          <Card className="page-card dashboard-section-card" bordered={false}>
+            <Typography.Title level={4}>学生选择行为排行</Typography.Title>
+            <Typography.Paragraph type="secondary">
+              先看取消次数和选过的不同导师人数最高的 Top 10，快速识别反复操作学生。
+            </Typography.Paragraph>
+            <Table rowKey="key" columns={studentChoiceBehaviorColumns} dataSource={studentChoiceBehaviorRows} pagination={false} size="small" />
           </Card>
         </Col>
       </Row>

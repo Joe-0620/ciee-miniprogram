@@ -25,10 +25,11 @@ export default function ChoicesPage() {
   const [loading, setLoading] = useState(false);
   const [actionLoading, setActionLoading] = useState(false);
   const [keyword, setKeyword] = useState('');
-  const [filters, setFilters] = useState({ status: undefined, subject_id: undefined, department_id: undefined });
+  const [filters, setFilters] = useState({ status: undefined, subject_id: undefined, department_id: undefined, admission_year: undefined });
   const [sorter, setSorter] = useState({ order_by: 'submit_date', order_direction: 'desc' });
   const [subjects, setSubjects] = useState([]);
   const [departments, setDepartments] = useState([]);
+  const [admissionYears, setAdmissionYears] = useState([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [data, setData] = useState({ count: 0, results: [] });
   const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
@@ -64,6 +65,7 @@ export default function ChoicesPage() {
       });
       const payload = await get(`/choices/?${params.toString()}`);
       setData(payload);
+      setAdmissionYears(payload.available_admission_years || []);
       setPagination({ current: payload.page, pageSize: payload.page_size });
     } catch (err) {
       message.error(err.message);
@@ -109,10 +111,12 @@ export default function ChoicesPage() {
   const columns = [
     { title: '学生', dataIndex: 'student_name', key: 'student_name', sorter: true },
     { title: '考生编号', dataIndex: 'candidate_number', key: 'candidate_number', sorter: true },
+    { title: '届别', dataIndex: 'admission_year', key: 'admission_year', sorter: true, render: (value) => (value ? `${value}届` : '-') },
     { title: '导师', dataIndex: 'professor_name', key: 'professor_name', sorter: true },
     { title: '导师工号', dataIndex: 'professor_teacher_identity_id', key: 'professor_teacher_identity_id', sorter: true },
     { title: '方向', dataIndex: 'department_name', key: 'department_name', sorter: true },
     { title: '专业', dataIndex: 'subject_name', key: 'subject_name', sorter: true },
+    { title: '研究生类型', dataIndex: 'postgraduate_type_display', key: 'postgraduate_type_display', render: (value) => value || '-' },
     {
       title: '状态',
       dataIndex: 'status',
@@ -191,6 +195,14 @@ export default function ChoicesPage() {
             value={filters.department_id}
             options={departments.map((item) => ({ label: item.department_name, value: item.id }))}
             onChange={(value) => updateFilter('department_id', value)}
+          />
+          <Select
+            allowClear
+            placeholder="按届别筛选"
+            style={{ width: 150 }}
+            value={filters.admission_year}
+            options={admissionYears.map((year) => ({ label: `${year}届`, value: year }))}
+            onChange={(value) => updateFilter('admission_year', value)}
           />
           <Select
             allowClear

@@ -14,7 +14,7 @@ from django.core.cache import cache
 from django.http import HttpResponse
 from django.db import transaction
 from django.db.models import Model
-from django.db.models import Count, OuterRef, Prefetch, Q, Subquery, Sum, Value
+from django.db.models import Case, CharField, Count, Max, OuterRef, Prefetch, Q, Subquery, Sum, Value, When
 from django.db.models.functions import Coalesce, TruncDate
 from django.utils import timezone
 from rest_framework import status
@@ -73,6 +73,7 @@ from .serializers import (
     ProfessorMasterQuotaSerializer,
     ReviewRecordDetailSerializer,
     ReviewRecordListSerializer,
+    StudentChoiceBehaviorSerializer,
     SelectionTimeSerializer,
     SharedQuotaPoolSerializer,
     SubjectListSerializer,
@@ -1735,6 +1736,7 @@ def build_choice_queryset(request):
     student_id = request.query_params.get('student_id')
     professor_id = request.query_params.get('professor_id')
     subject_id = request.query_params.get('subject_id')
+    admission_year = request.query_params.get('admission_year')
     search = request.query_params.get('search', '').strip()
     department_id = request.query_params.get('department_id')
     if status_value:
@@ -1745,6 +1747,8 @@ def build_choice_queryset(request):
         queryset = queryset.filter(professor_id=professor_id)
     if subject_id:
         queryset = queryset.filter(student__subject_id=subject_id)
+    if admission_year not in (None, ''):
+        queryset = queryset.filter(student__admission_year=admission_year)
     if department_id:
         queryset = queryset.filter(professor__department_id=department_id)
     if search:
@@ -1753,6 +1757,42 @@ def build_choice_queryset(request):
             Q(student__candidate_number__icontains=search) |
             Q(professor__name__icontains=search) |
             Q(professor__teacher_identity_id__icontains=search)
+        )
+    return queryset
+
+
+def build_student_choice_behavior_queryset(request):
+    admission_year = to_int(request.query_params.get('admission_year'), default=2026)
+    student_type = to_int(request.query_params.get('student_type'), default=2)
+    if student_type not in {1, 2, 3}:
+        student_type = 2
+
+    queryset = (
+        Student.objects.select_related('subject')
+        .filter(admission_year=admission_year, student_type=student_type)
+        .annotate(
+            cancel_count=Count('studentprofessorchoice', filter=Q(studentprofessorchoice__status=4), distinct=True),
+            distinct_professor_count=Count('studentprofessorchoice__professor', distinct=True),
+            latest_submit_time=Max('studentprofessorchoice__submit_date'),
+            latest_finish_time=Max('studentprofessorchoice__finish_time'),
+            current_status=Case(
+                When(is_giveup=True, then=Value('已放弃')),
+                When(is_selected=True, is_giveup=False, then=Value('已录取')),
+                When(is_alternate=True, is_giveup=False, then=Value('候补中')),
+                default=Value('未完成'),
+                output_field=CharField(),
+            ),
+        )
+    )
+
+    subject_id = request.query_params.get('subject_id')
+    search = request.query_params.get('search', '').strip()
+    if subject_id:
+        queryset = queryset.filter(subject_id=subject_id)
+    if search:
+        queryset = queryset.filter(
+            Q(name__icontains=search) |
+            Q(candidate_number__icontains=search)
         )
     return queryset
 
@@ -2340,6 +2380,26 @@ class DashboardStatsView(APIView):
                 }
             )
 
+        behavior_queryset = (
+            Student.objects.select_related('subject')
+            .filter(admission_year=admission_year, student_type=student_type)
+            .annotate(
+                cancel_count=Count('studentprofessorchoice', filter=Q(studentprofessorchoice__status=4), distinct=True),
+                distinct_professor_count=Count('studentprofessorchoice__professor', distinct=True),
+                latest_submit_time=Max('studentprofessorchoice__submit_date'),
+                latest_finish_time=Max('studentprofessorchoice__finish_time'),
+                current_status=Case(
+                    When(is_giveup=True, then=Value('已放弃')),
+                    When(is_selected=True, is_giveup=False, then=Value('已录取')),
+                    When(is_alternate=True, is_giveup=False, then=Value('候补中')),
+                    default=Value('未完成'),
+                    output_field=CharField(),
+                ),
+            )
+            .order_by('-cancel_count', '-distinct_professor_count', '-latest_submit_time', '-id')[:10]
+        )
+        student_choice_behavior_top = StudentChoiceBehaviorSerializer(behavior_queryset, many=True).data
+
         payload = {
                 'admission_year': admission_year,
                 'student_type': student_type,
@@ -2369,6 +2429,7 @@ class DashboardStatsView(APIView):
                 'choice_trend': choice_trend,
                 'review_trend': review_trend,
                 'accepted_choice_trend': accepted_choice_trend,
+                'student_choice_behavior_top': student_choice_behavior_top,
             }
         cache.set('dashboard_stats_v1', payload, timeout=60)
         return Response(payload, status=status.HTTP_200_OK)
@@ -4363,6 +4424,7 @@ class DashboardChoiceListView(APIView):
         order_map = {
             'student_name': 'student__name',
             'candidate_number': 'student__candidate_number',
+            'admission_year': 'student__admission_year',
             'professor_name': 'professor__name',
             'professor_teacher_identity_id': 'professor__teacher_identity_id',
             'department_name': 'professor__department__department_name',
@@ -4380,8 +4442,68 @@ class DashboardChoiceListView(APIView):
         start = (page - 1) * page_size
         end = start + page_size
         serializer = ChoiceListSerializer(queryset[start:end], many=True)
+        available_admission_years = list(
+            StudentProfessorChoice.objects.exclude(student__admission_year__isnull=True)
+            .order_by('student__admission_year')
+            .values_list('student__admission_year', flat=True)
+            .distinct()
+        )
         return Response(
-            {'count': total, 'page': page, 'page_size': page_size, 'results': serializer.data},
+            {
+                'count': total,
+                'page': page,
+                'page_size': page_size,
+                'results': serializer.data,
+                'available_admission_years': available_admission_years,
+            },
+            status=status.HTTP_200_OK,
+        )
+
+
+class DashboardStudentChoiceBehaviorListView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsDashboardAdmin]
+
+    def get(self, request):
+        page = max(int(request.query_params.get('page', 1)), 1)
+        page_size = min(max(int(request.query_params.get('page_size', 10)), 1), 100)
+        queryset = build_student_choice_behavior_queryset(request)
+        order_by = request.query_params.get('order_by', 'cancel_count')
+        order_direction = request.query_params.get('order_direction', 'desc')
+
+        order_map = {
+            'name': 'name',
+            'candidate_number': 'candidate_number',
+            'admission_year': 'admission_year',
+            'subject_name': 'subject__subject_name',
+            'student_type': 'student_type',
+            'cancel_count': 'cancel_count',
+            'distinct_professor_count': 'distinct_professor_count',
+            'current_status': 'current_status',
+            'latest_activity_time': 'latest_submit_time',
+        }
+        order_field = order_map.get(order_by, 'cancel_count')
+        if order_direction == 'desc':
+            order_field = f'-{order_field}'
+        queryset = queryset.order_by(order_field, '-distinct_professor_count', '-id')
+
+        total = queryset.count()
+        start = (page - 1) * page_size
+        end = start + page_size
+        serializer = StudentChoiceBehaviorSerializer(queryset[start:end], many=True)
+        return Response(
+            {
+                'count': total,
+                'page': page,
+                'page_size': page_size,
+                'results': serializer.data,
+                'available_admission_years': sorted(Student.objects.values_list('admission_year', flat=True).distinct()),
+                'student_type_options': [
+                    {'value': 2, 'label': '硕士统考生'},
+                    {'value': 1, 'label': '硕士推荐生'},
+                    {'value': 3, 'label': '博士统考生'},
+                ],
+            },
             status=status.HTTP_200_OK,
         )
 

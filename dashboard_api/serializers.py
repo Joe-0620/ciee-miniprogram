@@ -656,10 +656,17 @@ class StudentDetailSerializer(serializers.ModelSerializer):
 class ChoiceListSerializer(serializers.ModelSerializer):
     student_name = serializers.CharField(source='student.name', read_only=True)
     candidate_number = serializers.CharField(source='student.candidate_number', read_only=True)
+    admission_year = serializers.IntegerField(source='student.admission_year', read_only=True)
+    postgraduate_type_display = serializers.SerializerMethodField()
     professor_name = serializers.CharField(source='professor.name', read_only=True)
     professor_teacher_identity_id = serializers.CharField(source='professor.teacher_identity_id', read_only=True)
     department_name = serializers.CharField(source='professor.department.department_name', read_only=True)
     subject_name = serializers.CharField(source='student.subject.subject_name', read_only=True)
+
+    def get_postgraduate_type_display(self, obj):
+        if obj.student_id and obj.student:
+            return obj.student.get_postgraduate_type_display()
+        return ''
 
     class Meta:
         model = StudentProfessorChoice
@@ -668,6 +675,8 @@ class ChoiceListSerializer(serializers.ModelSerializer):
             'student_id',
             'student_name',
             'candidate_number',
+            'admission_year',
+            'postgraduate_type_display',
             'professor_id',
             'professor_name',
             'professor_teacher_identity_id',
@@ -678,6 +687,42 @@ class ChoiceListSerializer(serializers.ModelSerializer):
             'submit_date',
             'finish_time',
         ]
+
+
+class StudentChoiceBehaviorSerializer(serializers.ModelSerializer):
+    subject_name = serializers.CharField(source='subject.subject_name', read_only=True)
+    cancel_count = serializers.IntegerField(read_only=True)
+    distinct_professor_count = serializers.IntegerField(read_only=True)
+    admission_year = serializers.IntegerField(read_only=True)
+    student_type_display = serializers.SerializerMethodField()
+    current_status = serializers.CharField(read_only=True)
+    latest_activity_time = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Student
+        fields = [
+            'id',
+            'name',
+            'candidate_number',
+            'admission_year',
+            'subject_name',
+            'student_type',
+            'student_type_display',
+            'cancel_count',
+            'distinct_professor_count',
+            'current_status',
+            'latest_activity_time',
+        ]
+
+    def get_student_type_display(self, obj):
+        return obj.get_student_type_display()
+
+    def get_latest_activity_time(self, obj):
+        latest_submit = getattr(obj, 'latest_submit_time', None)
+        latest_finish = getattr(obj, 'latest_finish_time', None)
+        if latest_submit and latest_finish:
+            return latest_submit if latest_submit >= latest_finish else latest_finish
+        return latest_finish or latest_submit
 
 
 class ReviewRecordListSerializer(serializers.ModelSerializer):

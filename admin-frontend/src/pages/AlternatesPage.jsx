@@ -118,7 +118,7 @@ export default function AlternatesPage() {
             取消候补
           </Button>
           <Button size="small" loading={actionLoading} onClick={() => runAction(() => post('/alternates/promote-next/', { subject_id: record.subject?.id, admission_year: record.admission_year }))} disabled={!record.subject?.id}>
-            递补下一位
+            递补为可选
           </Button>
           <Button
             size="small"

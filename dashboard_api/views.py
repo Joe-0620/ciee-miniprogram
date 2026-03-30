@@ -2406,13 +2406,20 @@ class DashboardProfessorHeatListView(APIView):
         setting = get_professor_heat_display_setting()
         subject_id = request.query_params.get('subject_id')
         postgraduate_type = request.query_params.get('postgraduate_type')
+        student_type = request.query_params.get('student_type')
         heat_subject = Subject.objects.filter(pk=subject_id).first() if subject_id else None
         heat_postgraduate_type = None
+        heat_student_type = None
         if postgraduate_type not in (None, ''):
             try:
                 heat_postgraduate_type = int(postgraduate_type)
             except (TypeError, ValueError):
                 return Response({'detail': '培养类型参数不正确。'}, status=status.HTTP_400_BAD_REQUEST)
+        if student_type not in (None, ''):
+            try:
+                heat_student_type = int(student_type)
+            except (TypeError, ValueError):
+                return Response({'detail': '学生类型参数不正确。'}, status=status.HTTP_400_BAD_REQUEST)
 
         queryset = build_professor_queryset(request).select_related('department')
         professors = list(queryset)
@@ -2425,7 +2432,10 @@ class DashboardProfessorHeatListView(APIView):
                 global_setting=setting,
                 subject=heat_subject,
                 postgraduate_type=heat_postgraduate_type,
+                student_type=heat_student_type,
             )
+            if heat_subject and (metrics.get('available_quota_total') or 0) <= 0:
+                continue
             if heat_level and metrics['heat_level'] != heat_level:
                 continue
             filtered_professors.append(professor)
@@ -2437,6 +2447,7 @@ class DashboardProfessorHeatListView(APIView):
                     global_setting=setting,
                     subject=heat_subject,
                     postgraduate_type=heat_postgraduate_type,
+                    student_type=heat_student_type,
                 )['pending_count'],
                 professor.id,
             )
@@ -2452,6 +2463,7 @@ class DashboardProfessorHeatListView(APIView):
                 'heat_setting': setting,
                 'heat_subject': heat_subject,
                 'heat_postgraduate_type': heat_postgraduate_type,
+                'heat_student_type': heat_student_type,
             },
         )
         return Response(
@@ -2463,6 +2475,7 @@ class DashboardProfessorHeatListView(APIView):
                 'subject_id': heat_subject.id if heat_subject else None,
                 'subject_name': heat_subject.subject_name if heat_subject else '',
                 'postgraduate_type': heat_postgraduate_type,
+                'student_type': heat_student_type,
                 'calculation_scope': ProfessorHeatDisplaySetting.CALCULATION_SCOPE_SUBJECT,
                 'target_admission_year': setting.target_admission_year,
             },
@@ -2484,9 +2497,6 @@ class DashboardProfessorHeatSettingView(APIView):
             'show_professor_heat': setting.show_professor_heat,
             'calculation_scope': ProfessorHeatDisplaySetting.CALCULATION_SCOPE_SUBJECT,
             'target_admission_year': setting.target_admission_year,
-            'pending_weight': str(setting.pending_weight),
-            'accepted_weight': str(setting.accepted_weight),
-            'rejected_weight': str(setting.rejected_weight),
             'medium_threshold': str(setting.medium_threshold),
             'high_threshold': str(setting.high_threshold),
             'very_high_threshold': str(setting.very_high_threshold),
@@ -2507,14 +2517,7 @@ class DashboardProfessorHeatSettingView(APIView):
                 return Response({'detail': '统计届别必须大于 0。'}, status=status.HTTP_400_BAD_REQUEST)
             setting.target_admission_year = target_admission_year
 
-        decimal_fields = [
-            'pending_weight',
-            'accepted_weight',
-            'rejected_weight',
-            'medium_threshold',
-            'high_threshold',
-            'very_high_threshold',
-        ]
+        decimal_fields = ['medium_threshold', 'high_threshold', 'very_high_threshold']
         for field_name in decimal_fields:
             if field_name not in request.data:
                 continue
@@ -2548,9 +2551,6 @@ class DashboardProfessorHeatSettingView(APIView):
                 'show_professor_heat': setting.show_professor_heat,
                 'calculation_scope': ProfessorHeatDisplaySetting.CALCULATION_SCOPE_SUBJECT,
                 'target_admission_year': setting.target_admission_year,
-                'pending_weight': str(setting.pending_weight),
-                'accepted_weight': str(setting.accepted_weight),
-                'rejected_weight': str(setting.rejected_weight),
                 'medium_threshold': str(setting.medium_threshold),
                 'high_threshold': str(setting.high_threshold),
                 'very_high_threshold': str(setting.very_high_threshold),

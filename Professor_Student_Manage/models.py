@@ -207,11 +207,11 @@ class ProfessorHeatDisplaySetting(models.Model):
     )
     target_admission_year = models.PositiveIntegerField(default=2026, verbose_name="统计届别")
     pending_weight = models.DecimalField(max_digits=5, decimal_places=2, default=1.00, verbose_name="待处理人数权重")
-    accepted_weight = models.DecimalField(max_digits=5, decimal_places=2, default=0.60, verbose_name="已同意人数权重")
-    rejected_weight = models.DecimalField(max_digits=5, decimal_places=2, default=0.20, verbose_name="已拒绝人数权重")
-    medium_threshold = models.DecimalField(max_digits=5, decimal_places=2, default=1.00, verbose_name="中热度阈值")
-    high_threshold = models.DecimalField(max_digits=5, decimal_places=2, default=3.00, verbose_name="高热度阈值")
-    very_high_threshold = models.DecimalField(max_digits=5, decimal_places=2, default=6.00, verbose_name="很高热度阈值")
+    accepted_weight = models.DecimalField(max_digits=5, decimal_places=2, default=0.00, verbose_name="已同意人数权重")
+    rejected_weight = models.DecimalField(max_digits=5, decimal_places=2, default=0.00, verbose_name="已拒绝人数权重")
+    medium_threshold = models.DecimalField(max_digits=5, decimal_places=2, default=2.00, verbose_name="二级热度超出阈值")
+    high_threshold = models.DecimalField(max_digits=5, decimal_places=2, default=4.00, verbose_name="三级热度超出阈值")
+    very_high_threshold = models.DecimalField(max_digits=5, decimal_places=2, default=6.00, verbose_name="四级热度超出阈值")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="更新时间")
 
     class Meta:
@@ -243,17 +243,94 @@ def get_professor_heat_display_setting():
 def resolve_heat_level_by_setting(heat_score, setting=None):
     if setting is None:
         setting = get_professor_heat_display_setting()
-    medium_threshold = float(getattr(setting, 'medium_threshold', 1) or 1)
-    high_threshold = float(getattr(setting, 'high_threshold', 3) or 3)
+    medium_threshold = float(getattr(setting, 'medium_threshold', 2) or 2)
+    high_threshold = float(getattr(setting, 'high_threshold', 4) or 4)
     very_high_threshold = float(getattr(setting, 'very_high_threshold', 6) or 6)
 
-    if heat_score >= very_high_threshold:
+    if heat_score > very_high_threshold:
         return Professor.HEAT_LEVEL_VERY_HIGH
-    if heat_score >= high_threshold:
+    if heat_score > high_threshold:
         return Professor.HEAT_LEVEL_HIGH
-    if heat_score >= medium_threshold:
+    if heat_score > medium_threshold:
         return Professor.HEAT_LEVEL_MEDIUM
     return Professor.HEAT_LEVEL_LOW
+
+
+def calculate_professor_subject_available_quota(professor, subject=None, postgraduate_type=None):
+    if subject is None:
+        return 0
+
+    available_quota_total = 0
+
+    if postgraduate_type == 3:
+        quota = ProfessorDoctorQuota.objects.filter(professor=professor, subject=subject).first()
+        available_quota_total += (quota.remaining_quota or 0) if quota else 0
+        shared_total = ProfessorSharedQuotaPool.objects.filter(
+            professor=professor,
+            quota_scope=ProfessorSharedQuotaPool.SCOPE_DOCTOR,
+            is_active=True,
+            subjects=subject,
+        ).aggregate(total=Coalesce(Sum('remaining_quota'), 0))['total'] or 0
+        available_quota_total += shared_total
+        return max(int(available_quota_total or 0), 0)
+
+    if postgraduate_type in [1, 2, 4]:
+        quota = ProfessorMasterQuota.objects.filter(professor=professor, subject=subject).first()
+        if quota:
+            if postgraduate_type == 4:
+                available_quota_total += quota.yantai_remaining_quota or 0
+            else:
+                available_quota_total += quota.beijing_remaining_quota or 0
+
+        shared_pool_queryset = ProfessorSharedQuotaPool.objects.filter(
+            professor=professor,
+            quota_scope=ProfessorSharedQuotaPool.SCOPE_MASTER,
+            is_active=True,
+            subjects=subject,
+        )
+        if postgraduate_type == 4:
+            shared_pool_queryset = shared_pool_queryset.filter(campus=ProfessorSharedQuotaPool.CAMPUS_YANTAI)
+        else:
+            shared_pool_queryset = shared_pool_queryset.filter(campus=ProfessorSharedQuotaPool.CAMPUS_BEIJING)
+        shared_total = shared_pool_queryset.aggregate(total=Coalesce(Sum('remaining_quota'), 0))['total'] or 0
+        available_quota_total += shared_total
+        return max(int(available_quota_total or 0), 0)
+
+    if subject.subject_type == 2:
+        quota = ProfessorDoctorQuota.objects.filter(professor=professor, subject=subject).first()
+        available_quota_total += (quota.remaining_quota or 0) if quota else 0
+        shared_total = ProfessorSharedQuotaPool.objects.filter(
+            professor=professor,
+            quota_scope=ProfessorSharedQuotaPool.SCOPE_DOCTOR,
+            is_active=True,
+            subjects=subject,
+        ).aggregate(total=Coalesce(Sum('remaining_quota'), 0))['total'] or 0
+        available_quota_total += shared_total
+    elif subject.subject_type == 1:
+        quota = ProfessorMasterQuota.objects.filter(professor=professor, subject=subject).first()
+        available_quota_total += (quota.beijing_remaining_quota or 0) if quota else 0
+        shared_total = ProfessorSharedQuotaPool.objects.filter(
+            professor=professor,
+            quota_scope=ProfessorSharedQuotaPool.SCOPE_MASTER,
+            is_active=True,
+            subjects=subject,
+            campus=ProfessorSharedQuotaPool.CAMPUS_BEIJING,
+        ).aggregate(total=Coalesce(Sum('remaining_quota'), 0))['total'] or 0
+        available_quota_total += shared_total
+    else:
+        quota = ProfessorMasterQuota.objects.filter(professor=professor, subject=subject).first()
+        if quota:
+            available_quota_total += (quota.beijing_remaining_quota or 0) + (quota.yantai_remaining_quota or 0)
+        shared_total = ProfessorSharedQuotaPool.objects.filter(
+            professor=professor,
+            quota_scope=ProfessorSharedQuotaPool.SCOPE_MASTER,
+            is_active=True,
+            subjects=subject,
+            campus__in=[ProfessorSharedQuotaPool.CAMPUS_BEIJING, ProfessorSharedQuotaPool.CAMPUS_YANTAI],
+        ).aggregate(total=Coalesce(Sum('remaining_quota'), 0))['total'] or 0
+        available_quota_total += shared_total
+
+    return max(int(available_quota_total or 0), 0)
 
 
 class AvailableStudentDisplaySetting(models.Model):
@@ -439,7 +516,7 @@ def calculate_professor_heat_metrics(professor, setting=None):
     }
 
 
-def calculate_professor_subject_heat_metrics(professor, subject=None, postgraduate_type=None, setting=None):
+def calculate_professor_subject_heat_metrics(professor, subject=None, postgraduate_type=None, setting=None, student_type=None):
     if setting is None:
         setting = get_professor_heat_display_setting()
 
@@ -449,7 +526,6 @@ def calculate_professor_subject_heat_metrics(professor, subject=None, postgradua
             'accepted_count': 0,
             'rejected_count': 0,
             'available_quota_total': 0,
-            'weighted_demand': 0,
             'heat_score': 0,
             'heat_level': resolve_heat_level_by_setting(0, setting=setting),
         }
@@ -457,63 +533,26 @@ def calculate_professor_subject_heat_metrics(professor, subject=None, postgradua
     choice_queryset = professor.studentprofessorchoice_set.filter(student__subject=subject)
     if postgraduate_type:
         choice_queryset = choice_queryset.filter(student__postgraduate_type=postgraduate_type)
+    if student_type:
+        choice_queryset = choice_queryset.filter(student__student_type=student_type)
     target_admission_year = getattr(setting, 'target_admission_year', None)
     if target_admission_year not in (None, ''):
         choice_queryset = choice_queryset.filter(student__admission_year=target_admission_year)
 
     choice_stats = choice_queryset.aggregate(
         pending_count=Count('id', filter=Q(status=3)),
-        accepted_count=Count('id', filter=Q(status=1)),
-        rejected_count=Count('id', filter=Q(status=2)),
     )
     pending_count = choice_stats.get('pending_count') or 0
-    accepted_count = choice_stats.get('accepted_count') or 0
-    rejected_count = choice_stats.get('rejected_count') or 0
+    accepted_count = 0
+    rejected_count = 0
 
-    available_quota_total = 0
-
-    if postgraduate_type == 3:
-        quota = ProfessorDoctorQuota.objects.filter(professor=professor, subject=subject).first()
-        available_quota_total += (quota.remaining_quota or 0) if quota else 0
-        shared_total = ProfessorSharedQuotaPool.objects.filter(
-            professor=professor,
-            quota_scope=ProfessorSharedQuotaPool.SCOPE_DOCTOR,
-            is_active=True,
-            subjects=subject,
-        ).aggregate(total=Coalesce(Sum('remaining_quota'), 0))['total'] or 0
-        available_quota_total += shared_total
-    elif postgraduate_type in [1, 2, 4]:
-        quota = ProfessorMasterQuota.objects.filter(professor=professor, subject=subject).first()
-        if quota:
-            if postgraduate_type == 4:
-                available_quota_total += quota.yantai_remaining_quota or 0
-            else:
-                available_quota_total += quota.beijing_remaining_quota or 0
-
-        shared_pool_queryset = ProfessorSharedQuotaPool.objects.filter(
-            professor=professor,
-            quota_scope=ProfessorSharedQuotaPool.SCOPE_MASTER,
-            is_active=True,
-            subjects=subject,
-        )
-        if postgraduate_type == 4:
-            shared_pool_queryset = shared_pool_queryset.filter(campus=ProfessorSharedQuotaPool.CAMPUS_YANTAI)
-        elif postgraduate_type in [1, 2]:
-            shared_pool_queryset = shared_pool_queryset.filter(campus=ProfessorSharedQuotaPool.CAMPUS_BEIJING)
-        shared_total = shared_pool_queryset.aggregate(total=Coalesce(Sum('remaining_quota'), 0))['total'] or 0
-        available_quota_total += shared_total
-    else:
-        return calculate_professor_heat_metrics(professor, setting=setting)
-
-    pending_weight = float(getattr(setting, 'pending_weight', 1) or 1)
-    accepted_weight = float(getattr(setting, 'accepted_weight', 0.6) or 0)
-    rejected_weight = float(getattr(setting, 'rejected_weight', 0.2) or 0)
-    weighted_demand = (
-        pending_count * pending_weight
-        + accepted_count * accepted_weight
-        + rejected_count * rejected_weight
+    available_quota_total = calculate_professor_subject_available_quota(
+        professor,
+        subject=subject,
+        postgraduate_type=postgraduate_type,
     )
-    heat_score = round(weighted_demand / max(available_quota_total, 1), 2)
+    overflow_count = max(pending_count - available_quota_total, 0)
+    heat_score = round(float(overflow_count), 2)
     heat_level = resolve_heat_level_by_setting(heat_score, setting=setting)
 
     return {
@@ -521,13 +560,13 @@ def calculate_professor_subject_heat_metrics(professor, subject=None, postgradua
         'accepted_count': accepted_count,
         'rejected_count': rejected_count,
         'available_quota_total': max(int(available_quota_total or 0), 0),
-        'weighted_demand': round(weighted_demand, 2),
+        'overflow_count': overflow_count,
         'heat_score': heat_score,
         'heat_level': heat_level,
     }
 
 
-def get_professor_heat_display_metrics(professor, global_setting=None, subject=None, postgraduate_type=None):
+def get_professor_heat_display_metrics(professor, global_setting=None, subject=None, postgraduate_type=None, student_type=None):
     if global_setting is None:
         global_setting = get_professor_heat_display_setting()
     metrics = calculate_professor_subject_heat_metrics(
@@ -535,6 +574,7 @@ def get_professor_heat_display_metrics(professor, global_setting=None, subject=N
         subject=subject,
         postgraduate_type=postgraduate_type,
         setting=global_setting,
+        student_type=student_type,
     )
     manual_heat_score = getattr(professor, 'manual_heat_score', None)
     manual_heat_level = getattr(professor, 'manual_heat_level', None)
@@ -552,6 +592,8 @@ def get_professor_heat_display_metrics(professor, global_setting=None, subject=N
     heat_visible = bool(getattr(global_setting, 'show_professor_heat', True)) and bool(
         getattr(professor, 'heat_display_enabled', True)
     )
+    if subject is not None and (metrics.get('available_quota_total') or 0) <= 0:
+        heat_visible = False
 
     return {
         **metrics,

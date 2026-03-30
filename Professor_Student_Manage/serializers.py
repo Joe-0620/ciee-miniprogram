@@ -488,10 +488,12 @@ class ProfessorListSerializer(serializers.ModelSerializer):
         setting = self.context.get('heat_setting') or get_professor_heat_display_setting()
         subject = self.context.get('heat_subject')
         postgraduate_type = self.context.get('heat_postgraduate_type')
+        student_type = self.context.get('heat_student_type')
         cache_key = (
             getattr(setting, 'calculation_scope', ProfessorHeatDisplaySetting.CALCULATION_SCOPE_OVERALL),
             getattr(subject, 'id', subject),
             postgraduate_type,
+            student_type,
         )
         cache_map = getattr(instance, '_heat_metrics_cache_map', {})
         if cache_key not in cache_map:
@@ -500,6 +502,7 @@ class ProfessorListSerializer(serializers.ModelSerializer):
                 global_setting=setting,
                 subject=subject,
                 postgraduate_type=postgraduate_type,
+                student_type=student_type,
             )
             instance._heat_metrics_cache_map = cache_map
         return cache_map[cache_key]

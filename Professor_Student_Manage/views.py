@@ -222,9 +222,11 @@ class ProfessorAndDepartmentListView(APIView):
         heat_setting = get_professor_heat_display_setting()
         heat_subject = None
         heat_postgraduate_type = None
+        heat_student_type = None
         if hasattr(request.user, 'student'):
             heat_subject = request.user.student.subject
             heat_postgraduate_type = request.user.student.postgraduate_type
+            heat_student_type = request.user.student.student_type
 
         # 获取所有方向
         departments = Department.objects.all()
@@ -312,6 +314,7 @@ class ProfessorAndDepartmentListView(APIView):
                 'heat_setting': heat_setting,
                 'heat_subject': heat_subject,
                 'heat_postgraduate_type': heat_postgraduate_type,
+                'heat_student_type': heat_student_type,
             },
         )
         

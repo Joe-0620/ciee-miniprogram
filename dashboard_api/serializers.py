@@ -235,10 +235,12 @@ class ProfessorListSerializer(serializers.ModelSerializer):
         setting = self.context.get('heat_setting')
         subject = self.context.get('heat_subject')
         postgraduate_type = self.context.get('heat_postgraduate_type')
+        student_type = self.context.get('heat_student_type')
         cache_key = (
             ProfessorHeatDisplaySetting.CALCULATION_SCOPE_SUBJECT,
             getattr(subject, 'id', subject),
             postgraduate_type,
+            student_type,
             getattr(setting, 'target_admission_year', 2026) if setting else 2026,
         )
         cache_map = getattr(obj, '_heat_metrics_cache_map', {})
@@ -248,6 +250,7 @@ class ProfessorListSerializer(serializers.ModelSerializer):
                 global_setting=setting,
                 subject=subject,
                 postgraduate_type=postgraduate_type,
+                student_type=student_type,
             )
             obj._heat_metrics_cache_map = cache_map
         return cache_map[cache_key]
@@ -362,10 +365,12 @@ class ProfessorHeatListSerializer(serializers.ModelSerializer):
         setting = self.context.get('heat_setting')
         subject = self.context.get('heat_subject')
         postgraduate_type = self.context.get('heat_postgraduate_type')
+        student_type = self.context.get('heat_student_type')
         cache_key = (
             ProfessorHeatDisplaySetting.CALCULATION_SCOPE_SUBJECT,
             getattr(subject, 'id', subject),
             postgraduate_type,
+            student_type,
             getattr(setting, 'target_admission_year', 2026) if setting else 2026,
         )
         cache_map = getattr(obj, '_heat_metrics_cache_map', {})
@@ -375,6 +380,7 @@ class ProfessorHeatListSerializer(serializers.ModelSerializer):
                 global_setting=setting,
                 subject=subject,
                 postgraduate_type=postgraduate_type,
+                student_type=student_type,
             )
             obj._heat_metrics_cache_map = cache_map
         return cache_map[cache_key]
@@ -411,9 +417,6 @@ class ProfessorHeatDisplaySettingSerializer(serializers.ModelSerializer):
             'calculation_scope',
             'calculation_scope_display',
             'target_admission_year',
-            'pending_weight',
-            'accepted_weight',
-            'rejected_weight',
             'medium_threshold',
             'high_threshold',
             'very_high_threshold',

@@ -20,11 +20,18 @@ function formatHeatStars(level) {
   return 1;
 }
 
+function inferPostgraduateTypeFromSubject(subject) {
+  if (!subject) return undefined;
+  if (subject.subject_type === 1) return 2;
+  if (subject.subject_type === 2) return 3;
+  return undefined;
+}
+
 export default function ProfessorHeatPage() {
   const [loading, setLoading] = useState(false);
   const [actionLoading, setActionLoading] = useState(false);
   const [keyword, setKeyword] = useState('');
-  const [filters, setFilters] = useState({ department_id: undefined, heat_level: undefined, subject_id: undefined, postgraduate_type: undefined });
+  const [filters, setFilters] = useState({ department_id: undefined, heat_level: undefined, subject_id: undefined, postgraduate_type: undefined, student_type: 2 });
   const [departments, setDepartments] = useState([]);
   const [subjects, setSubjects] = useState([]);
   const [data, setData] = useState({ count: 0, results: [] });
@@ -55,19 +62,11 @@ export default function ProfessorHeatPage() {
       settingsForm.setFieldsValue({
         calculation_scope: 'subject',
         target_admission_year: Number(settingPayload?.target_admission_year ?? 2026),
-        pending_weight: Number(settingPayload?.pending_weight ?? 1),
-        accepted_weight: Number(settingPayload?.accepted_weight ?? 0.6),
-        rejected_weight: Number(settingPayload?.rejected_weight ?? 0.2),
-        medium_threshold: Number(settingPayload?.medium_threshold ?? 1),
-        high_threshold: Number(settingPayload?.high_threshold ?? 3),
+        medium_threshold: Number(settingPayload?.medium_threshold ?? 2),
+        high_threshold: Number(settingPayload?.high_threshold ?? 4),
         very_high_threshold: Number(settingPayload?.very_high_threshold ?? 6),
       });
 
-      if (!filters.subject_id && nextSubjects.length > 0) {
-        const nextFilters = { ...filters, subject_id: nextSubjects[0].id };
-        setFilters(nextFilters);
-        fetchData(1, pagination.pageSize, keyword, nextFilters);
-      }
     } catch (error) {
       message.error(error.message);
     }
@@ -141,9 +140,6 @@ export default function ProfessorHeatPage() {
           patch('/professor-heat/settings/', {
             calculation_scope: 'subject',
             target_admission_year: values.target_admission_year,
-            pending_weight: values.pending_weight,
-            accepted_weight: values.accepted_weight,
-            rejected_weight: values.rejected_weight,
             medium_threshold: values.medium_threshold,
             high_threshold: values.high_threshold,
             very_high_threshold: values.very_high_threshold,
@@ -215,6 +211,18 @@ export default function ProfessorHeatPage() {
 
   const updateFilter = (key, value) => {
     const nextFilters = { ...filters, [key]: value };
+    setFilters(nextFilters);
+    fetchData(1, pagination.pageSize, keyword, nextFilters);
+  };
+
+  const handleSubjectChange = (value) => {
+    const selectedSubject = subjects.find((item) => item.id === value);
+    const inferredPostgraduateType = inferPostgraduateTypeFromSubject(selectedSubject);
+    const nextFilters = {
+      ...filters,
+      subject_id: value,
+      postgraduate_type: inferredPostgraduateType,
+    };
     setFilters(nextFilters);
     fetchData(1, pagination.pageSize, keyword, nextFilters);
   };
@@ -361,7 +369,18 @@ export default function ProfessorHeatPage() {
               label: `${item.subject_name}${item.subject_code ? `（${item.subject_code}）` : ''}`,
               value: item.id,
             }))}
-            onChange={(value) => updateFilter('subject_id', value)}
+            onChange={handleSubjectChange}
+          />
+          <Select
+            placeholder="按学生类型统计"
+            style={{ width: 180 }}
+            value={filters.student_type}
+            options={[
+              { label: '硕士统考生', value: 2 },
+              { label: '硕士推荐生', value: 1 },
+              { label: '博士统考生', value: 3 },
+            ]}
+            onChange={(value) => updateFilter('student_type', value)}
           />
           <Select
             allowClear
@@ -390,7 +409,7 @@ export default function ProfessorHeatPage() {
 
       <Typography.Paragraph type="secondary" style={{ marginTop: 0 }}>
         {filters.subject_id
-          ? '当前表格正在按所选专业视角展示导师热度，并只统计所配置届别下的申请人数。若同时指定培养类型，则会进一步按该培养类型下的申请人数和名额计算。'
+          ? '当前表格正在按所选专业视角展示导师热度，并只统计所配置届别、所选学生类型下的待处理人数。若同时指定培养类型，则会进一步按该培养类型下的申请人数和名额计算。'
           : '当前热度仅按专业视角计算。请选择专业查看对应口径下的导师热度。'}
       </Typography.Paragraph>
 
@@ -464,41 +483,15 @@ export default function ProfessorHeatPage() {
           >
             <InputNumber min={2000} max={9999} precision={0} style={{ width: '100%' }} />
           </Form.Item>
-          <Form.Item label="人数权重说明">
+          <Form.Item label="热度规则说明">
             <Typography.Paragraph type="secondary" style={{ marginBottom: 0 }}>
-              热度指数 = （待处理人数 × 待处理权重 + 已同意人数 × 已同意权重 + 已拒绝人数 × 已拒绝权重）÷ 可用名额。
+              热度只统计待处理人数。待处理人数未超过当前专业可用名额时为 1 级，超过你设置的阈值后依次升为 2/3/4 级。
             </Typography.Paragraph>
           </Form.Item>
           <Space size={12} style={{ display: 'flex' }} align="start">
             <Form.Item
-              name="pending_weight"
-              label="待处理权重"
-              rules={[{ required: true, message: '请输入待处理权重' }]}
-              style={{ flex: 1 }}
-            >
-              <InputNumber min={0} step={0.1} precision={2} style={{ width: '100%' }} />
-            </Form.Item>
-            <Form.Item
-              name="accepted_weight"
-              label="已同意权重"
-              rules={[{ required: true, message: '请输入已同意权重' }]}
-              style={{ flex: 1 }}
-            >
-              <InputNumber min={0} step={0.1} precision={2} style={{ width: '100%' }} />
-            </Form.Item>
-            <Form.Item
-              name="rejected_weight"
-              label="已拒绝权重"
-              rules={[{ required: true, message: '请输入已拒绝权重' }]}
-              style={{ flex: 1 }}
-            >
-              <InputNumber min={0} step={0.1} precision={2} style={{ width: '100%' }} />
-            </Form.Item>
-          </Space>
-          <Space size={12} style={{ display: 'flex' }} align="start">
-            <Form.Item
               name="medium_threshold"
-              label="中热度阈值"
+              label="2级超出阈值"
               rules={[{ required: true, message: '请输入中热度阈值' }]}
               style={{ flex: 1 }}
             >
@@ -506,7 +499,7 @@ export default function ProfessorHeatPage() {
             </Form.Item>
             <Form.Item
               name="high_threshold"
-              label="高热度阈值"
+              label="3级超出阈值"
               rules={[{ required: true, message: '请输入高热度阈值' }]}
               style={{ flex: 1 }}
             >
@@ -514,7 +507,7 @@ export default function ProfessorHeatPage() {
             </Form.Item>
             <Form.Item
               name="very_high_threshold"
-              label="很高热度阈值"
+              label="4级超出阈值"
               rules={[{ required: true, message: '请输入很高热度阈值' }]}
               style={{ flex: 1 }}
             >

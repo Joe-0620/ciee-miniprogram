@@ -45,6 +45,7 @@ from .models import ReviewRecord
 from .serializers import ReviewRecordSerializer, ReviewRecordUpdateSerializer
 from django.core.paginator import Paginator
 from django.db.models import Q, Prefetch
+from collections import defaultdict
 
 logger = logging.getLogger('log')
 
@@ -263,6 +264,68 @@ class SelectInformationView(APIView):
         return sorted({subject_id for subject_id in master_subject_ids + doctor_subject_ids + shared_pool_subject_ids if subject_id})
 
     @staticmethod
+    def _build_available_students_base_queryset(enroll_subjects, subject_id=None, search_keyword=None):
+        students_query = Student.objects.select_related('subject').only(
+            'id',
+            'name',
+            'avatar',
+            'phone_number',
+            'initial_exam_score',
+            'secondary_exam_score',
+            'initial_rank',
+            'secondary_rank',
+            'final_rank',
+            'student_type',
+            'postgraduate_type',
+            'subject_id',
+            'subject__subject_name',
+            'candidate_number',
+            'is_selected',
+            'is_alternate',
+            'is_giveup',
+        ).filter(
+            is_selected=False,
+            is_alternate=False,
+            is_giveup=False,
+            subject__in=enroll_subjects,
+        )
+
+        if subject_id:
+            students_query = students_query.filter(subject_id=subject_id)
+
+        if search_keyword:
+            students_query = students_query.filter(
+                Q(name__icontains=search_keyword) |
+                Q(candidate_number__icontains=search_keyword)
+            )
+
+        return students_query.order_by('subject_id', 'final_rank', 'id')
+
+    @staticmethod
+    def _serialize_available_students(students):
+        serialized = []
+        for student in students:
+            serialized.append({
+                'id': student.id,
+                'name': student.name,
+                'subject': student.subject.subject_name if student.subject_id and student.subject else '',
+                'student_type': student.get_student_type_display(),
+                'postgraduate_type': student.get_postgraduate_type_display(),
+                'avatar': student.avatar,
+                'phone_number': student.phone_number or '未设置',
+                'initial_exam_score': student.initial_exam_score or '未设置',
+                'secondary_exam_score': student.secondary_exam_score or '未设置',
+                'initial_rank': student.initial_rank or '未设置',
+                'secondary_rank': student.secondary_rank or '未设置',
+                'final_rank': student.final_rank or '未设置',
+            })
+        return serialized
+
+    @staticmethod
+    def _build_available_students_cache_key(professor_id, page, page_size, subject_id, search_keyword):
+        return f'available_students:v2:{professor_id}:{page}:{page_size}:{subject_id or "all"}:{(search_keyword or "").strip()}'
+
+    @staticmethod
     def _apply_available_student_display_filters(queryset):
         setting = get_available_student_display_setting()
         if not setting.enabled:
@@ -349,94 +412,85 @@ class SelectInformationView(APIView):
                 # 查询所有专业（去重，仅为 subject__in 查询）
                 enroll_subjects = Subject.objects.filter(id__in=all_subject_ids)
 
-                student_serializer = None
+                student_data = []
                 total_count = 0
                 total_pages = 0
                 has_next = False
                 has_previous = False
 
                 if include_students:
-                    # 如果指定了专业ID或搜索关键词，使用传统分页
-                    if subject_id or search_keyword:
-                        students_query = Student.objects.select_related(
-                            'subject'
-                        ).filter(
-                            is_selected=False,
-                            is_alternate=False,
-                            is_giveup=False,
-                            subject__in=enroll_subjects
-                        ).order_by('final_rank', 'id')
+                    cache_key = self._build_available_students_cache_key(
+                        professor.id,
+                        page,
+                        page_size,
+                        subject_id,
+                        search_keyword,
+                    )
+                    cached_student_payload = cache.get(cache_key)
+                    if cached_student_payload is not None:
+                        student_payload = cached_student_payload
+                    else:
+                        students_query = self._build_available_students_base_queryset(
+                            enroll_subjects=enroll_subjects,
+                            subject_id=subject_id,
+                            search_keyword=search_keyword,
+                        )
                         students_query, _ = self._apply_available_student_display_filters(students_query)
 
-                        if subject_id:
-                            students_query = students_query.filter(subject_id=subject_id)
+                    # 如果指定了专业ID或搜索关键词，使用传统分页
+                    if cached_student_payload is None:
+                        if subject_id or search_keyword:
+                            paginator = Paginator(students_query, page_size)
+                            try:
+                                students_page = paginator.page(page)
+                            except:
+                                students_page = paginator.page(1)
 
-                        if search_keyword:
-                            students_query = students_query.filter(
-                                Q(name__icontains=search_keyword) |
-                                Q(candidate_number__icontains=search_keyword)
-                            )
+                            student_payload = {
+                                'students_without_professor': self._serialize_available_students(list(students_page)),
+                                'has_next': students_page.has_next(),
+                                'has_previous': students_page.has_previous(),
+                                'total_pages': paginator.num_pages,
+                                'total_count': paginator.count,
+                            }
 
-                        paginator = Paginator(students_query, page_size)
-                        try:
-                            students_page = paginator.page(page)
-                        except:
-                            students_page = paginator.page(1)
+                        else:
+                            all_students = list(students_query)
+                            grouped_students = defaultdict(list)
+                            for student in all_students:
+                                grouped_students[student.subject_id].append(student)
 
-                        students_for_serializer = list(students_page)
-                        alternate_rank_map = self._build_alternate_rank_map(students_for_serializer)
-                        student_serializer = StudentSerializer(
-                            students_page, many=True,
-                            context={'alternate_rank_map': alternate_rank_map}
-                        )
-                        total_count = paginator.count
-                        total_pages = paginator.num_pages
-                        has_next = students_page.has_next()
-                        has_previous = students_page.has_previous()
+                            offset = (page - 1) * page_size
+                            paged_students = []
+                            has_more_data = False
+                            max_total_pages = 0
 
-                    else:
-                        # 每个专业按分页显示 page_size 个学生
-                        students_list = []
-                        offset = (page - 1) * page_size
-                        has_more_data = False
+                            for subject in enroll_subjects:
+                                subject_students = grouped_students.get(subject.id, [])
+                                if not subject_students:
+                                    continue
+                                paged_students.extend(subject_students[offset:offset + page_size])
+                                if len(subject_students) > offset + page_size:
+                                    has_more_data = True
+                                subject_total_pages = (len(subject_students) + page_size - 1) // page_size
+                                max_total_pages = max(max_total_pages, subject_total_pages)
 
-                        for subject in enroll_subjects:
-                            subject_students = Student.objects.select_related(
-                                'subject'
-                            ).filter(
-                                is_selected=False,
-                                is_alternate=False,
-                                is_giveup=False,
-                                subject=subject
-                            ).order_by('final_rank', 'id')
-                            subject_students, _ = self._apply_available_student_display_filters(subject_students)
-                            subject_students = subject_students[offset:offset + page_size]
+                            paged_students.sort(key=lambda x: (x.final_rank or 0, x.id))
+                            student_payload = {
+                                'students_without_professor': self._serialize_available_students(paged_students),
+                                'has_next': has_more_data,
+                                'has_previous': page > 1,
+                                'total_pages': max_total_pages or 1,
+                                'total_count': len(all_students),
+                            }
 
-                            students_list.extend(subject_students)
+                        cache.set(cache_key, student_payload, timeout=30)
 
-                            next_page_check = Student.objects.filter(
-                                is_selected=False,
-                                is_alternate=False,
-                                is_giveup=False,
-                                subject=subject
-                            )
-                            next_page_check, _ = self._apply_available_student_display_filters(next_page_check)
-                            next_page_check = next_page_check[offset + page_size:offset + page_size + 1]
-
-                            if next_page_check.exists():
-                                has_more_data = True
-
-                        students_list.sort(key=lambda x: (x.final_rank or 0, x.id))
-
-                        alternate_rank_map = self._build_alternate_rank_map(students_list)
-                        student_serializer = StudentSerializer(
-                            students_list, many=True,
-                            context={'alternate_rank_map': alternate_rank_map}
-                        )
-                        total_count = len(students_list)
-                        total_pages = 999
-                        has_next = has_more_data
-                        has_previous = page > 1
+                    total_count = student_payload['total_count']
+                    total_pages = student_payload['total_pages']
+                    has_next = student_payload['has_next']
+                    has_previous = student_payload['has_previous']
+                    student_data = student_payload['students_without_professor']
 
                 # 获取导师的互选记录（使用 select_related 避免 N+1）
                 student_choices_queryset = StudentProfessorChoice.objects.select_related(
@@ -461,7 +515,7 @@ class SelectInformationView(APIView):
                 
                 return Response({
                     'student_choices': choice_serializer.data,
-                    'students_without_professor': student_serializer.data if student_serializer else [],
+                    'students_without_professor': student_data,
                     'subjects': subject_data,  # 新增：专业列表供筛选
                     'choice_counts': choice_counts,
                     'choice_has_next': student_choices_page.has_next(),

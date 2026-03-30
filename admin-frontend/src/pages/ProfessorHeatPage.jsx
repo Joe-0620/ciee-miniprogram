@@ -27,6 +27,13 @@ function inferPostgraduateTypeFromSubject(subject) {
   return undefined;
 }
 
+function getSubjectTypeLabel(subject) {
+  if (!subject) return '';
+  if (subject.subject_type === 2) return '博士';
+  if (subject.subject_type === 1) return '学硕';
+  return '专硕';
+}
+
 export default function ProfessorHeatPage() {
   const [loading, setLoading] = useState(false);
   const [actionLoading, setActionLoading] = useState(false);
@@ -366,7 +373,7 @@ export default function ProfessorHeatPage() {
             style={{ width: 240 }}
             value={filters.subject_id}
             options={subjects.map((item) => ({
-              label: `${item.subject_name}${item.subject_code ? `（${item.subject_code}）` : ''}`,
+              label: `${item.subject_name}（${getSubjectTypeLabel(item)}${item.subject_code ? `，${item.subject_code}` : ''}）`,
               value: item.id,
             }))}
             onChange={handleSubjectChange}

@@ -267,7 +267,7 @@ class StudentSerializer(serializers.ModelSerializer):
 class StudentResumeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Student
-        fields = ['phone_number', 'avatar', 'resume', 'signature_table', 'giveup_signature_table']  # 或者指定您想要序列化的字段
+        fields = ['phone_number', 'avatar', 'resume', 'signature_table', 'giveup_signature_table', 'admission_year', 'giveup_time']  # 或者指定您想要序列化的字段
 
 
 class ChangePasswordSerializer(serializers.Serializer):

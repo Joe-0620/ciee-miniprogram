@@ -72,6 +72,9 @@ export default function ProfessorHeatPage() {
         medium_threshold: Number(settingPayload?.medium_threshold ?? 2),
         high_threshold: Number(settingPayload?.high_threshold ?? 4),
         very_high_threshold: Number(settingPayload?.very_high_threshold ?? 6),
+        medium_ratio_threshold: Number(settingPayload?.medium_ratio_threshold ?? 1.5),
+        high_ratio_threshold: Number(settingPayload?.high_ratio_threshold ?? 2.5),
+        very_high_ratio_threshold: Number(settingPayload?.very_high_ratio_threshold ?? 4),
       });
 
     } catch (error) {
@@ -150,6 +153,9 @@ export default function ProfessorHeatPage() {
             medium_threshold: values.medium_threshold,
             high_threshold: values.high_threshold,
             very_high_threshold: values.very_high_threshold,
+            medium_ratio_threshold: values.medium_ratio_threshold,
+            high_ratio_threshold: values.high_ratio_threshold,
+            very_high_ratio_threshold: values.very_high_ratio_threshold,
           }),
         '热度计算设置已更新',
       );
@@ -492,7 +498,7 @@ export default function ProfessorHeatPage() {
           </Form.Item>
           <Form.Item label="热度规则说明">
             <Typography.Paragraph type="secondary" style={{ marginBottom: 0 }}>
-              热度只统计待处理人数。待处理人数未超过当前专业可用名额时为 1 级，超过你设置的阈值后依次升为 2/3/4 级。
+              热度只统计待处理人数。系统会同时比较“待处理人数超出可用名额的差额”和“待处理/可用名额比例”，只要满足任一档位阈值，就进入对应热度等级。
             </Typography.Paragraph>
           </Form.Item>
           <Space size={12} style={{ display: 'flex' }} align="start">
@@ -516,6 +522,32 @@ export default function ProfessorHeatPage() {
               name="very_high_threshold"
               label="4级超出阈值"
               rules={[{ required: true, message: '请输入很高热度阈值' }]}
+              style={{ flex: 1 }}
+            >
+              <InputNumber min={0} step={0.1} precision={2} style={{ width: '100%' }} />
+            </Form.Item>
+          </Space>
+          <Space size={12} style={{ display: 'flex' }} align="start">
+            <Form.Item
+              name="medium_ratio_threshold"
+              label="2级比例阈值"
+              rules={[{ required: true, message: '请输入 2 级比例阈值' }]}
+              style={{ flex: 1 }}
+            >
+              <InputNumber min={0} step={0.1} precision={2} style={{ width: '100%' }} />
+            </Form.Item>
+            <Form.Item
+              name="high_ratio_threshold"
+              label="3级比例阈值"
+              rules={[{ required: true, message: '请输入 3 级比例阈值' }]}
+              style={{ flex: 1 }}
+            >
+              <InputNumber min={0} step={0.1} precision={2} style={{ width: '100%' }} />
+            </Form.Item>
+            <Form.Item
+              name="very_high_ratio_threshold"
+              label="4级比例阈值"
+              rules={[{ required: true, message: '请输入 4 级比例阈值' }]}
               style={{ flex: 1 }}
             >
               <InputNumber min={0} step={0.1} precision={2} style={{ width: '100%' }} />

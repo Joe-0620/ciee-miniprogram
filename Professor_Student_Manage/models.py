@@ -212,6 +212,9 @@ class ProfessorHeatDisplaySetting(models.Model):
     medium_threshold = models.DecimalField(max_digits=5, decimal_places=2, default=2.00, verbose_name="二级热度超出阈值")
     high_threshold = models.DecimalField(max_digits=5, decimal_places=2, default=4.00, verbose_name="三级热度超出阈值")
     very_high_threshold = models.DecimalField(max_digits=5, decimal_places=2, default=6.00, verbose_name="四级热度超出阈值")
+    medium_ratio_threshold = models.DecimalField(max_digits=5, decimal_places=2, default=1.50, verbose_name="二级热度比例阈值")
+    high_ratio_threshold = models.DecimalField(max_digits=5, decimal_places=2, default=2.50, verbose_name="三级热度比例阈值")
+    very_high_ratio_threshold = models.DecimalField(max_digits=5, decimal_places=2, default=4.00, verbose_name="四级热度比例阈值")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="更新时间")
 
     class Meta:
@@ -254,19 +257,25 @@ def _get_pool_subjects(pool):
     return list(pool.subjects.all())
 
 
-def resolve_heat_level_by_setting(heat_score, setting=None):
+def resolve_heat_level_by_setting(heat_score, setting=None, ratio=None):
     if setting is None:
         setting = get_professor_heat_display_setting()
     medium_threshold = float(getattr(setting, 'medium_threshold', 2) or 2)
     high_threshold = float(getattr(setting, 'high_threshold', 4) or 4)
     very_high_threshold = float(getattr(setting, 'very_high_threshold', 6) or 6)
+    medium_ratio_threshold = float(getattr(setting, 'medium_ratio_threshold', 1.5) or 1.5)
+    high_ratio_threshold = float(getattr(setting, 'high_ratio_threshold', 2.5) or 2.5)
+    very_high_ratio_threshold = float(getattr(setting, 'very_high_ratio_threshold', 4.0) or 4.0)
 
-    if heat_score >= very_high_threshold:
+    ratio_value = float(ratio or 0)
+
+    if heat_score >= very_high_threshold or ratio_value >= very_high_ratio_threshold:
         return Professor.HEAT_LEVEL_VERY_HIGH
-    if heat_score >= high_threshold:
+    if heat_score >= high_threshold or ratio_value >= high_ratio_threshold:
         return Professor.HEAT_LEVEL_HIGH
-    if heat_score >= medium_threshold:
+    if heat_score >= medium_threshold or ratio_value >= medium_ratio_threshold:
         return Professor.HEAT_LEVEL_MEDIUM
+
     return Professor.HEAT_LEVEL_LOW
 
 
@@ -572,8 +581,9 @@ def calculate_professor_subject_heat_metrics(professor, subject=None, postgradua
         postgraduate_type=postgraduate_type,
     )
     overflow_count = max(pending_count - available_quota_total, 0)
+    heat_ratio = round(float(pending_count / max(available_quota_total, 1)), 2)
     heat_score = round(float(overflow_count), 2)
-    heat_level = resolve_heat_level_by_setting(heat_score, setting=setting)
+    heat_level = resolve_heat_level_by_setting(heat_score, setting=setting, ratio=heat_ratio)
 
     return {
         'pending_count': pending_count,
@@ -581,6 +591,7 @@ def calculate_professor_subject_heat_metrics(professor, subject=None, postgradua
         'rejected_count': rejected_count,
         'available_quota_total': max(int(available_quota_total or 0), 0),
         'overflow_count': overflow_count,
+        'heat_ratio': heat_ratio,
         'heat_score': heat_score,
         'heat_level': heat_level,
     }
@@ -603,11 +614,12 @@ def get_professor_heat_display_metrics(professor, global_setting=None, subject=N
         heat_score = round(float(manual_heat_score), 2)
     else:
         heat_score = metrics['heat_score']
+    heat_ratio = metrics.get('heat_ratio', 0)
 
     if manual_heat_level:
         heat_level = manual_heat_level
     else:
-        heat_level = resolve_heat_level_by_setting(heat_score, setting=global_setting)
+        heat_level = resolve_heat_level_by_setting(heat_score, setting=global_setting, ratio=heat_ratio)
 
     heat_visible = bool(getattr(global_setting, 'show_professor_heat', True)) and bool(
         getattr(professor, 'heat_display_enabled', True)
@@ -621,6 +633,7 @@ def get_professor_heat_display_metrics(professor, global_setting=None, subject=N
         'subject_heat': True,
         'target_admission_year': getattr(global_setting, 'target_admission_year', 2026),
         'heat_score': heat_score,
+        'heat_ratio': heat_ratio,
         'heat_level': heat_level,
         'heat_visible': heat_visible,
         'heat_display_enabled': getattr(professor, 'heat_display_enabled', True),
@@ -880,6 +893,7 @@ class Student(models.Model):
     giveup_signature_table = models.CharField(max_length=500, null=True, blank=True, verbose_name="放弃说明表下载地址")
     is_signate_giveup_table = models.BooleanField(default=False, verbose_name="是否签名放弃说明表")
     is_giveup = models.BooleanField(default=False, verbose_name="是否放弃拟录取")
+    giveup_time = models.DateTimeField(null=True, blank=True, verbose_name="放弃时间")
 
     REVIEW_STATUS = [
         [1, "已同意"],

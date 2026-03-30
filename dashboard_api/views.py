@@ -365,6 +365,7 @@ def reinstate_revoked_choice(choice):
 
     student.is_selected = True
     student.is_giveup = False
+    student.giveup_time = None
     student.signature_table_student_signatured = False
     student.signature_table_professor_signatured = False
     student.signature_table_review_status = 4
@@ -372,6 +373,7 @@ def reinstate_revoked_choice(choice):
         update_fields=[
             'is_selected',
             'is_giveup',
+            'giveup_time',
             'signature_table_student_signatured',
             'signature_table_professor_signatured',
             'signature_table_review_status',
@@ -1834,12 +1836,15 @@ def build_giveup_queryset(request):
     search = request.query_params.get('search', '').strip()
     subject_id = request.query_params.get('subject_id')
     is_selected = request.query_params.get('is_selected')
+    admission_year = request.query_params.get('admission_year')
     if search:
         queryset = queryset.filter(Q(name__icontains=search) | Q(candidate_number__icontains=search))
     if subject_id:
         queryset = queryset.filter(subject_id=subject_id)
     if is_selected in {'true', 'false'}:
         queryset = queryset.filter(is_selected=(is_selected == 'true'))
+    if admission_year not in (None, ''):
+        queryset = queryset.filter(admission_year=admission_year)
     return queryset
 
 
@@ -2490,14 +2495,17 @@ class DashboardProfessorHeatListView(APIView):
                     postgraduate_type=heat_postgraduate_type,
                 )
                 pending_count = pending_count_map.get(professor.id, 0)
-                heat_score = round(float(max(pending_count - available_quota_total, 0)), 2)
-                heat_level_value = resolve_heat_level_by_setting(heat_score, setting=setting)
+                overflow_count = max(pending_count - available_quota_total, 0)
+                heat_ratio = round(float(pending_count / max(available_quota_total, 1)), 2)
+                heat_score = round(float(overflow_count), 2)
+                heat_level_value = resolve_heat_level_by_setting(heat_score, setting=setting, ratio=heat_ratio)
                 metrics = {
                     'pending_count': pending_count,
                     'accepted_count': 0,
                     'rejected_count': 0,
                     'available_quota_total': available_quota_total,
-                    'overflow_count': max(pending_count - available_quota_total, 0),
+                    'overflow_count': overflow_count,
+                    'heat_ratio': heat_ratio,
                     'heat_score': round(float(professor.manual_heat_score), 2) if professor.manual_heat_score is not None else heat_score,
                     'heat_level': professor.manual_heat_level or heat_level_value,
                     'heat_visible': bool(getattr(setting, 'show_professor_heat', True))
@@ -2580,6 +2588,9 @@ class DashboardProfessorHeatSettingView(APIView):
             'medium_threshold': str(setting.medium_threshold),
             'high_threshold': str(setting.high_threshold),
             'very_high_threshold': str(setting.very_high_threshold),
+            'medium_ratio_threshold': str(setting.medium_ratio_threshold),
+            'high_ratio_threshold': str(setting.high_ratio_threshold),
+            'very_high_ratio_threshold': str(setting.very_high_ratio_threshold),
         }
 
         if 'show_professor_heat' in request.data:
@@ -2597,7 +2608,14 @@ class DashboardProfessorHeatSettingView(APIView):
                 return Response({'detail': '统计届别必须大于 0。'}, status=status.HTTP_400_BAD_REQUEST)
             setting.target_admission_year = target_admission_year
 
-        decimal_fields = ['medium_threshold', 'high_threshold', 'very_high_threshold']
+        decimal_fields = [
+            'medium_threshold',
+            'high_threshold',
+            'very_high_threshold',
+            'medium_ratio_threshold',
+            'high_ratio_threshold',
+            'very_high_ratio_threshold',
+        ]
         for field_name in decimal_fields:
             if field_name not in request.data:
                 continue
@@ -2613,6 +2631,11 @@ class DashboardProfessorHeatSettingView(APIView):
         if not (setting.medium_threshold < setting.high_threshold < setting.very_high_threshold):
             return Response(
                 {'detail': '热度阈值必须满足：中热度 < 高热度 < 很高热度。'},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        if not (setting.medium_ratio_threshold < setting.high_ratio_threshold < setting.very_high_ratio_threshold):
+            return Response(
+                {'detail': '热度比例阈值必须满足：2级 < 3级 < 4级。'},
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
@@ -2634,6 +2657,9 @@ class DashboardProfessorHeatSettingView(APIView):
                 'medium_threshold': str(setting.medium_threshold),
                 'high_threshold': str(setting.high_threshold),
                 'very_high_threshold': str(setting.very_high_threshold),
+                'medium_ratio_threshold': str(setting.medium_ratio_threshold),
+                'high_ratio_threshold': str(setting.high_ratio_threshold),
+                'very_high_ratio_threshold': str(setting.very_high_ratio_threshold),
             },
         )
         return Response(ProfessorHeatDisplaySettingSerializer(setting).data, status=status.HTTP_200_OK)
@@ -4088,7 +4114,8 @@ class DashboardStudentRevokeGiveupView(APIView):
                     return Response({'detail': str(exc)}, status=status.HTTP_409_CONFLICT)
             else:
                 student.is_giveup = False
-                student.save(update_fields=['is_giveup'])
+                student.giveup_time = None
+                student.save(update_fields=['is_giveup', 'giveup_time'])
             normalize_alternate_ranks(student.subject, student.admission_year)
         create_audit_log(
             request,
@@ -4100,7 +4127,7 @@ class DashboardStudentRevokeGiveupView(APIView):
             target_display=student.name,
             detail='撤销学生放弃录取状态。',
             before_data={'is_giveup': True},
-            after_data={'is_giveup': False, 'restored_choice_id': revoked_choice.id if revoked_choice else None},
+            after_data={'is_giveup': False, 'giveup_time': None, 'restored_choice_id': revoked_choice.id if revoked_choice else None},
         )
         if revoked_choice:
             return Response({'detail': '已撤销该学生的放弃录取状态，并恢复原录取名额。'}, status=status.HTTP_200_OK)
@@ -5742,6 +5769,7 @@ class DashboardGiveupListView(APIView):
         order_map = {
             'name': 'name',
             'candidate_number': 'candidate_number',
+            'admission_year': 'admission_year',
             'subject_name': 'subject__subject_name',
             'final_rank': 'final_rank',
             'is_selected': 'is_selected',
@@ -5755,8 +5783,21 @@ class DashboardGiveupListView(APIView):
         start = (page - 1) * page_size
         end = start + page_size
         serializer = GiveupStudentSerializer(queryset[start:end], many=True)
+        available_admission_years = list(
+            Student.objects.filter(is_giveup=True)
+            .exclude(admission_year__isnull=True)
+            .order_by('admission_year')
+            .values_list('admission_year', flat=True)
+            .distinct()
+        )
         return Response(
-            {'count': total, 'page': page, 'page_size': page_size, 'results': serializer.data},
+            {
+                'count': total,
+                'page': page,
+                'page_size': page_size,
+                'results': serializer.data,
+                'available_admission_years': available_admission_years,
+            },
             status=status.HTTP_200_OK,
         )
 

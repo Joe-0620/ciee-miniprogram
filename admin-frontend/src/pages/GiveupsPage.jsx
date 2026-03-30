@@ -18,9 +18,10 @@ export default function GiveupsPage() {
   const [loading, setLoading] = useState(false);
   const [actionLoading, setActionLoading] = useState(false);
   const [keyword, setKeyword] = useState('');
-  const [filters, setFilters] = useState({ subject_id: undefined, is_selected: undefined });
+  const [filters, setFilters] = useState({ subject_id: undefined, admission_year: undefined, is_selected: undefined });
   const [sorter, setSorter] = useState({ order_by: 'id', order_direction: 'desc' });
   const [subjects, setSubjects] = useState([]);
+  const [admissionYears, setAdmissionYears] = useState([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [data, setData] = useState({ count: 0, results: [] });
   const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
@@ -49,6 +50,7 @@ export default function GiveupsPage() {
       });
       const payload = await get(`/giveups/?${params.toString()}`);
       setData(payload);
+      setAdmissionYears(payload.available_admission_years || []);
       setPagination({ current: payload.page, pageSize: payload.page_size });
     } catch (err) {
       message.error(err.message);
@@ -96,6 +98,7 @@ export default function GiveupsPage() {
   const columns = [
     { title: '学生', dataIndex: 'name', key: 'name', sorter: true },
     { title: '考生编号', dataIndex: 'candidate_number', key: 'candidate_number', sorter: true },
+    { title: '届别', dataIndex: 'admission_year', key: 'admission_year', sorter: true, render: (value) => (value ? `${value}届` : '-') },
     { title: '专业', key: 'subject_name', sorter: true, render: (_, record) => record.subject?.subject_name || '-' },
     { title: '总排名', dataIndex: 'final_rank', key: 'final_rank', sorter: true, render: (value) => value || '-' },
     {
@@ -155,6 +158,7 @@ export default function GiveupsPage() {
         <div className="page-filters">
           <Input.Search placeholder="按学生姓名或考生编号搜索" value={keyword} onChange={(e) => setKeyword(e.target.value)} onSearch={(value) => fetchData(1, pagination.pageSize, value)} allowClear style={{ width: 320 }} />
           <Select allowClear placeholder="按专业筛选" style={{ width: 180 }} value={filters.subject_id} options={subjects.map((item) => ({ label: formatSubjectOption(item), value: item.id }))} onChange={(value) => updateFilter('subject_id', value)} />
+          <Select allowClear placeholder="按届别筛选" style={{ width: 150 }} value={filters.admission_year} options={admissionYears.map((year) => ({ label: `${year}届`, value: year }))} onChange={(value) => updateFilter('admission_year', value)} />
           <Select allowClear placeholder="按录取状态筛选" style={{ width: 170 }} value={filters.is_selected} options={[{ label: '放弃前已录取', value: 'true' }, { label: '放弃前未录取', value: 'false' }]} onChange={(value) => updateFilter('is_selected', value)} />
         </div>
         <div className="page-actions">

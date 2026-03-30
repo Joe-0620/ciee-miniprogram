@@ -426,6 +426,9 @@ class ProfessorHeatDisplaySettingSerializer(serializers.ModelSerializer):
             'medium_threshold',
             'high_threshold',
             'very_high_threshold',
+            'medium_ratio_threshold',
+            'high_ratio_threshold',
+            'very_high_ratio_threshold',
             'updated_at',
         ]
 
@@ -842,6 +845,7 @@ class GiveupStudentSerializer(serializers.ModelSerializer):
             'name',
             'candidate_number',
             'subject',
+            'admission_year',
             'final_rank',
             'is_selected',
             'is_signate_giveup_table',

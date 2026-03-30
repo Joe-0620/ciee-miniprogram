@@ -1751,7 +1751,8 @@ class SubmitGiveupSignatureView(APIView):
                     cancel_approved_choice_for_giveup(approved_choice)
 
                 student.is_giveup = True
-                student.save(update_fields=['is_giveup'])
+                student.giveup_time = timezone.now()
+                student.save(update_fields=['is_giveup', 'giveup_time'])
 
                 StudentProfessorChoice.objects.filter(student=student, status=3).update(
                     status=4,
@@ -1792,12 +1793,19 @@ class SubmitGiveupSignatureView(APIView):
                     logger.exception('通知候补学生递补成功失败: student_id=%s error=%s', alternate_student.id, exc)
                 return Response(
                     {
-                        'message': f'放弃拟录取成功，已补录候补学生 {alternate_student.name}'
+                        'message': f'放弃拟录取成功，已补录候补学生 {alternate_student.name}',
+                        'giveup_time': timezone.localtime(student.giveup_time).strftime('%Y-%m-%d %H:%M:%S') if student.giveup_time else '',
                     },
                     status=status.HTTP_200_OK
                 )
 
-            return Response({'message': '放弃拟录取成功，但该专业没有候补学生'}, status=status.HTTP_200_OK)
+            return Response(
+                {
+                    'message': '放弃拟录取成功，但该专业没有候补学生',
+                    'giveup_time': timezone.localtime(student.giveup_time).strftime('%Y-%m-%d %H:%M:%S') if student.giveup_time else '',
+                },
+                status=status.HTTP_200_OK
+            )
 
         else:
             return Response({'message': '放弃拟录取失败，请重试'}, status=status.HTTP_400_BAD_REQUEST)

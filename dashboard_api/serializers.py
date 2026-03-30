@@ -232,6 +232,9 @@ class ProfessorListSerializer(serializers.ModelSerializer):
         ]
 
     def _get_heat_metrics(self, obj):
+        metrics_map = self.context.get('heat_metrics_map') or {}
+        if obj.id in metrics_map:
+            return metrics_map[obj.id]
         setting = self.context.get('heat_setting')
         subject = self.context.get('heat_subject')
         postgraduate_type = self.context.get('heat_postgraduate_type')
@@ -362,6 +365,9 @@ class ProfessorHeatListSerializer(serializers.ModelSerializer):
         ]
 
     def _get_heat_metrics(self, obj):
+        metrics_map = self.context.get('heat_metrics_map') or {}
+        if obj.id in metrics_map:
+            return metrics_map[obj.id]
         setting = self.context.get('heat_setting')
         subject = self.context.get('heat_subject')
         postgraduate_type = self.context.get('heat_postgraduate_type')

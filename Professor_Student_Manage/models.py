@@ -240,6 +240,20 @@ def get_professor_heat_display_setting():
     return setting
 
 
+def _get_prefetched_related_list(instance, relation_name):
+    cache = getattr(instance, '_prefetched_objects_cache', {})
+    if relation_name in cache:
+        return list(cache[relation_name])
+    return list(getattr(instance, relation_name).all())
+
+
+def _get_pool_subjects(pool):
+    cache = getattr(pool, '_prefetched_objects_cache', {})
+    if 'subjects' in cache:
+        return list(cache['subjects'])
+    return list(pool.subjects.all())
+
+
 def resolve_heat_level_by_setting(heat_score, setting=None):
     if setting is None:
         setting = get_professor_heat_display_setting()
@@ -247,11 +261,11 @@ def resolve_heat_level_by_setting(heat_score, setting=None):
     high_threshold = float(getattr(setting, 'high_threshold', 4) or 4)
     very_high_threshold = float(getattr(setting, 'very_high_threshold', 6) or 6)
 
-    if heat_score > very_high_threshold:
+    if heat_score >= very_high_threshold:
         return Professor.HEAT_LEVEL_VERY_HIGH
-    if heat_score > high_threshold:
+    if heat_score >= high_threshold:
         return Professor.HEAT_LEVEL_HIGH
-    if heat_score > medium_threshold:
+    if heat_score >= medium_threshold:
         return Professor.HEAT_LEVEL_MEDIUM
     return Professor.HEAT_LEVEL_LOW
 
@@ -261,73 +275,79 @@ def calculate_professor_subject_available_quota(professor, subject=None, postgra
         return 0
 
     available_quota_total = 0
+    master_quotas = _get_prefetched_related_list(professor, 'master_quotas')
+    doctor_quotas = _get_prefetched_related_list(professor, 'doctor_quotas')
+    shared_pools = [
+        pool for pool in _get_prefetched_related_list(professor, 'shared_quota_pools')
+        if getattr(pool, 'is_active', False)
+    ]
 
     if postgraduate_type == 3:
-        quota = ProfessorDoctorQuota.objects.filter(professor=professor, subject=subject).first()
+        quota = next((item for item in doctor_quotas if item.subject_id == subject.id), None)
         available_quota_total += (quota.remaining_quota or 0) if quota else 0
-        shared_total = ProfessorSharedQuotaPool.objects.filter(
-            professor=professor,
-            quota_scope=ProfessorSharedQuotaPool.SCOPE_DOCTOR,
-            is_active=True,
-            subjects=subject,
-        ).aggregate(total=Coalesce(Sum('remaining_quota'), 0))['total'] or 0
+        shared_total = sum(
+            pool.remaining_quota or 0
+            for pool in shared_pools
+            if pool.quota_scope == ProfessorSharedQuotaPool.SCOPE_DOCTOR
+            and any(item.id == subject.id for item in _get_pool_subjects(pool))
+        )
         available_quota_total += shared_total
         return max(int(available_quota_total or 0), 0)
 
     if postgraduate_type in [1, 2, 4]:
-        quota = ProfessorMasterQuota.objects.filter(professor=professor, subject=subject).first()
+        quota = next((item for item in master_quotas if item.subject_id == subject.id), None)
         if quota:
             if postgraduate_type == 4:
                 available_quota_total += quota.yantai_remaining_quota or 0
             else:
                 available_quota_total += quota.beijing_remaining_quota or 0
 
-        shared_pool_queryset = ProfessorSharedQuotaPool.objects.filter(
-            professor=professor,
-            quota_scope=ProfessorSharedQuotaPool.SCOPE_MASTER,
-            is_active=True,
-            subjects=subject,
+        target_campus = (
+            ProfessorSharedQuotaPool.CAMPUS_YANTAI
+            if postgraduate_type == 4 else ProfessorSharedQuotaPool.CAMPUS_BEIJING
         )
-        if postgraduate_type == 4:
-            shared_pool_queryset = shared_pool_queryset.filter(campus=ProfessorSharedQuotaPool.CAMPUS_YANTAI)
-        else:
-            shared_pool_queryset = shared_pool_queryset.filter(campus=ProfessorSharedQuotaPool.CAMPUS_BEIJING)
-        shared_total = shared_pool_queryset.aggregate(total=Coalesce(Sum('remaining_quota'), 0))['total'] or 0
+        shared_total = sum(
+            pool.remaining_quota or 0
+            for pool in shared_pools
+            if pool.quota_scope == ProfessorSharedQuotaPool.SCOPE_MASTER
+            and pool.campus == target_campus
+            and any(item.id == subject.id for item in _get_pool_subjects(pool))
+        )
         available_quota_total += shared_total
         return max(int(available_quota_total or 0), 0)
 
     if subject.subject_type == 2:
-        quota = ProfessorDoctorQuota.objects.filter(professor=professor, subject=subject).first()
+        quota = next((item for item in doctor_quotas if item.subject_id == subject.id), None)
         available_quota_total += (quota.remaining_quota or 0) if quota else 0
-        shared_total = ProfessorSharedQuotaPool.objects.filter(
-            professor=professor,
-            quota_scope=ProfessorSharedQuotaPool.SCOPE_DOCTOR,
-            is_active=True,
-            subjects=subject,
-        ).aggregate(total=Coalesce(Sum('remaining_quota'), 0))['total'] or 0
+        shared_total = sum(
+            pool.remaining_quota or 0
+            for pool in shared_pools
+            if pool.quota_scope == ProfessorSharedQuotaPool.SCOPE_DOCTOR
+            and any(item.id == subject.id for item in _get_pool_subjects(pool))
+        )
         available_quota_total += shared_total
     elif subject.subject_type == 1:
-        quota = ProfessorMasterQuota.objects.filter(professor=professor, subject=subject).first()
+        quota = next((item for item in master_quotas if item.subject_id == subject.id), None)
         available_quota_total += (quota.beijing_remaining_quota or 0) if quota else 0
-        shared_total = ProfessorSharedQuotaPool.objects.filter(
-            professor=professor,
-            quota_scope=ProfessorSharedQuotaPool.SCOPE_MASTER,
-            is_active=True,
-            subjects=subject,
-            campus=ProfessorSharedQuotaPool.CAMPUS_BEIJING,
-        ).aggregate(total=Coalesce(Sum('remaining_quota'), 0))['total'] or 0
+        shared_total = sum(
+            pool.remaining_quota or 0
+            for pool in shared_pools
+            if pool.quota_scope == ProfessorSharedQuotaPool.SCOPE_MASTER
+            and pool.campus == ProfessorSharedQuotaPool.CAMPUS_BEIJING
+            and any(item.id == subject.id for item in _get_pool_subjects(pool))
+        )
         available_quota_total += shared_total
     else:
-        quota = ProfessorMasterQuota.objects.filter(professor=professor, subject=subject).first()
+        quota = next((item for item in master_quotas if item.subject_id == subject.id), None)
         if quota:
             available_quota_total += (quota.beijing_remaining_quota or 0) + (quota.yantai_remaining_quota or 0)
-        shared_total = ProfessorSharedQuotaPool.objects.filter(
-            professor=professor,
-            quota_scope=ProfessorSharedQuotaPool.SCOPE_MASTER,
-            is_active=True,
-            subjects=subject,
-            campus__in=[ProfessorSharedQuotaPool.CAMPUS_BEIJING, ProfessorSharedQuotaPool.CAMPUS_YANTAI],
-        ).aggregate(total=Coalesce(Sum('remaining_quota'), 0))['total'] or 0
+        shared_total = sum(
+            pool.remaining_quota or 0
+            for pool in shared_pools
+            if pool.quota_scope == ProfessorSharedQuotaPool.SCOPE_MASTER
+            and pool.campus in [ProfessorSharedQuotaPool.CAMPUS_BEIJING, ProfessorSharedQuotaPool.CAMPUS_YANTAI]
+            and any(item.id == subject.id for item in _get_pool_subjects(pool))
+        )
         available_quota_total += shared_total
 
     return max(int(available_quota_total or 0), 0)

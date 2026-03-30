@@ -30,6 +30,7 @@ from Enrollment_Manage.models import Department, Subject, sync_student_alternate
 from Professor_Student_Manage.models import (
     AvailableStudentDisplaySetting,
     AdmissionBatch,
+    calculate_professor_subject_available_quota,
     get_professor_heat_display_metrics,
     get_available_student_display_setting,
     normalize_available_student_display_values,
@@ -44,6 +45,7 @@ from Professor_Student_Manage.models import (
     get_matching_shared_quota_pool,
     get_quota_source_for_student,
     recalculate_professor_quota_summary,
+    resolve_heat_level_by_setting,
 )
 from Professor_Student_Manage.models import WeChatAccount
 from Select_Information.models import ReviewRecord, StudentProfessorChoice
@@ -1603,6 +1605,35 @@ def build_professor_queryset(request):
     return queryset
 
 
+def filter_professors_by_heat_subject(queryset, subject, postgraduate_type=None):
+    if subject is None:
+        return queryset
+
+    if subject.subject_type == 2:
+        return queryset.filter(
+            Q(doctor_quotas__subject=subject, doctor_quotas__remaining_quota__gt=0) |
+            Q(shared_quota_pools__subjects=subject, shared_quota_pools__quota_scope=ProfessorSharedQuotaPool.SCOPE_DOCTOR, shared_quota_pools__is_active=True, shared_quota_pools__remaining_quota__gt=0)
+        ).distinct()
+
+    if postgraduate_type == 4:
+        return queryset.filter(
+            Q(master_quotas__subject=subject, master_quotas__yantai_remaining_quota__gt=0) |
+            Q(shared_quota_pools__subjects=subject, shared_quota_pools__quota_scope=ProfessorSharedQuotaPool.SCOPE_MASTER, shared_quota_pools__campus=ProfessorSharedQuotaPool.CAMPUS_YANTAI, shared_quota_pools__is_active=True, shared_quota_pools__remaining_quota__gt=0)
+        ).distinct()
+
+    if postgraduate_type in [1, 2] or subject.subject_type == 1:
+        return queryset.filter(
+            Q(master_quotas__subject=subject, master_quotas__beijing_remaining_quota__gt=0) |
+            Q(shared_quota_pools__subjects=subject, shared_quota_pools__quota_scope=ProfessorSharedQuotaPool.SCOPE_MASTER, shared_quota_pools__campus=ProfessorSharedQuotaPool.CAMPUS_BEIJING, shared_quota_pools__is_active=True, shared_quota_pools__remaining_quota__gt=0)
+        ).distinct()
+
+    return queryset.filter(
+        Q(master_quotas__subject=subject, master_quotas__beijing_remaining_quota__gt=0) |
+        Q(master_quotas__subject=subject, master_quotas__yantai_remaining_quota__gt=0) |
+        Q(shared_quota_pools__subjects=subject, shared_quota_pools__quota_scope=ProfessorSharedQuotaPool.SCOPE_MASTER, shared_quota_pools__campus__in=[ProfessorSharedQuotaPool.CAMPUS_BEIJING, ProfessorSharedQuotaPool.CAMPUS_YANTAI], shared_quota_pools__is_active=True, shared_quota_pools__remaining_quota__gt=0)
+    ).distinct()
+
+
 def build_student_queryset(request):
     queryset = Student.objects.select_related('user_name', 'subject', 'admission_batch')
     search = request.query_params.get('search', '').strip()
@@ -2421,34 +2452,82 @@ class DashboardProfessorHeatListView(APIView):
             except (TypeError, ValueError):
                 return Response({'detail': '学生类型参数不正确。'}, status=status.HTTP_400_BAD_REQUEST)
 
-        queryset = build_professor_queryset(request).select_related('department')
+        queryset = build_professor_queryset(request).select_related('department').prefetch_related(
+            'master_quotas__subject',
+            'doctor_quotas__subject',
+            'shared_quota_pools__subjects',
+        )
+        queryset = filter_professors_by_heat_subject(queryset, heat_subject, heat_postgraduate_type)
         professors = list(queryset)
         heat_level = request.query_params.get('heat_level')
 
-        filtered_professors = []
-        for professor in professors:
-            metrics = get_professor_heat_display_metrics(
-                professor,
-                global_setting=setting,
-                subject=heat_subject,
-                postgraduate_type=heat_postgraduate_type,
-                student_type=heat_student_type,
+        pending_count_map = {}
+        if heat_subject and professors:
+            pending_queryset = StudentProfessorChoice.objects.filter(
+                professor_id__in=[professor.id for professor in professors],
+                status=3,
+                student__subject=heat_subject,
             )
-            if heat_subject and (metrics.get('available_quota_total') or 0) <= 0:
-                continue
-            if heat_level and metrics['heat_level'] != heat_level:
-                continue
-            filtered_professors.append(professor)
+            if heat_student_type:
+                pending_queryset = pending_queryset.filter(student__student_type=heat_student_type)
+            if heat_postgraduate_type:
+                pending_queryset = pending_queryset.filter(student__postgraduate_type=heat_postgraduate_type)
+            target_admission_year = getattr(setting, 'target_admission_year', None)
+            if target_admission_year not in (None, ''):
+                pending_queryset = pending_queryset.filter(student__admission_year=target_admission_year)
+            pending_count_map = {
+                item['professor_id']: item['pending_count']
+                for item in pending_queryset.values('professor_id').annotate(pending_count=Count('id'))
+            }
 
-        filtered_professors.sort(
-            key=lambda professor: (
-                -get_professor_heat_display_metrics(
+        filtered_professors = []
+        heat_metrics_map = {}
+        for professor in professors:
+            if heat_subject:
+                available_quota_total = calculate_professor_subject_available_quota(
+                    professor,
+                    subject=heat_subject,
+                    postgraduate_type=heat_postgraduate_type,
+                )
+                pending_count = pending_count_map.get(professor.id, 0)
+                heat_score = round(float(max(pending_count - available_quota_total, 0)), 2)
+                heat_level_value = resolve_heat_level_by_setting(heat_score, setting=setting)
+                metrics = {
+                    'pending_count': pending_count,
+                    'accepted_count': 0,
+                    'rejected_count': 0,
+                    'available_quota_total': available_quota_total,
+                    'overflow_count': max(pending_count - available_quota_total, 0),
+                    'heat_score': round(float(professor.manual_heat_score), 2) if professor.manual_heat_score is not None else heat_score,
+                    'heat_level': professor.manual_heat_level or heat_level_value,
+                    'heat_visible': bool(getattr(setting, 'show_professor_heat', True))
+                        and bool(getattr(professor, 'heat_display_enabled', True))
+                        and available_quota_total > 0,
+                    'heat_display_enabled': getattr(professor, 'heat_display_enabled', True),
+                    'manual_heat_score': professor.manual_heat_score,
+                    'manual_heat_level': professor.manual_heat_level or '',
+                    'calculation_scope': ProfessorHeatDisplaySetting.CALCULATION_SCOPE_SUBJECT,
+                    'subject_heat': True,
+                    'target_admission_year': getattr(setting, 'target_admission_year', 2026),
+                }
+            else:
+                metrics = get_professor_heat_display_metrics(
                     professor,
                     global_setting=setting,
                     subject=heat_subject,
                     postgraduate_type=heat_postgraduate_type,
                     student_type=heat_student_type,
-                )['pending_count'],
+                )
+            if heat_subject and (metrics.get('available_quota_total') or 0) <= 0:
+                continue
+            if heat_level and metrics['heat_level'] != heat_level:
+                continue
+            filtered_professors.append(professor)
+            heat_metrics_map[professor.id] = metrics
+
+        filtered_professors.sort(
+            key=lambda professor: (
+                -heat_metrics_map[professor.id]['pending_count'],
                 professor.id,
             )
         )
@@ -2464,6 +2543,7 @@ class DashboardProfessorHeatListView(APIView):
                 'heat_subject': heat_subject,
                 'heat_postgraduate_type': heat_postgraduate_type,
                 'heat_student_type': heat_student_type,
+                'heat_metrics_map': heat_metrics_map,
             },
         )
         return Response(

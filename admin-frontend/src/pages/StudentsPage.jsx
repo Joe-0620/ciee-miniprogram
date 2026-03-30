@@ -299,6 +299,7 @@ export default function StudentsPage() {
       const formData = new FormData();
       formData.append('import_type', values.import_type);
       formData.append('update_quota', values.update_quota ? 'true' : 'false');
+      formData.append('repair_alternate_existing', values.repair_alternate_existing ? 'true' : 'false');
       formData.append('file', values.fileList[0].originFileObj);
       setImportSubmitting(true);
       setImportProgress(0);
@@ -902,6 +903,20 @@ export default function StudentsPage() {
           <Form.Item label="同步覆盖名额" name="update_quota" valuePropName="checked">
             <Switch checkedChildren="同步" unCheckedChildren="不同步" />
           </Form.Item>
+          <Form.Item noStyle shouldUpdate>
+            {({ getFieldValue }) =>
+              getFieldValue('import_type') === 'master_exam' ? (
+                <Form.Item
+                  label="修复已存在学生的候补状态"
+                  name="repair_alternate_existing"
+                  valuePropName="checked"
+                  extra="开启后，遇到已存在的硕士统考生时，不再跳过，而是只修复候补状态、候补顺位和不可选导师状态。"
+                >
+                  <Switch checkedChildren="修复" unCheckedChildren="跳过" />
+                </Form.Item>
+              ) : null
+            }
+          </Form.Item>
           <Form.Item
             label="导入文件"
             name="fileList"
@@ -927,8 +942,9 @@ export default function StudentsPage() {
               message={importResult.detail || '学生导入完成'}
               description={
                 <div>
-                   <div>创建人数：{importResult.created_count ?? '-'}</div>
-                   <div>跳过人数：{importResult.skipped_rows ?? '-'}</div>
+                  <div>创建人数：{importResult.created_count ?? '-'}</div>
+                  <div>修复人数：{importResult.repaired_count ?? 0}</div>
+                  <div>跳过人数：{importResult.skipped_rows ?? '-'}</div>
                    {importResult.skip_reason_summary && Object.keys(importResult.skip_reason_summary).length ? (
                       <div style={{ marginTop: 8 }}>
                         <div style={{ fontWeight: 600, marginBottom: 4 }}>跳过原因统计：</div>
@@ -951,7 +967,7 @@ export default function StudentsPage() {
                       <div style={{ marginTop: 8 }}>
                         {importResult.summary.map((item) => (
                           <div key={`${item.subject_code}-${item.subject_name}`} style={{ marginBottom: 6 }}>
-                            {item.subject_name}（{item.subject_code}）：创建 {item.created_count}，候补 {item.alternate_count}，正常 {item.normal_count}，不可选导师 {item.locked_count ?? 0}
+                            {item.subject_name}（{item.subject_code}）：创建 {item.created_count}，修复 {item.repaired_count ?? 0}，候补 {item.alternate_count}，正常 {item.normal_count}，不可选导师 {item.locked_count ?? 0}
                           </div>
                       ))}
                     </div>

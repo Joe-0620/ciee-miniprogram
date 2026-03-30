@@ -2928,11 +2928,12 @@ class DashboardStudentImportView(APIView):
         if import_type not in {'doctor', 'master_exam', 'master_recommend'}:
             return Response({'detail': 'Invalid import_type.'}, status=status.HTTP_400_BAD_REQUEST)
 
+        repair_alternate_existing = str(request.data.get('repair_alternate_existing') or 'false').lower() in {'1', 'true', 'yes', 'on'}
         try:
             if import_type == 'doctor':
                 result = self._import_doctor_students(upload, update_quota)
             elif import_type == 'master_exam':
-                result = self._import_master_exam_students(upload)
+                result = self._import_master_exam_students(upload, repair_alternate_existing=repair_alternate_existing)
             else:
                 result = self._import_master_students(upload, import_type)
         except ValidationError as exc:
@@ -3024,7 +3025,7 @@ class DashboardStudentImportView(APIView):
 
         return {'detail': f'Doctor student import finished: created {success_count}, skipped {skipped_rows}.'}
 
-    def _import_master_exam_students(self, upload):
+    def _import_master_exam_students(self, upload, repair_alternate_existing=False):
         workbook = load_workbook(upload, data_only=True)
         worksheet = workbook.active
         headers = [cell.value for cell in worksheet[1]]
@@ -3097,8 +3098,9 @@ class DashboardStudentImportView(APIView):
                         skipped_rows += 1
                         continue
 
-                is_alternate = choose_professor == '候补'
-                lock_selection = choose_professor == '否' and alternate_display_value in {'', '否'}
+                has_alternate_rank = to_int(alternate_rank_value, default=0) > 0
+                is_alternate = choose_professor == '候补' or (choose_professor == '否' and has_alternate_rank)
+                lock_selection = choose_professor == '否' and not has_alternate_rank
                 alternate_rank = None
                 if is_alternate:
                     alternate_rank = to_int(alternate_rank_value, default=0)
@@ -3301,6 +3303,7 @@ class DashboardStudentImportView(APIView):
 
         import_type = str(request.data.get('import_type') or '').strip()
         update_quota = str(request.data.get('update_quota') or 'false').lower() in {'1', 'true', 'yes', 'on'}
+        repair_alternate_existing = str(request.data.get('repair_alternate_existing') or 'false').lower() in {'1', 'true', 'yes', 'on'}
         if import_type not in {'doctor', 'master_exam', 'master_recommend'}:
             return Response({'detail': 'Invalid import_type.'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -3308,7 +3311,7 @@ class DashboardStudentImportView(APIView):
             if import_type == 'doctor':
                 result = self._import_doctor_students(upload, update_quota)
             elif import_type == 'master_exam':
-                result = self._import_master_exam_students(upload)
+                result = self._import_master_exam_students(upload, repair_alternate_existing=repair_alternate_existing)
             else:
                 result = self._import_master_students(upload, import_type)
         except ValidationError as exc:
@@ -3400,7 +3403,7 @@ class DashboardStudentImportView(APIView):
 
         return {'detail': f'Doctor student import finished: created {success_count}, skipped {skipped_rows}.'}
 
-    def _import_master_exam_students(self, upload):
+    def _import_master_exam_students(self, upload, repair_alternate_existing=False):
         workbook = load_workbook(upload, data_only=True)
         worksheet = workbook.active
         headers = [cell.value for cell in worksheet[1]]
@@ -3432,6 +3435,7 @@ class DashboardStudentImportView(APIView):
 
         success_count = 0
         skipped_rows = 0
+        repaired_count = 0
         subject_summary = {}
         skip_reason_summary = {}
         skipped_examples = []
@@ -3487,8 +3491,9 @@ class DashboardStudentImportView(APIView):
                         add_skip_reason(f'专硕校区无法识别：{campus or "空"}', row_index, candidate_number, name)
                         continue
 
-                is_alternate = choose_professor == '候补'
-                lock_selection = choose_professor == '否' and alternate_display_value in {'', '否'}
+                has_alternate_rank = to_int(alternate_rank_value, default=0) > 0
+                is_alternate = choose_professor == '候补' or (choose_professor == '否' and has_alternate_rank)
+                lock_selection = choose_professor == '否' and not has_alternate_rank
                 if choose_professor not in {'是', '候补', '否'}:
                     add_skip_reason(f'选导师列值无法识别：{choose_professor or "空"}', row_index, candidate_number, name)
                     continue
@@ -3499,7 +3504,44 @@ class DashboardStudentImportView(APIView):
                         add_skip_reason('候补学生缺少有效候补排名', row_index, candidate_number, name)
                         continue
 
-                if Student.objects.filter(candidate_number=candidate_number).exists():
+                existing_student = Student.objects.filter(candidate_number=candidate_number).first()
+                if existing_student:
+                    if repair_alternate_existing:
+                        update_fields = []
+                        if existing_student.is_alternate != is_alternate:
+                            existing_student.is_alternate = is_alternate
+                            update_fields.append('is_alternate')
+                        if existing_student.alternate_rank != alternate_rank:
+                            existing_student.alternate_rank = alternate_rank
+                            update_fields.append('alternate_rank')
+                        if existing_student.is_selected != lock_selection:
+                            existing_student.is_selected = lock_selection
+                            update_fields.append('is_selected')
+                        if update_fields:
+                            existing_student.save(update_fields=update_fields)
+                        repaired_count += 1
+
+                        summary_item = subject_summary.setdefault(
+                            subject.id,
+                            {
+                                'subject_code': subject.subject_code,
+                                'subject_name': subject.subject_name,
+                                'created_count': 0,
+                                'alternate_count': 0,
+                                'normal_count': 0,
+                                'locked_count': 0,
+                                'repaired_count': 0,
+                            },
+                        )
+                        summary_item['repaired_count'] += 1
+                        if is_alternate:
+                            summary_item['alternate_count'] += 1
+                        elif lock_selection:
+                            summary_item['locked_count'] += 1
+                        else:
+                            summary_item['normal_count'] += 1
+                        continue
+
                     add_skip_reason(f'考生编号已存在：{candidate_number}', row_index, candidate_number, name)
                     continue
                 if User.objects.filter(username=candidate_number).exists():
@@ -3533,6 +3575,7 @@ class DashboardStudentImportView(APIView):
                         'alternate_count': 0,
                         'normal_count': 0,
                         'locked_count': 0,
+                        'repaired_count': 0,
                     },
                 )
                 summary_item['created_count'] += 1
@@ -3545,8 +3588,9 @@ class DashboardStudentImportView(APIView):
 
         summary = sorted(subject_summary.values(), key=lambda item: (item['subject_code'], item['subject_name']))
         return {
-            'detail': f'硕士统考生导入完成，创建 {success_count} 条，跳过 {skipped_rows} 条。',
+            'detail': f'硕士统考生导入完成，创建 {success_count} 条，修复 {repaired_count} 条，跳过 {skipped_rows} 条。',
             'created_count': success_count,
+            'repaired_count': repaired_count,
             'skipped_rows': skipped_rows,
             'summary': summary,
             'skip_reason_summary': skip_reason_summary,

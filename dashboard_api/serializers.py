@@ -523,6 +523,8 @@ class ProfessorDetailSerializer(serializers.ModelSerializer):
 class StudentListSerializer(serializers.ModelSerializer):
     subject = SubjectBriefSerializer(read_only=True)
     admission_batch = AdmissionBatchSerializer(read_only=True)
+    current_status = serializers.CharField(read_only=True)
+    current_status_display = serializers.SerializerMethodField()
     current_choice_status = serializers.SerializerMethodField()
     current_professor_name = serializers.SerializerMethodField()
     student_type_display = serializers.CharField(source='get_student_type_display', read_only=True)
@@ -552,6 +554,8 @@ class StudentListSerializer(serializers.ModelSerializer):
             'final_rank',
             'initial_rank',
             'secondary_rank',
+            'current_status',
+            'current_status_display',
             'current_choice_status',
             'current_professor_name',
             'resume',
@@ -559,6 +563,15 @@ class StudentListSerializer(serializers.ModelSerializer):
             'giveup_signature_table',
             'is_signate_giveup_table',
         ]
+
+    def get_current_status_display(self, obj):
+        return {
+            'selected': '已录取',
+            'alternate': '候补中',
+            'pending': '待处理',
+            'incomplete': '未完成',
+            'giveup': '已放弃',
+        }.get(getattr(obj, 'current_status', None), '未完成')
 
     def get_current_choice_status(self, obj):
         choice = getattr(obj, 'latest_choice', None)

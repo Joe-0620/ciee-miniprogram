@@ -71,6 +71,14 @@ const reviewStatusOptions = [
   { label: '未提交', value: 4 },
 ];
 
+const currentStatusOptions = [
+  { label: '已录取', value: 'selected' },
+  { label: '候补中', value: 'alternate' },
+  { label: '待处理', value: 'pending' },
+  { label: '未完成', value: 'incomplete' },
+  { label: '已放弃', value: 'giveup' },
+];
+
 const importTypeOptions = [
   { label: '硕士推免生', value: 'master_recommend' },
   { label: '硕士统考生', value: 'master_exam' },
@@ -114,6 +122,7 @@ export default function StudentsPage() {
     is_alternate: undefined,
     is_giveup: undefined,
     review_status: undefined,
+    current_status: undefined,
   });
   const [sorter, setSorter] = useState({ order_by: 'final_rank', order_direction: 'asc' });
   const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
@@ -219,6 +228,7 @@ export default function StudentsPage() {
       is_alternate: undefined,
       is_giveup: undefined,
       review_status: undefined,
+      current_status: undefined,
     };
     const nextSorter = { order_by: 'final_rank', order_direction: 'asc' };
     setKeyword('');
@@ -454,7 +464,9 @@ export default function StudentsPage() {
     },
     {
       title: '当前状态',
-      key: 'status',
+      dataIndex: 'current_status_display',
+      key: 'current_status',
+      sorter: true,
       render: (_, record) => {
         const status = getStudentStatus(record);
         return <StatusTag tone={status.tone}>{status.text}</StatusTag>;
@@ -669,6 +681,14 @@ export default function StudentsPage() {
               value={filters.review_status}
               options={reviewStatusOptions}
               onChange={(value) => updateFilter('review_status', value)}
+            />
+            <Select
+              allowClear
+              placeholder="按当前状态筛选"
+              style={{ width: 150 }}
+              value={filters.current_status}
+              options={currentStatusOptions}
+              onChange={(value) => updateFilter('current_status', value)}
             />
           </div>
 

@@ -1187,9 +1187,6 @@ class ProfessorChooseStudentView(APIView):
                     student.is_selected = True
                     student.save(update_fields=['is_selected'])
 
-                    # 🔑 检查名额是否为 0，如果为 0，则拒绝所有等待中的申请
-                    self.reject_waiting_choices_if_quota_full(professor, student, latest_choice)
-
                     # 生成 PDF、上传文件、发送通知属于附加动作，失败时不影响互选主流程
                     try:
                         self.generate_and_upload_pdf(student, professor)

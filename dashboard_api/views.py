@@ -14,7 +14,7 @@ from django.core.cache import cache
 from django.http import HttpResponse
 from django.db import transaction
 from django.db.models import Model
-from django.db.models import Case, CharField, Count, Max, OuterRef, Prefetch, Q, Subquery, Sum, Value, When
+from django.db.models import Case, CharField, Count, IntegerField, Max, OuterRef, Prefetch, Q, Subquery, Sum, Value, When
 from django.db.models.functions import Coalesce, TruncDate
 from django.utils import timezone
 from rest_framework import status
@@ -1638,7 +1638,27 @@ def filter_professors_by_heat_subject(queryset, subject, postgraduate_type=None)
 
 
 def build_student_queryset(request):
-    queryset = Student.objects.select_related('user_name', 'subject', 'admission_batch')
+    latest_choice_status_subquery = StudentProfessorChoice.objects.filter(student_id=OuterRef('pk')).order_by('-submit_date').values('status')[:1]
+    queryset = Student.objects.select_related('user_name', 'subject', 'admission_batch').annotate(
+        latest_choice_status=Subquery(latest_choice_status_subquery),
+    ).annotate(
+        current_status=Case(
+            When(is_giveup=True, then=Value('giveup')),
+            When(is_selected=True, then=Value('selected')),
+            When(is_alternate=True, then=Value('alternate')),
+            When(latest_choice_status=3, then=Value('pending')),
+            default=Value('incomplete'),
+            output_field=CharField(),
+        ),
+        current_status_order=Case(
+            When(is_giveup=True, then=Value(5)),
+            When(is_selected=True, then=Value(1)),
+            When(is_alternate=True, then=Value(2)),
+            When(latest_choice_status=3, then=Value(3)),
+            default=Value(4),
+            output_field=IntegerField(),
+        ),
+    )
     search = request.query_params.get('search', '').strip()
     subject_id = request.query_params.get('subject_id')
     subject_type = request.query_params.get('subject_type')
@@ -1652,6 +1672,7 @@ def build_student_queryset(request):
     is_alternate = request.query_params.get('is_alternate')
     is_giveup = request.query_params.get('is_giveup')
     review_status = request.query_params.get('review_status')
+    current_status = request.query_params.get('current_status')
     if search:
         queryset = queryset.filter(Q(name__icontains=search) | Q(candidate_number__icontains=search))
     if subject_id:
@@ -1678,6 +1699,8 @@ def build_student_queryset(request):
         queryset = queryset.filter(is_giveup=(is_giveup == 'true'))
     if review_status not in (None, ''):
         queryset = queryset.filter(signature_table_review_status=review_status)
+    if current_status in {'selected', 'alternate', 'pending', 'incomplete', 'giveup'}:
+        queryset = queryset.filter(current_status=current_status)
     return queryset
 
 
@@ -3866,6 +3889,7 @@ class DashboardStudentListView(APIView):
             'postgraduate_type': 'postgraduate_type',
             'final_rank': 'final_rank',
             'signature_table_review_status': 'signature_table_review_status',
+            'current_status': 'current_status_order',
             'is_selected': 'is_selected',
             'is_alternate': 'is_alternate',
             'is_giveup': 'is_giveup',

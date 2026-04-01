@@ -669,6 +669,11 @@ class ChoiceListSerializer(serializers.ModelSerializer):
     candidate_number = serializers.CharField(source='student.candidate_number', read_only=True)
     admission_year = serializers.IntegerField(source='student.admission_year', read_only=True)
     postgraduate_type_display = serializers.SerializerMethodField()
+    signature_table_status = serializers.SerializerMethodField()
+    student_signature_upload_status = serializers.SerializerMethodField()
+    professor_signature_upload_status = serializers.SerializerMethodField()
+    student_signature_status = serializers.SerializerMethodField()
+    professor_signature_status = serializers.SerializerMethodField()
     professor_name = serializers.CharField(source='professor.name', read_only=True)
     professor_teacher_identity_id = serializers.CharField(source='professor.teacher_identity_id', read_only=True)
     department_name = serializers.CharField(source='professor.department.department_name', read_only=True)
@@ -678,6 +683,35 @@ class ChoiceListSerializer(serializers.ModelSerializer):
         if obj.student_id and obj.student:
             return obj.student.get_postgraduate_type_display()
         return ''
+
+    def get_signature_table_status(self, obj):
+        if not obj.student_id or not obj.student:
+            return '未生成'
+        if obj.student.signature_table:
+            return '已生成'
+        if obj.status == 1:
+            return '缺失'
+        return '未生成'
+
+    def get_student_signature_upload_status(self, obj):
+        if not obj.student_id or not obj.student:
+            return '未上传'
+        return '已上传' if obj.student.signature_temp else '未上传'
+
+    def get_professor_signature_upload_status(self, obj):
+        if not obj.professor_id or not obj.professor:
+            return '未上传'
+        return '已上传' if obj.professor.signature_temp else '未上传'
+
+    def get_student_signature_status(self, obj):
+        if not obj.student_id or not obj.student:
+            return '未签字'
+        return '已签字' if obj.student.signature_table_student_signatured else '未签字'
+
+    def get_professor_signature_status(self, obj):
+        if not obj.student_id or not obj.student:
+            return '未签字'
+        return '已签字' if obj.student.signature_table_professor_signatured else '未签字'
 
     class Meta:
         model = StudentProfessorChoice
@@ -693,6 +727,11 @@ class ChoiceListSerializer(serializers.ModelSerializer):
             'professor_teacher_identity_id',
             'department_name',
             'subject_name',
+            'signature_table_status',
+            'student_signature_upload_status',
+            'professor_signature_upload_status',
+            'student_signature_status',
+            'professor_signature_status',
             'status',
             'chosen_by_professor',
             'submit_date',

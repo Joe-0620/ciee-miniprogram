@@ -21,6 +21,16 @@ const statusMap = {
   5: { tone: 'default', text: '已撤销' },
 };
 
+const signatureStatusToneMap = {
+  已生成: 'success',
+  已上传: 'success',
+  已签字: 'success',
+  缺失: 'warning',
+  未上传: 'default',
+  未签字: 'default',
+  未生成: 'default',
+};
+
 const studentTypeOptions = [
   { label: '硕士推免生', value: 1 },
   { label: '硕士统考生', value: 2 },
@@ -147,6 +157,36 @@ export default function ChoicesPage() {
     { title: '方向', dataIndex: 'department_name', key: 'department_name', sorter: true },
     { title: '专业', dataIndex: 'subject_name', key: 'subject_name', sorter: true },
     { title: '研究生类型', dataIndex: 'postgraduate_type_display', key: 'postgraduate_type_display', render: (value) => value || '-' },
+    {
+      title: '互选表状态',
+      dataIndex: 'signature_table_status',
+      key: 'signature_table_status',
+      render: (value) => <StatusTag tone={signatureStatusToneMap[value] || 'default'}>{value || '-'}</StatusTag>,
+    },
+    {
+      title: '学生签名图上传',
+      dataIndex: 'student_signature_upload_status',
+      key: 'student_signature_upload_status',
+      render: (value) => <StatusTag tone={signatureStatusToneMap[value] || 'default'}>{value || '-'}</StatusTag>,
+    },
+    {
+      title: '学生签字状态',
+      dataIndex: 'student_signature_status',
+      key: 'student_signature_status',
+      render: (value) => <StatusTag tone={signatureStatusToneMap[value] || 'default'}>{value || '-'}</StatusTag>,
+    },
+    {
+      title: '导师签名图上传',
+      dataIndex: 'professor_signature_upload_status',
+      key: 'professor_signature_upload_status',
+      render: (value) => <StatusTag tone={signatureStatusToneMap[value] || 'default'}>{value || '-'}</StatusTag>,
+    },
+    {
+      title: '导师签字状态',
+      dataIndex: 'professor_signature_status',
+      key: 'professor_signature_status',
+      render: (value) => <StatusTag tone={signatureStatusToneMap[value] || 'default'}>{value || '-'}</StatusTag>,
+    },
     {
       title: '状态',
       dataIndex: 'status',

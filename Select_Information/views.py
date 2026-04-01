@@ -1204,15 +1204,36 @@ class ProfessorChooseStudentView(APIView):
                     student.is_selected = True
                     student.save(update_fields=['is_selected'])
 
-                    # 生成 PDF、上传文件、发送通知属于附加动作，失败时不影响互选主流程
-                    try:
-                        self.generate_and_upload_pdf(student, professor)
-                    except Exception as exc:
-                        logger.exception(
-                            '导师接受学生后生成/上传互选材料失败: professor_id=%s student_id=%s error=%s',
+                    # 生成 PDF、上传文件属于附加动作，但这里至少重试一次并确认 signature_table 真正写回
+                    before_signature_table = student.signature_table
+                    generation_succeeded = False
+                    for attempt in range(1, 3):
+                        try:
+                            self.generate_and_upload_pdf(student, professor)
+                            student.refresh_from_db(fields=['signature_table'])
+                            if student.signature_table:
+                                generation_succeeded = True
+                                break
+                            logger.warning(
+                                '导师接受学生后第 %s 次生成互选材料未写入 signature_table: professor_id=%s student_id=%s before_signature_table=%s',
+                                attempt,
+                                professor.id,
+                                student.id,
+                                before_signature_table,
+                            )
+                        except Exception as exc:
+                            logger.exception(
+                                '导师接受学生后第 %s 次生成/上传互选材料失败: professor_id=%s student_id=%s error=%s',
+                                attempt,
+                                professor.id,
+                                student.id,
+                                exc,
+                            )
+                    if not generation_succeeded:
+                        logger.error(
+                            '导师接受学生后自动生成互选材料最终失败: professor_id=%s student_id=%s',
                             professor.id,
                             student.id,
-                            exc,
                         )
 
                     try:
@@ -1361,7 +1382,7 @@ class ProfessorChooseStudentView(APIView):
         self.merge_pdfs(student, save_path, packet)
 
         cloud_path = f"signature/student/{student.user_name.username}_{timestamp_str}_agreement.pdf"
-        self.upload_to_wechat_cloud(save_path, cloud_path, student)
+        return self.upload_to_wechat_cloud(save_path, cloud_path, student)
 
     def merge_pdfs(self, student, save_path, overlay_pdf):
         template_pdf_path = (
@@ -1427,7 +1448,7 @@ class ProfessorChooseStudentView(APIView):
             access_token = get_wechat_access_token()
             url = f'https://api.weixin.qq.com/tcb/uploadfile?access_token={access_token}'
             data = {"env": WECHAT_CLOUD_ENV, "path": cloud_path}
-            response = requests.post(url, json=data, timeout=15)
+            response = requests.post(url, json=data, **get_wechat_request_kwargs(timeout=15))
             response.raise_for_status()
             response_data = response.json()
 
@@ -1436,7 +1457,7 @@ class ProfessorChooseStudentView(APIView):
                 if errcode == 41001:
                     access_token = get_wechat_access_token(force_refresh=True)
                     refresh_url = f'https://api.weixin.qq.com/tcb/uploadfile?access_token={access_token}'
-                    response = requests.post(refresh_url, json=data, timeout=15)
+                    response = requests.post(refresh_url, json=data, **get_wechat_request_kwargs(timeout=15))
                     response.raise_for_status()
                     response_data = response.json()
                 if response_data.get('errcode') not in (None, 0):
@@ -1464,8 +1485,10 @@ class ProfessorChooseStudentView(APIView):
             student.signature_table = file_id
             student.save()
             logger.info('互选材料上传成功并已写入 signature_table: student_id=%s file_id=%s', student.id, file_id)
+            return file_id
         except Exception as e:
             logger.exception('文件上传失败: %s', e)
+            raise
         finally:
             if os.path.exists(save_path):
                 try:

@@ -3,8 +3,8 @@ import { Button, Card, Descriptions, Drawer, Input, Select, Space, Table, messag
 
 import { get, post } from '../api/client';
 import PageHeader from '../components/PageHeader';
+import PdfPreviewModal from '../components/PdfPreviewModal';
 import StatusTag from '../components/StatusTag';
-import { openFileById } from '../utils/files';
 import { confirmDanger } from '../utils/confirm';
 
 
@@ -26,12 +26,14 @@ export default function ReviewsPage() {
   const [actionLoading, setActionLoading] = useState(false);
   const [detailLoading, setDetailLoading] = useState(false);
   const [keyword, setKeyword] = useState('');
-  const [filters, setFilters] = useState({ status: undefined, subject_id: undefined });
+  const [filters, setFilters] = useState({ status: undefined, subject_id: undefined, admission_year: undefined });
   const [sorter, setSorter] = useState({ order_by: 'submit_time', order_direction: 'desc' });
   const [subjects, setSubjects] = useState([]);
+  const [admissionYears, setAdmissionYears] = useState([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [detail, setDetail] = useState(null);
+  const [previewState, setPreviewState] = useState({ open: false, title: '', fileId: '' });
   const [data, setData] = useState({ count: 0, results: [] });
   const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
 
@@ -65,6 +67,7 @@ export default function ReviewsPage() {
       });
       const payload = await get(`/review-records/?${params.toString()}`);
       setData(payload);
+      setAdmissionYears(payload.available_admission_years || []);
       setPagination({ current: payload.page, pageSize: payload.page_size });
     } catch (err) {
       message.error(err.message);
@@ -134,9 +137,18 @@ export default function ReviewsPage() {
     fetchData(1, pagination.pageSize, keyword, next, sorter);
   };
 
+  const openPreview = (fileId, title) => {
+    setPreviewState({
+      open: true,
+      title: title || '材料预览',
+      fileId: fileId || '',
+    });
+  };
+
   const columns = [
     { title: '学生', dataIndex: 'student_name', key: 'student_name', sorter: true },
     { title: '考生编号', dataIndex: 'candidate_number', key: 'candidate_number', sorter: true },
+    { title: '届别', dataIndex: 'admission_year', key: 'admission_year', sorter: true, render: (value) => (value ? `${value}届` : '-') },
     { title: '导师', dataIndex: 'professor_name', key: 'professor_name', sorter: true },
     { title: '审核人', dataIndex: 'reviewer_name', key: 'reviewer_name', sorter: true, render: (value) => value || '-' },
     { title: '专业', dataIndex: 'subject_name', key: 'subject_name', sorter: true },
@@ -160,7 +172,11 @@ export default function ReviewsPage() {
           <Button size="small" onClick={() => showDetail(record)} loading={detailLoading && detail?.id === record.id}>
             查看详情
           </Button>
-          <Button size="small" onClick={() => openFileById(record.file_id)} disabled={!record.file_id}>
+          <Button
+            size="small"
+            onClick={() => openPreview(record.file_id, `${record.student_name} - 审核材料`)}
+            disabled={!record.file_id}
+          >
             查看材料
           </Button>
           <Button
@@ -215,6 +231,14 @@ export default function ReviewsPage() {
               value={filters.subject_id}
               options={subjects.map((item) => ({ label: formatSubjectOption(item), value: item.id }))}
               onChange={(value) => updateFilter('subject_id', value)}
+            />
+            <Select
+              allowClear
+              placeholder="按届别筛选"
+              style={{ width: 160 }}
+              value={filters.admission_year}
+              options={admissionYears.map((year) => ({ label: `${year}届`, value: year }))}
+              onChange={(value) => updateFilter('admission_year', value)}
             />
           </div>
 
@@ -282,7 +306,11 @@ export default function ReviewsPage() {
               <Descriptions.Item label="提交时间">{detail.submit_time ? new Date(detail.submit_time).toLocaleString() : '-'}</Descriptions.Item>
               <Descriptions.Item label="审核时间">{detail.review_time ? new Date(detail.review_time).toLocaleString() : '-'}</Descriptions.Item>
               <Descriptions.Item label="审核材料">
-                <Button size="small" onClick={() => openFileById(detail.file_id)} disabled={!detail.file_id}>
+                <Button
+                  size="small"
+                  onClick={() => openPreview(detail.file_id, `${detail.student?.name || detail.student_name || '学生'} - 审核材料`)}
+                  disabled={!detail.file_id}
+                >
                   查看材料
                 </Button>
               </Descriptions.Item>
@@ -302,6 +330,13 @@ export default function ReviewsPage() {
           </Space>
         ) : null}
       </Drawer>
+
+      <PdfPreviewModal
+        open={previewState.open}
+        title={previewState.title}
+        fileId={previewState.fileId}
+        onClose={() => setPreviewState({ open: false, title: '', fileId: '' })}
+      />
     </>
   );
 }

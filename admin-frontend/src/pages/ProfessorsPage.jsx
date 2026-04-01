@@ -48,7 +48,7 @@ export default function ProfessorsPage() {
     have_qualification: undefined,
     reviewer_only: undefined,
   });
-  const [sorter, setSorter] = useState({ order_by: 'website_order', order_direction: 'asc' });
+  const [sorter, setSorter] = useState({ order_by: 'id', order_direction: 'desc' });
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [data, setData] = useState({ count: 0, results: [] });
   const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });

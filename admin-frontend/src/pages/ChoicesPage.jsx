@@ -65,7 +65,7 @@ export default function ChoicesPage() {
   const [keyword, setKeyword] = useState('');
   const [filters, setFilters] = useState({
     status: undefined, subject_id: undefined, department_id: undefined, admission_year: undefined,
-    signature_table_status: undefined, student_signature_upload: undefined, professor_signature_upload: undefined,
+    signature_table_status: undefined,
     student_signed: undefined, professor_signed: undefined,
   });
   const [sorter, setSorter] = useState({ order_by: 'submit_date', order_direction: 'desc' });
@@ -163,8 +163,6 @@ export default function ChoicesPage() {
     { title: '考生编号', dataIndex: 'candidate_number', key: 'candidate_number', sorter: true },
     { title: '届别', dataIndex: 'admission_year', key: 'admission_year', sorter: true, render: (value) => (value ? `${value}届` : '-') },
     { title: '导师', dataIndex: 'professor_name', key: 'professor_name', sorter: true },
-    { title: '导师工号', dataIndex: 'professor_teacher_identity_id', key: 'professor_teacher_identity_id', sorter: true },
-    { title: '方向', dataIndex: 'department_name', key: 'department_name', sorter: true },
     { title: '专业', dataIndex: 'subject_name', key: 'subject_name', sorter: true },
     { title: '研究生类型', dataIndex: 'postgraduate_type_display', key: 'postgraduate_type_display', render: (value) => value || '-' },
     {
@@ -174,21 +172,9 @@ export default function ChoicesPage() {
       render: (value) => <StatusTag tone={signatureStatusToneMap[value] || 'default'}>{value || '-'}</StatusTag>,
     },
     {
-      title: '学生签名图上传',
-      dataIndex: 'student_signature_upload_status',
-      key: 'student_signature_upload_status',
-      render: (value) => <StatusTag tone={signatureStatusToneMap[value] || 'default'}>{value || '-'}</StatusTag>,
-    },
-    {
       title: '学生签字状态',
       dataIndex: 'student_signature_status',
       key: 'student_signature_status',
-      render: (value) => <StatusTag tone={signatureStatusToneMap[value] || 'default'}>{value || '-'}</StatusTag>,
-    },
-    {
-      title: '导师签名图上传',
-      dataIndex: 'professor_signature_upload_status',
-      key: 'professor_signature_upload_status',
       render: (value) => <StatusTag tone={signatureStatusToneMap[value] || 'default'}>{value || '-'}</StatusTag>,
     },
     {
@@ -358,28 +344,6 @@ export default function ChoicesPage() {
               { label: '未生成', value: 'not_generated' },
             ]}
             onChange={(value) => updateFilter('signature_table_status', value)}
-          />
-          <Select
-            allowClear
-            placeholder="学生签名图上传"
-            style={{ width: 160 }}
-            value={filters.student_signature_upload}
-            options={[
-              { label: '已上传', value: 'uploaded' },
-              { label: '未上传', value: 'not_uploaded' },
-            ]}
-            onChange={(value) => updateFilter('student_signature_upload', value)}
-          />
-          <Select
-            allowClear
-            placeholder="导师签名图上传"
-            style={{ width: 160 }}
-            value={filters.professor_signature_upload}
-            options={[
-              { label: '已上传', value: 'uploaded' },
-              { label: '未上传', value: 'not_uploaded' },
-            ]}
-            onChange={(value) => updateFilter('professor_signature_upload', value)}
           />
           <Select
             allowClear

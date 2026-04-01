@@ -780,6 +780,7 @@ class StudentChoiceBehaviorSerializer(serializers.ModelSerializer):
 class ReviewRecordListSerializer(serializers.ModelSerializer):
     student_name = serializers.CharField(source='student.name', read_only=True)
     candidate_number = serializers.CharField(source='student.candidate_number', read_only=True)
+    admission_year = serializers.IntegerField(source='student.admission_year', read_only=True)
     professor_name = serializers.CharField(source='professor.name', read_only=True)
     reviewer_name = serializers.CharField(source='reviewer.name', read_only=True)
     subject_name = serializers.CharField(source='student.subject.subject_name', read_only=True)
@@ -791,6 +792,7 @@ class ReviewRecordListSerializer(serializers.ModelSerializer):
             'student_id',
             'student_name',
             'candidate_number',
+            'admission_year',
             'professor_id',
             'professor_name',
             'reviewer_id',
@@ -808,6 +810,7 @@ class ReviewRecordDetailSerializer(serializers.ModelSerializer):
     student = StudentDetailSerializer(read_only=True)
     professor = ProfessorDetailSerializer(read_only=True)
     reviewer_name = serializers.CharField(source='reviewer.name', read_only=True)
+    admission_year = serializers.IntegerField(source='student.admission_year', read_only=True)
 
     class Meta:
         model = ReviewRecord
@@ -817,6 +820,7 @@ class ReviewRecordDetailSerializer(serializers.ModelSerializer):
             'professor',
             'reviewer_id',
             'reviewer_name',
+            'admission_year',
             'file_id',
             'status',
             'review_status',

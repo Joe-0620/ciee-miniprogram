@@ -124,7 +124,7 @@ export default function StudentsPage() {
     review_status: undefined,
     current_status: undefined,
   });
-  const [sorter, setSorter] = useState({ order_by: 'final_rank', order_direction: 'asc' });
+  const [sorter, setSorter] = useState({ order_by: 'id', order_direction: 'desc' });
   const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
   const [editOpen, setEditOpen] = useState(false);
   const [importOpen, setImportOpen] = useState(false);

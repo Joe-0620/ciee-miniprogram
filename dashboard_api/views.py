@@ -319,6 +319,34 @@ def get_file_download_url(file_id):
     return file_list[0]['download_url']
 
 
+def notify_promoted_alternate_student(student):
+    try:
+        student_wechat_account = WeChatAccount.objects.get(user=student.user_name)
+        student_openid = student_wechat_account.openid
+        if not student_openid:
+            return
+
+        payload = {
+            "touser": student_openid,
+            "template_id": "sB5ExrEe33Z6tRR5Gj_Qp6-F1TfnWhqHY_ZRQI-ZpKw",
+            "page": "pages/profile/profile",
+            "data": {
+                "phrase1": {"value": "候补成功"},
+                "thing6": {"value": student.name},
+            },
+        }
+        response_data = post_wechat_api('cgi-bin/message/subscribe/send', payload, timeout=15)
+        if response_data.get("errcode") not in (None, 0):
+            logger.warning(
+                '候补递补通知发送失败: student_id=%s errcode=%s errmsg=%s',
+                student.id,
+                response_data.get('errcode'),
+                response_data.get('errmsg'),
+            )
+    except WeChatAccount.DoesNotExist:
+        logger.info('候补递补通知跳过，学生未绑定微信账号: student_id=%s', student.id)
+
+
 def professor_has_quota_for_student(professor, student):
     _, quota_source = get_quota_source_for_student(professor, student, remaining_only=True)
     return quota_source is not None
@@ -1910,6 +1938,7 @@ def build_review_record_queryset(request):
     professor_id = request.query_params.get('professor_id')
     search = request.query_params.get('search', '').strip()
     subject_id = request.query_params.get('subject_id')
+    admission_year = request.query_params.get('admission_year')
     if status_value:
         queryset = queryset.filter(status=status_value)
     if reviewer_id:
@@ -1918,6 +1947,8 @@ def build_review_record_queryset(request):
         queryset = queryset.filter(professor_id=professor_id)
     if subject_id:
         queryset = queryset.filter(student__subject_id=subject_id)
+    if admission_year not in (None, ''):
+        queryset = queryset.filter(student__admission_year=admission_year)
     if search:
         queryset = queryset.filter(
             Q(student__name__icontains=search) |
@@ -2554,10 +2585,11 @@ class DashboardProfessorListView(APIView):
             'shared_quota_pools__subjects',
         )
 
-        order_by = request.query_params.get('order_by', 'website_order')
-        order_direction = request.query_params.get('order_direction', 'asc')
+        order_by = request.query_params.get('order_by', 'id')
+        order_direction = request.query_params.get('order_direction', 'desc')
 
         order_map = {
+            'id': 'id',
             'name': 'name',
             'teacher_identity_id': 'teacher_identity_id',
             'professor_title': 'professor_title',
@@ -2567,10 +2599,10 @@ class DashboardProfessorListView(APIView):
             'accepted_choice_count': 'accepted_choice_count',
             'website_order': 'website_order',
         }
-        order_field = order_map.get(order_by, 'website_order')
+        order_field = order_map.get(order_by, 'id')
         if order_direction == 'desc':
             order_field = f'-{order_field}'
-        queryset = queryset.order_by(order_field, 'id')
+        queryset = queryset.order_by(order_field, '-id')
 
         total = queryset.count()
         start = (page - 1) * page_size
@@ -3957,10 +3989,11 @@ class DashboardStudentListView(APIView):
         queryset = build_student_queryset(request).select_related('subject').annotate(
             latest_choice_id=Subquery(latest_choice_subquery.values('id')[:1]),
         )
-        order_by = request.query_params.get('order_by', 'final_rank')
-        order_direction = request.query_params.get('order_direction', 'asc')
+        order_by = request.query_params.get('order_by', 'id')
+        order_direction = request.query_params.get('order_direction', 'desc')
 
         order_map = {
+            'id': 'id',
             'name': 'name',
             'candidate_number': 'candidate_number',
             'subject_name': 'subject__subject_name',
@@ -3977,10 +4010,10 @@ class DashboardStudentListView(APIView):
             'is_alternate': 'is_alternate',
             'is_giveup': 'is_giveup',
         }
-        order_field = order_map.get(order_by, 'final_rank')
+        order_field = order_map.get(order_by, 'id')
         if order_direction == 'desc':
             order_field = f'-{order_field}'
-        queryset = queryset.order_by(order_field, 'id')
+        queryset = queryset.order_by(order_field, '-id')
 
         total = queryset.count()
         start = (page - 1) * page_size
@@ -4907,12 +4940,19 @@ class DashboardReviewRecordListView(APIView):
         page = max(int(request.query_params.get('page', 1)), 1)
         page_size = min(max(int(request.query_params.get('page_size', 10)), 1), 100)
         queryset = build_review_record_queryset(request)
+        available_admission_years = sorted(
+            ReviewRecord.objects.exclude(student__admission_year__isnull=True)
+            .order_by('student__admission_year')
+            .values_list('student__admission_year', flat=True)
+            .distinct()
+        )
         order_by = request.query_params.get('order_by', 'submit_time')
         order_direction = request.query_params.get('order_direction', 'desc')
 
         order_map = {
             'student_name': 'student__name',
             'candidate_number': 'student__candidate_number',
+            'admission_year': 'student__admission_year',
             'professor_name': 'professor__name',
             'reviewer_name': 'reviewer__name',
             'subject_name': 'student__subject__subject_name',
@@ -4930,7 +4970,13 @@ class DashboardReviewRecordListView(APIView):
         end = start + page_size
         serializer = ReviewRecordListSerializer(queryset[start:end], many=True)
         return Response(
-            {'count': total, 'page': page, 'page_size': page_size, 'results': serializer.data},
+            {
+                'count': total,
+                'page': page,
+                'page_size': page_size,
+                'results': serializer.data,
+                'available_admission_years': available_admission_years,
+            },
             status=status.HTTP_200_OK,
         )
 
@@ -6054,6 +6100,11 @@ class DashboardAlternatePromoteNextView(APIView):
             if reason == 'no_quota':
                 return Response({'detail': '该专业当前没有可回补的可用名额，无法递补候补学生。'}, status=status.HTTP_409_CONFLICT)
             return Response({'detail': '该专业没有可递补的候补学生。'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            notify_promoted_alternate_student(promoted_student)
+        except Exception as exc:
+            logger.exception('Dashboard 递补候补学生通知失败: student_id=%s error=%s', promoted_student.id, exc)
 
         create_audit_log(
             request,

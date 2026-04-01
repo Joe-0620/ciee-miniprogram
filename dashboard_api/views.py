@@ -4633,10 +4633,22 @@ class DashboardChoiceExportSelectedView(APIView):
     permission_classes = [IsDashboardAdmin]
 
     def get(self, request):
-        queryset = StudentProfessorChoice.objects.select_related('student__subject', 'professor').filter(
-            status=1,
-            chosen_by_professor=True,
-        )
+        queryset = StudentProfessorChoice.objects.select_related('student__subject', 'professor')
+        status_value = request.query_params.get('status')
+        admission_year = request.query_params.get('admission_year')
+        student_type = request.query_params.get('student_type')
+        postgraduate_types = [value for value in request.query_params.getlist('postgraduate_type') if value not in (None, '')]
+
+        if status_value not in (None, ''):
+            queryset = queryset.filter(status=status_value)
+        if admission_year not in (None, ''):
+            queryset = queryset.filter(student__admission_year=admission_year)
+        if student_type not in (None, ''):
+            queryset = queryset.filter(student__student_type=student_type)
+        if postgraduate_types:
+            queryset = queryset.filter(student__postgraduate_type__in=postgraduate_types)
+
+        queryset = queryset.order_by('-submit_date', '-id')
 
         student_type_map = {
             1: '硕士推免生',
@@ -4646,12 +4658,16 @@ class DashboardChoiceExportSelectedView(APIView):
 
         workbook = Workbook()
         worksheet = workbook.active
-        worksheet.title = '互选结果'
+        worksheet.title = '双选记录'
         worksheet.append([
+            '状态',
+            '届别',
             '专业代码',
             '专业名称',
             '考生编号',
             '姓名',
+            '学生类型',
+            '研究生类型',
             '初试成绩',
             '复试成绩',
             '综合排名',
@@ -4659,8 +4675,15 @@ class DashboardChoiceExportSelectedView(APIView):
             '培养类型',
             '手机号',
             '导师',
-            '招生批次',
         ])
+
+        status_label_map = {
+            1: '已同意',
+            2: '已拒绝',
+            3: '待处理',
+            4: '已取消',
+            5: '已撤销',
+        }
 
         for choice in queryset:
             student = choice.student
@@ -4668,10 +4691,14 @@ class DashboardChoiceExportSelectedView(APIView):
             level = '博士' if student.postgraduate_type == 3 else '硕士'
             degree_type = '学术学位' if student.postgraduate_type in [2, 3] else '专业学位'
             worksheet.append([
+                status_label_map.get(choice.status, str(choice.status)),
+                f'{student.admission_year}届' if student.admission_year else '',
                 student.subject.subject_code if student.subject else '',
                 student.subject.subject_name if student.subject else '',
                 student.candidate_number,
                 student.name,
+                student_type_map.get(student.student_type, str(student.student_type)),
+                student.get_postgraduate_type_display(),
                 student.initial_exam_score,
                 student.secondary_exam_score,
                 student.final_rank,
@@ -4679,21 +4706,23 @@ class DashboardChoiceExportSelectedView(APIView):
                 degree_type,
                 student.phone_number,
                 professor.name if professor else '',
-                student_type_map.get(student.student_type, str(student.student_type)),
             ])
 
         response = HttpResponse(
             content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
         )
-        response['Content-Disposition'] = 'attachment; filename="selected-choices.xlsx"'
+        response['Content-Disposition'] = 'attachment; filename="choices-records.xlsx"'
         workbook.save(response)
         create_audit_log(
             request,
-            action='choice.export_selected',
+            action='choice.export_records',
             module='双选记录',
             target_type='choice',
-            target_display='已录取双选导出',
-            detail='导出已同意且已选中的双选记录。',
+            target_display='双选记录导出',
+            detail=(
+                f'导出双选记录，状态={status_value or "全部"}，届别={admission_year or "全部"}，'
+                f'学生类型={student_type or "全部"}，研究生类型={",".join(postgraduate_types) if postgraduate_types else "全部"}。'
+            ),
         )
         return response
 

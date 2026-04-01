@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Card, Input, Select, Space, Table, message } from 'antd';
+import { Button, Card, Form, Input, Modal, Select, Space, Table, message } from 'antd';
 
 import { download, get, post } from '../api/client';
 import PageHeader from '../components/PageHeader';
@@ -21,6 +21,33 @@ const statusMap = {
   5: { tone: 'default', text: '已撤销' },
 };
 
+const studentTypeOptions = [
+  { label: '硕士推免生', value: 1 },
+  { label: '硕士统考生', value: 2 },
+  { label: '博士统考生', value: 3 },
+];
+
+const postgraduateTypeOptions = [
+  { label: '专业型（北京）', value: 1 },
+  { label: '学术型', value: 2 },
+  { label: '博士', value: 3 },
+  { label: '专业型（烟台）', value: 4 },
+];
+
+function buildChoiceExportFilename(values) {
+  const statusLabel = values.status ? statusMap[values.status]?.text || `状态${values.status}` : '全部状态';
+  const yearLabel = values.admission_year ? `${values.admission_year}届` : '全部届别';
+  const studentTypeLabel = values.student_type
+    ? studentTypeOptions.find((item) => item.value === values.student_type)?.label || `学生类型${values.student_type}`
+    : '全部学生类型';
+  const postgraduateLabels = Array.isArray(values.postgraduate_type) && values.postgraduate_type.length
+    ? values.postgraduate_type
+        .map((value) => postgraduateTypeOptions.find((item) => item.value === value)?.label || `研究生类型${value}`)
+        .join('、')
+    : '全部研究生类型';
+  return `双选记录_${statusLabel}_${yearLabel}_${studentTypeLabel}_${postgraduateLabels}.xlsx`;
+}
+
 export default function ChoicesPage() {
   const [loading, setLoading] = useState(false);
   const [actionLoading, setActionLoading] = useState(false);
@@ -33,6 +60,9 @@ export default function ChoicesPage() {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [data, setData] = useState({ count: 0, results: [] });
   const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
+  const [exportOpen, setExportOpen] = useState(false);
+  const [exportSubmitting, setExportSubmitting] = useState(false);
+  const [exportForm] = Form.useForm();
 
   const loadOptions = async () => {
     try {
@@ -162,13 +192,55 @@ export default function ChoicesPage() {
     },
   ];
 
+  const exportPostgraduateTypeOptions = Form.useWatch('student_type', exportForm) === 3
+    ? postgraduateTypeOptions.filter((item) => item.value === 3)
+    : postgraduateTypeOptions.filter((item) => item.value !== 3);
+
+  const handleExport = async () => {
+    try {
+      const values = await exportForm.validateFields();
+      const params = new URLSearchParams();
+      if (values.status !== undefined && values.status !== null && values.status !== '') {
+        params.set('status', String(values.status));
+      }
+      if (values.admission_year !== undefined && values.admission_year !== null && values.admission_year !== '') {
+        params.set('admission_year', String(values.admission_year));
+      }
+      if (values.student_type !== undefined && values.student_type !== null && values.student_type !== '') {
+        params.set('student_type', String(values.student_type));
+      }
+      if (Array.isArray(values.postgraduate_type)) {
+        values.postgraduate_type.forEach((value) => {
+          if (value !== undefined && value !== null && value !== '') {
+            params.append('postgraduate_type', String(value));
+          }
+        });
+      }
+      setExportSubmitting(true);
+      await download(
+        `/choices/export-selected/${params.toString() ? `?${params.toString()}` : ''}`,
+        buildChoiceExportFilename(values),
+      );
+      message.success('导出成功');
+      setExportOpen(false);
+      exportForm.resetFields();
+    } catch (err) {
+      if (!err?.errorFields) {
+        message.error(err.message);
+      }
+    } finally {
+      setExportSubmitting(false);
+    }
+  };
+
   return (
-    <Card className="page-card" bordered={false}>
-      <PageHeader
-        items={[{ title: '招生业务' }, { title: '双选记录' }]}
-        title="双选记录"
-        subtitle="统一查看学生申请、导师处理和最终状态，适合做整体追踪与异常排查。"
-      />
+    <>
+      <Card className="page-card" bordered={false}>
+        <PageHeader
+          items={[{ title: '招生业务' }, { title: '双选记录' }]}
+          title="双选记录"
+          subtitle="统一查看学生申请、导师处理和最终状态，适合做整体追踪与异常排查。"
+        />
 
       <div className="page-toolbar">
         <div className="page-filters">
@@ -216,18 +288,7 @@ export default function ChoicesPage() {
 
         <div className="page-actions">
           <Button onClick={() => fetchData(1, pagination.pageSize, keyword, filters, sorter)}>刷新</Button>
-          <Button
-            onClick={async () => {
-              try {
-                await download('/choices/export-selected/', '已同意双选记录.xlsx');
-                message.success('导出成功');
-              } catch (err) {
-                message.error(err.message);
-              }
-            }}
-          >
-            导出已同意记录
-          </Button>
+          <Button onClick={() => setExportOpen(true)}>导出记录</Button>
           <Button
             danger
             disabled={!selectedRowKeys.length}
@@ -277,21 +338,71 @@ export default function ChoicesPage() {
         </div>
       </div>
 
-      <Table
-        rowKey="id"
-        loading={loading}
-        rowSelection={{ selectedRowKeys, onChange: setSelectedRowKeys }}
-        columns={columns}
-        dataSource={data.results}
-        pagination={{ current: pagination.current, pageSize: pagination.pageSize, total: data.count, showSizeChanger: true }}
-        onChange={(pager, _filters, tableSorter) => {
-          const nextSorter = tableSorter?.field
-            ? { order_by: tableSorter.field, order_direction: tableSorter.order === 'descend' ? 'desc' : 'asc' }
-            : sorter;
-          setSorter(nextSorter);
-          fetchData(pager.current, pager.pageSize, keyword, filters, nextSorter);
+        <Table
+          rowKey="id"
+          loading={loading}
+          rowSelection={{ selectedRowKeys, onChange: setSelectedRowKeys }}
+          columns={columns}
+          dataSource={data.results}
+          pagination={{ current: pagination.current, pageSize: pagination.pageSize, total: data.count, showSizeChanger: true }}
+          onChange={(pager, _filters, tableSorter) => {
+            const nextSorter = tableSorter?.field
+              ? { order_by: tableSorter.field, order_direction: tableSorter.order === 'descend' ? 'desc' : 'asc' }
+              : sorter;
+            setSorter(nextSorter);
+            fetchData(pager.current, pager.pageSize, keyword, filters, nextSorter);
+          }}
+        />
+      </Card>
+
+      <Modal
+        open={exportOpen}
+        title="导出记录"
+        onCancel={() => {
+          if (exportSubmitting) return;
+          setExportOpen(false);
+          exportForm.resetFields();
         }}
-      />
-    </Card>
+        onOk={handleExport}
+        confirmLoading={exportSubmitting}
+        okText="开始导出"
+        destroyOnClose
+      >
+        <Form form={exportForm} layout="vertical">
+          <Form.Item label="状态" name="status">
+            <Select
+              allowClear
+              placeholder="选择要导出的状态"
+              options={Object.entries(statusMap).map(([value, config]) => ({ label: config.text, value }))}
+            />
+          </Form.Item>
+          <Form.Item label="届别" name="admission_year">
+            <Select
+              allowClear
+              placeholder="选择要导出的届别"
+              options={admissionYears.map((year) => ({ label: `${year}届`, value: year }))}
+            />
+          </Form.Item>
+          <Form.Item label="学生类型" name="student_type">
+            <Select
+              allowClear
+              placeholder="选择要导出的学生类型"
+              options={studentTypeOptions}
+              onChange={() => {
+                exportForm.setFieldValue('postgraduate_type', undefined);
+              }}
+            />
+          </Form.Item>
+          <Form.Item label="研究生类型" name="postgraduate_type">
+            <Select
+              mode="multiple"
+              allowClear
+              placeholder="选择要导出的研究生类型"
+              options={exportPostgraduateTypeOptions}
+            />
+          </Form.Item>
+        </Form>
+      </Modal>
+    </>
   );
 }

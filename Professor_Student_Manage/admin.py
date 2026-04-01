@@ -27,6 +27,7 @@ from django.core.cache import cache
 WECHAT_CLOUD_ENV = os.environ.get('WECHAT_CLOUD_ENV', 'prod-2g1jrmkk21c1d283')
 WECHAT_APPID = os.environ.get('WECHAT_APPID', 'wxa67ae78c4f1f6275')
 WECHAT_SECRET = os.environ.get('WECHAT_SECRET', '7241b1950145a193f15b3584d50f3989')
+WECHAT_API_BASE = os.environ.get('WECHAT_API_BASE', 'https://api.weixin.qq.com')
 
 
 def get_wechat_access_token(force_refresh=False):
@@ -37,7 +38,7 @@ def get_wechat_access_token(force_refresh=False):
             return cached_token
 
     response = requests.post(
-        'https://api.weixin.qq.com/cgi-bin/stable_token',
+        f'{WECHAT_API_BASE}/cgi-bin/stable_token',
         json={
             'grant_type': 'client_credential',
             'appid': WECHAT_APPID,
@@ -1593,7 +1594,7 @@ class StudentAdmin(admin.ModelAdmin):
         根据 file_id 获取下载地址
         """
         access_token = get_wechat_access_token()
-        url = f'https://api.weixin.qq.com/tcb/batchdownloadfile?access_token={access_token}'
+        url = f'{WECHAT_API_BASE}/tcb/batchdownloadfile?access_token={access_token}'
         data = {
             "env": WECHAT_CLOUD_ENV,
             "file_list": [
@@ -1610,7 +1611,7 @@ class StudentAdmin(admin.ModelAdmin):
         payload = response.json()
         if payload.get('errcode') == 41001:
             access_token = get_wechat_access_token(force_refresh=True)
-            refresh_url = f'https://api.weixin.qq.com/tcb/batchdownloadfile?access_token={access_token}'
+            refresh_url = f'{WECHAT_API_BASE}/tcb/batchdownloadfile?access_token={access_token}'
             response = requests.post(refresh_url, json=data, timeout=15)
             response.raise_for_status()
             payload = response.json()

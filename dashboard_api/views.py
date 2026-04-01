@@ -86,6 +86,7 @@ from .serializers import (
 WECHAT_CLOUD_ENV = os.environ.get('WECHAT_CLOUD_ENV', 'prod-2g1jrmkk21c1d283')
 WECHAT_APPID = os.environ.get('WECHAT_APPID', 'wxa67ae78c4f1f6275')
 WECHAT_SECRET = os.environ.get('WECHAT_SECRET', '7241b1950145a193f15b3584d50f3989')
+WECHAT_API_BASE = os.environ.get('WECHAT_API_BASE', 'https://api.weixin.qq.com')
 
 
 def get_display_name_for_user(user):
@@ -232,7 +233,7 @@ def get_wechat_access_token(force_refresh=False):
             return cached_token
 
     response = requests.post(
-        'https://api.weixin.qq.com/cgi-bin/stable_token',
+        f'{WECHAT_API_BASE}/cgi-bin/stable_token',
         json={
             'grant_type': 'client_credential',
             'appid': WECHAT_APPID,
@@ -255,7 +256,7 @@ def get_wechat_access_token(force_refresh=False):
 def get_file_download_url(file_id):
     access_token = get_wechat_access_token()
     response = requests.post(
-        f'https://api.weixin.qq.com/tcb/batchdownloadfile?access_token={access_token}',
+        f'{WECHAT_API_BASE}/tcb/batchdownloadfile?access_token={access_token}',
         json={
             'env': WECHAT_CLOUD_ENV,
             'file_list': [{'fileid': file_id, 'max_age': 7200}],
@@ -267,7 +268,7 @@ def get_file_download_url(file_id):
     if payload.get('errcode') == 41001:
         access_token = get_wechat_access_token(force_refresh=True)
         response = requests.post(
-            f'https://api.weixin.qq.com/tcb/batchdownloadfile?access_token={access_token}',
+            f'{WECHAT_API_BASE}/tcb/batchdownloadfile?access_token={access_token}',
             json={
                 'env': WECHAT_CLOUD_ENV,
                 'file_list': [{'fileid': file_id, 'max_age': 7200}],
@@ -1111,6 +1112,10 @@ def save_student_from_payload(payload, student=None):
 
     previous_subject = student.subject if student else None
     previous_admission_year = student.admission_year if student else None
+    manual_alternate_update = (
+        payload.get('is_alternate') is not None
+        or payload.get('alternate_rank') not in (None, '')
+    )
 
     if student is None:
         if User.objects.filter(username=candidate_number).exists():
@@ -1155,6 +1160,8 @@ def save_student_from_payload(payload, student=None):
     if payload['is_alternate'] is not None:
         student.is_alternate = payload['is_alternate']
     student.alternate_rank = to_int(payload['alternate_rank'], default=None) if payload['alternate_rank'] not in (None, '') else None
+    if payload['is_alternate'] is False:
+        student.alternate_rank = None
     if payload['is_giveup'] is not None:
         student.is_giveup = payload['is_giveup']
     if payload['can_login'] is not None:
@@ -1165,7 +1172,7 @@ def save_student_from_payload(payload, student=None):
 
     if previous_subject and previous_subject != student.subject:
         sync_student_alternate_status(previous_subject, previous_admission_year)
-    if student.subject:
+    if student.subject and not manual_alternate_update:
         sync_student_alternate_status(student.subject, student.admission_year)
     return student
 
@@ -6095,4 +6102,3 @@ class DashboardGiveupBatchDeleteView(APIView):
             before_data={'names': names, 'delete_all_filtered': delete_all_filtered},
         )
         return Response({'detail': f'已删除 {deleted_count} 条放弃录取记录。'}, status=status.HTTP_200_OK)
-

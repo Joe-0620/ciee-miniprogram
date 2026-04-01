@@ -1,7 +1,10 @@
 from celery import shared_task
 from celery.utils.log import get_task_logger
 import requests
+import os
 from django.core.cache import cache
+
+WECHAT_API_BASE = os.environ.get('WECHAT_API_BASE', 'https://api.weixin.qq.com')
 
 logger = get_task_logger(__name__)
 
@@ -12,7 +15,7 @@ def request_access_token():
     # 例如:
 
     # 定义请求URL和参数
-    url = "https://api.weixin.qq.com/cgi-bin/token"
+    url = f"{WECHAT_API_BASE}/cgi-bin/token"
     params = {
         "grant_type": "client_credential",
         "appid": "wxa67ae78c4f1f6275",

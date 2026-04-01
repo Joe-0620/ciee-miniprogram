@@ -52,6 +52,7 @@ logger = logging.getLogger('log')
 WECHAT_CLOUD_ENV = os.environ.get('WECHAT_CLOUD_ENV', 'prod-2g1jrmkk21c1d283')
 WECHAT_APPID = os.environ.get('WECHAT_APPID', 'wxa67ae78c4f1f6275')
 WECHAT_SECRET = os.environ.get('WECHAT_SECRET', '7241b1950145a193f15b3584d50f3989')
+WECHAT_API_BASE = os.environ.get('WECHAT_API_BASE', 'https://api.weixin.qq.com')
 WECHAT_API_CA_BUNDLE = os.environ.get('WECHAT_API_CA_BUNDLE')
 WECHAT_API_VERIFY_SSL = os.environ.get('WECHAT_API_VERIFY_SSL', 'true').strip().lower() not in {
     '0',
@@ -78,7 +79,7 @@ def get_wechat_access_token(force_refresh=False):
             return cached_token
 
     response = requests.post(
-        'https://api.weixin.qq.com/cgi-bin/stable_token',
+        f'{WECHAT_API_BASE}/cgi-bin/stable_token',
         json={
             'grant_type': 'client_credential',
             'appid': WECHAT_APPID,
@@ -700,7 +701,7 @@ class SelectInformationView(APIView):
 #         # access_token = cache.get('access_token')
 #         # print(access_token)
 #         # 微信小程序发送订阅消息的API endpoint
-#         url = f'https://api.weixin.qq.com/cgi-bin/message/subscribe/send'
+#         url = f'{WECHAT_API_BASE}/cgi-bin/message/subscribe/send'
 
 #         # 构造消息数据
 #         # 注意：这里的key（如phrase1, time11等）和template_id需要根据你在微信后台配置的模板来确定
@@ -807,7 +808,7 @@ class StudentChooseProfessorView(APIView):
         except WeChatAccount.DoesNotExist:
             return  # 没有微信账号直接返回
 
-        url = f'https://api.weixin.qq.com/cgi-bin/message/subscribe/send'
+        url = f'{WECHAT_API_BASE}/cgi-bin/message/subscribe/send'
         data = {
             "touser": professor_openid,
             "template_id": "38wdqTPRI4y4eyGFrE1LrZy3o2CJB99oqehwfpv_AmE",  # 替换为你的模板ID
@@ -1114,7 +1115,7 @@ class StudentChooseProfessorView(APIView):
 #             # access_token = cache.get('access_token')
 #             if student_openid:
 #                 # 微信小程序发送订阅消息的API endpoint
-#                 url = f'https://api.weixin.qq.com/cgi-bin/message/subscribe/send'
+#                 url = f'{WECHAT_API_BASE}/cgi-bin/message/subscribe/send'
 
 #                 # 构造消息数据
 #                 # 注意：这里的key（如phrase1, time11等）和template_id需要根据你在微信后台配置的模板来确定
@@ -1446,7 +1447,7 @@ class ProfessorChooseStudentView(APIView):
             client = CosS3Client(config)
 
             access_token = get_wechat_access_token()
-            url = f'https://api.weixin.qq.com/tcb/uploadfile?access_token={access_token}'
+            url = f'{WECHAT_API_BASE}/tcb/uploadfile?access_token={access_token}'
             data = {"env": WECHAT_CLOUD_ENV, "path": cloud_path}
             response = requests.post(url, json=data, **get_wechat_request_kwargs(timeout=15))
             response.raise_for_status()
@@ -1456,7 +1457,7 @@ class ProfessorChooseStudentView(APIView):
                 errcode = response_data.get('errcode')
                 if errcode == 41001:
                     access_token = get_wechat_access_token(force_refresh=True)
-                    refresh_url = f'https://api.weixin.qq.com/tcb/uploadfile?access_token={access_token}'
+                    refresh_url = f'{WECHAT_API_BASE}/tcb/uploadfile?access_token={access_token}'
                     response = requests.post(refresh_url, json=data, **get_wechat_request_kwargs(timeout=15))
                     response.raise_for_status()
                     response_data = response.json()
@@ -1504,7 +1505,7 @@ class ProfessorChooseStudentView(APIView):
             if not student_openid:
                 return
 
-            url = f'https://api.weixin.qq.com/cgi-bin/message/subscribe/send'
+            url = f'{WECHAT_API_BASE}/cgi-bin/message/subscribe/send'
             data = {
                 "touser": student_openid,
                 "template_id": "S1D5wX7_WY5BIfZqw0dEnyoYjjAtNPmz9QlfApZ9uOs",
@@ -1647,7 +1648,7 @@ class SubmitSignatureFileView(APIView):
             translation_table = str.maketrans('', '', '0123456789')
             cleaned_name = professor_name.translate(translation_table)
             if professor_openid:
-                url = f'https://api.weixin.qq.com/cgi-bin/message/subscribe/send'
+                url = f'{WECHAT_API_BASE}/cgi-bin/message/subscribe/send'
                 data = {
                     "touser": professor_openid,
                     "template_id": "viilL7yUx1leDVAsGCsrBEkQS9v7A9NT6yH90MFP3jg",
@@ -1812,7 +1813,7 @@ class ReviewRecordUpdateView(APIView):
             # access_token = cache.get('access_token')
             if professor_openid:
                 # 微信小程序发送订阅消息的API endpoint
-                url = f'https://api.weixin.qq.com/cgi-bin/message/subscribe/send'
+                url = f'{WECHAT_API_BASE}/cgi-bin/message/subscribe/send'
 
                 # 构造消息数据
                 # 注意：这里的key（如phrase1, time11等）和template_id需要根据你在微信后台配置的模板来确定

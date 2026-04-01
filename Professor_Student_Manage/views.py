@@ -57,6 +57,7 @@ logger = logging.getLogger('log')
 WECHAT_CLOUD_ENV = os.environ.get('WECHAT_CLOUD_ENV', 'prod-2g1jrmkk21c1d283')
 WECHAT_APPID = os.environ.get('WECHAT_APPID', 'wxa67ae78c4f1f6275')
 WECHAT_SECRET = os.environ.get('WECHAT_SECRET', '7241b1950145a193f15b3584d50f3989')
+WECHAT_API_BASE = os.environ.get('WECHAT_API_BASE', 'https://api.weixin.qq.com')
 WECHAT_API_CA_BUNDLE = os.environ.get('WECHAT_API_CA_BUNDLE')
 WECHAT_API_VERIFY_SSL = os.environ.get('WECHAT_API_VERIFY_SSL', 'true').strip().lower() not in {
     '0',
@@ -83,7 +84,7 @@ def get_wechat_access_token(force_refresh=False):
             return cached_token
 
     response = requests.post(
-        'https://api.weixin.qq.com/cgi-bin/stable_token',
+        f'{WECHAT_API_BASE}/cgi-bin/stable_token',
         json={
             'grant_type': 'client_credential',
             'appid': WECHAT_APPID,
@@ -462,7 +463,7 @@ class UserLoginView(APIView):
                     # 如果传入了 code，则先进行微信账号绑定检查
                     if code:
                         # 使用微信接口通过 code 换取 OpenID
-                        url = 'https://api.weixin.qq.com/sns/jscode2session'
+                        url = f'{WECHAT_API_BASE}/sns/jscode2session'
                         params = {
                             'appid': 'wxa67ae78c4f1f6275',  # 微信小程序 appid
                             'secret': '7241b1950145a193f15b3584d50f3989',  # 微信小程序 app secret
@@ -676,7 +677,7 @@ class UpdateProfessorView(APIView):
         根据 file_id 获取下载地址
         """
         access_token = get_wechat_access_token()
-        url = f'https://api.weixin.qq.com/tcb/batchdownloadfile?access_token={access_token}'
+        url = f'{WECHAT_API_BASE}/tcb/batchdownloadfile?access_token={access_token}'
         data = {
             "env": WECHAT_CLOUD_ENV,
             "file_list": [
@@ -693,7 +694,7 @@ class UpdateProfessorView(APIView):
         payload = response.json()
         if payload.get('errcode') == 41001:
             access_token = get_wechat_access_token(force_refresh=True)
-            refresh_url = f'https://api.weixin.qq.com/tcb/batchdownloadfile?access_token={access_token}'
+            refresh_url = f'{WECHAT_API_BASE}/tcb/batchdownloadfile?access_token={access_token}'
             response = requests.post(refresh_url, json=data, **get_wechat_request_kwargs(timeout=15))
             response.raise_for_status()
             payload = response.json()
@@ -812,7 +813,7 @@ class UpdateProfessorView(APIView):
 
         try:
             access_token = get_wechat_access_token()
-            url = f'https://api.weixin.qq.com/tcb/uploadfile?access_token={access_token}'
+            url = f'{WECHAT_API_BASE}/tcb/uploadfile?access_token={access_token}'
 
             data = {
                 "env": WECHAT_CLOUD_ENV,
@@ -825,7 +826,7 @@ class UpdateProfessorView(APIView):
             response_data = response.json()
             if response_data.get('errcode') == 41001:
                 access_token = get_wechat_access_token(force_refresh=True)
-                refresh_url = f'https://api.weixin.qq.com/tcb/uploadfile?access_token={access_token}'
+                refresh_url = f'{WECHAT_API_BASE}/tcb/uploadfile?access_token={access_token}'
                 response = requests.post(refresh_url, json=data, **get_wechat_request_kwargs(timeout=15))
                 response.raise_for_status()
                 response_data = response.json()
@@ -946,7 +947,7 @@ class UpdateStudentView(APIView):
         根据 file_id 获取下载地址
         """
         access_token = get_wechat_access_token()
-        url = f'https://api.weixin.qq.com/tcb/batchdownloadfile?access_token={access_token}'
+        url = f'{WECHAT_API_BASE}/tcb/batchdownloadfile?access_token={access_token}'
         data = {
             "env": WECHAT_CLOUD_ENV,
             "file_list": [
@@ -963,7 +964,7 @@ class UpdateStudentView(APIView):
         payload = response.json()
         if payload.get('errcode') == 41001:
             access_token = get_wechat_access_token(force_refresh=True)
-            refresh_url = f'https://api.weixin.qq.com/tcb/batchdownloadfile?access_token={access_token}'
+            refresh_url = f'{WECHAT_API_BASE}/tcb/batchdownloadfile?access_token={access_token}'
             response = requests.post(refresh_url, json=data, **get_wechat_request_kwargs(timeout=15))
             response.raise_for_status()
             payload = response.json()
@@ -1156,7 +1157,7 @@ class UpdateStudentView(APIView):
 
         try:
             access_token = get_wechat_access_token()
-            url = f'https://api.weixin.qq.com/tcb/uploadfile?access_token={access_token}'
+            url = f'{WECHAT_API_BASE}/tcb/uploadfile?access_token={access_token}'
 
             data = {
                 "env": WECHAT_CLOUD_ENV,
@@ -1169,7 +1170,7 @@ class UpdateStudentView(APIView):
             response_data = response.json()
             if response_data.get('errcode') == 41001:
                 access_token = get_wechat_access_token(force_refresh=True)
-                refresh_url = f'https://api.weixin.qq.com/tcb/uploadfile?access_token={access_token}'
+                refresh_url = f'{WECHAT_API_BASE}/tcb/uploadfile?access_token={access_token}'
                 response = requests.post(refresh_url, json=data, **get_wechat_request_kwargs(timeout=15))
                 response.raise_for_status()
                 response_data = response.json()
@@ -1232,7 +1233,7 @@ class UpdateStudentView(APIView):
 
         try:
             access_token = get_wechat_access_token()
-            url = f'https://api.weixin.qq.com/tcb/uploadfile?access_token={access_token}'
+            url = f'{WECHAT_API_BASE}/tcb/uploadfile?access_token={access_token}'
 
             data = {
                 "env": WECHAT_CLOUD_ENV,
@@ -1245,7 +1246,7 @@ class UpdateStudentView(APIView):
             response_data = response.json()
             if response_data.get('errcode') == 41001:
                 access_token = get_wechat_access_token(force_refresh=True)
-                refresh_url = f'https://api.weixin.qq.com/tcb/uploadfile?access_token={access_token}'
+                refresh_url = f'{WECHAT_API_BASE}/tcb/uploadfile?access_token={access_token}'
                 response = requests.post(refresh_url, json=data, **get_wechat_request_kwargs(timeout=15))
                 response.raise_for_status()
                 response_data = response.json()
@@ -1561,7 +1562,7 @@ class CreateGiveupSignatureView(APIView):
 
         try:
             access_token = get_wechat_access_token()
-            url = f'https://api.weixin.qq.com/tcb/uploadfile?access_token={access_token}'
+            url = f'{WECHAT_API_BASE}/tcb/uploadfile?access_token={access_token}'
 
             data = {
                 "env": WECHAT_CLOUD_ENV,
@@ -1574,7 +1575,7 @@ class CreateGiveupSignatureView(APIView):
             response_data = response.json()
             if response_data.get('errcode') == 41001:
                 access_token = get_wechat_access_token(force_refresh=True)
-                refresh_url = f'https://api.weixin.qq.com/tcb/uploadfile?access_token={access_token}'
+                refresh_url = f'{WECHAT_API_BASE}/tcb/uploadfile?access_token={access_token}'
                 response = requests.post(refresh_url, json=data, **get_wechat_request_kwargs(timeout=15))
                 response.raise_for_status()
                 response_data = response.json()
@@ -1819,7 +1820,7 @@ class SubmitGiveupSignatureView(APIView):
             if not student_openid:
                 return
 
-            url = f'https://api.weixin.qq.com/cgi-bin/message/subscribe/send'
+            url = f'{WECHAT_API_BASE}/cgi-bin/message/subscribe/send'
             data = {
                 "touser": student_openid,
                 "template_id": "sB5ExrEe33Z6tRR5Gj_Qp6-F1TfnWhqHY_ZRQI-ZpKw",

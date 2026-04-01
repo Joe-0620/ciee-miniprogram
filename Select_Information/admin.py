@@ -8,6 +8,9 @@ from openpyxl import Workbook
 from Professor_Student_Manage.models import ProfessorMasterQuota, ProfessorDoctorQuota, Student
 from django.db import transaction
 import requests
+import os
+
+WECHAT_API_BASE = os.environ.get('WECHAT_API_BASE', 'https://api.weixin.qq.com')
 
 # Register your models here.
 from .models import StudentProfessorChoice, SelectionTime, ReviewRecord
@@ -311,7 +314,7 @@ class StudentProfessorChoiceApprovalAdmin(admin.ModelAdmin):
             if not openid:
                 return
 
-            url = "https://api.weixin.qq.com/cgi-bin/message/subscribe/send"
+            url = f"{WECHAT_API_BASE}/cgi-bin/message/subscribe/send"
             data = {
                 "touser": openid,
                 "template_id": "S1D5wX7_WY5BIfZqw0dEnyoYjjAtNPmz9QlfApZ9uOs",  # 替换为你的模板ID

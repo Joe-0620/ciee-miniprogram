@@ -18,7 +18,6 @@ from django.db.models import Case, CharField, Count, IntegerField, Max, OuterRef
 from django.db.models.functions import Coalesce, TruncDate
 from django.utils import timezone
 from rest_framework import status
-from rest_framework.authentication import TokenAuthentication
 from rest_framework.authtoken.models import Token
 from rest_framework.permissions import AllowAny
 from rest_framework.parsers import FormParser, MultiPartParser
@@ -52,6 +51,7 @@ from Select_Information.models import ReviewRecord, StudentProfessorChoice
 from Select_Information.models import SelectionTime
 
 from .models import DashboardAuditLog
+from .authentication import DashboardSessionAuthentication as TokenAuthentication
 from .permissions import IsDashboardAdmin
 from .serializers import (
     AdmissionBatchSerializer,
@@ -61,6 +61,7 @@ from .serializers import (
     DashboardAdminSerializer,
     DashboardAuditLogDetailSerializer,
     DashboardAuditLogListSerializer,
+    DashboardLoginSessionSerializer,
     DashboardUserSerializer,
     DepartmentListSerializer,
     GiveupStudentSerializer,
@@ -81,6 +82,7 @@ from .serializers import (
     StudentListSerializer,
     WeChatAccountSerializer,
 )
+from .models import DashboardLoginSession
 
 
 WECHAT_CLOUD_ENV = os.environ.get('WECHAT_CLOUD_ENV', 'prod-2g1jrmkk21c1d283')
@@ -107,6 +109,18 @@ def get_request_ip(request):
     if forwarded:
         return forwarded.split(',')[0].strip()
     return request.META.get('REMOTE_ADDR', '')
+
+
+def build_dashboard_me_payload(request):
+    sessions = DashboardLoginSession.objects.filter(user=request.user, is_active=True).order_by('-last_seen_at', '-id')
+    return {
+        'user': DashboardAdminSerializer(request.user).data,
+        'sessions': DashboardLoginSessionSerializer(
+            sessions,
+            many=True,
+            context={'current_session_key': getattr(request.auth, 'key', '')},
+        ).data,
+    }
 
 
 def serialize_audit_value(value):
@@ -2049,8 +2063,11 @@ class DashboardLoginView(APIView):
             )
             return Response({'detail': '用户名或密码错误，或该账号没有后台登录权限。'}, status=status.HTTP_401_UNAUTHORIZED)
 
-        Token.objects.filter(user=user).delete()
-        token = Token.objects.create(user=user)
+        session = DashboardLoginSession.objects.create(
+            user=user,
+            ip_address=get_request_ip(request),
+            user_agent=request.META.get('HTTP_USER_AGENT', ''),
+        )
         create_audit_log(
             request,
             action='auth.login',
@@ -2060,9 +2077,19 @@ class DashboardLoginView(APIView):
             target_id=user.pk,
             target_display=get_display_name_for_user(user),
             detail='管理员登录成功。',
-            after_data={'token_created_at': token.created},
+            after_data={'session_key': session.key, 'session_created_at': session.created_at},
         )
-        return Response({'token': token.key, 'user': DashboardAdminSerializer(user).data}, status=status.HTTP_200_OK)
+        return Response(
+            {
+                'token': session.key,
+                'user': DashboardAdminSerializer(user).data,
+                'session': DashboardLoginSessionSerializer(
+                    session,
+                    context={'current_session_key': session.key},
+                ).data,
+            },
+            status=status.HTTP_200_OK,
+        )
 
 
 class DashboardLogoutView(APIView):
@@ -2089,7 +2116,44 @@ class DashboardMeView(APIView):
     permission_classes = [IsDashboardAdmin]
 
     def get(self, request):
-        return Response(DashboardAdminSerializer(request.user).data, status=status.HTTP_200_OK)
+        return Response(build_dashboard_me_payload(request), status=status.HTTP_200_OK)
+
+
+class DashboardSessionListView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsDashboardAdmin]
+
+    def get(self, request):
+        return Response(build_dashboard_me_payload(request), status=status.HTTP_200_OK)
+
+
+class DashboardSessionDetailView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsDashboardAdmin]
+
+    def delete(self, request, key):
+        session = DashboardLoginSession.objects.filter(user=request.user, key=key, is_active=True).first()
+        if not session:
+            return Response({'detail': '登录设备不存在。'}, status=status.HTTP_404_NOT_FOUND)
+        is_current = getattr(request.auth, 'key', '') == session.key
+        before_data = {
+            'key': session.key,
+            'ip_address': session.ip_address,
+            'user_agent': session.user_agent,
+        }
+        session.delete()
+        create_audit_log(
+            request,
+            action='auth.session_delete',
+            module='认证登录',
+            level=DashboardAuditLog.LEVEL_WARNING,
+            target_type='dashboard_session',
+            target_id=key,
+            target_display=get_display_name_for_user(request.user),
+            detail='删除登录设备。' if not is_current else '删除当前登录设备。',
+            before_data=before_data,
+        )
+        return Response({'detail': '登录设备已移除。', 'logout_current': is_current}, status=status.HTTP_200_OK)
 
 
 class DashboardAuditLogListView(APIView):

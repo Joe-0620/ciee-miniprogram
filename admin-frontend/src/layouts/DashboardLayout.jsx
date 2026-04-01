@@ -15,10 +15,10 @@ import {
   UserDeleteOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import { Button, Dropdown, Layout, Menu, Space, Typography } from 'antd';
+import { Avatar, Badge, Button, Descriptions, Dropdown, Layout, List, Menu, Modal, Space, Tag, Typography, message } from 'antd';
 import { Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom';
 
-import { post } from '../api/client';
+import { del, get, post } from '../api/client';
 import { useDashboardTheme } from '../theme/DashboardThemeProvider';
 import { removeDashboardToken } from '../utils/auth';
 
@@ -104,6 +104,9 @@ export default function DashboardLayout() {
   const navigate = useNavigate();
   const location = useLocation();
   const [openKeys, setOpenKeys] = useState(['overview', 'accounts', 'people', 'admission', 'config']);
+  const [profileOpen, setProfileOpen] = useState(false);
+  const [profileLoading, setProfileLoading] = useState(false);
+  const [me, setMe] = useState({ user: null, sessions: [] });
   const { themeMode, resolvedThemeMode, setThemeMode } = useDashboardTheme();
 
   const selectedItem = useMemo(
@@ -123,6 +126,38 @@ export default function DashboardLayout() {
       setOpenKeys((current) => [...current, selectedItem.parentKey]);
     }
   }, [selectedItem, openKeys]);
+
+  async function loadProfile() {
+    setProfileLoading(true);
+    try {
+      const payload = await get('/auth/sessions/');
+      setMe(payload);
+    } catch (error) {
+      message.error(error.message);
+    } finally {
+      setProfileLoading(false);
+    }
+  }
+
+  async function openProfileModal() {
+    setProfileOpen(true);
+    await loadProfile();
+  }
+
+  async function removeSession(key, isCurrent) {
+    try {
+      const payload = await del(`/auth/sessions/${key}/`);
+      message.success(payload.detail || '登录设备已移除');
+      if (payload.logout_current || isCurrent) {
+        removeDashboardToken();
+        navigate('/login', { replace: true });
+        return;
+      }
+      await loadProfile();
+    } catch (error) {
+      message.error(error.message);
+    }
+  }
 
   async function onLogout() {
     try {
@@ -192,15 +227,104 @@ export default function DashboardLayout() {
             <Button icon={<SkinOutlined />} className="theme-mode-indicator" type="text">
               {resolvedThemeMode === 'dark' ? '深色已启用' : '浅色已启用'}
             </Button>
-            <Button icon={<LogoutOutlined />} onClick={onLogout}>
-              退出登录
-            </Button>
+            <Dropdown
+              menu={{
+                items: [
+                  { key: 'profile', icon: <UserOutlined />, label: '个人设置' },
+                  { key: 'logout', icon: <LogoutOutlined />, label: '退出登录' },
+                ],
+                onClick: async ({ key }) => {
+                  if (key === 'profile') {
+                    await openProfileModal();
+                  } else if (key === 'logout') {
+                    await onLogout();
+                  }
+                },
+              }}
+              trigger={['click']}
+            >
+              <Button>
+                <Space size={8}>
+                  <Avatar size="small" icon={<UserOutlined />} />
+                  <span>个人中心</span>
+                </Space>
+              </Button>
+            </Dropdown>
           </Space>
         </Header>
         <Content className="dashboard-content">
           <Outlet />
         </Content>
       </Layout>
+
+      <Modal
+        title="个人设置"
+        open={profileOpen}
+        onCancel={() => setProfileOpen(false)}
+        footer={null}
+        width={760}
+        destroyOnClose
+      >
+        <Space direction="vertical" size={20} style={{ width: '100%' }}>
+          <Descriptions title="账号信息" column={2} bordered size="small">
+            <Descriptions.Item label="用户名">{me.user?.username || '-'}</Descriptions.Item>
+            <Descriptions.Item label="显示名称">{me.user?.display_name || '-'}</Descriptions.Item>
+            <Descriptions.Item label="邮箱">{me.user?.email || '-'}</Descriptions.Item>
+            <Descriptions.Item label="最近登录">
+              {me.user?.last_login ? new Date(me.user.last_login).toLocaleString() : '-'}
+            </Descriptions.Item>
+          </Descriptions>
+
+          <div>
+            <Space style={{ marginBottom: 12 }}>
+              <Typography.Title level={5} style={{ margin: 0 }}>
+                在线设备
+              </Typography.Title>
+              <Badge count={me.sessions?.length || 0} />
+            </Space>
+            <List
+              loading={profileLoading}
+              dataSource={me.sessions || []}
+              locale={{ emptyText: '暂无在线设备' }}
+              renderItem={(session) => (
+                <List.Item
+                  actions={[
+                    session.is_current ? (
+                      <Button key="logout-current" danger size="small" onClick={() => removeSession(session.key, true)}>
+                        退出当前设备
+                      </Button>
+                    ) : (
+                      <Button key="remove-session" size="small" onClick={() => removeSession(session.key, false)}>
+                        下线此设备
+                      </Button>
+                    ),
+                  ]}
+                >
+                  <List.Item.Meta
+                    title={(
+                      <Space wrap>
+                        <span>{session.device_label || '未知设备'}</span>
+                        {session.is_current ? <Tag color="green">当前设备</Tag> : null}
+                      </Space>
+                    )}
+                    description={(
+                      <Space direction="vertical" size={2}>
+                        <Typography.Text type="secondary">IP：{session.ip_address || '-'}</Typography.Text>
+                        <Typography.Text type="secondary">
+                          登录时间：{session.created_at ? new Date(session.created_at).toLocaleString() : '-'}
+                        </Typography.Text>
+                        <Typography.Text type="secondary">
+                          最近活跃：{session.last_seen_at ? new Date(session.last_seen_at).toLocaleString() : '-'}
+                        </Typography.Text>
+                      </Space>
+                    )}
+                  />
+                </List.Item>
+              )}
+            />
+          </div>
+        </Space>
+      </Modal>
     </Layout>
   );
 }

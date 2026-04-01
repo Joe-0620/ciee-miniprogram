@@ -2,6 +2,17 @@ import { getDashboardToken, removeDashboardToken } from '../utils/auth';
 
 
 const API_BASE = '/dashboard-api';
+let authExpiredHandled = false;
+
+function handleUnauthorized() {
+  if (authExpiredHandled) {
+    return new Promise(() => {});
+  }
+  authExpiredHandled = true;
+  removeDashboardToken();
+  window.location.replace('/login?expired=1');
+  return new Promise(() => {});
+}
 
 async function request(path, options = {}) {
   const headers = new Headers(options.headers || {});
@@ -18,7 +29,7 @@ async function request(path, options = {}) {
   });
 
   if (response.status === 401) {
-    removeDashboardToken();
+    return handleUnauthorized();
   }
 
   const contentType = response.headers.get('content-type') || '';
@@ -67,7 +78,7 @@ export async function upload(path, formData) {
   });
 
   if (response.status === 401) {
-    removeDashboardToken();
+    return handleUnauthorized();
   }
 
   const contentType = response.headers.get('content-type') || '';
@@ -99,7 +110,8 @@ export function uploadWithProgress(path, formData, onProgress) {
 
     xhr.onload = () => {
       if (xhr.status === 401) {
-        removeDashboardToken();
+        handleUnauthorized();
+        return;
       }
       const contentType = xhr.getResponseHeader('content-type') || '';
       const payload = contentType.includes('application/json') && xhr.responseText ? JSON.parse(xhr.responseText) : null;
@@ -125,7 +137,7 @@ export async function download(path, filename) {
   });
 
   if (response.status === 401) {
-    removeDashboardToken();
+    return handleUnauthorized();
   }
 
   if (!response.ok) {
@@ -155,7 +167,7 @@ export async function postDownload(path, body, filename) {
   });
 
   if (response.status === 401) {
-    removeDashboardToken();
+    return handleUnauthorized();
   }
 
   if (!response.ok) {

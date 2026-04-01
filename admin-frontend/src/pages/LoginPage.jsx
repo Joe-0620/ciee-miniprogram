@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Alert, Button, Card, Form, Input, Space, Typography, message } from 'antd';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { post } from '../api/client';
 import { setDashboardToken } from '../utils/auth';
@@ -10,6 +10,8 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
+  const expired = new URLSearchParams(location.search).get('expired') === '1';
 
   const onFinish = async (values) => {
     setLoading(true);
@@ -48,6 +50,7 @@ export default function LoginPage() {
             <Typography.Paragraph type="secondary">
               仅限已开通后台权限的管理员账号登录。
             </Typography.Paragraph>
+            {expired ? <Alert type="warning" showIcon message="登录凭证已失效，请重新登录。" style={{ marginBottom: 16 }} /> : null}
             {error ? <Alert type="error" showIcon message={error} style={{ marginBottom: 16 }} /> : null}
             <Form layout="vertical" onFinish={onFinish}>
               <Form.Item label="用户名" name="username" rules={[{ required: true, message: '请输入用户名' }]}>

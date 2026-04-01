@@ -1,5 +1,7 @@
 from django.conf import settings
 from django.db import models
+from django.utils import timezone
+import secrets
 
 
 class DashboardAuditLog(models.Model):
@@ -57,3 +59,40 @@ class DashboardAuditLog(models.Model):
     def __str__(self):
         operator = self.operator_username or '匿名管理员'
         return f'{operator} - {self.module} - {self.action}'
+
+
+def generate_dashboard_session_key():
+    return secrets.token_hex(20)
+
+
+class DashboardLoginSession(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='dashboard_login_sessions',
+        verbose_name='管理员用户',
+    )
+    key = models.CharField(max_length=40, unique=True, default=generate_dashboard_session_key, verbose_name='会话令牌')
+    ip_address = models.CharField(max_length=64, blank=True, default='', verbose_name='IP 地址')
+    user_agent = models.TextField(blank=True, default='', verbose_name='客户端信息')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='创建时间')
+    last_seen_at = models.DateTimeField(auto_now=True, verbose_name='最近活跃时间')
+    is_active = models.BooleanField(default=True, verbose_name='是否有效')
+
+    class Meta:
+        ordering = ['-last_seen_at', '-id']
+        verbose_name = '后台登录会话'
+        verbose_name_plural = '后台登录会话'
+        indexes = [
+            models.Index(fields=['user', '-last_seen_at'], name='dash_sess_user_seen_idx'),
+            models.Index(fields=['key'], name='dash_sess_key_idx'),
+        ]
+
+    def __str__(self):
+        return f'{self.user.username} - {self.ip_address or "未知 IP"}'
+
+    def touch(self):
+        now = timezone.now()
+        if not self.last_seen_at or (now - self.last_seen_at).total_seconds() >= 60:
+            DashboardLoginSession.objects.filter(pk=self.pk).update(last_seen_at=now)
+            self.last_seen_at = now

@@ -16,7 +16,7 @@ from Professor_Student_Manage.models import (
     WeChatAccount,
 )
 from Select_Information.models import ReviewRecord, SelectionTime, StudentProfessorChoice
-from .models import DashboardAuditLog
+from .models import DashboardAuditLog, DashboardLoginSession
 
 
 class DashboardAdminSerializer(serializers.ModelSerializer):
@@ -24,11 +24,60 @@ class DashboardAdminSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'first_name', 'last_name', 'is_staff', 'is_superuser', 'display_name']
+        fields = ['id', 'username', 'first_name', 'last_name', 'email', 'last_login', 'is_staff', 'is_superuser', 'display_name']
 
     def get_display_name(self, obj):
         full_name = f'{obj.first_name} {obj.last_name}'.strip()
         return full_name or obj.username
+
+
+class DashboardLoginSessionSerializer(serializers.ModelSerializer):
+    device_label = serializers.SerializerMethodField()
+    is_current = serializers.SerializerMethodField()
+
+    class Meta:
+        model = DashboardLoginSession
+        fields = [
+            'key',
+            'ip_address',
+            'user_agent',
+            'device_label',
+            'created_at',
+            'last_seen_at',
+            'is_active',
+            'is_current',
+        ]
+
+    def get_device_label(self, obj):
+        user_agent = (obj.user_agent or '').lower()
+        system = '未知设备'
+        browser = ''
+
+        if 'windows' in user_agent:
+            system = 'Windows'
+        elif 'mac os x' in user_agent or 'macintosh' in user_agent:
+            system = 'macOS'
+        elif 'android' in user_agent:
+            system = 'Android'
+        elif 'iphone' in user_agent or 'ipad' in user_agent or 'ios' in user_agent:
+            system = 'iOS'
+        elif 'linux' in user_agent:
+            system = 'Linux'
+
+        if 'edg/' in user_agent:
+            browser = 'Edge'
+        elif 'chrome/' in user_agent and 'edg/' not in user_agent:
+            browser = 'Chrome'
+        elif 'firefox/' in user_agent:
+            browser = 'Firefox'
+        elif 'safari/' in user_agent and 'chrome/' not in user_agent:
+            browser = 'Safari'
+
+        return f'{system}{f" · {browser}" if browser else ""}'
+
+    def get_is_current(self, obj):
+        current_key = self.context.get('current_session_key')
+        return bool(current_key and current_key == obj.key)
 
 
 class DashboardAuditLogListSerializer(serializers.ModelSerializer):

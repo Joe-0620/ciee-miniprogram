@@ -62,7 +62,11 @@ export default function ChoicesPage() {
   const [loading, setLoading] = useState(false);
   const [actionLoading, setActionLoading] = useState(false);
   const [keyword, setKeyword] = useState('');
-  const [filters, setFilters] = useState({ status: undefined, subject_id: undefined, department_id: undefined, admission_year: undefined });
+  const [filters, setFilters] = useState({
+    status: undefined, subject_id: undefined, department_id: undefined, admission_year: undefined,
+    signature_table_status: undefined, student_signature_upload: undefined, professor_signature_upload: undefined,
+    student_signed: undefined, professor_signed: undefined,
+  });
   const [sorter, setSorter] = useState({ order_by: 'submit_date', order_direction: 'desc' });
   const [subjects, setSubjects] = useState([]);
   const [departments, setDepartments] = useState([]);
@@ -323,6 +327,62 @@ export default function ChoicesPage() {
             value={filters.subject_id}
             options={subjects.map((item) => ({ label: formatSubjectOption(item), value: item.id }))}
             onChange={(value) => updateFilter('subject_id', value)}
+          />
+          <Select
+            allowClear
+            placeholder="互选表状态"
+            style={{ width: 150 }}
+            value={filters.signature_table_status}
+            options={[
+              { label: '已生成', value: 'generated' },
+              { label: '缺失', value: 'missing' },
+              { label: '未生成', value: 'not_generated' },
+            ]}
+            onChange={(value) => updateFilter('signature_table_status', value)}
+          />
+          <Select
+            allowClear
+            placeholder="学生签名图上传"
+            style={{ width: 160 }}
+            value={filters.student_signature_upload}
+            options={[
+              { label: '已上传', value: 'uploaded' },
+              { label: '未上传', value: 'not_uploaded' },
+            ]}
+            onChange={(value) => updateFilter('student_signature_upload', value)}
+          />
+          <Select
+            allowClear
+            placeholder="导师签名图上传"
+            style={{ width: 160 }}
+            value={filters.professor_signature_upload}
+            options={[
+              { label: '已上传', value: 'uploaded' },
+              { label: '未上传', value: 'not_uploaded' },
+            ]}
+            onChange={(value) => updateFilter('professor_signature_upload', value)}
+          />
+          <Select
+            allowClear
+            placeholder="学生签字状态"
+            style={{ width: 150 }}
+            value={filters.student_signed}
+            options={[
+              { label: '已签字', value: 'yes' },
+              { label: '未签字', value: 'no' },
+            ]}
+            onChange={(value) => updateFilter('student_signed', value)}
+          />
+          <Select
+            allowClear
+            placeholder="导师签字状态"
+            style={{ width: 150 }}
+            value={filters.professor_signed}
+            options={[
+              { label: '已签字', value: 'yes' },
+              { label: '未签字', value: 'no' },
+            ]}
+            onChange={(value) => updateFilter('professor_signed', value)}
           />
         </div>
 

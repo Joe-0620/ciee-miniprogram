@@ -1789,6 +1789,47 @@ def build_choice_queryset(request):
             Q(professor__name__icontains=search) |
             Q(professor__teacher_identity_id__icontains=search)
         )
+
+    # 互选表状态筛选
+    _empty_signature_table = Q(student__signature_table__isnull=True) | Q(student__signature_table='')
+    signature_table_status = request.query_params.get('signature_table_status')
+    if signature_table_status == 'generated':
+        queryset = queryset.exclude(_empty_signature_table)
+    elif signature_table_status == 'missing':
+        queryset = queryset.filter(_empty_signature_table, status=1)
+    elif signature_table_status == 'not_generated':
+        queryset = queryset.filter(_empty_signature_table).exclude(status=1)
+
+    # 学生签名图上传筛选
+    _empty_student_sig = Q(student__signature_temp__isnull=True) | Q(student__signature_temp='')
+    student_signature_upload = request.query_params.get('student_signature_upload')
+    if student_signature_upload == 'uploaded':
+        queryset = queryset.exclude(_empty_student_sig)
+    elif student_signature_upload == 'not_uploaded':
+        queryset = queryset.filter(_empty_student_sig)
+
+    # 导师签名图上传筛选
+    _empty_prof_sig = Q(professor__signature_temp__isnull=True) | Q(professor__signature_temp='')
+    professor_signature_upload = request.query_params.get('professor_signature_upload')
+    if professor_signature_upload == 'uploaded':
+        queryset = queryset.exclude(_empty_prof_sig)
+    elif professor_signature_upload == 'not_uploaded':
+        queryset = queryset.filter(_empty_prof_sig)
+
+    # 学生签字状态筛选
+    student_signed = request.query_params.get('student_signed')
+    if student_signed == 'yes':
+        queryset = queryset.filter(student__signature_table_student_signatured=True)
+    elif student_signed == 'no':
+        queryset = queryset.filter(student__signature_table_student_signatured=False)
+
+    # 导师签字状态筛选
+    professor_signed = request.query_params.get('professor_signed')
+    if professor_signed == 'yes':
+        queryset = queryset.filter(student__signature_table_professor_signatured=True)
+    elif professor_signed == 'no':
+        queryset = queryset.filter(student__signature_table_professor_signatured=False)
+
     return queryset
 
 

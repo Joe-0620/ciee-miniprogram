@@ -478,7 +478,7 @@ export default function ChoicesPage() {
         open={previewState.open}
         title={previewState.title}
         fileId={previewState.fileId}
-        onCancel={() => setPreviewState({ open: false, title: '', fileId: '' })}
+        onClose={() => setPreviewState({ open: false, title: '', fileId: '' })}
       />
 
       <Modal

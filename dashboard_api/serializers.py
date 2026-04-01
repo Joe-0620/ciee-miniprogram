@@ -668,6 +668,7 @@ class ChoiceListSerializer(serializers.ModelSerializer):
     student_name = serializers.CharField(source='student.name', read_only=True)
     candidate_number = serializers.CharField(source='student.candidate_number', read_only=True)
     admission_year = serializers.IntegerField(source='student.admission_year', read_only=True)
+    signature_table = serializers.CharField(source='student.signature_table', read_only=True)
     postgraduate_type_display = serializers.SerializerMethodField()
     signature_table_status = serializers.SerializerMethodField()
     student_signature_upload_status = serializers.SerializerMethodField()
@@ -721,6 +722,7 @@ class ChoiceListSerializer(serializers.ModelSerializer):
             'student_name',
             'candidate_number',
             'admission_year',
+            'signature_table',
             'postgraduate_type_display',
             'professor_id',
             'professor_name',

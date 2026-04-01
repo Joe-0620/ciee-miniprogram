@@ -3,6 +3,7 @@ import { Button, Card, Form, Input, Modal, Select, Space, Table, message } from 
 
 import { download, get, post } from '../api/client';
 import PageHeader from '../components/PageHeader';
+import PdfPreviewModal from '../components/PdfPreviewModal';
 import StatusTag from '../components/StatusTag';
 import { confirmDanger } from '../utils/confirm';
 
@@ -77,6 +78,7 @@ export default function ChoicesPage() {
   const [exportOpen, setExportOpen] = useState(false);
   const [exportSubmitting, setExportSubmitting] = useState(false);
   const [exportForm] = Form.useForm();
+  const [previewState, setPreviewState] = useState({ open: false, title: '', fileId: '' });
 
   const loadOptions = async () => {
     try {
@@ -152,6 +154,10 @@ export default function ChoicesPage() {
     fetchData(1, pagination.pageSize, keyword, next, sorter);
   };
 
+  const openPreview = (title, fileId) => {
+    setPreviewState({ open: true, title, fileId });
+  };
+
   const columns = [
     { title: '学生', dataIndex: 'student_name', key: 'student_name', sorter: true },
     { title: '考生编号', dataIndex: 'candidate_number', key: 'candidate_number', sorter: true },
@@ -214,6 +220,19 @@ export default function ChoicesPage() {
       key: 'finish_time',
       sorter: true,
       render: (value) => (value ? new Date(value).toLocaleString() : '-'),
+    },
+    {
+      title: '互选表',
+      key: 'signature_table',
+      render: (_, record) => (
+        <Button
+          size="small"
+          onClick={() => openPreview(`${record.student_name}的互选表`, record.signature_table)}
+          disabled={!record.signature_table}
+        >
+          查看
+        </Button>
+      ),
     },
     {
       title: '操作',
@@ -454,6 +473,13 @@ export default function ChoicesPage() {
           }}
         />
       </Card>
+
+      <PdfPreviewModal
+        open={previewState.open}
+        title={previewState.title}
+        fileId={previewState.fileId}
+        onCancel={() => setPreviewState({ open: false, title: '', fileId: '' })}
+      />
 
       <Modal
         open={exportOpen}

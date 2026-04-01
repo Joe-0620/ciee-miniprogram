@@ -82,12 +82,13 @@ def get_wechat_access_token(force_refresh=False):
         if cached_token:
             return cached_token
 
-    response = requests.get(
-        'https://api.weixin.qq.com/cgi-bin/token',
-        params={
+    response = requests.post(
+        'https://api.weixin.qq.com/cgi-bin/stable_token',
+        json={
             'grant_type': 'client_credential',
             'appid': WECHAT_APPID,
             'secret': WECHAT_SECRET,
+            'force_refresh': bool(force_refresh),
         },
         **get_wechat_request_kwargs(timeout=15),
     )

@@ -8,6 +8,7 @@ import { getFilePreviewUrl } from '../utils/files';
 export default function PdfPreviewModal({ open, title, fileId, onClose }) {
   const [loading, setLoading] = useState(false);
   const [previewUrl, setPreviewUrl] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     if (!open || !fileId) {
@@ -17,6 +18,7 @@ export default function PdfPreviewModal({ open, title, fileId, onClose }) {
     let active = true;
     setLoading(true);
     setPreviewUrl('');
+    setErrorMessage('');
 
     getFilePreviewUrl(fileId)
       .then((url) => {
@@ -24,9 +26,10 @@ export default function PdfPreviewModal({ open, title, fileId, onClose }) {
           setPreviewUrl(url);
         }
       })
-      .catch(() => {
+      .catch((error) => {
         if (active) {
           setPreviewUrl('');
+          setErrorMessage(error?.message || '获取预览地址失败');
         }
       })
       .finally(() => {
@@ -96,7 +99,7 @@ export default function PdfPreviewModal({ open, title, fileId, onClose }) {
                 暂时无法预览这份材料
               </Typography.Title>
               <Typography.Text type="secondary">
-                可以关闭后重试，或检查文件是否已上传成功。
+                {errorMessage || '可以关闭后重试，或检查文件是否已上传成功。'}
               </Typography.Text>
             </div>
           ) : null}

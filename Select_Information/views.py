@@ -52,6 +52,22 @@ logger = logging.getLogger('log')
 WECHAT_CLOUD_ENV = os.environ.get('WECHAT_CLOUD_ENV', 'prod-2g1jrmkk21c1d283')
 WECHAT_APPID = os.environ.get('WECHAT_APPID', 'wxa67ae78c4f1f6275')
 WECHAT_SECRET = os.environ.get('WECHAT_SECRET', '7241b1950145a193f15b3584d50f3989')
+WECHAT_API_CA_BUNDLE = os.environ.get('WECHAT_API_CA_BUNDLE')
+WECHAT_API_VERIFY_SSL = os.environ.get('WECHAT_API_VERIFY_SSL', 'true').strip().lower() not in {
+    '0',
+    'false',
+    'no',
+    'off',
+}
+
+
+def get_wechat_request_kwargs(timeout=15):
+    request_kwargs = {'timeout': timeout}
+    if WECHAT_API_CA_BUNDLE:
+        request_kwargs['verify'] = WECHAT_API_CA_BUNDLE
+    else:
+        request_kwargs['verify'] = WECHAT_API_VERIFY_SSL
+    return request_kwargs
 
 
 def get_wechat_access_token(force_refresh=False):
@@ -61,14 +77,15 @@ def get_wechat_access_token(force_refresh=False):
         if cached_token:
             return cached_token
 
-    response = requests.get(
-        'https://api.weixin.qq.com/cgi-bin/token',
-        params={
+    response = requests.post(
+        'https://api.weixin.qq.com/cgi-bin/stable_token',
+        json={
             'grant_type': 'client_credential',
             'appid': WECHAT_APPID,
             'secret': WECHAT_SECRET,
+            'force_refresh': bool(force_refresh),
         },
-        timeout=15,
+        **get_wechat_request_kwargs(timeout=15),
     )
     response.raise_for_status()
     payload = response.json()

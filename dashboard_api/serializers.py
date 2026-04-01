@@ -526,7 +526,7 @@ class StudentListSerializer(serializers.ModelSerializer):
     current_status = serializers.CharField(read_only=True)
     current_status_display = serializers.SerializerMethodField()
     current_choice_status = serializers.SerializerMethodField()
-    current_professor_name = serializers.SerializerMethodField()
+    selected_professor_name = serializers.SerializerMethodField()
     student_type_display = serializers.CharField(source='get_student_type_display', read_only=True)
     postgraduate_type_display = serializers.CharField(source='get_postgraduate_type_display', read_only=True)
 
@@ -557,7 +557,7 @@ class StudentListSerializer(serializers.ModelSerializer):
             'current_status',
             'current_status_display',
             'current_choice_status',
-            'current_professor_name',
+            'selected_professor_name',
             'resume',
             'signature_table',
             'giveup_signature_table',
@@ -587,10 +587,8 @@ class StudentListSerializer(serializers.ModelSerializer):
             5: 'revoked',
         }.get(choice.status, 'unknown')
 
-    def get_current_professor_name(self, obj):
-        choice = getattr(obj, 'latest_choice', None)
-        if choice is None:
-            choice = obj.studentprofessorchoice_set.select_related('professor').order_by('-submit_date').first()
+    def get_selected_professor_name(self, obj):
+        choice = obj.studentprofessorchoice_set.select_related('professor').filter(status=1).order_by('-finish_time', '-submit_date').first()
         return choice.professor.name if choice and choice.professor_id else None
 
 

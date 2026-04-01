@@ -445,6 +445,12 @@ export default function StudentsPage() {
       sorter: true,
       render: (value) => (value ? `${value.admission_year}届 - ${value.name}` : '-'),
     },
+    {
+      title: '所选导师',
+      dataIndex: 'selected_professor_name',
+      key: 'selected_professor_name',
+      render: (value) => value || '-',
+    },
     { title: '学生类型', dataIndex: 'student_type_display', key: 'student_type', sorter: true },
     { title: '培养类型', dataIndex: 'postgraduate_type_display', key: 'postgraduate_type', sorter: true },
     { title: '综合排名', dataIndex: 'final_rank', key: 'final_rank', sorter: true },

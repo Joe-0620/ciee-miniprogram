@@ -96,21 +96,24 @@ export default function GiveupsPage() {
   };
 
   const columns = [
-    { title: '学生', dataIndex: 'name', key: 'name', sorter: true },
-    { title: '考生编号', dataIndex: 'candidate_number', key: 'candidate_number', sorter: true },
-    { title: '届别', dataIndex: 'admission_year', key: 'admission_year', sorter: true, render: (value) => (value ? `${value}届` : '-') },
-    { title: '专业', key: 'subject_name', sorter: true, render: (_, record) => record.subject?.subject_name || '-' },
-    { title: '总排名', dataIndex: 'final_rank', key: 'final_rank', sorter: true, render: (value) => value || '-' },
+    { title: '学生', dataIndex: 'name', key: 'name', sorter: true, width: 120, ellipsis: true, fixed: 'left' },
+    { title: '考生编号', dataIndex: 'candidate_number', key: 'candidate_number', sorter: true, width: 150, ellipsis: true, fixed: 'left' },
+    { title: '届别', dataIndex: 'admission_year', key: 'admission_year', sorter: true, width: 90, render: (value) => (value ? `${value}届` : '-') },
+    { title: '专业', key: 'subject_name', sorter: true, width: 180, ellipsis: true, render: (_, record) => record.subject?.subject_name || '-' },
+    { title: '总排名', dataIndex: 'final_rank', key: 'final_rank', sorter: true, width: 90, render: (value) => value || '-' },
     {
       title: '放弃说明表',
       dataIndex: 'giveup_signature_table',
       key: 'giveup_signature_table',
+      width: 110,
       render: (value) => <StatusTag tone={value ? 'success' : 'default'}>{value ? '已生成' : '未生成'}</StatusTag>,
     },
     {
       title: '是否签名',
       dataIndex: 'is_signate_giveup_table',
       key: 'is_signate_giveup_table',
+      width: 110,
+      responsive: ['lg'],
       render: (value) => <StatusTag tone={value ? 'success' : 'warning'}>{value ? '已签名' : '未签名'}</StatusTag>,
     },
     {
@@ -118,14 +121,18 @@ export default function GiveupsPage() {
       dataIndex: 'is_selected',
       key: 'is_selected',
       sorter: true,
+      width: 120,
+      responsive: ['lg'],
       render: (value) => <StatusTag tone={value ? 'processing' : 'default'}>{value ? '是' : '否'}</StatusTag>,
     },
-    { title: '当前导师', dataIndex: 'current_professor_name', key: 'current_professor_name', render: (value) => value || '-' },
+    { title: '当前导师', dataIndex: 'current_professor_name', key: 'current_professor_name', width: 140, ellipsis: true, responsive: ['xl'], render: (value) => value || '-' },
     {
       title: '操作',
       key: 'actions',
+      width: 200,
+      fixed: 'right',
       render: (_, record) => (
-        <Space>
+        <Space wrap className="compact-action-buttons">
           <Button size="small" onClick={() => openFileById(record.giveup_signature_table)} disabled={!record.giveup_signature_table}>
             查看材料
           </Button>
@@ -192,11 +199,13 @@ export default function GiveupsPage() {
       </div>
 
       <Table
+        className="dashboard-table"
         rowKey="id"
         loading={loading}
         rowSelection={{ selectedRowKeys, onChange: setSelectedRowKeys }}
         columns={columns}
         dataSource={data.results}
+        scroll={{ x: 1300 }}
         pagination={{ current: pagination.current, pageSize: pagination.pageSize, total: data.count, showSizeChanger: true }}
         onChange={(pager, _filters, tableSorter) => {
           const nextSorter = tableSorter?.field ? { order_by: tableSorter.field, order_direction: tableSorter.order === 'descend' ? 'desc' : 'asc' } : sorter;

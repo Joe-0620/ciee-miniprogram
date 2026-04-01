@@ -325,30 +325,39 @@ export default function ProfessorsPage() {
   };
 
   const columns = [
-    { title: '姓名', dataIndex: 'name', key: 'name', sorter: true },
-    { title: '工号', dataIndex: 'teacher_identity_id', key: 'teacher_identity_id', sorter: true },
+    { title: '姓名', dataIndex: 'name', key: 'name', sorter: true, width: 140, ellipsis: true, fixed: 'left' },
+    { title: '工号', dataIndex: 'teacher_identity_id', key: 'teacher_identity_id', sorter: true, width: 120, ellipsis: true },
     {
       title: '方向',
       key: 'department_name',
       sorter: true,
+      width: 140,
+      ellipsis: true,
       render: (_, record) => record.department?.department_name || '-',
     },
     {
       title: '硕士招生专业',
       dataIndex: 'master_subjects',
       key: 'master_subjects',
+      width: 220,
+      ellipsis: true,
       render: (value) => (value?.length ? value.join('、') : '-'),
     },
     {
       title: '博士招生专业',
       dataIndex: 'doctor_subjects',
       key: 'doctor_subjects',
+      width: 180,
+      ellipsis: true,
+      responsive: ['xl'],
       render: (value) => (value?.length ? value.join('、') : '-'),
     },
     {
       title: '共享池覆盖',
       dataIndex: 'shared_quota_summary',
       key: 'shared_quota_summary',
+      width: 220,
+      responsive: ['xxl'],
       render: (value, record) => {
         if (!value?.length) return '-';
         return (
@@ -364,6 +373,7 @@ export default function ProfessorsPage() {
     {
       title: '招生资格',
       key: 'have_qualification',
+      width: 110,
       render: (_, record) => (
         <StatusTag tone={record.have_qualification ? 'success' : 'default'}>
           {record.have_qualification ? '可招生' : '不可招生'}
@@ -373,19 +383,22 @@ export default function ProfessorsPage() {
     {
       title: '开放选择',
       key: 'proposed_quota_approved',
+      width: 110,
       render: (_, record) => (
         <StatusTag tone={record.proposed_quota_approved ? 'processing' : 'default'}>
           {record.proposed_quota_approved ? '已开放' : '未开放'}
         </StatusTag>
       ),
     },
-    { title: '剩余总名额', dataIndex: 'remaining_quota', key: 'remaining_quota', sorter: true },
-    { title: '待处理申请', dataIndex: 'pending_choice_count', key: 'pending_choice_count', sorter: true },
+    { title: '剩余总名额', dataIndex: 'remaining_quota', key: 'remaining_quota', sorter: true, width: 110 },
+    { title: '待处理申请', dataIndex: 'pending_choice_count', key: 'pending_choice_count', sorter: true, width: 110, responsive: ['lg'] },
     {
       title: '操作',
       key: 'actions',
+      width: 160,
+      fixed: 'right',
       render: (_, record) => (
-        <Space>
+        <Space wrap className="compact-action-buttons">
           <Button size="small" icon={<EditOutlined />} onClick={() => openEditModal(record)}>
             编辑
           </Button>
@@ -510,11 +523,13 @@ export default function ProfessorsPage() {
         </div>
 
         <Table
+          className="dashboard-table"
           rowKey="id"
           loading={loading}
           rowSelection={{ selectedRowKeys, onChange: setSelectedRowKeys }}
           columns={columns}
           dataSource={data.results}
+          scroll={{ x: 1500 }}
           pagination={{
             current: pagination.current,
             pageSize: pagination.pageSize,

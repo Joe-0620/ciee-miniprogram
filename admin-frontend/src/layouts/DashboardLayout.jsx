@@ -9,7 +9,6 @@ import {
   MoonOutlined,
   ReadOutlined,
   ScheduleOutlined,
-  SkinOutlined,
   SunOutlined,
   TeamOutlined,
   UserDeleteOutlined,
@@ -224,9 +223,6 @@ export default function DashboardLayout() {
                 </Space>
               </Button>
             </Dropdown>
-            <Button icon={<SkinOutlined />} className="theme-mode-indicator" type="text">
-              {resolvedThemeMode === 'dark' ? '深色已启用' : '浅色已启用'}
-            </Button>
             <Dropdown
               menu={{
                 items: [

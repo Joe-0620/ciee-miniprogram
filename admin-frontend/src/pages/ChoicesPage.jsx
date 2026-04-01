@@ -159,28 +159,34 @@ export default function ChoicesPage() {
   };
 
   const columns = [
-    { title: '学生', dataIndex: 'student_name', key: 'student_name', sorter: true },
-    { title: '考生编号', dataIndex: 'candidate_number', key: 'candidate_number', sorter: true },
-    { title: '届别', dataIndex: 'admission_year', key: 'admission_year', sorter: true, render: (value) => (value ? `${value}届` : '-') },
-    { title: '导师', dataIndex: 'professor_name', key: 'professor_name', sorter: true },
-    { title: '专业', dataIndex: 'subject_name', key: 'subject_name', sorter: true },
-    { title: '研究生类型', dataIndex: 'postgraduate_type_display', key: 'postgraduate_type_display', render: (value) => value || '-' },
+    { title: '学生', dataIndex: 'student_name', key: 'student_name', sorter: true, width: 120, ellipsis: true, fixed: 'left' },
+    { title: '考生编号', dataIndex: 'candidate_number', key: 'candidate_number', sorter: true, width: 150, ellipsis: true, fixed: 'left' },
+    { title: '届别', dataIndex: 'admission_year', key: 'admission_year', sorter: true, width: 90, render: (value) => (value ? `${value}届` : '-') },
+    { title: '导师', dataIndex: 'professor_name', key: 'professor_name', sorter: true, width: 120, ellipsis: true },
+    { title: '专业', dataIndex: 'subject_name', key: 'subject_name', sorter: true, width: 180, ellipsis: true },
+    { title: '研究生类型', dataIndex: 'postgraduate_type_display', key: 'postgraduate_type_display', width: 130, ellipsis: true, responsive: ['lg'], render: (value) => value || '-' },
     {
       title: '互选表状态',
       dataIndex: 'signature_table_status',
       key: 'signature_table_status',
+      width: 110,
+      responsive: ['lg'],
       render: (value) => <StatusTag tone={signatureStatusToneMap[value] || 'default'}>{value || '-'}</StatusTag>,
     },
     {
       title: '学生签字状态',
       dataIndex: 'student_signature_status',
       key: 'student_signature_status',
+      width: 110,
+      responsive: ['lg'],
       render: (value) => <StatusTag tone={signatureStatusToneMap[value] || 'default'}>{value || '-'}</StatusTag>,
     },
     {
       title: '导师签字状态',
       dataIndex: 'professor_signature_status',
       key: 'professor_signature_status',
+      width: 110,
+      responsive: ['xl'],
       render: (value) => <StatusTag tone={signatureStatusToneMap[value] || 'default'}>{value || '-'}</StatusTag>,
     },
     {
@@ -188,6 +194,7 @@ export default function ChoicesPage() {
       dataIndex: 'status',
       key: 'status',
       sorter: true,
+      width: 110,
       render: (value) => {
         const config = statusMap[value] || { tone: 'default', text: '未知' };
         return <StatusTag tone={config.tone}>{config.text}</StatusTag>;
@@ -198,6 +205,8 @@ export default function ChoicesPage() {
       dataIndex: 'submit_date',
       key: 'submit_date',
       sorter: true,
+      width: 170,
+      responsive: ['xl'],
       render: (value) => (value ? new Date(value).toLocaleString() : '-'),
     },
     {
@@ -205,11 +214,14 @@ export default function ChoicesPage() {
       dataIndex: 'finish_time',
       key: 'finish_time',
       sorter: true,
+      width: 170,
+      responsive: ['xxl'],
       render: (value) => (value ? new Date(value).toLocaleString() : '-'),
     },
     {
       title: '互选表',
       key: 'signature_table',
+      width: 100,
       render: (_, record) => (
         <Button
           size="small"
@@ -223,6 +235,8 @@ export default function ChoicesPage() {
     {
       title: '操作',
       key: 'actions',
+      width: 100,
+      fixed: 'right',
       render: (_, record) => (
         <Button
           size="small"
@@ -422,11 +436,13 @@ export default function ChoicesPage() {
       </div>
 
         <Table
+          className="dashboard-table"
           rowKey="id"
           loading={loading}
           rowSelection={{ selectedRowKeys, onChange: setSelectedRowKeys }}
           columns={columns}
           dataSource={data.results}
+          scroll={{ x: 1500 }}
           pagination={{ current: pagination.current, pageSize: pagination.pageSize, total: data.count, showSizeChanger: true }}
           onChange={(pager, _filters, tableSorter) => {
             const nextSorter = tableSorter?.field

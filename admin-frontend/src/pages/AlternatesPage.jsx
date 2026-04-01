@@ -95,25 +95,28 @@ export default function AlternatesPage() {
   };
 
   const columns = [
-    { title: '学生', dataIndex: 'name', key: 'name', sorter: true },
-    { title: '考生编号', dataIndex: 'candidate_number', key: 'candidate_number', sorter: true },
-    { title: '专业', key: 'subject_name', sorter: true, render: (_, record) => record.subject?.subject_name || '-' },
-    { title: '届别', dataIndex: 'admission_year', key: 'admission_year', sorter: true, render: (value) => (value ? `${value}届` : '-') },
-    { title: '总排名', dataIndex: 'final_rank', key: 'final_rank', sorter: true, render: (value) => value || '-' },
-    { title: '候补顺位', dataIndex: 'alternate_rank', key: 'alternate_rank', sorter: true, render: (value) => value || '-' },
+    { title: '学生', dataIndex: 'name', key: 'name', sorter: true, width: 120, ellipsis: true, fixed: 'left' },
+    { title: '考生编号', dataIndex: 'candidate_number', key: 'candidate_number', sorter: true, width: 150, ellipsis: true, fixed: 'left' },
+    { title: '专业', key: 'subject_name', sorter: true, width: 180, ellipsis: true, render: (_, record) => record.subject?.subject_name || '-' },
+    { title: '届别', dataIndex: 'admission_year', key: 'admission_year', sorter: true, width: 90, render: (value) => (value ? `${value}届` : '-') },
+    { title: '总排名', dataIndex: 'final_rank', key: 'final_rank', sorter: true, width: 90, render: (value) => value || '-' },
+    { title: '候补顺位', dataIndex: 'alternate_rank', key: 'alternate_rank', sorter: true, width: 100, render: (value) => value || '-' },
     {
       title: '放弃状态',
       dataIndex: 'is_giveup',
       key: 'is_giveup',
       sorter: true,
+      width: 110,
       render: (value) => <StatusTag tone={value ? 'error' : 'success'}>{value ? '已放弃' : '未放弃'}</StatusTag>,
     },
-    { title: '当前导师', dataIndex: 'current_professor_name', key: 'current_professor_name', render: (value) => value || '-' },
+    { title: '当前导师', dataIndex: 'current_professor_name', key: 'current_professor_name', width: 140, ellipsis: true, responsive: ['lg'], render: (value) => value || '-' },
     {
       title: '操作',
       key: 'actions',
+      width: 220,
+      fixed: 'right',
       render: (_, record) => (
-        <Space>
+        <Space wrap className="compact-action-buttons">
           <Button
             size="small"
             loading={actionLoading}
@@ -203,11 +206,13 @@ export default function AlternatesPage() {
       </div>
 
       <Table
+        className="dashboard-table"
         rowKey="id"
         loading={loading}
         rowSelection={{ selectedRowKeys, onChange: setSelectedRowKeys }}
         columns={columns}
         dataSource={data.results}
+        scroll={{ x: 1200 }}
         pagination={{ current: pagination.current, pageSize: pagination.pageSize, total: data.count, showSizeChanger: true }}
         onChange={(pager, _filters, tableSorter) => {
           const nextSorter = tableSorter?.field ? { order_by: tableSorter.field, order_direction: tableSorter.order === 'descend' ? 'desc' : 'asc' } : sorter;

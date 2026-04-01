@@ -59,7 +59,7 @@ html[data-dashboard-theme='dark'] {
 
 body {
   margin: 0;
-  min-width: 1280px;
+  min-width: 0;
   color: var(--dashboard-text);
   background: var(--dashboard-bg);
   transition: background 220ms ease, color 220ms ease;
@@ -259,6 +259,76 @@ a {
   gap: 10px;
   flex-wrap: wrap;
   justify-content: flex-end;
+}
+
+.page-filters > .ant-input-search,
+.page-filters > .ant-select,
+.page-filters > .ant-picker,
+.page-filters > .ant-input-affix-wrapper {
+  max-width: 100%;
+}
+
+.page-card .ant-table-wrapper {
+  width: 100%;
+}
+
+.page-card .ant-table-wrapper .ant-table-thead > tr > th,
+.page-card .ant-table-wrapper .ant-table-tbody > tr > td {
+  white-space: nowrap;
+  word-break: keep-all;
+  writing-mode: horizontal-tb;
+  vertical-align: middle;
+}
+
+.page-card .ant-table-wrapper .ant-table-thead > tr > th .ant-table-column-title,
+.page-card .ant-table-wrapper .ant-table-tbody > tr > td .ant-typography,
+.page-card .ant-table-wrapper .ant-table-tbody > tr > td .ant-tag,
+.page-card .ant-table-wrapper .ant-table-tbody > tr > td .ant-btn,
+.page-card .ant-table-wrapper .ant-table-tbody > tr > td .ant-space-item {
+  writing-mode: horizontal-tb;
+}
+
+.page-card .ant-table-wrapper .ant-table-cell-ellipsis {
+  white-space: nowrap;
+}
+
+.page-card .ant-table-wrapper .ant-table-container table {
+  min-width: max-content;
+}
+
+.dashboard-table .ant-table-container {
+  position: relative;
+}
+
+.dashboard-table .ant-table-cell-fix-left,
+.dashboard-table .ant-table-cell-fix-right {
+  background: var(--dashboard-table-bg) !important;
+  backdrop-filter: blur(8px);
+}
+
+.dashboard-table .ant-table-cell-fix-right-first::after,
+.dashboard-table .ant-table-ping-right .ant-table-cell-fix-right-first::after {
+  box-shadow: inset -12px 0 16px -12px rgba(15, 23, 42, 0.28);
+}
+
+.dashboard-table .ant-table-cell-fix-left-last::after,
+.dashboard-table .ant-table-ping-left .ant-table-cell-fix-left-last::after {
+  box-shadow: inset 12px 0 16px -12px rgba(15, 23, 42, 0.18);
+}
+
+.dashboard-table .ant-table-cell-fix-right-first::after,
+.dashboard-table .ant-table-cell-fix-left-last::after {
+  pointer-events: none;
+}
+
+.compact-action-buttons {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.compact-action-buttons .ant-btn {
+  white-space: nowrap;
 }
 
 .students-page-toolbar {
@@ -541,14 +611,6 @@ a {
   text-align: center;
 }
 
-.theme-mode-label {
-  color: var(--dashboard-text-soft);
-}
-
-.theme-mode-indicator {
-  color: var(--dashboard-text-soft) !important;
-}
-
 .page-card.ant-card,
 .inner-card.ant-card,
 .login-panel .ant-card,
@@ -629,4 +691,61 @@ html[data-dashboard-theme='dark'] .heat-pill-muted {
   background: rgba(51, 65, 85, 0.4);
   border-color: rgba(100, 116, 139, 0.45);
   color: #cbd5e1;
+}
+
+@media (max-width: 1680px) {
+  .dashboard-content {
+    padding: 18px;
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+@media (max-width: 1440px) {
+  .dashboard-header {
+    padding: 0 18px;
+  }
+
+  .page-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .page-actions {
+    justify-content: flex-start;
+  }
+
+  .page-card .ant-table-wrapper .ant-table-thead > tr > th,
+  .page-card .ant-table-wrapper .ant-table-tbody > tr > td {
+    padding-inline: 12px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .dashboard-shell {
+    min-width: 0;
+  }
+
+  .dashboard-sider {
+    width: 208px !important;
+    min-width: 208px !important;
+    max-width: 208px !important;
+    flex: 0 0 208px !important;
+  }
+
+  .dashboard-content {
+    padding: 14px;
+  }
+
+  .page-filters {
+    min-width: 0;
+  }
+
+  .students-page-actions,
+  .page-actions {
+    gap: 8px;
+  }
 }

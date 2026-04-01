@@ -422,13 +422,15 @@ export default function StudentsPage() {
   }
 
   const columns = [
-    { title: '姓名', dataIndex: 'name', key: 'name', sorter: true },
-    { title: '考生编号', dataIndex: 'candidate_number', key: 'candidate_number', sorter: true },
+    { title: '姓名', dataIndex: 'name', key: 'name', sorter: true, width: 120, ellipsis: true, fixed: 'left' },
+    { title: '考生编号', dataIndex: 'candidate_number', key: 'candidate_number', sorter: true, width: 150, ellipsis: true, fixed: 'left' },
     {
       title: '专业',
       dataIndex: 'subject',
       key: 'subject_name',
       sorter: true,
+      width: 180,
+      ellipsis: true,
       render: (subject) => formatSubjectLabel(subject),
     },
     {
@@ -436,6 +438,7 @@ export default function StudentsPage() {
       dataIndex: 'admission_year',
       key: 'admission_year',
       sorter: true,
+      width: 90,
       render: (value) => (value ? `${value}届` : '-'),
     },
     {
@@ -443,22 +446,30 @@ export default function StudentsPage() {
       dataIndex: 'admission_batch',
       key: 'admission_batch',
       sorter: true,
+      width: 180,
+      ellipsis: true,
+      responsive: ['xxl'],
       render: (value) => (value ? `${value.admission_year}届 - ${value.name}` : '-'),
     },
     {
       title: '所选导师',
       dataIndex: 'selected_professor_name',
       key: 'selected_professor_name',
+      width: 140,
+      ellipsis: true,
+      responsive: ['xl'],
       render: (value) => value || '-',
     },
-    { title: '学生类型', dataIndex: 'student_type_display', key: 'student_type', sorter: true },
-    { title: '培养类型', dataIndex: 'postgraduate_type_display', key: 'postgraduate_type', sorter: true },
-    { title: '综合排名', dataIndex: 'final_rank', key: 'final_rank', sorter: true },
+    { title: '学生类型', dataIndex: 'student_type_display', key: 'student_type', sorter: true, width: 120, ellipsis: true, responsive: ['lg'] },
+    { title: '培养类型', dataIndex: 'postgraduate_type_display', key: 'postgraduate_type', sorter: true, width: 130, ellipsis: true, responsive: ['xl'] },
+    { title: '综合排名', dataIndex: 'final_rank', key: 'final_rank', sorter: true, width: 100, responsive: ['lg'] },
     {
       title: '登录状态',
       dataIndex: 'can_login',
       key: 'can_login',
       sorter: true,
+      width: 110,
+      responsive: ['xl'],
       render: (value) => (value ? <Tag color="green">允许登录</Tag> : <Tag color="red">禁止登录</Tag>),
     },
     {
@@ -466,6 +477,8 @@ export default function StudentsPage() {
       dataIndex: 'selection_display_enabled',
       key: 'selection_display_enabled',
       sorter: true,
+      width: 130,
+      responsive: ['xl'],
       render: (value) => (value ? <Tag color="blue">显示</Tag> : <Tag color="default">隐藏</Tag>),
     },
     {
@@ -473,6 +486,7 @@ export default function StudentsPage() {
       dataIndex: 'current_status_display',
       key: 'current_status',
       sorter: true,
+      width: 110,
       render: (_, record) => {
         const status = getStudentStatus(record);
         return <StatusTag tone={status.tone}>{status.text}</StatusTag>;
@@ -483,6 +497,8 @@ export default function StudentsPage() {
       dataIndex: 'signature_table_review_status',
       key: 'signature_table_review_status',
       sorter: true,
+      width: 110,
+      responsive: ['lg'],
       render: (value) => {
         const config = reviewStatusMap[value] || { tone: 'default', text: '未知' };
         return <StatusTag tone={config.tone}>{config.text}</StatusTag>;
@@ -492,6 +508,8 @@ export default function StudentsPage() {
       title: '互选表状态',
       dataIndex: 'signature_table',
       key: 'signature_table',
+      width: 110,
+      responsive: ['lg'],
       render: (value, record) => {
         if (value) {
           return <StatusTag tone="success">已生成</StatusTag>;
@@ -505,8 +523,9 @@ export default function StudentsPage() {
     {
       title: '材料',
       key: 'files',
+      width: 200,
       render: (_, record) => (
-        <Space wrap>
+        <Space wrap className="compact-action-buttons">
           <Button size="small" onClick={() => openPreview(`${record.name}的简历`, record.resume)} disabled={!record.resume}>
             简历
           </Button>
@@ -530,8 +549,10 @@ export default function StudentsPage() {
     {
       title: '操作',
       key: 'actions',
+      width: 260,
+      fixed: 'right',
       render: (_, record) => (
-        <Space wrap>
+        <Space wrap className="compact-action-buttons">
           <Button size="small" icon={<EditOutlined />} onClick={() => openEditModal(record)}>
             编辑
           </Button>
@@ -814,10 +835,12 @@ export default function StudentsPage() {
         </div>
 
         <Table
+          className="dashboard-table"
           rowKey="id"
           loading={loading}
           columns={columns}
           dataSource={data.results}
+          scroll={{ x: 1800 }}
           rowSelection={{ selectedRowKeys, onChange: setSelectedRowKeys }}
           pagination={{
             current: pagination.current,

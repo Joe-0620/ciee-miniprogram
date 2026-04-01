@@ -146,29 +146,32 @@ export default function ReviewsPage() {
   };
 
   const columns = [
-    { title: '学生', dataIndex: 'student_name', key: 'student_name', sorter: true },
-    { title: '考生编号', dataIndex: 'candidate_number', key: 'candidate_number', sorter: true },
-    { title: '届别', dataIndex: 'admission_year', key: 'admission_year', sorter: true, render: (value) => (value ? `${value}届` : '-') },
-    { title: '导师', dataIndex: 'professor_name', key: 'professor_name', sorter: true },
-    { title: '审核人', dataIndex: 'reviewer_name', key: 'reviewer_name', sorter: true, render: (value) => value || '-' },
-    { title: '专业', dataIndex: 'subject_name', key: 'subject_name', sorter: true },
+    { title: '学生', dataIndex: 'student_name', key: 'student_name', sorter: true, width: 120, ellipsis: true, fixed: 'left' },
+    { title: '考生编号', dataIndex: 'candidate_number', key: 'candidate_number', sorter: true, width: 150, ellipsis: true, fixed: 'left' },
+    { title: '届别', dataIndex: 'admission_year', key: 'admission_year', sorter: true, width: 90, render: (value) => (value ? `${value}届` : '-') },
+    { title: '导师', dataIndex: 'professor_name', key: 'professor_name', sorter: true, width: 120, ellipsis: true },
+    { title: '审核人', dataIndex: 'reviewer_name', key: 'reviewer_name', sorter: true, width: 120, ellipsis: true, responsive: ['lg'], render: (value) => value || '-' },
+    { title: '专业', dataIndex: 'subject_name', key: 'subject_name', sorter: true, width: 180, ellipsis: true },
     {
       title: '状态',
       dataIndex: 'status',
       key: 'status',
       sorter: true,
+      width: 110,
       render: (value) => {
         const config = statusMap[value] || { tone: 'default', text: '未知' };
         return <StatusTag tone={config.tone}>{config.text}</StatusTag>;
       },
     },
-    { title: '提交时间', dataIndex: 'submit_time', key: 'submit_time', sorter: true, render: (value) => (value ? new Date(value).toLocaleString() : '-') },
-    { title: '审核时间', dataIndex: 'review_time', key: 'review_time', sorter: true, render: (value) => (value ? new Date(value).toLocaleString() : '-') },
+    { title: '提交时间', dataIndex: 'submit_time', key: 'submit_time', sorter: true, width: 170, responsive: ['xl'], render: (value) => (value ? new Date(value).toLocaleString() : '-') },
+    { title: '审核时间', dataIndex: 'review_time', key: 'review_time', sorter: true, width: 170, responsive: ['xxl'], render: (value) => (value ? new Date(value).toLocaleString() : '-') },
     {
       title: '操作',
       key: 'actions',
+      width: 200,
+      fixed: 'right',
       render: (_, record) => (
-        <Space>
+        <Space wrap className="compact-action-buttons">
           <Button size="small" onClick={() => showDetail(record)} loading={detailLoading && detail?.id === record.id}>
             查看详情
           </Button>
@@ -276,11 +279,13 @@ export default function ReviewsPage() {
         </div>
 
         <Table
+          className="dashboard-table"
           rowKey="id"
           loading={loading}
           rowSelection={{ selectedRowKeys, onChange: setSelectedRowKeys }}
           columns={columns}
           dataSource={data.results}
+          scroll={{ x: 1350 }}
           pagination={{ current: pagination.current, pageSize: pagination.pageSize, total: data.count, showSizeChanger: true }}
           onChange={(pager, _filters, tableSorter) => {
             const nextSorter = tableSorter?.field

@@ -60,6 +60,12 @@ WECHAT_API_VERIFY_SSL = os.environ.get('WECHAT_API_VERIFY_SSL', 'true').strip().
     'no',
     'off',
 }
+WECHAT_OPENAPI_MODE = os.environ.get('WECHAT_OPENAPI_MODE', '').strip().lower() in {
+    '1',
+    'true',
+    'yes',
+    'on',
+}
 
 
 def get_wechat_request_kwargs(timeout=15):
@@ -71,6 +77,19 @@ def get_wechat_request_kwargs(timeout=15):
     return request_kwargs
 
 
+def use_wechat_openapi():
+    return WECHAT_OPENAPI_MODE or WECHAT_API_BASE.startswith('http://')
+
+
+def build_wechat_api_url(path, access_token=None):
+    base = WECHAT_API_BASE.rstrip('/')
+    url = f"{base}/{path.lstrip('/')}"
+    if access_token:
+        separator = '&' if '?' in url else '?'
+        url = f'{url}{separator}access_token={access_token}'
+    return url
+
+
 def get_wechat_access_token(force_refresh=False):
     cache_key = 'select_information_wechat_access_token'
     if not force_refresh:
@@ -79,7 +98,7 @@ def get_wechat_access_token(force_refresh=False):
             return cached_token
 
     response = requests.post(
-        f'{WECHAT_API_BASE}/cgi-bin/stable_token',
+        'https://api.weixin.qq.com/cgi-bin/stable_token',
         json={
             'grant_type': 'client_credential',
             'appid': WECHAT_APPID,
@@ -97,6 +116,36 @@ def get_wechat_access_token(force_refresh=False):
     expires_in = int(payload.get('expires_in') or 7200)
     cache.set(cache_key, access_token, timeout=max(expires_in - 300, 300))
     return access_token
+
+
+def post_wechat_api(path, payload, timeout=15):
+    if use_wechat_openapi():
+        response = requests.post(
+            build_wechat_api_url(path),
+            json=payload,
+            **get_wechat_request_kwargs(timeout=timeout),
+        )
+        response.raise_for_status()
+        return response.json()
+
+    access_token = get_wechat_access_token()
+    response = requests.post(
+        build_wechat_api_url(path, access_token=access_token),
+        json=payload,
+        **get_wechat_request_kwargs(timeout=timeout),
+    )
+    response.raise_for_status()
+    response_data = response.json()
+    if response_data.get('errcode') == 41001:
+        access_token = get_wechat_access_token(force_refresh=True)
+        response = requests.post(
+            build_wechat_api_url(path, access_token=access_token),
+            json=payload,
+            **get_wechat_request_kwargs(timeout=timeout),
+        )
+        response.raise_for_status()
+        response_data = response.json()
+    return response_data
 
 
 def get_selection_time_config(target):
@@ -1446,23 +1495,11 @@ class ProfessorChooseStudentView(APIView):
             config = CosConfig(Region=region, SecretId=secret_id, SecretKey=secret_key)
             client = CosS3Client(config)
 
-            access_token = get_wechat_access_token()
-            url = f'{WECHAT_API_BASE}/tcb/uploadfile?access_token={access_token}'
             data = {"env": WECHAT_CLOUD_ENV, "path": cloud_path}
-            response = requests.post(url, json=data, **get_wechat_request_kwargs(timeout=15))
-            response.raise_for_status()
-            response_data = response.json()
+            response_data = post_wechat_api('tcb/uploadfile', data, timeout=15)
 
             if response_data.get('errcode') not in (None, 0):
-                errcode = response_data.get('errcode')
-                if errcode == 41001:
-                    access_token = get_wechat_access_token(force_refresh=True)
-                    refresh_url = f'{WECHAT_API_BASE}/tcb/uploadfile?access_token={access_token}'
-                    response = requests.post(refresh_url, json=data, **get_wechat_request_kwargs(timeout=15))
-                    response.raise_for_status()
-                    response_data = response.json()
-                if response_data.get('errcode') not in (None, 0):
-                    raise ValueError(response_data.get('errmsg') or '调用 tcb/uploadfile 失败。')
+                raise ValueError(response_data.get('errmsg') or '调用 tcb/uploadfile 失败。')
 
             cos_file_id = response_data.get('cos_file_id')
             if not cos_file_id:
@@ -1841,5 +1878,3 @@ class ReviewRecordUpdateView(APIView):
         except WeChatAccount.DoesNotExist:
             # 如果学生没有绑定微信账号信息，则不发送通知
             print("导师微信账号不存在，无法发送通知。")
-
-

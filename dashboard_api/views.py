@@ -87,6 +87,12 @@ WECHAT_CLOUD_ENV = os.environ.get('WECHAT_CLOUD_ENV', 'prod-2g1jrmkk21c1d283')
 WECHAT_APPID = os.environ.get('WECHAT_APPID', 'wxa67ae78c4f1f6275')
 WECHAT_SECRET = os.environ.get('WECHAT_SECRET', '7241b1950145a193f15b3584d50f3989')
 WECHAT_API_BASE = os.environ.get('WECHAT_API_BASE', 'https://api.weixin.qq.com')
+WECHAT_OPENAPI_MODE = os.environ.get('WECHAT_OPENAPI_MODE', '').strip().lower() in {
+    '1',
+    'true',
+    'yes',
+    'on',
+}
 
 
 def get_display_name_for_user(user):
@@ -233,7 +239,7 @@ def get_wechat_access_token(force_refresh=False):
             return cached_token
 
     response = requests.post(
-        f'{WECHAT_API_BASE}/cgi-bin/stable_token',
+        'https://api.weixin.qq.com/cgi-bin/stable_token',
         json={
             'grant_type': 'client_credential',
             'appid': WECHAT_APPID,
@@ -253,30 +259,58 @@ def get_wechat_access_token(force_refresh=False):
     return access_token
 
 
-def get_file_download_url(file_id):
+def use_wechat_openapi():
+    return WECHAT_OPENAPI_MODE or WECHAT_API_BASE.startswith('http://')
+
+
+def build_wechat_api_url(path, access_token=None):
+    base = WECHAT_API_BASE.rstrip('/')
+    url = f"{base}/{path.lstrip('/')}"
+    if access_token:
+        separator = '&' if '?' in url else '?'
+        url = f'{url}{separator}access_token={access_token}'
+    return url
+
+
+def post_wechat_api(path, payload, timeout=15):
+    if use_wechat_openapi():
+        response = requests.post(
+            build_wechat_api_url(path),
+            json=payload,
+            timeout=timeout,
+        )
+        response.raise_for_status()
+        return response.json()
+
     access_token = get_wechat_access_token()
     response = requests.post(
-        f'{WECHAT_API_BASE}/tcb/batchdownloadfile?access_token={access_token}',
-        json={
+        build_wechat_api_url(path, access_token=access_token),
+        json=payload,
+        timeout=timeout,
+    )
+    response.raise_for_status()
+    response_data = response.json()
+    if response_data.get('errcode') == 41001:
+        access_token = get_wechat_access_token(force_refresh=True)
+        response = requests.post(
+            build_wechat_api_url(path, access_token=access_token),
+            json=payload,
+            timeout=timeout,
+        )
+        response.raise_for_status()
+        response_data = response.json()
+    return response_data
+
+
+def get_file_download_url(file_id):
+    payload = post_wechat_api(
+        'tcb/batchdownloadfile',
+        {
             'env': WECHAT_CLOUD_ENV,
             'file_list': [{'fileid': file_id, 'max_age': 7200}],
         },
         timeout=15,
     )
-    response.raise_for_status()
-    payload = response.json()
-    if payload.get('errcode') == 41001:
-        access_token = get_wechat_access_token(force_refresh=True)
-        response = requests.post(
-            f'{WECHAT_API_BASE}/tcb/batchdownloadfile?access_token={access_token}',
-            json={
-                'env': WECHAT_CLOUD_ENV,
-                'file_list': [{'fileid': file_id, 'max_age': 7200}],
-            },
-            timeout=15,
-        )
-        response.raise_for_status()
-        payload = response.json()
     if payload.get('errcode') not in (None, 0):
         raise ValueError(payload.get('errmsg') or 'Failed to fetch download url.')
     file_list = payload.get('file_list') or []

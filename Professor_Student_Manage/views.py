@@ -65,6 +65,12 @@ WECHAT_API_VERIFY_SSL = os.environ.get('WECHAT_API_VERIFY_SSL', 'true').strip().
     'no',
     'off',
 }
+WECHAT_OPENAPI_MODE = os.environ.get('WECHAT_OPENAPI_MODE', '').strip().lower() in {
+    '1',
+    'true',
+    'yes',
+    'on',
+}
 
 
 def get_wechat_request_kwargs(timeout=15):
@@ -76,6 +82,19 @@ def get_wechat_request_kwargs(timeout=15):
     return request_kwargs
 
 
+def use_wechat_openapi():
+    return WECHAT_OPENAPI_MODE or WECHAT_API_BASE.startswith('http://')
+
+
+def build_wechat_api_url(path, access_token=None):
+    base = WECHAT_API_BASE.rstrip('/')
+    url = f"{base}/{path.lstrip('/')}"
+    if access_token:
+        separator = '&' if '?' in url else '?'
+        url = f'{url}{separator}access_token={access_token}'
+    return url
+
+
 def get_wechat_access_token(force_refresh=False):
     cache_key = 'professor_student_manage_wechat_access_token'
     if not force_refresh:
@@ -84,7 +103,7 @@ def get_wechat_access_token(force_refresh=False):
             return cached_token
 
     response = requests.post(
-        f'{WECHAT_API_BASE}/cgi-bin/stable_token',
+        'https://api.weixin.qq.com/cgi-bin/stable_token',
         json={
             'grant_type': 'client_credential',
             'appid': WECHAT_APPID,
@@ -102,6 +121,36 @@ def get_wechat_access_token(force_refresh=False):
     expires_in = int(payload.get('expires_in') or 7200)
     cache.set(cache_key, access_token, timeout=max(expires_in - 300, 300))
     return access_token
+
+
+def post_wechat_api(path, payload, timeout=15):
+    if use_wechat_openapi():
+        response = requests.post(
+            build_wechat_api_url(path),
+            json=payload,
+            **get_wechat_request_kwargs(timeout=timeout),
+        )
+        response.raise_for_status()
+        return response.json()
+
+    access_token = get_wechat_access_token()
+    response = requests.post(
+        build_wechat_api_url(path, access_token=access_token),
+        json=payload,
+        **get_wechat_request_kwargs(timeout=timeout),
+    )
+    response.raise_for_status()
+    response_data = response.json()
+    if response_data.get('errcode') == 41001:
+        access_token = get_wechat_access_token(force_refresh=True)
+        response = requests.post(
+            build_wechat_api_url(path, access_token=access_token),
+            json=payload,
+            **get_wechat_request_kwargs(timeout=timeout),
+        )
+        response.raise_for_status()
+        response_data = response.json()
+    return response_data
 
 
 def save_professor_profile_sections(professor, raw_sections):
@@ -676,8 +725,6 @@ class UpdateProfessorView(APIView):
         """
         根据 file_id 获取下载地址
         """
-        access_token = get_wechat_access_token()
-        url = f'{WECHAT_API_BASE}/tcb/batchdownloadfile?access_token={access_token}'
         data = {
             "env": WECHAT_CLOUD_ENV,
             "file_list": [
@@ -687,18 +734,7 @@ class UpdateProfessorView(APIView):
                 }
             ]
         }
-
-        # 发送 POST 请求
-        response = requests.post(url, json=data, **get_wechat_request_kwargs(timeout=15))
-        response.raise_for_status()
-        payload = response.json()
-        if payload.get('errcode') == 41001:
-            access_token = get_wechat_access_token(force_refresh=True)
-            refresh_url = f'{WECHAT_API_BASE}/tcb/batchdownloadfile?access_token={access_token}'
-            response = requests.post(refresh_url, json=data, **get_wechat_request_kwargs(timeout=15))
-            response.raise_for_status()
-            payload = response.json()
-        return payload
+        return post_wechat_api('tcb/batchdownloadfile', data, timeout=15)
 
 
 
@@ -812,24 +848,12 @@ class UpdateProfessorView(APIView):
         logger.info('UpdateProfessorView 上传签署文件: student_id=%s cloud_path=%s', student.id, cloud_path)
 
         try:
-            access_token = get_wechat_access_token()
-            url = f'{WECHAT_API_BASE}/tcb/uploadfile?access_token={access_token}'
-
             data = {
                 "env": WECHAT_CLOUD_ENV,
                 "path": cloud_path,
             }
 
-            # 发送 POST 请求
-            response = requests.post(url, json=data, **get_wechat_request_kwargs(timeout=15))
-            response.raise_for_status()
-            response_data = response.json()
-            if response_data.get('errcode') == 41001:
-                access_token = get_wechat_access_token(force_refresh=True)
-                refresh_url = f'{WECHAT_API_BASE}/tcb/uploadfile?access_token={access_token}'
-                response = requests.post(refresh_url, json=data, **get_wechat_request_kwargs(timeout=15))
-                response.raise_for_status()
-                response_data = response.json()
+            response_data = post_wechat_api('tcb/uploadfile', data, timeout=15)
             if response_data.get('errcode') not in (None, 0):
                 raise ValueError(response_data.get('errmsg') or '调用 tcb/uploadfile 失败。')
 
@@ -946,8 +970,6 @@ class UpdateStudentView(APIView):
         """
         根据 file_id 获取下载地址
         """
-        access_token = get_wechat_access_token()
-        url = f'{WECHAT_API_BASE}/tcb/batchdownloadfile?access_token={access_token}'
         data = {
             "env": WECHAT_CLOUD_ENV,
             "file_list": [
@@ -957,18 +979,7 @@ class UpdateStudentView(APIView):
                 }
             ]
         }
-
-        # 发送 POST 请求
-        response = requests.post(url, json=data, **get_wechat_request_kwargs(timeout=15))
-        response.raise_for_status()
-        payload = response.json()
-        if payload.get('errcode') == 41001:
-            access_token = get_wechat_access_token(force_refresh=True)
-            refresh_url = f'{WECHAT_API_BASE}/tcb/batchdownloadfile?access_token={access_token}'
-            response = requests.post(refresh_url, json=data, **get_wechat_request_kwargs(timeout=15))
-            response.raise_for_status()
-            payload = response.json()
-        return payload
+        return post_wechat_api('tcb/batchdownloadfile', data, timeout=15)
 
 
 
@@ -1156,24 +1167,12 @@ class UpdateStudentView(APIView):
         logger.info('UpdateStudentView 上传签署文件: student_id=%s cloud_path=%s', student.id, cloud_path)
 
         try:
-            access_token = get_wechat_access_token()
-            url = f'{WECHAT_API_BASE}/tcb/uploadfile?access_token={access_token}'
-
             data = {
                 "env": WECHAT_CLOUD_ENV,
                 "path": cloud_path,
             }
 
-            # 发送 POST 请求
-            response = requests.post(url, json=data, **get_wechat_request_kwargs(timeout=15))
-            response.raise_for_status()
-            response_data = response.json()
-            if response_data.get('errcode') == 41001:
-                access_token = get_wechat_access_token(force_refresh=True)
-                refresh_url = f'{WECHAT_API_BASE}/tcb/uploadfile?access_token={access_token}'
-                response = requests.post(refresh_url, json=data, **get_wechat_request_kwargs(timeout=15))
-                response.raise_for_status()
-                response_data = response.json()
+            response_data = post_wechat_api('tcb/uploadfile', data, timeout=15)
             if response_data.get('errcode') not in (None, 0):
                 raise ValueError(response_data.get('errmsg') or '调用 tcb/uploadfile 失败。')
 
@@ -1232,24 +1231,12 @@ class UpdateStudentView(APIView):
         logger.info('UpdateStudentView 上传放弃签署文件: student_id=%s cloud_path=%s', student.id, cloud_path)
 
         try:
-            access_token = get_wechat_access_token()
-            url = f'{WECHAT_API_BASE}/tcb/uploadfile?access_token={access_token}'
-
             data = {
                 "env": WECHAT_CLOUD_ENV,
                 "path": cloud_path,
             }
 
-            # 鍙戦€丳OST璇锋眰
-            response = requests.post(url, json=data, **get_wechat_request_kwargs(timeout=15))
-            response.raise_for_status()
-            response_data = response.json()
-            if response_data.get('errcode') == 41001:
-                access_token = get_wechat_access_token(force_refresh=True)
-                refresh_url = f'{WECHAT_API_BASE}/tcb/uploadfile?access_token={access_token}'
-                response = requests.post(refresh_url, json=data, **get_wechat_request_kwargs(timeout=15))
-                response.raise_for_status()
-                response_data = response.json()
+            response_data = post_wechat_api('tcb/uploadfile', data, timeout=15)
             if response_data.get('errcode') not in (None, 0):
                 raise ValueError(response_data.get('errmsg') or '调用 tcb/uploadfile 失败。')
 
@@ -1561,24 +1548,12 @@ class CreateGiveupSignatureView(APIView):
         logger.info('CreateGiveupSignatureView 上传放弃说明表: student_id=%s cloud_path=%s', student.id, cloud_path)
 
         try:
-            access_token = get_wechat_access_token()
-            url = f'{WECHAT_API_BASE}/tcb/uploadfile?access_token={access_token}'
-
             data = {
                 "env": WECHAT_CLOUD_ENV,
                 "path": cloud_path,
             }
 
-            # 发送 POST 请求
-            response = requests.post(url, json=data, **get_wechat_request_kwargs(timeout=15))
-            response.raise_for_status()
-            response_data = response.json()
-            if response_data.get('errcode') == 41001:
-                access_token = get_wechat_access_token(force_refresh=True)
-                refresh_url = f'{WECHAT_API_BASE}/tcb/uploadfile?access_token={access_token}'
-                response = requests.post(refresh_url, json=data, **get_wechat_request_kwargs(timeout=15))
-                response.raise_for_status()
-                response_data = response.json()
+            response_data = post_wechat_api('tcb/uploadfile', data, timeout=15)
             if response_data.get('errcode') not in (None, 0):
                 raise ValueError(response_data.get('errmsg') or '调用 tcb/uploadfile 失败。')
 
@@ -1836,4 +1811,3 @@ class SubmitGiveupSignatureView(APIView):
                 print(f"通知发送失败: {response_data.get('errmsg')}")
         except WeChatAccount.DoesNotExist:
             print("学生微信账号不存在，无法发送通知。")
-

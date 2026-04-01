@@ -4386,6 +4386,93 @@ class DashboardStudentToggleSelectionDisplayView(APIView):
         )
 
 
+class DashboardStudentRegenerateSignatureTableView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsDashboardAdmin]
+
+    def post(self, request):
+        ids = request.data.get('ids') or []
+        if not isinstance(ids, list) or not ids:
+            return Response({'detail': '请先选择学生。'}, status=status.HTTP_400_BAD_REQUEST)
+
+        queryset = Student.objects.select_related('user_name', 'subject').filter(id__in=ids)
+        if not queryset.exists():
+            return Response({'detail': '未找到可操作的学生。'}, status=status.HTTP_400_BAD_REQUEST)
+
+        from Select_Information.views import ProfessorChooseStudentView
+
+        generator = ProfessorChooseStudentView()
+        regenerated_count = 0
+        skipped_examples = []
+
+        for student in queryset:
+            approved_choice = (
+                StudentProfessorChoice.objects.select_related('professor')
+                .filter(student=student, status=1)
+                .order_by('-finish_time', '-submit_date', '-id')
+                .first()
+            )
+            if not approved_choice or not approved_choice.professor_id:
+                skipped_examples.append({
+                    'student_id': student.id,
+                    'name': student.name,
+                    'candidate_number': student.candidate_number,
+                    'reason': '没有已同意的双选记录',
+                })
+                continue
+
+            before_signature_table = student.signature_table
+            try:
+                generator.generate_and_upload_pdf(student, approved_choice.professor)
+                student.refresh_from_db(fields=['signature_table'])
+            except Exception as exc:
+                skipped_examples.append({
+                    'student_id': student.id,
+                    'name': student.name,
+                    'candidate_number': student.candidate_number,
+                    'reason': f'生成失败：{exc}',
+                })
+                continue
+
+            if student.signature_table:
+                regenerated_count += 1
+                continue
+
+            skipped_examples.append({
+                'student_id': student.id,
+                'name': student.name,
+                'candidate_number': student.candidate_number,
+                'reason': '生成流程已执行，但未写入互选表文件',
+                'before_signature_table': before_signature_table,
+            })
+
+        skipped_count = len(skipped_examples)
+        create_audit_log(
+            request,
+            action='student.regenerate_signature_table',
+            module='学生管理',
+            level=DashboardAuditLog.LEVEL_WARNING,
+            target_type='student',
+            target_display='批量重新生成互选表',
+            detail=f'批量重新生成互选表：成功 {regenerated_count} 名，跳过 {skipped_count} 名。',
+            after_data={
+                'ids': ids,
+                'regenerated_count': regenerated_count,
+                'skipped_count': skipped_count,
+                'skipped_examples': skipped_examples[:20],
+            },
+        )
+        return Response(
+            {
+                'detail': f'已成功为 {regenerated_count} 名学生重新生成互选表，跳过 {skipped_count} 名。',
+                'regenerated_count': regenerated_count,
+                'skipped_count': skipped_count,
+                'skipped_examples': skipped_examples[:20],
+            },
+            status=status.HTTP_200_OK,
+        )
+
+
 class DashboardStudentBatchDownloadView(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsDashboardAdmin]
@@ -4649,6 +4736,8 @@ class DashboardChoiceExportSelectedView(APIView):
             queryset = queryset.filter(student__postgraduate_type__in=postgraduate_types)
 
         queryset = queryset.order_by('-submit_date', '-id')
+        if not queryset.exists():
+            return Response({'detail': '当前筛选条件下没有可导出的双选记录。'}, status=status.HTTP_400_BAD_REQUEST)
 
         student_type_map = {
             1: '硕士推免生',

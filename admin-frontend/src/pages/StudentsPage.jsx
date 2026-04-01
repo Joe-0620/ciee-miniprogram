@@ -489,6 +489,20 @@ export default function StudentsPage() {
       },
     },
     {
+      title: '互选表状态',
+      dataIndex: 'signature_table',
+      key: 'signature_table',
+      render: (value, record) => {
+        if (value) {
+          return <StatusTag tone="success">已生成</StatusTag>;
+        }
+        if (record.is_selected) {
+          return <StatusTag tone="warning">缺失</StatusTag>;
+        }
+        return <StatusTag tone="default">未生成</StatusTag>;
+      },
+    },
+    {
       title: '材料',
       key: 'files',
       render: (_, record) => (
@@ -741,6 +755,25 @@ export default function StudentsPage() {
               }
             >
               重置密码
+            </Button>
+            <Button
+              disabled={!selectedRowKeys.length}
+              loading={actionLoading}
+              onClick={() =>
+                confirmDanger({
+                  title: '确认重新为选中学生生成互选表吗？',
+                  content: `共 ${selectedRowKeys.length} 名学生。系统会按学生当前已同意的导师重新生成互选表。`,
+                  okText: '确认生成',
+                  cancelText: '取消',
+                  onOk: () =>
+                    runAction(
+                      () => post('/students/actions/regenerate-signature-table/', { ids: selectedRowKeys }),
+                      '互选表重新生成任务已完成',
+                    ),
+                })
+              }
+            >
+              重新生成互选表
             </Button>
             <Button disabled={!selectedRowKeys.length} onClick={() => batchDownload('signature', '学生互选表.zip')}>
               下载互选表

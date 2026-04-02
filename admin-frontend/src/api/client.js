@@ -1,8 +1,19 @@
+import { Modal } from 'antd';
 import { getDashboardToken, removeDashboardToken } from '../utils/auth';
 
 
 const API_BASE = '/dashboard-api';
 let authExpiredHandled = false;
+
+function isAuthError(status, payload, fallbackMessage = '') {
+  const detail = String(payload?.detail || payload?.message || fallbackMessage || '').toLowerCase();
+  return status === 401
+    || status === 403
+    || detail.includes('invalid token')
+    || detail.includes('token')
+    || detail.includes('credential')
+    || detail.includes('凭证');
+}
 
 function handleUnauthorized() {
   if (authExpiredHandled) {
@@ -10,7 +21,18 @@ function handleUnauthorized() {
   }
   authExpiredHandled = true;
   removeDashboardToken();
-  window.location.replace('/login?expired=1');
+  Modal.warning({
+    title: '登录凭证已失效',
+    content: '当前登录状态已失效，请重新登录后台。',
+    okText: '确认',
+    closable: false,
+    maskClosable: false,
+    keyboard: false,
+    centered: true,
+    onOk: () => {
+      window.location.replace('/login?expired=1');
+    },
+  });
   return new Promise(() => {});
 }
 
@@ -28,12 +50,12 @@ async function request(path, options = {}) {
     headers,
   });
 
-  if (response.status === 401) {
-    return handleUnauthorized();
-  }
-
   const contentType = response.headers.get('content-type') || '';
   const payload = contentType.includes('application/json') ? await response.json() : null;
+
+  if (isAuthError(response.status, payload)) {
+    return handleUnauthorized();
+  }
 
   if (!response.ok) {
     const error = new Error(payload?.detail || payload?.message || 'Request failed');
@@ -77,12 +99,11 @@ export async function upload(path, formData) {
     body: formData,
   });
 
-  if (response.status === 401) {
-    return handleUnauthorized();
-  }
-
   const contentType = response.headers.get('content-type') || '';
   const payload = contentType.includes('application/json') ? await response.json() : null;
+  if (isAuthError(response.status, payload)) {
+    return handleUnauthorized();
+  }
   if (!response.ok) {
     const error = new Error(payload?.detail || payload?.message || '上传失败');
     error.status = response.status;
@@ -109,12 +130,12 @@ export function uploadWithProgress(path, formData, onProgress) {
     };
 
     xhr.onload = () => {
-      if (xhr.status === 401) {
+      const contentType = xhr.getResponseHeader('content-type') || '';
+      const payload = contentType.includes('application/json') && xhr.responseText ? JSON.parse(xhr.responseText) : null;
+      if (isAuthError(xhr.status, payload, xhr.responseText)) {
         handleUnauthorized();
         return;
       }
-      const contentType = xhr.getResponseHeader('content-type') || '';
-      const payload = contentType.includes('application/json') && xhr.responseText ? JSON.parse(xhr.responseText) : null;
       if (xhr.status >= 200 && xhr.status < 300) {
         resolve(payload);
         return;
@@ -136,7 +157,7 @@ export async function download(path, filename) {
     headers: buildHeaders(),
   });
 
-  if (response.status === 401) {
+  if (response.status === 401 || response.status === 403) {
     return handleUnauthorized();
   }
 
@@ -166,16 +187,18 @@ export async function postDownload(path, body, filename) {
     body: JSON.stringify(body),
   });
 
-  if (response.status === 401) {
-    return handleUnauthorized();
-  }
-
   if (!response.ok) {
     let errorMessage = '下载失败';
     try {
       const payload = await response.json();
+      if (isAuthError(response.status, payload)) {
+        return handleUnauthorized();
+      }
       errorMessage = payload?.detail || errorMessage;
     } catch {}
+    if (response.status === 401 || response.status === 403) {
+      return handleUnauthorized();
+    }
     throw new Error(errorMessage);
   }
 

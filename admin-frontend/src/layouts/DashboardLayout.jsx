@@ -57,8 +57,8 @@ const NAV_GROUPS = [
     label: '招生业务',
     children: [
       { key: '/choices', icon: <AuditOutlined />, label: '双选记录' },
-      { key: '/student-display-control', icon: <ReadOutlined />, label: '可选学生展示控制' },
-      { key: '/professor-heat', icon: <AuditOutlined />, label: '导师热度管理' },
+      { key: '/student-display-control', icon: <ReadOutlined />, label: '可选学生管理' },
+      { key: '/professor-heat', icon: <AuditOutlined />, label: '互选热度管理' },
       { key: '/reviews', icon: <ReadOutlined />, label: '审核记录' },
       { key: '/alternates', icon: <ScheduleOutlined />, label: '候补管理' },
       { key: '/giveups', icon: <UserDeleteOutlined />, label: '放弃录取' },
@@ -69,12 +69,12 @@ const NAV_GROUPS = [
     icon: <ScheduleOutlined />,
     label: '名额与配置',
     children: [
-      { key: '/selection-times', icon: <ScheduleOutlined />, label: '学院师生互选时间设置' },
+      { key: '/selection-times', icon: <ScheduleOutlined />, label: '互选时间设置' },
       { key: '/admission-batches', icon: <ScheduleOutlined />, label: '招生批次' },
-      { key: '/enrollment', icon: <ScheduleOutlined />, label: '专业 / 方向' },
-      { key: '/master-quotas', icon: <ScheduleOutlined />, label: '导师硕士专业名额' },
-      { key: '/doctor-quotas', icon: <ScheduleOutlined />, label: '导师博士专业名额' },
-      { key: '/shared-quota-pools', icon: <ScheduleOutlined />, label: '共享名额池' },
+      { key: '/enrollment', icon: <ScheduleOutlined />, label: '方向和专业设置' },
+      { key: '/master-quotas', icon: <ScheduleOutlined />, label: '硕士名额配置' },
+      { key: '/doctor-quotas', icon: <ScheduleOutlined />, label: '博士名额配置' },
+      { key: '/shared-quota-pools', icon: <ScheduleOutlined />, label: '共享名额配置' },
     ],
   },
 ];

@@ -227,19 +227,22 @@ export default function SharedQuotaPoolsPage() {
   });
 
   const columns = [
-    { title: '共享池名称', dataIndex: 'pool_name', key: 'pool_name', sorter: true },
-    { title: '导师', dataIndex: 'professor_name', key: 'professor_name', sorter: true },
-    { title: '工号', dataIndex: 'teacher_identity_id', key: 'teacher_identity_id', sorter: true },
-    { title: '方向', dataIndex: 'department_name', key: 'department_name' },
-    { title: '类型', dataIndex: 'quota_scope_display', key: 'quota_scope', sorter: true },
+    { title: '共享池名称', dataIndex: 'pool_name', key: 'pool_name', sorter: true, width: 220, ellipsis: true, fixed: 'left' },
+    { title: '导师', dataIndex: 'professor_name', key: 'professor_name', sorter: true, width: 120, ellipsis: true, fixed: 'left' },
+    { title: '工号', dataIndex: 'teacher_identity_id', key: 'teacher_identity_id', sorter: true, width: 110, ellipsis: true },
+    { title: '方向', dataIndex: 'department_name', key: 'department_name', width: 140, ellipsis: true, responsive: ['lg'] },
+    { title: '类型', dataIndex: 'quota_scope_display', key: 'quota_scope', sorter: true, width: 110, ellipsis: true },
     {
       title: '校区',
       key: 'campus_display',
+      width: 100,
       render: (_, record) => (record.quota_scope === 'doctor' ? '不区分' : record.campus_display),
     },
     {
       title: '覆盖专业',
       key: 'subject_labels',
+      width: 320,
+      ellipsis: true,
       render: (_, record) => (
         <Space size={[4, 4]} wrap>
           {(record.subject_labels || []).map((subject) => (
@@ -248,19 +251,22 @@ export default function SharedQuotaPoolsPage() {
         </Space>
       ),
     },
-    { title: '总名额', dataIndex: 'total_quota', key: 'total_quota', sorter: true },
-    { title: '已用', dataIndex: 'used_quota', key: 'used_quota', sorter: true },
-    { title: '剩余', dataIndex: 'remaining_quota', key: 'remaining_quota', sorter: true },
+    { title: '总名额', dataIndex: 'total_quota', key: 'total_quota', sorter: true, width: 90 },
+    { title: '已用', dataIndex: 'used_quota', key: 'used_quota', sorter: true, width: 80 },
+    { title: '剩余', dataIndex: 'remaining_quota', key: 'remaining_quota', sorter: true, width: 80 },
     {
       title: '状态',
       key: 'is_active',
+      width: 90,
       render: (_, record) => (record.is_active ? <Tag color="green">启用</Tag> : <Tag>停用</Tag>),
     },
     {
       title: '操作',
       key: 'actions',
+      width: 150,
+      fixed: 'right',
       render: (_, record) => (
-        <Space>
+        <Space wrap className="compact-action-buttons">
           <Button size="small" icon={<EditOutlined />} onClick={() => openEditModal(record)}>
             编辑
           </Button>
@@ -343,6 +349,7 @@ export default function SharedQuotaPoolsPage() {
           loading={loading}
           columns={columns}
           dataSource={data.results}
+          scroll={{ x: 1500 }}
           sticky={{ offsetHeader: 64, offsetScroll: 12 }}
           pagination={{ current: pagination.current, pageSize: pagination.pageSize, total: data.count, showSizeChanger: true }}
           onChange={(pager, _filters, tableSorter) => {

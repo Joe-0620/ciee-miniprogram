@@ -23,6 +23,7 @@ import { get, patch, post, upload } from '../api/client';
 import PageHeader from '../components/PageHeader';
 import StatusTag from '../components/StatusTag';
 import { confirmDanger } from '../utils/confirm';
+import { loadPageState, savePageState } from '../utils/pageState';
 
 const quotaTypeOptions = [
   { label: '学硕名额清零', value: 'academic' },
@@ -40,18 +41,24 @@ const reviewerOptions = [
 ];
 
 export default function ProfessorsPage() {
+  const initialPageState = loadPageState('professors-page', {
+    keyword: '',
+    filters: {
+      department_id: undefined,
+      have_qualification: undefined,
+      reviewer_only: undefined,
+    },
+    sorter: { order_by: 'id', order_direction: 'desc' },
+    pagination: { current: 1, pageSize: 10 },
+  });
   const [loading, setLoading] = useState(false);
   const [actionLoading, setActionLoading] = useState(false);
-  const [keyword, setKeyword] = useState('');
-  const [filters, setFilters] = useState({
-    department_id: undefined,
-    have_qualification: undefined,
-    reviewer_only: undefined,
-  });
-  const [sorter, setSorter] = useState({ order_by: 'id', order_direction: 'desc' });
+  const [keyword, setKeyword] = useState(initialPageState.keyword);
+  const [filters, setFilters] = useState(initialPageState.filters);
+  const [sorter, setSorter] = useState(initialPageState.sorter);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [data, setData] = useState({ count: 0, results: [] });
-  const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
+  const [pagination, setPagination] = useState(initialPageState.pagination);
   const [departments, setDepartments] = useState([]);
   const [editingRecord, setEditingRecord] = useState(null);
   const [editingDetail, setEditingDetail] = useState(null);
@@ -108,8 +115,18 @@ export default function ProfessorsPage() {
 
   useEffect(() => {
     loadBaseOptions();
-    fetchData(1, 10, '', filters, sorter);
+    fetchData(
+      initialPageState.pagination.current,
+      initialPageState.pagination.pageSize,
+      initialPageState.keyword,
+      initialPageState.filters,
+      initialPageState.sorter,
+    );
   }, []);
+
+  useEffect(() => {
+    savePageState('professors-page', { keyword, filters, sorter, pagination });
+  }, [keyword, filters, sorter, pagination]);
 
   const runAction = async (handler, successText) => {
     setActionLoading(true);
@@ -530,6 +547,7 @@ export default function ProfessorsPage() {
           columns={columns}
           dataSource={data.results}
           scroll={{ x: 1500 }}
+          sticky={{ offsetHeader: 64, offsetScroll: 12 }}
           pagination={{
             current: pagination.current,
             pageSize: pagination.pageSize,

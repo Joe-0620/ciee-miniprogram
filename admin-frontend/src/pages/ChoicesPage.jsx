@@ -6,6 +6,7 @@ import PageHeader from '../components/PageHeader';
 import PdfPreviewModal from '../components/PdfPreviewModal';
 import StatusTag from '../components/StatusTag';
 import { confirmDanger } from '../utils/confirm';
+import { loadPageState, savePageState } from '../utils/pageState';
 
 
 function formatSubjectOption(item) {
@@ -60,21 +61,31 @@ function buildChoiceExportFilename(values) {
 }
 
 export default function ChoicesPage() {
+  const initialPageState = loadPageState('choices-page', {
+    keyword: '',
+    filters: {
+      status: undefined,
+      subject_id: undefined,
+      department_id: undefined,
+      admission_year: undefined,
+      signature_table_status: undefined,
+      student_signed: undefined,
+      professor_signed: undefined,
+    },
+    sorter: { order_by: 'submit_date', order_direction: 'desc' },
+    pagination: { current: 1, pageSize: 10 },
+  });
   const [loading, setLoading] = useState(false);
   const [actionLoading, setActionLoading] = useState(false);
-  const [keyword, setKeyword] = useState('');
-  const [filters, setFilters] = useState({
-    status: undefined, subject_id: undefined, department_id: undefined, admission_year: undefined,
-    signature_table_status: undefined,
-    student_signed: undefined, professor_signed: undefined,
-  });
-  const [sorter, setSorter] = useState({ order_by: 'submit_date', order_direction: 'desc' });
+  const [keyword, setKeyword] = useState(initialPageState.keyword);
+  const [filters, setFilters] = useState(initialPageState.filters);
+  const [sorter, setSorter] = useState(initialPageState.sorter);
   const [subjects, setSubjects] = useState([]);
   const [departments, setDepartments] = useState([]);
   const [admissionYears, setAdmissionYears] = useState([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [data, setData] = useState({ count: 0, results: [] });
-  const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
+  const [pagination, setPagination] = useState(initialPageState.pagination);
   const [exportOpen, setExportOpen] = useState(false);
   const [exportSubmitting, setExportSubmitting] = useState(false);
   const [exportForm] = Form.useForm();
@@ -122,8 +133,18 @@ export default function ChoicesPage() {
 
   useEffect(() => {
     loadOptions();
-    fetchData(1, 10);
+    fetchData(
+      initialPageState.pagination.current,
+      initialPageState.pagination.pageSize,
+      initialPageState.keyword,
+      initialPageState.filters,
+      initialPageState.sorter,
+    );
   }, []);
+
+  useEffect(() => {
+    savePageState('choices-page', { keyword, filters, sorter, pagination });
+  }, [keyword, filters, sorter, pagination]);
 
   const runAction = async (handler) => {
     setActionLoading(true);
@@ -443,6 +464,7 @@ export default function ChoicesPage() {
           columns={columns}
           dataSource={data.results}
           scroll={{ x: 1500 }}
+          sticky={{ offsetHeader: 64, offsetScroll: 12 }}
           pagination={{ current: pagination.current, pageSize: pagination.pageSize, total: data.count, showSizeChanger: true }}
           onChange={(pager, _filters, tableSorter) => {
             const nextSorter = tableSorter?.field

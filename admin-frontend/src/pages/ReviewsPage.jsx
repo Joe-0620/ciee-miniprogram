@@ -6,6 +6,7 @@ import PageHeader from '../components/PageHeader';
 import PdfPreviewModal from '../components/PdfPreviewModal';
 import StatusTag from '../components/StatusTag';
 import { confirmDanger } from '../utils/confirm';
+import { loadPageState, savePageState } from '../utils/pageState';
 
 
 function formatSubjectOption(item) {
@@ -22,12 +23,18 @@ const statusMap = {
 };
 
 export default function ReviewsPage() {
+  const initialPageState = loadPageState('reviews-page', {
+    keyword: '',
+    filters: { status: undefined, subject_id: undefined, admission_year: undefined },
+    sorter: { order_by: 'submit_time', order_direction: 'desc' },
+    pagination: { current: 1, pageSize: 10 },
+  });
   const [loading, setLoading] = useState(false);
   const [actionLoading, setActionLoading] = useState(false);
   const [detailLoading, setDetailLoading] = useState(false);
-  const [keyword, setKeyword] = useState('');
-  const [filters, setFilters] = useState({ status: undefined, subject_id: undefined, admission_year: undefined });
-  const [sorter, setSorter] = useState({ order_by: 'submit_time', order_direction: 'desc' });
+  const [keyword, setKeyword] = useState(initialPageState.keyword);
+  const [filters, setFilters] = useState(initialPageState.filters);
+  const [sorter, setSorter] = useState(initialPageState.sorter);
   const [subjects, setSubjects] = useState([]);
   const [admissionYears, setAdmissionYears] = useState([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
@@ -35,7 +42,7 @@ export default function ReviewsPage() {
   const [detail, setDetail] = useState(null);
   const [previewState, setPreviewState] = useState({ open: false, title: '', fileId: '' });
   const [data, setData] = useState({ count: 0, results: [] });
-  const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
+  const [pagination, setPagination] = useState(initialPageState.pagination);
 
   const loadOptions = async () => {
     try {
@@ -78,8 +85,18 @@ export default function ReviewsPage() {
 
   useEffect(() => {
     loadOptions();
-    fetchData(1, 10);
+    fetchData(
+      initialPageState.pagination.current,
+      initialPageState.pagination.pageSize,
+      initialPageState.keyword,
+      initialPageState.filters,
+      initialPageState.sorter,
+    );
   }, []);
+
+  useEffect(() => {
+    savePageState('reviews-page', { keyword, filters, sorter, pagination });
+  }, [keyword, filters, sorter, pagination]);
 
   const runAction = async (handler) => {
     setActionLoading(true);
@@ -286,6 +303,7 @@ export default function ReviewsPage() {
           columns={columns}
           dataSource={data.results}
           scroll={{ x: 1350 }}
+          sticky={{ offsetHeader: 64, offsetScroll: 12 }}
           pagination={{ current: pagination.current, pageSize: pagination.pageSize, total: data.count, showSizeChanger: true }}
           onChange={(pager, _filters, tableSorter) => {
             const nextSorter = tableSorter?.field

@@ -30,6 +30,7 @@ import PageHeader from '../components/PageHeader';
 import PdfPreviewModal from '../components/PdfPreviewModal';
 import StatusTag from '../components/StatusTag';
 import { confirmDanger } from '../utils/confirm';
+import { loadPageState, savePageState } from '../utils/pageState';
 
 function formatSubjectLabel(subject) {
   if (!subject) return '-';
@@ -103,29 +104,35 @@ function normalizeUploadEvent(event) {
 }
 
 export default function StudentsPage() {
+  const initialPageState = loadPageState('students-page', {
+    keyword: '',
+    filters: {
+      subject_id: undefined,
+      admission_year: undefined,
+      admission_batch_id: undefined,
+      can_login: undefined,
+      selection_display_enabled: undefined,
+      student_type: undefined,
+      postgraduate_type: undefined,
+      is_selected: undefined,
+      is_alternate: undefined,
+      is_giveup: undefined,
+      review_status: undefined,
+      current_status: undefined,
+    },
+    sorter: { order_by: 'id', order_direction: 'desc' },
+    pagination: { current: 1, pageSize: 10 },
+  });
   const [loading, setLoading] = useState(false);
   const [actionLoading, setActionLoading] = useState(false);
   const [data, setData] = useState({ count: 0, page: 1, page_size: 10, results: [] });
   const [subjects, setSubjects] = useState([]);
   const [batches, setBatches] = useState([]);
-  const [keyword, setKeyword] = useState('');
+  const [keyword, setKeyword] = useState(initialPageState.keyword);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
-  const [filters, setFilters] = useState({
-    subject_id: undefined,
-    admission_year: undefined,
-    admission_batch_id: undefined,
-    can_login: undefined,
-    selection_display_enabled: undefined,
-    student_type: undefined,
-    postgraduate_type: undefined,
-    is_selected: undefined,
-    is_alternate: undefined,
-    is_giveup: undefined,
-    review_status: undefined,
-    current_status: undefined,
-  });
-  const [sorter, setSorter] = useState({ order_by: 'id', order_direction: 'desc' });
-  const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
+  const [filters, setFilters] = useState(initialPageState.filters);
+  const [sorter, setSorter] = useState(initialPageState.sorter);
+  const [pagination, setPagination] = useState(initialPageState.pagination);
   const [editOpen, setEditOpen] = useState(false);
   const [importOpen, setImportOpen] = useState(false);
   const [importSubmitting, setImportSubmitting] = useState(false);
@@ -189,8 +196,18 @@ export default function StudentsPage() {
 
   useEffect(() => {
     loadBaseOptions();
-    fetchData(1, 10);
+    fetchData(
+      initialPageState.pagination.current,
+      initialPageState.pagination.pageSize,
+      initialPageState.keyword,
+      initialPageState.filters,
+      initialPageState.sorter,
+    );
   }, []);
+
+  useEffect(() => {
+    savePageState('students-page', { keyword, filters, sorter, pagination });
+  }, [keyword, filters, sorter, pagination]);
 
   async function runAction(handler, successMessage) {
     setActionLoading(true);
@@ -841,6 +858,7 @@ export default function StudentsPage() {
           columns={columns}
           dataSource={data.results}
           scroll={{ x: 1800 }}
+          sticky={{ offsetHeader: 64, offsetScroll: 12 }}
           rowSelection={{ selectedRowKeys, onChange: setSelectedRowKeys }}
           pagination={{
             current: pagination.current,

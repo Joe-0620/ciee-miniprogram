@@ -3,6 +3,7 @@ import { Button, Card, Form, Input, InputNumber, Modal, Select, Space, Table, Ty
 import { DeleteOutlined, EditOutlined, PlusOutlined } from '@ant-design/icons';
 
 import { del, get, patch, post } from '../api/client';
+import { loadPageState, savePageState } from '../utils/pageState';
 
 function formatSubjectOption(item) {
   if (!item) return '-';
@@ -14,17 +15,23 @@ function formatSubjectOption(item) {
 }
 
 export default function DoctorQuotasPage() {
+  const initialPageState = loadPageState('doctor-quotas-page', {
+    keyword: '',
+    filters: {
+      department_id: undefined,
+      professor_id: undefined,
+      subject_id: undefined,
+    },
+    sorter: { order_by: 'teacher_identity_id', order_direction: 'asc' },
+    pagination: { current: 1, pageSize: 10 },
+  });
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
-  const [keyword, setKeyword] = useState('');
-  const [filters, setFilters] = useState({
-    department_id: undefined,
-    professor_id: undefined,
-    subject_id: undefined,
-  });
-  const [sorter, setSorter] = useState({ order_by: 'teacher_identity_id', order_direction: 'asc' });
+  const [keyword, setKeyword] = useState(initialPageState.keyword);
+  const [filters, setFilters] = useState(initialPageState.filters);
+  const [sorter, setSorter] = useState(initialPageState.sorter);
   const [data, setData] = useState({ count: 0, results: [] });
-  const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
+  const [pagination, setPagination] = useState(initialPageState.pagination);
   const [departments, setDepartments] = useState([]);
   const [professors, setProfessors] = useState([]);
   const [subjects, setSubjects] = useState([]);
@@ -99,8 +106,18 @@ export default function DoctorQuotasPage() {
 
   useEffect(() => {
     loadOptions();
-    fetchData(1, 10);
+    fetchData(
+      initialPageState.pagination.current,
+      initialPageState.pagination.pageSize,
+      initialPageState.keyword,
+      initialPageState.filters,
+      initialPageState.sorter,
+    );
   }, []);
+
+  useEffect(() => {
+    savePageState('doctor-quotas-page', { keyword, filters, sorter, pagination });
+  }, [keyword, filters, sorter, pagination]);
 
   const updateFilter = (key, value) => {
     const nextFilters = { ...filters, [key]: value };
@@ -267,10 +284,12 @@ export default function DoctorQuotasPage() {
         </div>
 
         <Table
+          className="dashboard-table"
           rowKey="id"
           loading={loading}
           columns={columns}
           dataSource={data.results}
+          sticky={{ offsetHeader: 64, offsetScroll: 12 }}
           pagination={{
             current: pagination.current,
             pageSize: pagination.pageSize,

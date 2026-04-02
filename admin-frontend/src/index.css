@@ -321,6 +321,29 @@ a {
   pointer-events: none;
 }
 
+.dashboard-table .ant-table-sticky-scroll {
+  bottom: 12px !important;
+  height: 14px !important;
+  border-radius: 999px;
+  background: rgba(15, 23, 42, 0.12);
+  backdrop-filter: blur(10px);
+  z-index: 12;
+}
+
+.dashboard-table .ant-table-sticky-scroll-bar {
+  height: 14px !important;
+  border-radius: 999px !important;
+  background: rgba(15, 118, 110, 0.5) !important;
+}
+
+html[data-dashboard-theme='dark'] .dashboard-table .ant-table-sticky-scroll {
+  background: rgba(148, 163, 184, 0.18);
+}
+
+html[data-dashboard-theme='dark'] .dashboard-table .ant-table-sticky-scroll-bar {
+  background: rgba(45, 212, 191, 0.58) !important;
+}
+
 .compact-action-buttons {
   display: inline-flex;
   flex-wrap: wrap;

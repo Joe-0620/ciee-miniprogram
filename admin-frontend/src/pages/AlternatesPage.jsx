@@ -5,6 +5,7 @@ import { get, post } from '../api/client';
 import PageHeader from '../components/PageHeader';
 import StatusTag from '../components/StatusTag';
 import { confirmDanger } from '../utils/confirm';
+import { loadPageState, savePageState } from '../utils/pageState';
 
 
 function formatSubjectOption(item) {
@@ -14,16 +15,22 @@ function formatSubjectOption(item) {
 }
 
 export default function AlternatesPage() {
+  const initialPageState = loadPageState('alternates-page', {
+    keyword: '',
+    filters: { subject_id: undefined, is_giveup: undefined, admission_year: undefined },
+    sorter: { order_by: 'alternate_rank', order_direction: 'asc' },
+    pagination: { current: 1, pageSize: 10 },
+  });
   const [loading, setLoading] = useState(false);
   const [actionLoading, setActionLoading] = useState(false);
-  const [keyword, setKeyword] = useState('');
-  const [filters, setFilters] = useState({ subject_id: undefined, is_giveup: undefined, admission_year: undefined });
-  const [sorter, setSorter] = useState({ order_by: 'alternate_rank', order_direction: 'asc' });
+  const [keyword, setKeyword] = useState(initialPageState.keyword);
+  const [filters, setFilters] = useState(initialPageState.filters);
+  const [sorter, setSorter] = useState(initialPageState.sorter);
   const [subjects, setSubjects] = useState([]);
   const [admissionYears, setAdmissionYears] = useState([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [data, setData] = useState({ count: 0, results: [] });
-  const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
+  const [pagination, setPagination] = useState(initialPageState.pagination);
 
   const loadSubjects = async () => {
     try {
@@ -62,8 +69,18 @@ export default function AlternatesPage() {
 
   useEffect(() => {
     loadSubjects();
-    fetchData(1, 10);
+    fetchData(
+      initialPageState.pagination.current,
+      initialPageState.pagination.pageSize,
+      initialPageState.keyword,
+      initialPageState.filters,
+      initialPageState.sorter,
+    );
   }, []);
+
+  useEffect(() => {
+    savePageState('alternates-page', { keyword, filters, sorter, pagination });
+  }, [keyword, filters, sorter, pagination]);
 
   const runAction = async (fn) => {
     setActionLoading(true);
@@ -213,6 +230,7 @@ export default function AlternatesPage() {
         columns={columns}
         dataSource={data.results}
         scroll={{ x: 1200 }}
+        sticky={{ offsetHeader: 64, offsetScroll: 12 }}
         pagination={{ current: pagination.current, pageSize: pagination.pageSize, total: data.count, showSizeChanger: true }}
         onChange={(pager, _filters, tableSorter) => {
           const nextSorter = tableSorter?.field ? { order_by: tableSorter.field, order_direction: tableSorter.order === 'descend' ? 'desc' : 'asc' } : sorter;

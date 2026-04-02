@@ -666,35 +666,37 @@ class UpdateProfessorView(APIView):
                 return Response({'message': '学生ID未提供'}, status=status.HTTP_400_BAD_REQUEST)
 
             try:
-                # 获取该学生及其待导师签名的 PDF 云文件 ID
-                student = Student.objects.get(id=student_id)
-                student_pdf_file_id = student.signature_table
+                with transaction.atomic():
+                    student = Student.objects.select_for_update().select_related('subject').get(id=student_id)
+                    if student.signature_table_professor_signatured:
+                        return Response({'message': '导师已签字，无需重复提交'}, status=status.HTTP_200_OK)
+
+                    student_pdf_file_id = student.signature_table
+                    if not student_pdf_file_id:
+                        return Response({'message': '当前互选表不存在，无法完成导师签字'}, status=status.HTTP_400_BAD_REQUEST)
+
+                    # 获取签名图片的下载地址
+                    response_data_signature = self.get_fileid_download_url(signature_temp)
+                    if response_data_signature.get("errcode") == 0:
+                        signature_download_url = response_data_signature['file_list'][0]['download_url']
+                        print(f"签名图片下载地址: {signature_download_url}")
+                    else:
+                        return Response({'message': '获取签名图片下载地址失败'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+                    # 获取学生 PDF 的下载地址
+                    response_data_pdf = self.get_fileid_download_url(student_pdf_file_id)
+                    if response_data_pdf.get("errcode") == 0:
+                        pdf_download_url = response_data_pdf['file_list'][0]['download_url']
+                        print(f"PDF 下载地址: {pdf_download_url}")
+                    else:
+                        return Response({'message': '获取 PDF 下载地址失败'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+                    try:
+                        self.generate_and_upload_pdf(professor, signature_download_url, pdf_download_url, student)
+                    except Exception as e:
+                        return Response({'message': f'生成或上传 PDF 失败: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
             except Student.DoesNotExist:
                 return Response({'message': '学生不存在'}, status=status.HTTP_404_NOT_FOUND)
-
-            # 获取签名图片的下载地址
-            response_data_signature = self.get_fileid_download_url(signature_temp)
-            if response_data_signature.get("errcode") == 0:
-                signature_download_url = response_data_signature['file_list'][0]['download_url']
-                print(f"签名图片下载地址: {signature_download_url}")
-            else:
-                return Response({'message': '获取签名图片下载地址失败'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-            # 获取学生 PDF 的下载地址
-            response_data_pdf = self.get_fileid_download_url(student_pdf_file_id)
-            if response_data_pdf.get("errcode") == 0:
-                pdf_download_url = response_data_pdf['file_list'][0]['download_url']
-                print(f"PDF 下载地址: {pdf_download_url}")
-            else:
-                return Response({'message': '获取 PDF 下载地址失败'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-            # signature_download_url = 'https://7072-prod-2g1jrmkk21c1d283-1319836128.tcb.qcloud.la/signature/professor/zhujian123_signature.png'
-            # pdf_download_url = 'https://7072-prod-2g1jrmkk21c1d283-1319836128.tcb.qcloud.la/signature/student/S2022666_1727257165_agreement.pdf'
-            # 生成包含签名和导师信息的 PDF
-            try:
-                self.generate_and_upload_pdf(professor, signature_download_url, pdf_download_url, student)
-            except Exception as e:
-                return Response({'message': f'生成或上传 PDF 失败: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         # 将 request.data 转成可修改的副本
         mutable_data = request.data.copy()
@@ -878,7 +880,7 @@ class UpdateProfessorView(APIView):
             file_id = response_data.get('file_id') or f'cloud://{WECHAT_CLOUD_ENV}.{bucket}/{cloud_path}'
             student.signature_table = file_id
             student.signature_table_professor_signatured = True
-            student.save()
+            student.save(update_fields=['signature_table', 'signature_table_professor_signatured'])
             logger.info('更新学生签署表成功: student_id=%s file_id=%s', student.id, file_id)
 
             # 删除本地临时文件
@@ -905,28 +907,35 @@ class UpdateStudentView(APIView):
 
         # 学生签名意向表
         if signature_temp and professor_id != '-1':
-            student_pdf_file_id = student.signature_table
+            with transaction.atomic():
+                student = Student.objects.select_for_update().select_related('subject').get(pk=user.student.pk)
+                if student.signature_table_student_signatured:
+                    return Response({'message': '学生已签字，无需重复提交'}, status=status.HTTP_200_OK)
 
-            # 获取签名图片的下载地址
-            response_data_signature = self.get_fileid_download_url(signature_temp)
-            if response_data_signature.get("errcode") == 0:
-                signature_download_url = response_data_signature['file_list'][0]['download_url']
-                print(f"签名图片下载地址: {signature_download_url}")
-            else:
-                return Response({'message': '获取签名图片下载地址失败'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                student_pdf_file_id = student.signature_table
+                if not student_pdf_file_id:
+                    return Response({'message': '当前互选表不存在，无法完成学生签字'}, status=status.HTTP_400_BAD_REQUEST)
 
-            # 获取学生 PDF 的下载地址
-            response_data_pdf = self.get_fileid_download_url(student_pdf_file_id)
-            if response_data_pdf.get("errcode") == 0:
-                pdf_download_url = response_data_pdf['file_list'][0]['download_url']
-                print(f"PDF 下载地址: {pdf_download_url}")
-            else:
-                return Response({'message': '获取 PDF 下载地址失败'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                # 获取签名图片的下载地址
+                response_data_signature = self.get_fileid_download_url(signature_temp)
+                if response_data_signature.get("errcode") == 0:
+                    signature_download_url = response_data_signature['file_list'][0]['download_url']
+                    print(f"签名图片下载地址: {signature_download_url}")
+                else:
+                    return Response({'message': '获取签名图片下载地址失败'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-            try:
-                self.generate_and_upload_pdf(signature_download_url, pdf_download_url, student)
-            except Exception as e:
-                return Response({'message': f'生成或上传 PDF 失败: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+                # 获取学生 PDF 的下载地址
+                response_data_pdf = self.get_fileid_download_url(student_pdf_file_id)
+                if response_data_pdf.get("errcode") == 0:
+                    pdf_download_url = response_data_pdf['file_list'][0]['download_url']
+                    print(f"PDF 下载地址: {pdf_download_url}")
+                else:
+                    return Response({'message': '获取 PDF 下载地址失败'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+                try:
+                    self.generate_and_upload_pdf(signature_download_url, pdf_download_url, student)
+                except Exception as e:
+                    return Response({'message': f'生成或上传 PDF 失败: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         
         # 学生签名放弃表
         if signature_temp and professor_id == '-1':
@@ -1197,7 +1206,7 @@ class UpdateStudentView(APIView):
             file_id = response_data.get('file_id') or f'cloud://{WECHAT_CLOUD_ENV}.{bucket}/{cloud_path}'
             student.signature_table = file_id
             student.signature_table_student_signatured = True
-            student.save()
+            student.save(update_fields=['signature_table', 'signature_table_student_signatured'])
             logger.info('更新学生签署表成功: student_id=%s file_id=%s', student.id, file_id)
 
             # 删除本地临时文件

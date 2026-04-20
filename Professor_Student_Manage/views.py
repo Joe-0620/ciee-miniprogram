@@ -1750,8 +1750,11 @@ class SubmitGiveupSignatureView(APIView):
                     Student.objects.filter(
                         subject=subject,
                         admission_year=student.admission_year,
+                        student_type=student.student_type,
+                        postgraduate_type=student.postgraduate_type,
                         is_alternate=True,
-                        is_giveup=False
+                        is_giveup=False,
+                        is_selected=False,
                     )
                     .order_by("alternate_rank", "final_rank", "id")
                     .first()
@@ -1764,8 +1767,11 @@ class SubmitGiveupSignatureView(APIView):
                     remaining_alternates = Student.objects.filter(
                         subject=subject,
                         admission_year=student.admission_year,
+                        student_type=student.student_type,
+                        postgraduate_type=student.postgraduate_type,
                         is_alternate=True,
                         is_giveup=False,
+                        is_selected=False,
                     ).order_by("alternate_rank", "final_rank", "id")
                     for index, candidate in enumerate(remaining_alternates, start=1):
                         if candidate.alternate_rank != index:

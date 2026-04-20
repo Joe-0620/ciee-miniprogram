@@ -495,10 +495,19 @@ def normalize_alternate_ranks(subject, admission_year=None):
     return changed
 
 
-def promote_next_alternate(subject, require_available_quota=False, admission_year=None):
-    student_queryset = Student.objects.filter(subject=subject, is_alternate=True, is_giveup=False)
+def promote_next_alternate(subject, require_available_quota=False, admission_year=None, student_type=None, postgraduate_type=None):
+    student_queryset = Student.objects.filter(
+        subject=subject,
+        is_alternate=True,
+        is_giveup=False,
+        is_selected=False,
+    )
     if admission_year not in (None, ''):
         student_queryset = student_queryset.filter(admission_year=admission_year)
+    if student_type not in (None, ''):
+        student_queryset = student_queryset.filter(student_type=student_type)
+    if postgraduate_type not in (None, ''):
+        student_queryset = student_queryset.filter(postgraduate_type=postgraduate_type)
     student = student_queryset.order_by('alternate_rank', 'final_rank', 'id').first()
     if not student:
         return None, 'missing'

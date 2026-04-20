@@ -4407,12 +4407,15 @@ class DashboardStudentResetPasswordView(APIView):
         ids = request.data.get('ids') or []
         queryset = Student.objects.select_related('user_name').filter(id__in=ids)
         updated_count = 0
+        skipped_count = 0
 
         for student in queryset:
-            if student.user_name:
-                student.user_name.set_password(student.candidate_number)
+            if student.user_name and student.phone_number:
+                student.user_name.set_password(student.phone_number)
                 student.user_name.save(update_fields=['password'])
                 updated_count += 1
+            else:
+                skipped_count += 1
         create_audit_log(
             request,
             action='student.reset_password',
@@ -4421,9 +4424,14 @@ class DashboardStudentResetPasswordView(APIView):
             target_type='student',
             target_display='批量重置学生密码',
             detail=f'重置 {updated_count} 位学生密码。',
-            after_data={'ids': ids, 'updated_count': updated_count},
+            after_data={'ids': ids, 'updated_count': updated_count, 'skipped_count': skipped_count, 'password_source': 'phone_number'},
         )
-        return Response({'detail': f'已重置 {updated_count} 位学生的密码。'}, status=status.HTTP_200_OK)
+        if skipped_count:
+            return Response(
+                {'detail': f'已将 {updated_count} 位学生的密码重置为手机号，跳过 {skipped_count} 位未填写手机号的学生。'},
+                status=status.HTTP_200_OK,
+            )
+        return Response({'detail': f'已将 {updated_count} 位学生的密码重置为手机号。'}, status=status.HTTP_200_OK)
 
 
 class DashboardStudentUpdateAdmissionYearView(APIView):

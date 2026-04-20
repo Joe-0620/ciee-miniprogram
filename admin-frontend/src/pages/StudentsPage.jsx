@@ -812,13 +812,13 @@ export default function StudentsPage() {
               icon={<LockOutlined />}
               disabled={!selectedRowKeys.length}
               loading={actionLoading}
-              onClick={() =>
-                runAction(
-                  () => post('/students/actions/reset-password/', { ids: selectedRowKeys }),
-                  '密码已重置为考生编号',
-                )
-              }
-            >
+                onClick={() =>
+                  runAction(
+                    () => post('/students/actions/reset-password/', { ids: selectedRowKeys }),
+                    '密码已重置为手机号',
+                  )
+                }
+              >
               重置密码
             </Button>
             <Button

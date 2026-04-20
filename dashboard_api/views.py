@@ -4426,6 +4426,110 @@ class DashboardStudentResetPasswordView(APIView):
         return Response({'detail': f'已重置 {updated_count} 位学生的密码。'}, status=status.HTTP_200_OK)
 
 
+class DashboardStudentUpdateAdmissionYearView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsDashboardAdmin]
+
+    def post(self, request):
+        ids = request.data.get('ids') or []
+        if not isinstance(ids, list) or not ids:
+            return Response({'detail': '请先选择学生。'}, status=status.HTTP_400_BAD_REQUEST)
+
+        admission_year = request.data.get('admission_year')
+        if admission_year in (None, ''):
+            return Response({'detail': '请选择目标届别。'}, status=status.HTTP_400_BAD_REQUEST)
+
+        target_admission_year = to_int(admission_year, default=None)
+        if target_admission_year is None or target_admission_year <= 0:
+            return Response({'detail': '目标届别不合法。'}, status=status.HTTP_400_BAD_REQUEST)
+
+        queryset = Student.objects.select_related('subject').filter(id__in=ids)
+        if not queryset.exists():
+            return Response({'detail': '未找到可操作的学生。'}, status=status.HTTP_400_BAD_REQUEST)
+
+        changed_students = []
+        unchanged_count = 0
+        affected_pairs = set()
+
+        with transaction.atomic():
+            for student in queryset:
+                subject = student.subject
+                subject_id = getattr(subject, 'id', None)
+                if student.admission_year == target_admission_year:
+                    unchanged_count += 1
+                    continue
+
+                if subject_id:
+                    affected_pairs.add((subject_id, student.admission_year))
+                    affected_pairs.add((subject_id, target_admission_year))
+
+                previous_year = student.admission_year
+                student.admission_year = target_admission_year
+                student.save(update_fields=['admission_year'])
+                changed_students.append(
+                    {
+                        'id': student.id,
+                        'name': student.name,
+                        'candidate_number': student.candidate_number,
+                        'subject_id': subject_id,
+                        'subject_name': subject.subject_name if subject else None,
+                        'before_admission_year': previous_year,
+                        'after_admission_year': target_admission_year,
+                    }
+                )
+
+            if changed_students:
+                subject_ids = {subject_id for subject_id, _ in affected_pairs if subject_id}
+                subject_map = {subject.id: subject for subject in Subject.objects.filter(id__in=subject_ids)}
+                for subject_id, admission_year_value in sorted(
+                    affected_pairs,
+                    key=lambda item: (
+                        item[0] or 0,
+                        item[1] if item[1] is not None else -1,
+                    ),
+                ):
+                    subject = subject_map.get(subject_id)
+                    if not subject:
+                        continue
+                    sync_student_alternate_status(subject, admission_year_value)
+                    normalize_alternate_ranks(subject, admission_year_value)
+
+        if not changed_students:
+            return Response(
+                {
+                    'detail': '所选学生的届别已经是目标届别。',
+                    'updated_count': 0,
+                    'unchanged_count': unchanged_count,
+                },
+                status=status.HTTP_200_OK,
+            )
+
+        create_audit_log(
+            request,
+            action='student.update_admission_year',
+            module='学生管理',
+            level=DashboardAuditLog.LEVEL_WARNING,
+            target_type='student',
+            target_display=f'批量修改学生届别为 {target_admission_year}届',
+            detail=f'批量修改 {len(changed_students)} 名学生的届别为 {target_admission_year}届。',
+            before_data={'ids': ids},
+            after_data={
+                'admission_year': target_admission_year,
+                'updated_count': len(changed_students),
+                'unchanged_count': unchanged_count,
+                'students': changed_students,
+            },
+        )
+        return Response(
+            {
+                'detail': f'已将 {len(changed_students)} 名学生的届别修改为 {target_admission_year}届。',
+                'updated_count': len(changed_students),
+                'unchanged_count': unchanged_count,
+            },
+            status=status.HTTP_200_OK,
+        )
+
+
 class DashboardStudentToggleLoginView(APIView):
     authentication_classes = [TokenAuthentication]
     permission_classes = [IsDashboardAdmin]

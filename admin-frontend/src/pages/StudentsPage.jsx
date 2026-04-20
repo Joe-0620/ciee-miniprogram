@@ -142,6 +142,8 @@ export default function StudentsPage() {
   const [previewState, setPreviewState] = useState({ open: false, title: '', fileId: '' });
   const [editForm] = Form.useForm();
   const [importForm] = Form.useForm();
+  const [batchAdmissionYearForm] = Form.useForm();
+  const [batchAdmissionYearOpen, setBatchAdmissionYearOpen] = useState(false);
 
   const yearOptions = useMemo(() => {
     const currentYear = new Date().getFullYear();
@@ -228,6 +230,7 @@ export default function StudentsPage() {
 
   function updateFilter(key, value) {
     const nextFilters = { ...filters, [key]: value };
+    setSelectedRowKeys([]);
     setFilters(nextFilters);
     fetchData(1, pagination.pageSize, keyword, nextFilters, sorter);
   }
@@ -248,6 +251,7 @@ export default function StudentsPage() {
       current_status: undefined,
     };
     const nextSorter = { order_by: 'final_rank', order_direction: 'asc' };
+    setSelectedRowKeys([]);
     setKeyword('');
     setFilters(nextFilters);
     setSorter(nextSorter);
@@ -343,6 +347,26 @@ export default function StudentsPage() {
       }
     } finally {
       setImportSubmitting(false);
+    }
+  }
+
+  async function handleBatchUpdateAdmissionYear() {
+    try {
+      const values = await batchAdmissionYearForm.validateFields();
+      await runAction(
+        () =>
+          post('/students/actions/update-admission-year/', {
+            ids: selectedRowKeys,
+            admission_year: values.admission_year,
+          }),
+        `已将选中学生的届别修改为 ${values.admission_year}届`,
+      );
+      setBatchAdmissionYearOpen(false);
+      batchAdmissionYearForm.resetFields();
+    } catch (error) {
+      if (!error?.errorFields) {
+        message.error(error.message);
+      }
     }
   }
 
@@ -649,7 +673,10 @@ export default function StudentsPage() {
               placeholder="按姓名或考生编号搜索"
               value={keyword}
               onChange={(event) => setKeyword(event.target.value)}
-              onSearch={(value) => fetchData(1, pagination.pageSize, value, filters, sorter)}
+              onSearch={(value) => {
+                setSelectedRowKeys([]);
+                fetchData(1, pagination.pageSize, value, filters, sorter);
+              }}
               style={{ width: 240 }}
             />
             <Select
@@ -797,6 +824,16 @@ export default function StudentsPage() {
             <Button
               disabled={!selectedRowKeys.length}
               loading={actionLoading}
+              onClick={() => {
+                batchAdmissionYearForm.setFieldsValue({ admission_year: filters.admission_year || undefined });
+                setBatchAdmissionYearOpen(true);
+              }}
+            >
+              批量修改届别
+            </Button>
+            <Button
+              disabled={!selectedRowKeys.length}
+              loading={actionLoading}
               onClick={() =>
                 confirmDanger({
                   title: '确认重新为选中学生生成互选表吗？',
@@ -875,6 +912,7 @@ export default function StudentsPage() {
                   order_direction: nextSorter.order === 'descend' ? 'desc' : 'asc',
                 }
               : sorter;
+            setSelectedRowKeys([]);
             setSorter(resolvedSorter);
             fetchData(nextPagination.current, nextPagination.pageSize, keyword, filters, resolvedSorter);
           }}
@@ -978,6 +1016,31 @@ export default function StudentsPage() {
               ) : null}
             </div>
           </div>
+        </Form>
+      </Modal>
+
+      <Modal
+        open={batchAdmissionYearOpen}
+        title="批量修改选中学生届别"
+        onCancel={() => {
+          if (actionLoading) return;
+          setBatchAdmissionYearOpen(false);
+          batchAdmissionYearForm.resetFields();
+        }}
+        onOk={handleBatchUpdateAdmissionYear}
+        confirmLoading={actionLoading}
+        okText="确认修改"
+        destroyOnClose
+      >
+        <Form form={batchAdmissionYearForm} layout="vertical">
+          <Form.Item
+            label="目标届别"
+            name="admission_year"
+            rules={[{ required: true, message: '请选择目标届别' }]}
+            extra={`当前已选中 ${selectedRowKeys.length} 名学生。修改后会同步刷新受影响届别下的候补状态和顺位。`}
+          >
+            <Select options={yearOptions} placeholder="请选择目标届别" />
+          </Form.Item>
         </Form>
       </Modal>
 

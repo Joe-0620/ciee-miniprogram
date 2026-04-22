@@ -4,6 +4,7 @@ from rest_framework.authtoken.models import Token
 
 from Enrollment_Manage.models import Department, Subject
 from Professor_Student_Manage.models import (
+    AlternatePromotionSetting,
     AvailableStudentDisplaySetting,
     AdmissionBatch,
     get_professor_heat_display_metrics,
@@ -210,6 +211,15 @@ class AvailableStudentDisplaySettingSerializer(serializers.ModelSerializer):
             'allowed_admission_years',
             'allowed_batch_ids',
             'allowed_postgraduate_types',
+            'updated_at',
+        ]
+
+
+class AlternatePromotionSettingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AlternatePromotionSetting
+        fields = [
+            'auto_promote_on_giveup',
             'updated_at',
         ]
 

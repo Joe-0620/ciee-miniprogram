@@ -396,6 +396,36 @@ def get_available_student_display_setting():
     return setting
 
 
+class AlternatePromotionSetting(models.Model):
+    auto_promote_on_giveup = models.BooleanField(default=True, verbose_name="放弃录取后自动递补候补学生")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="更新时间")
+
+    class Meta:
+        verbose_name = "候补递补配置"
+        verbose_name_plural = "候补递补配置"
+
+    def save(self, *args, **kwargs):
+        self.pk = 1
+        super().save(*args, **kwargs)
+        cache.delete('alternate_promotion_setting')
+
+    def delete(self, *args, **kwargs):
+        return
+
+    def __str__(self):
+        return '候补递补配置'
+
+
+def get_alternate_promotion_setting():
+    cache_key = 'alternate_promotion_setting'
+    cached_value = cache.get(cache_key)
+    if cached_value is not None:
+        return cached_value
+    setting, _ = AlternatePromotionSetting.objects.get_or_create(pk=1)
+    cache.set(cache_key, setting, timeout=300)
+    return setting
+
+
 def normalize_available_student_display_values(values):
     normalized_values = []
     for value in values or []:

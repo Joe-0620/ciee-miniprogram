@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Card, Input, Select, Space, Table, message } from 'antd';
+import { Button, Card, Input, Select, Space, Switch, Table, message } from 'antd';
 
-import { get, post } from '../api/client';
+import { get, patch, post } from '../api/client';
 import PageHeader from '../components/PageHeader';
 import StatusTag from '../components/StatusTag';
 import { confirmDanger } from '../utils/confirm';
@@ -28,6 +28,7 @@ export default function AlternatesPage() {
   const [sorter, setSorter] = useState(initialPageState.sorter);
   const [subjects, setSubjects] = useState([]);
   const [admissionYears, setAdmissionYears] = useState([]);
+  const [alternateSetting, setAlternateSetting] = useState({ auto_promote_on_giveup: true });
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [data, setData] = useState({ count: 0, results: [] });
   const [pagination, setPagination] = useState(initialPageState.pagination);
@@ -36,6 +37,15 @@ export default function AlternatesPage() {
     try {
       const payload = await get('/subjects/');
       setSubjects(payload.results || payload || []);
+    } catch (err) {
+      message.error(err.message);
+    }
+  };
+
+  const loadAlternateSetting = async () => {
+    try {
+      const payload = await get('/alternates/settings/');
+      setAlternateSetting(payload || { auto_promote_on_giveup: true });
     } catch (err) {
       message.error(err.message);
     }
@@ -69,6 +79,7 @@ export default function AlternatesPage() {
 
   useEffect(() => {
     loadSubjects();
+    loadAlternateSetting();
     fetchData(
       initialPageState.pagination.current,
       initialPageState.pagination.pageSize,
@@ -109,6 +120,19 @@ export default function AlternatesPage() {
     const next = { ...filters, [key]: value };
     setFilters(next);
     fetchData(1, pagination.pageSize, keyword, next, sorter);
+  };
+
+  const updateAutoPromoteSetting = async (checked) => {
+    setActionLoading(true);
+    try {
+      const payload = await patch('/alternates/settings/', { auto_promote_on_giveup: checked });
+      setAlternateSetting(payload);
+      message.success(checked ? '已开启放弃后自动候补递补' : '已关闭放弃后自动候补递补');
+    } catch (err) {
+      message.error(err.message);
+    } finally {
+      setActionLoading(false);
+    }
   };
 
   const columns = [
@@ -193,6 +217,16 @@ export default function AlternatesPage() {
           <Select allowClear placeholder="按放弃状态筛选" style={{ width: 150 }} value={filters.is_giveup} options={[{ label: '已放弃', value: 'true' }, { label: '未放弃', value: 'false' }]} onChange={(value) => updateFilter('is_giveup', value)} />
         </div>
         <div className="page-actions">
+          <Space size={8} align="center">
+            <span>放弃后自动递补</span>
+            <Switch
+              loading={actionLoading}
+              checked={!!alternateSetting.auto_promote_on_giveup}
+              checkedChildren="开启"
+              unCheckedChildren="关闭"
+              onChange={updateAutoPromoteSetting}
+            />
+          </Space>
           <Button onClick={() => fetchData(1, pagination.pageSize, keyword, filters, sorter)}>刷新</Button>
           <Button
             danger

@@ -32,9 +32,28 @@ import StatusTag from '../components/StatusTag';
 import { confirmDanger } from '../utils/confirm';
 import { loadPageState, savePageState } from '../utils/pageState';
 
+const subjectTypeTextMap = {
+  0: '专硕',
+  1: '学硕',
+  2: '博士',
+};
+
 function formatSubjectLabel(subject) {
   if (!subject) return '-';
-  return subject.subject_name || '-';
+  const subjectName = subject.subject_name || '-';
+  const subjectTypeText = subject.subject_type_display || subjectTypeTextMap[subject.subject_type];
+  const subjectCode = subject.subject_code;
+
+  if (subjectTypeText && subjectCode) {
+    return `${subjectName}（${subjectTypeText}，${subjectCode}）`;
+  }
+  if (subjectTypeText) {
+    return `${subjectName}（${subjectTypeText}）`;
+  }
+  if (subjectCode) {
+    return `${subjectName}（${subjectCode}）`;
+  }
+  return subjectName;
 }
 
 function getStudentStatus(record) {

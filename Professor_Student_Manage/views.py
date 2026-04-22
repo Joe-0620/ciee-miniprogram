@@ -15,6 +15,7 @@ from Professor_Student_Manage.models import (
     ProfessorMasterQuota,
     ProfessorDoctorQuota,
     ProfessorSharedQuotaPool,
+    get_alternate_promotion_setting,
     get_professor_heat_display_setting,
     get_quota_source_for_student,
 )
@@ -1745,22 +1746,25 @@ class SubmitGiveupSignatureView(APIView):
                     finish_time=timezone.now(),
                 )
 
+                auto_promote_enabled = get_alternate_promotion_setting().auto_promote_on_giveup
                 subject = student.subject
-                alternate_student = (
-                    Student.objects.filter(
-                        subject=subject,
-                        admission_year=student.admission_year,
-                        student_type=student.student_type,
-                        postgraduate_type=student.postgraduate_type,
-                        is_alternate=True,
-                        is_giveup=False,
-                        is_selected=False,
+                alternate_student = None
+                if auto_promote_enabled:
+                    alternate_student = (
+                        Student.objects.filter(
+                            subject=subject,
+                            admission_year=student.admission_year,
+                            student_type=student.student_type,
+                            postgraduate_type=student.postgraduate_type,
+                            is_alternate=True,
+                            is_giveup=False,
+                            is_selected=False,
+                        )
+                        .order_by("alternate_rank", "final_rank", "id")
+                        .first()
                     )
-                    .order_by("alternate_rank", "final_rank", "id")
-                    .first()
-                )
 
-                if alternate_student:
+                if auto_promote_enabled and alternate_student:
                     alternate_student.is_alternate = False
                     alternate_student.alternate_rank = None
                     alternate_student.save(update_fields=['is_alternate', 'alternate_rank'])
@@ -1786,6 +1790,15 @@ class SubmitGiveupSignatureView(APIView):
                 return Response(
                     {
                         'message': f'放弃拟录取成功，已补录候补学生 {alternate_student.name}',
+                        'giveup_time': timezone.localtime(student.giveup_time).strftime('%Y-%m-%d %H:%M:%S') if student.giveup_time else '',
+                    },
+                    status=status.HTTP_200_OK
+                )
+
+            if not auto_promote_enabled:
+                return Response(
+                    {
+                        'message': '放弃拟录取成功，当前已关闭自动候补递补',
                         'giveup_time': timezone.localtime(student.giveup_time).strftime('%Y-%m-%d %H:%M:%S') if student.giveup_time else '',
                     },
                     status=status.HTTP_200_OK

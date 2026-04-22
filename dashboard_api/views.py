@@ -27,10 +27,12 @@ from openpyxl import Workbook, load_workbook
 
 from Enrollment_Manage.models import Department, Subject, sync_student_alternate_status
 from Professor_Student_Manage.models import (
+    AlternatePromotionSetting,
     AvailableStudentDisplaySetting,
     AdmissionBatch,
     calculate_professor_subject_available_quota,
     get_professor_heat_display_metrics,
+    get_alternate_promotion_setting,
     get_available_student_display_setting,
     normalize_available_student_display_values,
     get_professor_heat_display_setting,
@@ -56,6 +58,7 @@ from .permissions import IsDashboardAdmin
 from .serializers import (
     AdmissionBatchSerializer,
     AvailableStudentDisplaySettingSerializer,
+    AlternatePromotionSettingSerializer,
     AlternateStudentSerializer,
     ChoiceListSerializer,
     DashboardAdminSerializer,
@@ -6260,6 +6263,37 @@ class DashboardAlternateListView(APIView):
             },
             status=status.HTTP_200_OK,
         )
+
+
+class DashboardAlternateSettingView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsDashboardAdmin]
+
+    def get(self, request):
+        setting = get_alternate_promotion_setting()
+        return Response(AlternatePromotionSettingSerializer(setting).data, status=status.HTTP_200_OK)
+
+    def patch(self, request):
+        setting = get_alternate_promotion_setting()
+        before_data = snapshot_instance(setting)
+        auto_promote_on_giveup = parse_bool_param(request.data.get('auto_promote_on_giveup'))
+        if auto_promote_on_giveup is None:
+            return Response({'detail': '请指定是否启用放弃后自动递补。'}, status=status.HTTP_400_BAD_REQUEST)
+
+        setting.auto_promote_on_giveup = auto_promote_on_giveup
+        setting.save(update_fields=['auto_promote_on_giveup', 'updated_at'])
+        create_audit_log(
+            request,
+            action='alternate.setting.update',
+            module='候补管理',
+            target_type='alternate_promotion_setting',
+            target_id=setting.pk,
+            target_display='候补递补配置',
+            detail=f'{"开启" if auto_promote_on_giveup else "关闭"}放弃录取后自动递补。',
+            before_data=before_data,
+            after_data=snapshot_instance(setting),
+        )
+        return Response(AlternatePromotionSettingSerializer(setting).data, status=status.HTTP_200_OK)
 
 
 class DashboardAlternatePromoteNextView(APIView):

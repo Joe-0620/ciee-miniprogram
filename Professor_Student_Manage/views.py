@@ -1704,13 +1704,6 @@ class SubmitGiveupSignatureView(APIView):
 
         print(student)
 
-        # 1.1 如果学生处于候补状态，则不允许放弃
-        if student.is_alternate:
-            return Response(
-                {'message': '您处于候补状态，无法提交'},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
         # 2. 检查是否已上传放弃签字表
         if not getattr(student, "is_signate_giveup_table", False):
             return Response({'message': '请先上传放弃拟录取说明表'}, status=status.HTTP_400_BAD_REQUEST)
@@ -1737,9 +1730,12 @@ class SubmitGiveupSignatureView(APIView):
                 if approved_choice:
                     cancel_approved_choice_for_giveup(approved_choice)
 
+                was_alternate = student.is_alternate
                 student.is_giveup = True
                 student.giveup_time = timezone.now()
-                student.save(update_fields=['is_giveup', 'giveup_time'])
+                student.is_alternate = False
+                student.alternate_rank = None
+                student.save(update_fields=['is_giveup', 'giveup_time', 'is_alternate', 'alternate_rank'])
 
                 StudentProfessorChoice.objects.filter(student=student, status=3).update(
                     status=4,
@@ -1748,20 +1744,19 @@ class SubmitGiveupSignatureView(APIView):
 
                 auto_promote_enabled = get_alternate_promotion_setting().auto_promote_on_giveup
                 subject = student.subject
+                remaining_alternates = Student.objects.filter(
+                    subject=subject,
+                    admission_year=student.admission_year,
+                    student_type=student.student_type,
+                    postgraduate_type=student.postgraduate_type,
+                    is_alternate=True,
+                    is_giveup=False,
+                    is_selected=False,
+                ).order_by("alternate_rank", "final_rank", "id")
                 alternate_student = None
-                if auto_promote_enabled:
+                if auto_promote_enabled and approved_choice:
                     alternate_student = (
-                        Student.objects.filter(
-                            subject=subject,
-                            admission_year=student.admission_year,
-                            student_type=student.student_type,
-                            postgraduate_type=student.postgraduate_type,
-                            is_alternate=True,
-                            is_giveup=False,
-                            is_selected=False,
-                        )
-                        .order_by("alternate_rank", "final_rank", "id")
-                        .first()
+                        remaining_alternates.first()
                     )
 
                 if auto_promote_enabled and alternate_student:
@@ -1781,6 +1776,11 @@ class SubmitGiveupSignatureView(APIView):
                         if candidate.alternate_rank != index:
                             candidate.alternate_rank = index
                             candidate.save(update_fields=['alternate_rank'])
+                elif was_alternate:
+                    for index, candidate in enumerate(remaining_alternates, start=1):
+                        if candidate.alternate_rank != index:
+                            candidate.alternate_rank = index
+                            candidate.save(update_fields=['alternate_rank'])
 
             if alternate_student:
                 try:
@@ -1795,7 +1795,7 @@ class SubmitGiveupSignatureView(APIView):
                     status=status.HTTP_200_OK
                 )
 
-            if not auto_promote_enabled:
+            if approved_choice and not auto_promote_enabled:
                 return Response(
                     {
                         'message': '放弃拟录取成功，当前已关闭自动候补递补',
@@ -1804,9 +1804,18 @@ class SubmitGiveupSignatureView(APIView):
                     status=status.HTTP_200_OK
                 )
 
+            if approved_choice:
+                return Response(
+                    {
+                        'message': '放弃拟录取成功，但该专业没有候补学生',
+                        'giveup_time': timezone.localtime(student.giveup_time).strftime('%Y-%m-%d %H:%M:%S') if student.giveup_time else '',
+                    },
+                    status=status.HTTP_200_OK
+                )
+
             return Response(
                 {
-                    'message': '放弃拟录取成功，但该专业没有候补学生',
+                    'message': '弃选提交成功',
                     'giveup_time': timezone.localtime(student.giveup_time).strftime('%Y-%m-%d %H:%M:%S') if student.giveup_time else '',
                 },
                 status=status.HTTP_200_OK

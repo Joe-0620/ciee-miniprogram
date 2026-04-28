@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Card, Descriptions, Drawer, Input, Select, Space, Table, message } from 'antd';
+import { Button, Card, Descriptions, Divider, Drawer, Input, Select, Space, Table, Tag, message } from 'antd';
 
 import { get, post } from '../api/client';
 import PageHeader from '../components/PageHeader';
@@ -25,7 +25,7 @@ const statusMap = {
 export default function ReviewsPage() {
   const initialPageState = loadPageState('reviews-page', {
     keyword: '',
-    filters: { status: undefined, subject_id: undefined, admission_year: undefined },
+    filters: { status: undefined, subject_id: undefined, admission_year: undefined, reviewer_id: undefined },
     sorter: { order_by: 'submit_time', order_direction: 'desc' },
     pagination: { current: 1, pageSize: 10 },
   });
@@ -37,9 +37,13 @@ export default function ReviewsPage() {
   const [sorter, setSorter] = useState(initialPageState.sorter);
   const [subjects, setSubjects] = useState([]);
   const [admissionYears, setAdmissionYears] = useState([]);
+  const [reviewers, setReviewers] = useState([]);
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [detail, setDetail] = useState(null);
+  const [reviewerDrawerOpen, setReviewerDrawerOpen] = useState(false);
+  const [reviewerStatsLoading, setReviewerStatsLoading] = useState(false);
+  const [reviewerStats, setReviewerStats] = useState(null);
   const [previewState, setPreviewState] = useState({ open: false, title: '', fileId: '' });
   const [data, setData] = useState({ count: 0, results: [] });
   const [pagination, setPagination] = useState(initialPageState.pagination);
@@ -75,6 +79,7 @@ export default function ReviewsPage() {
       const payload = await get(`/review-records/?${params.toString()}`);
       setData(payload);
       setAdmissionYears(payload.available_admission_years || []);
+      setReviewers(payload.available_reviewers || []);
       setPagination({ current: payload.page, pageSize: payload.page_size });
     } catch (err) {
       message.error(err.message);
@@ -162,12 +167,47 @@ export default function ReviewsPage() {
     });
   };
 
+  const showReviewerStats = async (reviewerId, reviewerName, syncFilter = false) => {
+    if (!reviewerId) return;
+    if (syncFilter) {
+      const nextFilters = { ...filters, reviewer_id: reviewerId };
+      setFilters(nextFilters);
+      fetchData(1, pagination.pageSize, keyword, nextFilters, sorter);
+    }
+    setReviewerStatsLoading(true);
+    try {
+      const payload = await get(`/review-records/reviewer-stats/${reviewerId}/`);
+      setReviewerStats(payload);
+      setReviewerDrawerOpen(true);
+    } catch (err) {
+      message.error(err.message || `无法加载审核人 ${reviewerName || ''} 的统计信息`);
+    } finally {
+      setReviewerStatsLoading(false);
+    }
+  };
+
   const columns = [
     { title: '学生', dataIndex: 'student_name', key: 'student_name', sorter: true, width: 120, ellipsis: true, fixed: 'left' },
     { title: '考生编号', dataIndex: 'candidate_number', key: 'candidate_number', sorter: true, width: 150, ellipsis: true, fixed: 'left' },
     { title: '届别', dataIndex: 'admission_year', key: 'admission_year', sorter: true, width: 90, render: (value) => (value ? `${value}届` : '-') },
     { title: '导师', dataIndex: 'professor_name', key: 'professor_name', sorter: true, width: 120, ellipsis: true },
-    { title: '审核人', dataIndex: 'reviewer_name', key: 'reviewer_name', sorter: true, width: 120, ellipsis: true, responsive: ['lg'], render: (value) => value || '-' },
+    {
+      title: '审核人',
+      dataIndex: 'reviewer_name',
+      key: 'reviewer_name',
+      sorter: true,
+      width: 140,
+      ellipsis: true,
+      responsive: ['lg'],
+      render: (value, record) =>
+        record.reviewer_id ? (
+          <Button type="link" size="small" style={{ paddingInline: 0 }} onClick={() => showReviewerStats(record.reviewer_id, value, true)}>
+            {value || '-'}
+          </Button>
+        ) : (
+          value || '-'
+        ),
+    },
     { title: '专业', dataIndex: 'subject_name', key: 'subject_name', sorter: true, width: 180, ellipsis: true },
     {
       title: '状态',
@@ -260,10 +300,28 @@ export default function ReviewsPage() {
               options={admissionYears.map((year) => ({ label: `${year}届`, value: year }))}
               onChange={(value) => updateFilter('admission_year', value)}
             />
+            <Select
+              allowClear
+              placeholder="按审核人筛选"
+              style={{ width: 180 }}
+              value={filters.reviewer_id}
+              options={reviewers}
+              onChange={(value) => updateFilter('reviewer_id', value)}
+            />
           </div>
 
           <div className="page-actions">
             <Button onClick={() => fetchData(1, pagination.pageSize, keyword, filters, sorter)}>刷新</Button>
+            <Button
+              disabled={!filters.reviewer_id}
+              onClick={() => {
+                const nextFilters = { ...filters, reviewer_id: undefined };
+                setFilters(nextFilters);
+                fetchData(1, pagination.pageSize, keyword, nextFilters, sorter);
+              }}
+            >
+              清除审核人筛选
+            </Button>
             <Button type="primary" loading={actionLoading} disabled={!selectedRowKeys.length} onClick={batchApprove}>
               批量通过
             </Button>
@@ -350,6 +408,81 @@ export default function ReviewsPage() {
               <Descriptions.Item label="方向">{detail.professor?.department?.department_name || '-'}</Descriptions.Item>
               <Descriptions.Item label="联系电话">{detail.professor?.phone_number || '-'}</Descriptions.Item>
             </Descriptions>
+          </Space>
+        ) : null}
+      </Drawer>
+
+      <Drawer
+        title={reviewerStats ? `${reviewerStats.reviewer_name} 的审核概览` : '审核人概览'}
+        width={520}
+        open={reviewerDrawerOpen}
+        onClose={() => setReviewerDrawerOpen(false)}
+        destroyOnClose
+      >
+        {reviewerStats ? (
+          <Space direction="vertical" size={16} style={{ width: '100%' }}>
+            <Descriptions title="基础统计" column={2} bordered size="small">
+              <Descriptions.Item label="审核人">{reviewerStats.reviewer_name}</Descriptions.Item>
+              <Descriptions.Item label="总审核数">{reviewerStats.total_count}</Descriptions.Item>
+              <Descriptions.Item label="待审核">
+                <StatusTag tone="processing">{reviewerStats.pending_count}</StatusTag>
+              </Descriptions.Item>
+              <Descriptions.Item label="已通过">
+                <StatusTag tone="success">{reviewerStats.approved_count}</StatusTag>
+              </Descriptions.Item>
+              <Descriptions.Item label="已驳回">
+                <StatusTag tone="error">{reviewerStats.rejected_count}</StatusTag>
+              </Descriptions.Item>
+              <Descriptions.Item label="已撤销">
+                <StatusTag tone="default">{reviewerStats.revoked_count}</StatusTag>
+              </Descriptions.Item>
+              <Descriptions.Item label="最近提交时间">
+                {reviewerStats.latest_submit_time ? new Date(reviewerStats.latest_submit_time).toLocaleString() : '-'}
+              </Descriptions.Item>
+              <Descriptions.Item label="最近审核时间">
+                {reviewerStats.latest_review_time ? new Date(reviewerStats.latest_review_time).toLocaleString() : '-'}
+              </Descriptions.Item>
+            </Descriptions>
+
+            <div>
+              <div style={{ fontWeight: 600, marginBottom: 8 }}>按届别分布</div>
+              <Space wrap>
+                {reviewerStats.admission_year_summary?.length ? (
+                  reviewerStats.admission_year_summary.map((item) => (
+                    <Tag key={item.admission_year} color="blue">{`${item.admission_year}届 · ${item.count}`}</Tag>
+                  ))
+                ) : (
+                  <Tag>暂无数据</Tag>
+                )}
+              </Space>
+            </div>
+
+            <Divider style={{ margin: '4px 0' }} />
+
+            <div>
+              <div style={{ fontWeight: 600, marginBottom: 8 }}>按学生类型分布</div>
+              <Space wrap>
+                {reviewerStats.student_type_summary?.length ? (
+                  reviewerStats.student_type_summary.map((item) => (
+                    <Tag key={item.student_type} color="purple">{`${item.student_type_display} · ${item.count}`}</Tag>
+                  ))
+                ) : (
+                  <Tag>暂无数据</Tag>
+                )}
+              </Space>
+            </div>
+
+            <Button
+              type="primary"
+              onClick={() => {
+                const nextFilters = { ...filters, reviewer_id: reviewerStats.reviewer_id };
+                setFilters(nextFilters);
+                fetchData(1, pagination.pageSize, keyword, nextFilters, sorter);
+                setReviewerDrawerOpen(false);
+              }}
+            >
+              在表格中查看该审核人全部记录
+            </Button>
           </Space>
         ) : null}
       </Drawer>

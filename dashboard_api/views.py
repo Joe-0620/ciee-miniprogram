@@ -5134,6 +5134,12 @@ class DashboardReviewRecordListView(APIView):
             .values_list('student__admission_year', flat=True)
             .distinct()
         )
+        available_reviewers = list(
+            ReviewRecord.objects.filter(reviewer__isnull=False)
+            .values('reviewer_id', 'reviewer__name')
+            .order_by('reviewer__name', 'reviewer_id')
+            .distinct()
+        )
         order_by = request.query_params.get('order_by', 'submit_time')
         order_direction = request.query_params.get('order_direction', 'desc')
 
@@ -5164,6 +5170,69 @@ class DashboardReviewRecordListView(APIView):
                 'page_size': page_size,
                 'results': serializer.data,
                 'available_admission_years': available_admission_years,
+                'available_reviewers': [
+                    {'value': item['reviewer_id'], 'label': item['reviewer__name'] or f'审核人 {item["reviewer_id"]}'}
+                    for item in available_reviewers
+                ],
+            },
+            status=status.HTTP_200_OK,
+        )
+
+
+class DashboardReviewerReviewStatsView(APIView):
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsDashboardAdmin]
+
+    def get(self, request, reviewer_id):
+        queryset = ReviewRecord.objects.select_related('reviewer').filter(reviewer_id=reviewer_id)
+        reviewer = queryset.first().reviewer if queryset.exists() else None
+        if reviewer is None:
+            return Response({'detail': '审核人不存在或暂无审核记录。'}, status=status.HTTP_404_NOT_FOUND)
+
+        total_count = queryset.count()
+        pending_count = queryset.filter(status=3).count()
+        approved_count = queryset.filter(status=1).count()
+        rejected_count = queryset.filter(status=2).count()
+        revoked_count = queryset.filter(status=4).count()
+        latest_submit_time = queryset.aggregate(value=Max('submit_time')).get('value')
+        latest_review_time = queryset.aggregate(value=Max('review_time')).get('value')
+
+        admission_year_summary = list(
+            queryset.exclude(student__admission_year__isnull=True)
+            .values('student__admission_year')
+            .annotate(count=Count('id'))
+            .order_by('-student__admission_year')
+        )
+        student_type_summary = list(
+            queryset.values('student__student_type')
+            .annotate(count=Count('id'))
+            .order_by('student__student_type')
+        )
+        student_type_map = dict(Student.STUDENT_CHOICES)
+
+        return Response(
+            {
+                'reviewer_id': reviewer.id,
+                'reviewer_name': reviewer.name,
+                'total_count': total_count,
+                'pending_count': pending_count,
+                'approved_count': approved_count,
+                'rejected_count': rejected_count,
+                'revoked_count': revoked_count,
+                'latest_submit_time': latest_submit_time,
+                'latest_review_time': latest_review_time,
+                'admission_year_summary': [
+                    {'admission_year': item['student__admission_year'], 'count': item['count']}
+                    for item in admission_year_summary
+                ],
+                'student_type_summary': [
+                    {
+                        'student_type': item['student__student_type'],
+                        'student_type_display': student_type_map.get(item['student__student_type'], str(item['student__student_type'])),
+                        'count': item['count'],
+                    }
+                    for item in student_type_summary
+                ],
             },
             status=status.HTTP_200_OK,
         )

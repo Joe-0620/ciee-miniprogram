@@ -15,7 +15,6 @@ from Professor_Student_Manage.models import (
     ProfessorMasterQuota,
     ProfessorDoctorQuota,
     ProfessorSharedQuotaPool,
-    get_alternate_promotion_setting,
     get_professor_heat_display_setting,
     get_quota_source_for_student,
 )
@@ -1720,16 +1719,13 @@ class SubmitGiveupSignatureView(APIView):
                 .first()
             )
 
-            if student.is_selected and not approved_choice:
+            if approved_choice or student.is_selected:
                 return Response(
-                    {'message': '未找到该学生对应的已录取记录，暂时无法执行放弃，请联系管理员处理。'},
-                    status=status.HTTP_409_CONFLICT
+                    {'message': '您已完成互选，如需放弃请联系管理员处理。'},
+                    status=status.HTTP_400_BAD_REQUEST
                 )
 
             with transaction.atomic():
-                if approved_choice:
-                    cancel_approved_choice_for_giveup(approved_choice)
-
                 was_alternate = student.is_alternate
                 student.is_giveup = True
                 student.giveup_time = timezone.now()
@@ -1742,7 +1738,6 @@ class SubmitGiveupSignatureView(APIView):
                     finish_time=timezone.now(),
                 )
 
-                auto_promote_enabled = get_alternate_promotion_setting().auto_promote_on_giveup
                 subject = student.subject
                 remaining_alternates = Student.objects.filter(
                     subject=subject,
@@ -1754,68 +1749,16 @@ class SubmitGiveupSignatureView(APIView):
                     is_selected=False,
                 ).order_by("alternate_rank", "final_rank", "id")
                 alternate_student = None
-                if auto_promote_enabled and approved_choice:
-                    alternate_student = (
-                        remaining_alternates.first()
-                    )
 
-                if auto_promote_enabled and alternate_student:
-                    alternate_student.is_alternate = False
-                    alternate_student.alternate_rank = None
-                    alternate_student.save(update_fields=['is_alternate', 'alternate_rank'])
-                    remaining_alternates = Student.objects.filter(
-                        subject=subject,
-                        admission_year=student.admission_year,
-                        student_type=student.student_type,
-                        postgraduate_type=student.postgraduate_type,
-                        is_alternate=True,
-                        is_giveup=False,
-                        is_selected=False,
-                    ).order_by("alternate_rank", "final_rank", "id")
+                if was_alternate:
                     for index, candidate in enumerate(remaining_alternates, start=1):
                         if candidate.alternate_rank != index:
                             candidate.alternate_rank = index
                             candidate.save(update_fields=['alternate_rank'])
-                elif was_alternate:
-                    for index, candidate in enumerate(remaining_alternates, start=1):
-                        if candidate.alternate_rank != index:
-                            candidate.alternate_rank = index
-                            candidate.save(update_fields=['alternate_rank'])
-
-            if alternate_student:
-                try:
-                    self.send_notification(alternate_student)
-                except Exception as exc:
-                    logger.exception('通知候补学生递补成功失败: student_id=%s error=%s', alternate_student.id, exc)
-                return Response(
-                    {
-                        'message': f'放弃拟录取成功，已补录候补学生 {alternate_student.name}',
-                        'giveup_time': timezone.localtime(student.giveup_time).strftime('%Y-%m-%d %H:%M:%S') if student.giveup_time else '',
-                    },
-                    status=status.HTTP_200_OK
-                )
-
-            if approved_choice and not auto_promote_enabled:
-                return Response(
-                    {
-                        'message': '放弃拟录取成功，当前已关闭自动候补递补',
-                        'giveup_time': timezone.localtime(student.giveup_time).strftime('%Y-%m-%d %H:%M:%S') if student.giveup_time else '',
-                    },
-                    status=status.HTTP_200_OK
-                )
-
-            if approved_choice:
-                return Response(
-                    {
-                        'message': '放弃拟录取成功，但该专业没有候补学生',
-                        'giveup_time': timezone.localtime(student.giveup_time).strftime('%Y-%m-%d %H:%M:%S') if student.giveup_time else '',
-                    },
-                    status=status.HTTP_200_OK
-                )
 
             return Response(
                 {
-                    'message': '弃选提交成功',
+                    'message': '弃选提交成功' if not was_alternate else '弃选提交成功，已更新候补顺位',
                     'giveup_time': timezone.localtime(student.giveup_time).strftime('%Y-%m-%d %H:%M:%S') if student.giveup_time else '',
                 },
                 status=status.HTTP_200_OK
